@@ -19,6 +19,7 @@ namespace RTDDataExplorer
                 InitMap(levelID);
                 InitQuestGrid(levelID);
                 InitMonsterGrid(levelID);
+                ReDrawMap(levelID);
             }
             else
             {
@@ -127,13 +128,16 @@ namespace RTDDataExplorer
                                 //this.EnemyUnitID = num2;
                                 //this.TreasureID = 0;
                                 cellData = "E" + (num2);
-                                td.Attributes.Add("enemy", num2.ToString());
-                                /*if (num2 >= 17)
+                                if (num2 != 0)
+                                {
+                                    td.Attributes.Add("enemy", cellData);
+                                }
+                                if (num2 >= 17)
                                 {
                                     //E17以上一般都是史莱姆
                                     td.ForeColor = System.Drawing.Color.Red;
                                     td.Font.Bold = true;
-                                }*/
+                                }
                             }
                             if ((cellDataInt == 0) || (num2 == 0))
                             {
@@ -182,7 +186,8 @@ namespace RTDDataExplorer
         private void InitQuestGrid(string levelID)
         {
             DB db = new DB(false);
-            questGrid.DataSource = db.GetData("SELECT * FROM quest_master WHERE id=" + levelID);
+            DataTable questData = db.GetData("SELECT * FROM quest_master WHERE id=" + levelID);
+            questGrid.DataSource = questData;
             questGrid.DataBind();
         }
         private void InitMonsterGrid(string levelID)
@@ -190,7 +195,7 @@ namespace RTDDataExplorer
             DB db = new DB(false);
             DataTable questData = db.GetData("SELECT * FROM quest_master WHERE id=" + levelID);
             DataTable monsterData = new DataTable();
-            monsterData.Columns.Add("E#", typeof(string));
+            monsterData.Columns.Add("#", typeof(string));
             monsterData.Columns.Add("id", typeof(int));
             monsterData.Columns.Add("lv_min", typeof(int));
             monsterData.Columns.Add("lv_max", typeof(int));
@@ -205,11 +210,11 @@ namespace RTDDataExplorer
             monsterData.Columns.Add("soul_pt", typeof(int));
             monsterData.Columns.Add("gold_pt", typeof(int));
             monsterData.Columns.Add("turn", typeof(int));
-            //monsterData.Columns.Add("MinLife", typeof(int));
+            //monsterData.Columns.Add("LvMinLife", typeof(int));
             monsterData.Columns.Add("LvMaxLife", typeof(int));
-            //monsterData.Columns.Add("MinATK", typeof(int));
+            //monsterData.Columns.Add("LvMinATK", typeof(int));
             monsterData.Columns.Add("LvMaxATK", typeof(int));
-            //monsterData.Columns.Add("MinDEF", typeof(int));
+            //monsterData.Columns.Add("LvMinDEF", typeof(int));
             monsterData.Columns.Add("LvMaxDEF", typeof(int));
 
             questMonsterGrid.DataSource = monsterData;
@@ -223,15 +228,18 @@ namespace RTDDataExplorer
             DataTable enemyTableData = db.GetData("SELECT * FROM enemy_table_master WHERE id=" + enemy_table_id);
             for (int i = 1; i <= 18; i++)
             {
-                monsterData.Rows.Add(
-                new object[]{
-                enemyTableData.Rows[0]["enemy"+i+"_id"],
-                enemyTableData.Rows[0]["enemy"+i+"_set_id"],
-                enemyTableData.Rows[0]["enemy"+i+"_lv_min"],
-                enemyTableData.Rows[0]["enemy"+i+"_lv_max"],
-                enemyTableData.Rows[0]["enemy"+i+"_rate"],
-                enemyTableData.Rows[0]["enemy"+i+"_drop_id"]
-                });
+                if (enemyTableData.Rows[0]["enemy" + i + "_set_id"].ToString() != "0")
+                {
+                    monsterData.Rows.Add(
+                    new object[]{
+                        "E"+enemyTableData.Rows[0]["enemy"+i+"_id"],
+                        enemyTableData.Rows[0]["enemy"+i+"_set_id"],
+                        enemyTableData.Rows[0]["enemy"+i+"_lv_min"],
+                        enemyTableData.Rows[0]["enemy"+i+"_lv_max"],
+                        enemyTableData.Rows[0]["enemy"+i+"_rate"],
+                        enemyTableData.Rows[0]["enemy"+i+"_drop_id"]
+                    });
+                }
             }
             monsterData.Rows.Add(
                new object[]{
@@ -268,15 +276,82 @@ namespace RTDDataExplorer
                 dr["soul_pt"] = enemyUnitRow["soul_pt"];
                 dr["gold_pt"] = enemyUnitRow["gold_pt"];
                 dr["turn"] = enemyUnitRow["turn"];
-                //dr["MinLife"] = RealCalc(Convert.ToInt32(enemyUnitRow["life"]), Convert.ToInt32(enemyUnitRow["up_life"]), Convert.ToInt32(dr["lv_min"]));
+                //dr["LvMinLife"] = RealCalc(Convert.ToInt32(enemyUnitRow["life"]), Convert.ToInt32(enemyUnitRow["up_life"]), Convert.ToInt32(dr["lv_min"]));
                 dr["LvMaxLife"] = RealCalc(Convert.ToInt32(enemyUnitRow["life"]), Convert.ToInt32(enemyUnitRow["up_life"]), Convert.ToInt32(dr["lv_max"]));
-                //dr["MinATK"] = RealCalc(Convert.ToInt32(enemyUnitRow["attack"]), Convert.ToInt32(enemyUnitRow["up_attack"]), Convert.ToInt32(dr["lv_min"]));
+                //dr["LvMinATK"] = RealCalc(Convert.ToInt32(enemyUnitRow["attack"]), Convert.ToInt32(enemyUnitRow["up_attack"]), Convert.ToInt32(dr["lv_min"]));
                 dr["LvMaxATK"] = RealCalc(Convert.ToInt32(enemyUnitRow["attack"]), Convert.ToInt32(enemyUnitRow["up_attack"]), Convert.ToInt32(dr["lv_max"]));
-                //dr["MinDEF"] = RealCalc(Convert.ToInt32(enemyUnitRow["defense"]), Convert.ToInt32(enemyUnitRow["up_defense"]), Convert.ToInt32(dr["lv_min"]));
+                //dr["LvMinDEF"] = RealCalc(Convert.ToInt32(enemyUnitRow["defense"]), Convert.ToInt32(enemyUnitRow["up_defense"]), Convert.ToInt32(dr["lv_min"]));
                 dr["LvMaxDEF"] = RealCalc(Convert.ToInt32(enemyUnitRow["defense"]), Convert.ToInt32(enemyUnitRow["up_defense"]), Convert.ToInt32(dr["lv_max"]));
             }
 
             questMonsterGrid.DataBind();
+        }
+        private void ReDrawMap(string levelID)
+        {
+            if (map.Text == "无地图")
+                return;
+            Table mapTable = (Table)map.Controls[0];
+            DataTable monsterData = (DataTable)questMonsterGrid.DataSource;
+            foreach (TableRow tr in mapTable.Rows)
+            {
+                foreach (TableCell td in tr.Cells)
+                {
+                    if (!String.IsNullOrWhiteSpace(td.Attributes["enemy"]))
+                    {
+                        string enemyNo = td.Attributes["enemy"];
+                        DataRow[] foundRow = monsterData.Select("[#] = '" + enemyNo + "'");
+                        if (foundRow.Length < 1)
+                            continue;
+                        string enemyId = foundRow[0]["id"].ToString();
+                        switch (enemyId)
+                        {
+                            case "65002":   //移動床_上
+                                {
+                                    int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                    enemyDropId -= 99;
+                                    td.Text = enemyDropId.ToString() + "↑";
+                                    break;
+                                }
+                            case "65003":   //移動床_直進
+                                {
+                                    int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                    enemyDropId -= 299;
+                                    td.Text = enemyDropId.ToString() + "→";
+                                    break;
+                                }
+                            case "65004":   //移動床_下
+                                {
+                                    int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                    enemyDropId -= 199;
+                                    td.Text = enemyDropId.ToString() + "↓";
+                                    break;
+                                }
+                            case "22000":   //宝箱
+                                {
+                                    td.Text = "箱";
+                                    td.ForeColor = System.Drawing.Color.Red;
+                                    td.Font.Bold = true;
+                                    break;
+                                }
+                            case "40100":   //上り階段
+                                {
+                                    int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                    //td.Text = "↗" + enemyDropId.ToString();
+                                    td.Text = "<a href='Map.aspx?id=" + enemyDropId + "'>↗</a>";
+                                    break;
+                                }
+                            case "65001":   //下り階段
+                                {
+                                    int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                    //td.Text = "↘" + enemyDropId.ToString();
+                                    td.Text = "<a href='Map.aspx?id=" + enemyDropId + "'>↘</a>";
+                                    break;
+                                }
+                            default: break;
+                        }
+                    }
+                }
+            }
         }
         private int RealCalc(int baseAttr, int up, int lv)
         {
