@@ -15,7 +15,7 @@
                 <td>
                     <span>导入主数据（MDBS.xml）</span>
                     <br />
-                    <asp:FileUpload ID="upfileMDBS" AllowMultiple="false" runat="server" />
+                    <asp:FileUpload ID="upfileMDBS" runat="server" />
                     <asp:RadioButtonList ID="radMDBS" runat="server">
                         <asp:ListItem Text="新增或覆盖" Value="1" Selected="True" />
                         <asp:ListItem Text="追加且更新" Value="0" Selected="False" />
@@ -25,7 +25,7 @@
                 <td>
                     <span>导入地图数据（LDBS.xml）</span>
                     <br />
-                    <asp:FileUpload ID="upfileLDBS" AllowMultiple="false" runat="server" />
+                    <asp:FileUpload ID="upfileLDBS" runat="server" />
                     <asp:RadioButtonList ID="radLDBS" runat="server">
                         <asp:ListItem Text="新增或覆盖" Value="1" Selected="False" />
                         <asp:ListItem Text="追加且更新" Value="0" Selected="True" />

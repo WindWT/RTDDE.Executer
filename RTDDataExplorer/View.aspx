@@ -24,7 +24,7 @@
                 <asp:ListItem Text="日常任务" Value="DailyQuest"></asp:ListItem>
             </asp:DropDownList>
             <asp:CheckBox ID="isShowMap" runat="server" Text="显示地图" Checked="false" OnCheckedChanged="isShowMap_CheckedChanged" AutoPostBack="true" />
-            <asp:CheckBox ID="isShowCalc" runat="server" Text="属性计算" Checked="false" OnCheckedChanged="isShowCalc_CheckedChanged" AutoPostBack="true" />
+            <asp:CheckBox ID="isShowCalc" runat="server" Text="显示角色属性" Checked="false" OnCheckedChanged="isShowCalc_CheckedChanged" AutoPostBack="true" />
             <asp:GridView ID="grid" AllowPaging="true" PageSize="25" AllowSorting="false" runat="server" AutoGenerateColumns="true" EnableSortingAndPagingCallbacks="true">
                 <Columns>
                     <asp:HyperLinkField Text="查看地图" DataNavigateUrlFields="id"

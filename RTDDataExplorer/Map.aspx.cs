@@ -36,7 +36,7 @@ namespace RTDDataExplorer
             else
             {
                 DataRow levelData = dt.Rows[0];
-                form1.Controls.AddAt(0,
+                map.Controls.AddAt(0,
                     DrawMap(
                     levelData["map_data"].ToString(),
                     Convert.ToInt32(levelData["width"]),
@@ -127,12 +127,13 @@ namespace RTDDataExplorer
                                 //this.EnemyUnitID = num2;
                                 //this.TreasureID = 0;
                                 cellData = "E" + (num2);
-                                if (num2 >= 17)
+                                td.Attributes.Add("enemy", num2.ToString());
+                                /*if (num2 >= 17)
                                 {
                                     //E17以上一般都是史莱姆
                                     td.ForeColor = System.Drawing.Color.Red;
                                     td.Font.Bold = true;
-                                }
+                                }*/
                             }
                             if ((cellDataInt == 0) || (num2 == 0))
                             {
@@ -205,11 +206,11 @@ namespace RTDDataExplorer
             monsterData.Columns.Add("gold_pt", typeof(int));
             monsterData.Columns.Add("turn", typeof(int));
             //monsterData.Columns.Add("MinLife", typeof(int));
-            monsterData.Columns.Add("MaxLife", typeof(int));
+            monsterData.Columns.Add("LvMaxLife", typeof(int));
             //monsterData.Columns.Add("MinATK", typeof(int));
-            monsterData.Columns.Add("MaxATK", typeof(int));
+            monsterData.Columns.Add("LvMaxATK", typeof(int));
             //monsterData.Columns.Add("MinDEF", typeof(int));
-            monsterData.Columns.Add("MaxDEF", typeof(int));
+            monsterData.Columns.Add("LvMaxDEF", typeof(int));
 
             questMonsterGrid.DataSource = monsterData;
 
@@ -268,11 +269,11 @@ namespace RTDDataExplorer
                 dr["gold_pt"] = enemyUnitRow["gold_pt"];
                 dr["turn"] = enemyUnitRow["turn"];
                 //dr["MinLife"] = RealCalc(Convert.ToInt32(enemyUnitRow["life"]), Convert.ToInt32(enemyUnitRow["up_life"]), Convert.ToInt32(dr["lv_min"]));
-                dr["MaxLife"] = RealCalc(Convert.ToInt32(enemyUnitRow["life"]), Convert.ToInt32(enemyUnitRow["up_life"]), Convert.ToInt32(dr["lv_max"]));
+                dr["LvMaxLife"] = RealCalc(Convert.ToInt32(enemyUnitRow["life"]), Convert.ToInt32(enemyUnitRow["up_life"]), Convert.ToInt32(dr["lv_max"]));
                 //dr["MinATK"] = RealCalc(Convert.ToInt32(enemyUnitRow["attack"]), Convert.ToInt32(enemyUnitRow["up_attack"]), Convert.ToInt32(dr["lv_min"]));
-                dr["MaxATK"] = RealCalc(Convert.ToInt32(enemyUnitRow["attack"]), Convert.ToInt32(enemyUnitRow["up_attack"]), Convert.ToInt32(dr["lv_max"]));
+                dr["LvMaxATK"] = RealCalc(Convert.ToInt32(enemyUnitRow["attack"]), Convert.ToInt32(enemyUnitRow["up_attack"]), Convert.ToInt32(dr["lv_max"]));
                 //dr["MinDEF"] = RealCalc(Convert.ToInt32(enemyUnitRow["defense"]), Convert.ToInt32(enemyUnitRow["up_defense"]), Convert.ToInt32(dr["lv_min"]));
-                dr["MaxDEF"] = RealCalc(Convert.ToInt32(enemyUnitRow["defense"]), Convert.ToInt32(enemyUnitRow["up_defense"]), Convert.ToInt32(dr["lv_max"]));
+                dr["LvMaxDEF"] = RealCalc(Convert.ToInt32(enemyUnitRow["defense"]), Convert.ToInt32(enemyUnitRow["up_defense"]), Convert.ToInt32(dr["lv_max"]));
             }
 
             questMonsterGrid.DataBind();
