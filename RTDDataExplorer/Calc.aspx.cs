@@ -91,11 +91,11 @@ namespace RTDDataExplorer
             SkillMaster panelSkill = getSkillFromRankSkill("PANEL_SKILL", panelRankSkillId, (int)thislevel);
 
             passiveSkillName.Text = partySkill.name;
-            passiveSkillText.Text = parseSkillText(partySkill.text);
+            passiveSkillText.Text = parseText(partySkill.text);
             activeSkillName.Text = String.Format("{0}({1})", activeSkill.name, activeSkill.soul);
-            activeSkillText.Text = parseSkillText(activeSkill.text);
+            activeSkillText.Text = parseText(activeSkill.text);
             panelSkillName.Text = panelSkill.name;
-            panelSkillText.Text = parseSkillText(panelSkill.text);
+            panelSkillText.Text = parseText(panelSkill.text);
         }
         public class SkillMaster
         {
@@ -113,16 +113,17 @@ namespace RTDDataExplorer
             public int duplication;
             public string text;
         }
-        private string parseSkillText(string text)
+        public static string parseText(string text)
         {
             if (string.IsNullOrEmpty(text))
             {
                 return String.Empty;
             }
-            Regex r = new Regex(@"(\[[a-z0-9]{6}\])(.*?)(\[-\])");
-            return r.Replace(text, new MatchEvaluator(parseSkillTextEvaluator));
+            text = text.Replace(@"\n", string.Empty);
+            Regex r = new Regex(@"(\[[a-zA-Z0-9]{6}\])(.*?)(\[-\])");
+            return r.Replace(text, new MatchEvaluator(parseTextEvaluator));
         }
-        private string parseSkillTextEvaluator(Match m)
+        public static string parseTextEvaluator(Match m)
         {
             string color = m.Groups[1].Value.Trim(new char[] { '[', ']' });
             return String.Format("<span style='color:#{0}'>{1}</span>", color, m.Groups[2].Value);

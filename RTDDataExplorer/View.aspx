@@ -25,7 +25,7 @@
             </asp:DropDownList>
             <asp:CheckBox ID="isShowMap" runat="server" Text="显示地图" Checked="false" OnCheckedChanged="isShowMap_CheckedChanged" AutoPostBack="true" />
             <asp:CheckBox ID="isShowCalc" runat="server" Text="显示角色属性" Checked="false" OnCheckedChanged="isShowCalc_CheckedChanged" AutoPostBack="true" />
-            <asp:GridView ID="grid" AllowPaging="true" PageSize="25" AllowSorting="false" runat="server" AutoGenerateColumns="true" EnableSortingAndPagingCallbacks="true">
+            <asp:GridView ID="grid" AllowPaging="true" PageSize="25" AllowSorting="false" runat="server" AutoGenerateColumns="true" EnableSortingAndPagingCallbacks="true" OnDataBound="grid_DataBound" >
                 <Columns>
                     <asp:HyperLinkField Text="查看地图" DataNavigateUrlFields="id"
                         DataNavigateUrlFormatString="Map.aspx?id={0}" Target="_blank"  Visible="false"></asp:HyperLinkField>
