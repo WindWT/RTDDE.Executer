@@ -14,9 +14,18 @@ namespace RTDDataExplorer
         protected void Page_Load(object sender, EventArgs e)
         {
             string levelID = Request.QueryString["id"];
+            int repeat = 1;
+            if (!string.IsNullOrWhiteSpace(Request.QueryString["repeat"]))
+            {
+                int.TryParse(Request.QueryString["repeat"], out repeat);
+            }
+            else if (!string.IsNullOrWhiteSpace(Request.QueryString["r"]))
+            {
+                int.TryParse(Request.QueryString["r"], out repeat);
+            }
             if (!string.IsNullOrEmpty(levelID))
             {
-                InitMap(levelID);
+                InitMap(levelID, repeat);
                 InitQuestGrid(levelID);
                 InitMonsterGrid(levelID);
                 ReDrawMap(levelID);
@@ -26,7 +35,7 @@ namespace RTDDataExplorer
                 Response.Write("<script language:javascript>javascript:window.close();</script>");
             }
         }
-        private void InitMap(string levelID)
+        private void InitMap(string levelID, int repeat = 1)
         {
             DB db = new DB(false);
             DataTable dt = db.GetData("SELECT a.*,b.distance FROM level_data_master a left join quest_master b on a.level_data_id=b.id WHERE a.level_data_id=" + levelID);
@@ -44,14 +53,19 @@ namespace RTDDataExplorer
                     Convert.ToInt32(levelData["height"]),
                     Convert.ToInt32(levelData["start_x"]),
                     Convert.ToInt32(levelData["start_y"]),
-                    Convert.ToInt32(levelData["distance"])
+                    Convert.ToInt32(levelData["distance"]),
+                    repeat
                     ));
             }
         }
-        private Table DrawMap(string mapData, int w, int h, int x, int y, int distance, int repeat = 1)
+        private Table DrawMap(string mapData, int w, int h, int x, int y, int distance, int repeat)
         {
             Table mapTable = new Table();
             mapTable.CssClass = "map";
+            if (repeat < 1)
+            {
+                repeat = 1;
+            }
             for (int r = 0; r < repeat; r++)
             {
                 for (int i = 0; i < w; i++)
