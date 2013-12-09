@@ -72,13 +72,16 @@ namespace RTDDataExplorer
                 {
                     case "UnitStory":
                         {
-                            lblSQL.Text = "SELECT g_id,name,story FROM UNIT_MASTER order by g_id";
+                            lblSQL.Text = @"SELECT g_id,name,story FROM UNIT_MASTER
+order by g_id";
                             break;
                         }
                     case "NewQuest":
                         {
                             lblSQL.Text = @"SELECT id,
-       name,category,stamina,
+       name,stamina,
+(select name from quest_category_master where quest_category_master.id=category) as category,
+(select text from quest_category_master where quest_category_master.id=category) as text,
        ( CASE
                 WHEN open_type_1 = 4 THEN open_param_1 
                 WHEN open_type_2 = 4 THEN open_param_2 
@@ -97,6 +100,7 @@ namespace RTDDataExplorer
                 WHEN open_type_6 = 5 THEN open_param_6 
                 ELSE 0 
        END ) AS [end],
+(case when
        ( CASE
                 WHEN open_type_1 = 6 THEN open_param_1 
                 WHEN open_type_2 = 6 THEN open_param_2 
@@ -105,7 +109,7 @@ namespace RTDDataExplorer
                 WHEN open_type_5 = 6 THEN open_param_5 
                 WHEN open_type_6 = 6 THEN open_param_6 
                 ELSE 0 
-       END ) AS isDisabled1,
+       END ) == 0 AND
        ( CASE
                 WHEN open_type_1 = 8 THEN open_param_1 
                 WHEN open_type_2 = 8 THEN open_param_2 
@@ -114,16 +118,7 @@ namespace RTDDataExplorer
                 WHEN open_type_5 = 8 THEN open_param_5 
                 WHEN open_type_6 = 8 THEN open_param_6 
                 ELSE 0 
-       END ) AS isDisabled2,
-       ( CASE
-                WHEN open_type_1 = 7 THEN open_param_1 
-                WHEN open_type_2 = 7 THEN open_param_2 
-                WHEN open_type_3 = 7 THEN open_param_3 
-                WHEN open_type_4 = 7 THEN open_param_4 
-                WHEN open_type_5 = 7 THEN open_param_5 
-                WHEN open_type_6 = 7 THEN open_param_6 
-                ELSE 0 
-       END ) AS isNeedQuestClear,
+       END ) == 0 then 0 else 1 end) AS isDisabled,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_0) as challenge0,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_1) as challenge1,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_2) as challenge2
@@ -133,7 +128,8 @@ namespace RTDDataExplorer
                         }
                     case "QuestCategory":
                         {
-                            lblSQL.Text = "SELECT * FROM QUEST_CATEGORY_MASTER ORDER BY id";
+                            lblSQL.Text = @"SELECT * FROM QUEST_CATEGORY_MASTER
+ORDER BY id";
                             break;
                         }
                     case "MainQuest":
@@ -185,6 +181,7 @@ ORDER BY name";
                 WHEN open_type_6 = 5 THEN open_param_6 
                 ELSE 0 
        END ) AS [end],
+(case when
        ( CASE
                 WHEN open_type_1 = 6 THEN open_param_1 
                 WHEN open_type_2 = 6 THEN open_param_2 
@@ -193,7 +190,7 @@ ORDER BY name";
                 WHEN open_type_5 = 6 THEN open_param_5 
                 WHEN open_type_6 = 6 THEN open_param_6 
                 ELSE 0 
-       END ) AS isDisabled1,
+       END ) == 0 AND
        ( CASE
                 WHEN open_type_1 = 8 THEN open_param_1 
                 WHEN open_type_2 = 8 THEN open_param_2 
@@ -202,16 +199,7 @@ ORDER BY name";
                 WHEN open_type_5 = 8 THEN open_param_5 
                 WHEN open_type_6 = 8 THEN open_param_6 
                 ELSE 0 
-       END ) AS isDisabled2,
-       ( CASE
-                WHEN open_type_1 = 7 THEN open_param_1 
-                WHEN open_type_2 = 7 THEN open_param_2 
-                WHEN open_type_3 = 7 THEN open_param_3 
-                WHEN open_type_4 = 7 THEN open_param_4 
-                WHEN open_type_5 = 7 THEN open_param_5 
-                WHEN open_type_6 = 7 THEN open_param_6 
-                ELSE 0 
-       END ) AS isNeedQuestClear,
+       END ) == 0 then 0 else 1 end) AS isDisabled,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_0) as challenge0,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_1) as challenge1,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_2) as challenge2
