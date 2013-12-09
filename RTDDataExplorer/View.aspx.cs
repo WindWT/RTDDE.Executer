@@ -134,7 +134,9 @@ ORDER BY id";
                         }
                     case "MainQuest":
                         {
-                            lblSQL.Text = @"SELECT id,name,category,stamina,
+                            lblSQL.Text = @"SELECT id,name,stamina,
+(select name from quest_category_master where quest_category_master.id=category) as category,
+(select text from quest_category_master where quest_category_master.id=category) as text,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_0) as challenge0,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_1) as challenge1,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_2) as challenge2
@@ -153,7 +155,9 @@ ORDER BY name";
                     case "DailyQuest":
                         {
                             string today = DateTime.Today.AddHours(1).ToString("yyyyMMddHH");
-                            lblSQL.Text = @"SELECT id,name,category,
+                            lblSQL.Text = @"SELECT id,name,stamina,
+(select name from quest_category_master where quest_category_master.id=category) as category,
+(select text from quest_category_master where quest_category_master.id=category) as text,
        ( CASE
                 WHEN open_type_1 = 1 THEN open_param_1 
                 WHEN open_type_2 = 1 THEN open_param_2 
@@ -205,8 +209,7 @@ ORDER BY name";
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_2) as challenge2
 FROM QUEST_MASTER
 WHERE DayOfWeek>=0
-AND isDisabled1=0
-AND isDisabled2=0
+AND isDisabled=0
 AND ([end]>" + today + @" OR [end]=0)
 ORDER BY DayOfWeek,id DESC";
                             break;
