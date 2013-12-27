@@ -6,6 +6,7 @@ using System.Web.Hosting;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using RTDDataProvider;
 
 namespace RTDDataExplorer
 {
@@ -38,7 +39,7 @@ namespace RTDDataExplorer
             grid.Columns[1].Visible = isShowCalc.Checked;
             try
             {
-                DB db = new DB(false);
+                DB db = new DB(HostingEnvironment.MapPath("/RTD.db"));
                 DataTable dt = db.GetData(sql);
                 grid.DataSource = dt;
                 grid.DataBind();

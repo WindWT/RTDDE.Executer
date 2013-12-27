@@ -6,6 +6,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Text.RegularExpressions;
+using RTDDataProvider;
+using System.Web.Hosting;
 
 namespace RTDDataExplorer
 {
@@ -17,7 +19,7 @@ namespace RTDDataExplorer
             string gID = Request.QueryString["g_id"];
             if (!string.IsNullOrEmpty(gID))
             {
-                DB db = new DB(false);
+                DB db = new DB(HostingEnvironment.MapPath("/RTD.db"));
                 DataTable dt = db.GetData("SELECT * FROM UNIT_MASTER WHERE g_id=" + gID);
                 if (dt.Rows.Count == 0)
                 {
@@ -130,7 +132,7 @@ namespace RTDDataExplorer
         }
         private SkillMaster getSkillFromRankSkill(string tableName, int rankSkillId, int thislevel = 1)
         {
-            DB db = new DB(false);
+            DB db = new DB(HostingEnvironment.MapPath("/RTD.db"));
             int skillId = 0;
             SkillMaster sm = new SkillMaster();
             DataTable rankSkillTable = db.GetData("SELECT * FROM " + tableName + "_RANK_MASTER WHERE id=" + rankSkillId);

@@ -6,6 +6,7 @@ using System.Web.Hosting;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using RTDDataProvider;
 
 namespace RTDDataExplorer
 {
@@ -37,7 +38,7 @@ namespace RTDDataExplorer
         }
         private void InitMap(string levelID, int repeat = 1)
         {
-            DB db = new DB(false);
+            DB db = new DB(HostingEnvironment.MapPath("/RTD.db"));
             DataTable dt = db.GetData("SELECT a.*,b.distance FROM level_data_master a left join quest_master b on a.level_data_id=b.id WHERE a.level_data_id=" + levelID);
             if (dt.Rows.Count == 0)
             {
@@ -199,14 +200,14 @@ namespace RTDDataExplorer
         }
         private void InitQuestGrid(string levelID)
         {
-            DB db = new DB(false);
+            DB db = new DB(HostingEnvironment.MapPath("/RTD.db"));
             DataTable questData = db.GetData("SELECT * FROM quest_master WHERE id=" + levelID);
             questGrid.DataSource = questData;
             questGrid.DataBind();
         }
         private void InitMonsterGrid(string levelID)
         {
-            DB db = new DB(false);
+            DB db = new DB(HostingEnvironment.MapPath("/RTD.db"));
             DataTable questData = db.GetData("SELECT * FROM quest_master WHERE id=" + levelID);
             DataTable monsterData = new DataTable();
             monsterData.Columns.Add("#", typeof(string));
