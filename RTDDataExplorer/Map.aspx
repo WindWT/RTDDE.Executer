@@ -34,8 +34,8 @@
     <form id="form1" runat="server">
         <div>
             <asp:Label ID="map" runat="server"></asp:Label>
-            <asp:GridView ID="questGrid" runat="server" AllowPaging="false" AllowSorting="false" AllowCustomPaging="false"></asp:GridView>
-            <asp:GridView ID="questMonsterGrid" runat="server" AllowPaging="false" AllowSorting="false" AllowCustomPaging="false"></asp:GridView>
+            <asp:GridView ID="questGrid" runat="server" AllowPaging="false" AllowSorting="false"></asp:GridView>
+            <asp:GridView ID="questMonsterGrid" runat="server" AllowPaging="false" AllowSorting="false"></asp:GridView>
         </div>
     </form>
 </body>

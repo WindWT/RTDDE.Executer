@@ -15,8 +15,8 @@ namespace RTDDataExplorer
 {
     public partial class Import : System.Web.UI.Page
     {
-        private string MDBS_FILENAME = "MDBS.xml";
-        private string LDBS_FILENAME = "LDBS.xml";
+        private static string MDBS_FILENAME = "MDBS.xml";
+        private static string LDBS_FILENAME = "LDBS.xml";
         protected void Page_Load(object sender, EventArgs e)
         {
         }

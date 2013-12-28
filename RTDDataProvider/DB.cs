@@ -11,7 +11,7 @@ namespace RTDDataProvider
     public class DB
     {
         private string connectionString = string.Empty;
-        private static readonly string DB_LOCAL_FILEPATH = "/RTD.db";
+        private static readonly string DB_LOCAL_FILEPATH = "RTD.db";
         public DB()
             : this(DB_LOCAL_FILEPATH)
         {
@@ -41,7 +41,7 @@ namespace RTDDataProvider
         {
             ImportDataSet(ds, false);
         }
-        public void ImportDataSet(DataSet ds,bool isOverwrite)
+        public void ImportDataSet(DataSet ds, bool isOverwrite)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {

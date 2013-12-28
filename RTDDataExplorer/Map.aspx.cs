@@ -373,26 +373,4 @@ namespace RTDDataExplorer
             return (int)Math.Round(baseAttr * ((lv - 1) * (up * 0.01) + 1));
         }
     }
-    [Serializable]
-    public class EnemyArrange
-    {
-        public int enemy_id;
-        public int arrange_id;
-        public int lv_min;
-        public int lv_max;
-        public int arrange_rate;
-        public int drop_id;
-        public void SetMasterRecord()
-        {
-            //this.enemyData = ClientData.GetEnemyDataFromMasterID(this.enemy_id);
-        }
-        public bool IsDeath()
-        {
-            return this.arrange_id == 0;
-        }
-        public bool IsBoss()
-        {
-            return this.arrange_id == 99;
-        }
-    }
 }

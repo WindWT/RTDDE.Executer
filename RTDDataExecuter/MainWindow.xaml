@@ -1,8 +1,138 @@
 ﻿<Window x:Class="RTDDataExecuter.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        Title="RTDDataExecuter"  MinWidth="640" MinHeight="480" Width="640" Height="480" Icon="Resources/Icon256.ico">
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom" Height="20" VerticalAlignment="Bottom">
+            <StatusBarItem></StatusBarItem>
+            <StatusBarItem></StatusBarItem>
+            <StatusBarItem></StatusBarItem>
+        </StatusBar>
+        <TabControl DockPanel.Dock="Top" Name="MainTab" SelectionChanged="MainTab_SelectionChanged">
+            <TabItem Header="QuestViewer" Name="QuestViewerTabItem">
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="300"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid Grid.Column="0"  Name="QuestViewerDataGrid" AutoGenerateColumns="True" IsReadOnly="True" SelectionChanged="QuestViewerDataGrid_SelectionChanged" FrozenColumnCount="2" SelectionMode="Single"></DataGrid>
+                    <WrapPanel Grid.Column="1" Orientation="Horizontal" Margin="0">
+                        <RadioButton GroupName="QuestType" Content="Event" Width="100" IsChecked="True" Name="QuestTypeRadio_Event" Checked="QuestTypeRadio_Event_Checked"></RadioButton>
+                        <RadioButton GroupName="QuestType" Content="Daily" Width="100" Name="QuestTypeRadio_Daily" Checked="QuestTypeRadio_Daily_Checked"></RadioButton>
+                        <RadioButton GroupName="QuestType" Content="Main" Width="100" Name="QuestTypeRadio_Main" Checked="QuestTypeRadio_Main_Checked"></RadioButton>
+                        <TextBlock Text="id" Width="50"/>
+                        <TextBox Name="QuestInfo_id" Width="50" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="name" Width="50"/>
+                        <TextBox Name="QuestInfo_name" Width="150" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="pt" Width="50"/>
+                        <TextBox Name="QuestInfo_pt" Width="50" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="difficulty" Width="50"/>
+                        <TextBox Name="QuestInfo_difficulty" Width="50" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="stamina" Width="50"/>
+                        <TextBox Name="QuestInfo_stamina" Width="50" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="category" Width="100"/>
+                        <TextBox Name="QuestInfo_category" Width="200" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="text" Width="50"/>
+                        <TextBox Name="QuestInfo_text" Width="250" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+                        <TextBlock Text="opentype" Width="100"/>
+                        <TextBlock Text="opentypeParam" Width="200"/>
+                        <TextBox Name="QuestInfo_opentype1_name" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_opentype1_value" Width="200" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_opentype2_name" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_opentype2_value" Width="200" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_opentype3_name" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_opentype3_value" Width="200" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_opentype4_name" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_opentype4_value" Width="200" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_opentype5_name" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_opentype5_value" Width="200" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_opentype6_name" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_opentype6_value" Width="200" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="bonus" Width="50"/>
+                        <TextBox Name="QuestInfo_bonus" Width="50" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_bonus_start" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_bonus_end" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="panel" Width="50"/>
+                        <TextBox Name="QuestInfo_panel_sword" Width="50" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_panel_lance" Width="50" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_panel_archer" Width="50" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_panel_cane" Width="50" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_panel_heart" Width="25" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_panel_sp" Width="25" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="challenge0" Width="50"/>
+                        <TextBox Name="QuestInfo_challenge0" Width="250" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="challenge1" Width="50"/>
+                        <TextBox Name="QuestInfo_challenge1" Width="250" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="challenge2" Width="50"/>
+                        <TextBox Name="QuestInfo_challenge2" Width="250" IsReadOnly="True"></TextBox>
+                    </WrapPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="MapViewer" Name="MapViewerTabItem">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Disabled"
+                                  HorizontalScrollBarVisibility="Auto" DockPanel.Dock="Top">
+                        <Grid Name="MapGrid">
+                            <Grid.Resources>
+                                <Style TargetType="{x:Type TextBox}">
+                                    <Setter Property="Height" Value="25"/>
+                                    <Setter Property="Width" Value="25"/>
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="IsReadOnly" Value="True"/>
+                                    <Setter Property="BorderThickness" Value="0.5"/>
+                                </Style>
+                            </Grid.Resources>
+                        </Grid>
+                    </ScrollViewer>
+                    <DataGrid Grid.Row="1" Name="MapMonsterGrid" AutoGenerateColumns="True" IsReadOnly="True" FrozenColumnCount="1" SelectionMode="Single"></DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="CharaViewer" Name="CharaViewerTabItem">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="CommonViewer" Name="CommonViewerTabItem">
+                <DockPanel>
+                    <Grid HorizontalAlignment="Stretch" Height="40" DockPanel.Dock="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="75"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Name="SQLTextBox" AcceptsReturn="True" AcceptsTab="True" VerticalScrollBarVisibility="Auto"/>
+                        <StackPanel Grid.Column="1">
+                            <ComboBox>
+                                <ComboBoxItem></ComboBoxItem>
+                                <ComboBoxItem></ComboBoxItem>
+                                <ComboBoxItem></ComboBoxItem>
+                            </ComboBox>
+                            <Button Grid.Column="1" Click="Button_Click">RunSQL</Button>
+                        </StackPanel>
+
+                    </Grid>
+                    <Separator Height="5" Margin="0" DockPanel.Dock="Top"/>
+                    <DataGrid  Name="CommonViewerDataGrid" AutoGenerateColumns="True" IsReadOnly="True">
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Settings"  Name="SettingsTabItem">
+                <StackPanel Background="#FFE5E5E5">
+                    <Button Name="ImportMDBSButton" Click="ImportMDBSButton_Click">导入MDBS</Button>
+                    <Button Name="ImportLDBSButton" Click="ImportLDBSButton_Click">导入LDBS</Button>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Padding" Value="3,0,0,0"></Setter>
+        </Style>
+    </Window.Resources>
 </Window>
