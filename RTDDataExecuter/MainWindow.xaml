@@ -4,9 +4,11 @@
         Title="RTDDataExecuter"  MinWidth="640" MinHeight="480" Width="640" Height="480" Icon="Resources/Icon256.ico">
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom" Height="20" VerticalAlignment="Bottom">
-            <StatusBarItem></StatusBarItem>
-            <StatusBarItem></StatusBarItem>
-            <StatusBarItem></StatusBarItem>
+            <StatusBarItem>
+                <Grid>
+                    <TextBlock Name="StatusBarExceptionMessage" VerticalAlignment="Top" HorizontalAlignment="Left"></TextBlock>
+                </Grid>
+            </StatusBarItem>
         </StatusBar>
         <TabControl DockPanel.Dock="Top" Name="MainTab" SelectionChanged="MainTab_SelectionChanged">
             <TabItem Header="QuestViewer" Name="QuestViewerTabItem">
@@ -15,7 +17,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid Grid.Column="0"  Name="QuestViewerDataGrid" AutoGenerateColumns="True" IsReadOnly="True" SelectionChanged="QuestViewerDataGrid_SelectionChanged" FrozenColumnCount="2" SelectionMode="Single"></DataGrid>
+                    <DataGrid Grid.Column="0"  Name="QuestViewerDataGrid" AutoGenerateColumns="True" IsReadOnly="True" SelectionChanged="QuestViewerDataGrid_SelectionChanged" FrozenColumnCount="2" SelectionMode="Single" SelectionUnit="FullRow"></DataGrid>
                     <WrapPanel Grid.Column="1" Orientation="Horizontal" Margin="0">
                         <RadioButton GroupName="QuestType" Content="Event" Width="100" IsChecked="True" Name="QuestTypeRadio_Event" Checked="QuestTypeRadio_Event_Checked"></RadioButton>
                         <RadioButton GroupName="QuestType" Content="Daily" Width="100" Name="QuestTypeRadio_Daily" Checked="QuestTypeRadio_Daily_Checked"></RadioButton>
@@ -74,25 +76,36 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
+                    <Grid Name="MapGrid">
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type TextBox}">
+                                <Setter Property="Height" Value="25"/>
+                                <Setter Property="Width" Value="25"/>
+                                <Setter Property="TextAlignment" Value="Center"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="IsReadOnly" Value="True"/>
+                                <Setter Property="BorderThickness" Value="0.5"/>
+                            </Style>
+                        </Grid.Resources>
+                    </Grid>
                     <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Disabled"
                                   HorizontalScrollBarVisibility="Auto" DockPanel.Dock="Top">
-                        <Grid Name="MapGrid">
-                            <Grid.Resources>
-                                <Style TargetType="{x:Type TextBox}">
-                                    <Setter Property="Height" Value="25"/>
-                                    <Setter Property="Width" Value="25"/>
-                                    <Setter Property="TextAlignment" Value="Center"/>
-                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                    <Setter Property="IsReadOnly" Value="True"/>
-                                    <Setter Property="BorderThickness" Value="0.5"/>
+                        <DataGrid Name="MapDataGrid" AutoGenerateColumns="True" IsReadOnly="True" ItemsSource="{Binding CellData}"  HeadersVisibility="None">
+                            <DataGrid.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="FontWeight" Value="{Binding Bold}" />
+                                    <Setter Property="Foreground" Value="{Binding Foreground}" />
+                                    <Setter Property="Background" Value="{Binding Background}" />
                                 </Style>
-                            </Grid.Resources>
-                        </Grid>
+                            </DataGrid.CellStyle>
+                            <DataGridTextColumn></DataGridTextColumn>
+                        </DataGrid>
+
                     </ScrollViewer>
-                    <DataGrid Grid.Row="1" Name="MapMonsterGrid" AutoGenerateColumns="True" IsReadOnly="True" FrozenColumnCount="1" SelectionMode="Single"></DataGrid>
+                    <DataGrid Grid.Row="1" Name="MapMonsterGrid" AutoGenerateColumns="True" IsReadOnly="True" FrozenColumnCount="1" SelectionMode="Single" SelectionUnit="FullRow"></DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="CharaViewer" Name="CharaViewerTabItem">
@@ -125,6 +138,7 @@
                 <StackPanel Background="#FFE5E5E5">
                     <Button Name="ImportMDBSButton" Click="ImportMDBSButton_Click">导入MDBS</Button>
                     <Button Name="ImportLDBSButton" Click="ImportLDBSButton_Click">导入LDBS</Button>
+                    <Button Name="ImportplistButton" Click="ImportplistButton_Click">导入plist</Button>
                 </StackPanel>
             </TabItem>
         </TabControl>

@@ -105,6 +105,11 @@ panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
             );
             taskParse.ContinueWith(t =>
             {
+                if (t.Exception != null)
+                {
+                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    return;
+                }
                 DataRow dr = task.Result.Rows[0];
                 if (dr == null || dr.ItemArray.Length == 0)
                 {
@@ -245,6 +250,11 @@ ORDER BY id DESC";
             });
             task.ContinueWith(t =>
             {
+                if (t.Exception != null)
+                {
+                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    return;
+                }
                 QuestViewerDataGrid.ItemsSource = t.Result.DefaultView;
             }, uiTaskScheduler);    //this Task work on ui thread
             task.Start();
@@ -437,6 +447,47 @@ ORDER BY id DESC";
 
         #region MapViewer
 
+        public class MapCell : DependencyObject
+        {
+            public string CellData { get; set; }
+
+            public Brush Foreground
+            {
+                get { return (Brush)GetValue(ForegroundProperty); }
+                set { SetValue(ForegroundProperty, value); }
+            }
+            public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register("Foreground", typeof(Brush), typeof(MapCell), new UIPropertyMetadata());
+
+            public Brush Background
+            {
+                get { return (Brush)GetValue(BackgroundProperty); }
+                set { SetValue(BackgroundProperty, value); }
+            }
+            public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register("Background", typeof(Brush), typeof(MapCell), new UIPropertyMetadata());
+
+            public FontWeight Bold
+            {
+                get { return (FontWeight)GetValue(FontWeightProperty); }
+                set { SetValue(FontWeightProperty, value); }
+            }
+            public static readonly DependencyProperty FontWeightProperty = DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(MapCell), new UIPropertyMetadata());
+
+            public MapCell(string cellData)
+                : this(cellData, Brushes.Black, Brushes.Transparent, FontWeights.Normal)
+            {
+            }
+            public MapCell(string cellData, Brush foreground, Brush background, FontWeight bold)
+            {
+                this.CellData = cellData;
+                this.Foreground = foreground;
+                this.Background = background;
+                this.Bold = bold;
+            }
+            public override string ToString()
+            {
+                return CellData;
+            }
+        }
         private void InitMap(string levelID, int repeat = 1)
         {
             MapGrid.Children.Clear();
@@ -458,6 +509,11 @@ ORDER BY id DESC";
             );
             task.ContinueWith(t =>
             {
+                if (t.Exception != null)
+                {
+                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    return;
+                }
                 if (t.Result.Rows.Count == 0)
                 {
                     return;
@@ -793,13 +849,19 @@ ORDER BY id DESC";
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            string SQL = SQLTextBox.Text;
             Task<DataTable> task = new Task<DataTable>(() =>
             {
                 DB db = new DB();
-                return db.GetData(SQLTextBox.Text);
+                return db.GetData(SQL);
             });
             task.ContinueWith(t =>
             {
+                if (t.Exception != null)
+                {
+                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    return;
+                }
                 CommonViewerDataGrid.ItemsSource = t.Result.DefaultView;
             }, uiTaskScheduler);    //this Task work on ui thread
             task.Start();
@@ -828,9 +890,14 @@ ORDER BY id DESC";
                         return db.GetData("SELECT * FROM USER_RANK_MASTER");
                     });
                     task.ContinueWith(t =>
+                    {
+                        if (t.Exception != null)
                         {
-                            CommonViewerDataGrid.ItemsSource = t.Result.DefaultView;
-                        }, uiTaskScheduler);    //this Task work on ui thread
+                            StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                            return;
+                        }
+                        CommonViewerDataGrid.ItemsSource = t.Result.DefaultView;
+                    }, uiTaskScheduler);    //this Task work on ui thread
                     task.Start();
                 }
             }
@@ -854,6 +921,7 @@ ORDER BY id DESC";
                     }
                     catch (Exception ex)
                     {
+                        StatusBarExceptionMessage.Text = ex.Message;
                     }
                 }
             }
@@ -870,12 +938,44 @@ ORDER BY id DESC";
                     string xmlLDB = sr.ReadToEnd();
                     try
                     {
-                        DataSet ds = XMLParser.ParseMDB(xmlLDB);
+                        DataTable dt = XMLParser.ParseLDB(xmlLDB);
+                        DataSet lds = new DataSet("LDB");
+                        lds.Tables.Add(dt);
                         DB db = new DB();
-                        db.ImportDataSet(ds, false);
+                        db.ImportDataSet(lds, false);
                     }
                     catch (Exception ex)
                     {
+                        StatusBarExceptionMessage.Text = ex.Message;
+                    }
+                }
+            }
+        }
+        private void ImportplistButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.DefaultExt = ".plist";
+            ofd.Filter = "plist File|*.plist";
+            if (ofd.ShowDialog() == true)
+            {
+                using (StreamReader sr = new StreamReader(ofd.FileName))
+                {
+                    try
+                    {
+                        DataSet ds = XMLParser.ParsePlistMDB(sr.BaseStream);
+                        DB db = new DB();
+                        db.ImportDataSet(ds, true);
+
+                        sr.BaseStream.Position = 0;
+
+                        DataTable dt = XMLParser.ParsePlistLDB(sr.BaseStream);
+                        DataSet lds = new DataSet("LDB");
+                        lds.Tables.Add(dt);
+                        db.ImportDataSet(lds, false);
+                    }
+                    catch (Exception ex)
+                    {
+                        StatusBarExceptionMessage.Text = ex.Message;
                     }
                 }
             }

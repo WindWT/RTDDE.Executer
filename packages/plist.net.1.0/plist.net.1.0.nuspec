@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>plist.net</id>
+    <version>1.0</version>
+    <title>PList.Net</title>
+    <authors>Christian Ecker</authors>
+    <owners>Christian Ecker</owners>
+    <licenseUrl>http://www.opensource.org/licenses/bsd-license.php</licenseUrl>
+    <projectUrl>http://code.google.com/p/iphone-plist-net/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.Net Library for working with Apples *.plist Files.</description>
+    <summary>.Net Library for working with Apples *.plist Files.</summary>
+    <releaseNotes />
+    <copyright />
+    <language />
+    <tags>Apple PList iPhone iOS iPad</tags>
+  </metadata>
+</package>

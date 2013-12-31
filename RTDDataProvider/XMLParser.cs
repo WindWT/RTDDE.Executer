@@ -5,6 +5,8 @@ using System.Web;
 using System.Xml;
 using System.Data;
 using System.Reflection;
+using PList;
+using System.IO;
 
 namespace RTDDataProvider
 {
@@ -45,7 +47,6 @@ namespace RTDDataProvider
         public static DataSet ParseMDB(string xmlMDBstring)
         {
             XmlDocument xmlMDB = new XmlDocument();
-            string jsonMDB = string.Empty;
             DataSet ds = new DataSet("MDB");
 
             xmlMDB.LoadXml(xmlMDBstring);
@@ -55,8 +56,7 @@ namespace RTDDataProvider
                 {
                     string MDBID = xmlNode.Attributes["name"].Value;
                     string MDBenumID = MDBID.Replace("MDBS", String.Empty);
-                    //if (string.CompareOrdinal(MDBID, MDBenumID) == 0)
-                    jsonMDB = xmlNode.InnerText;
+                    string jsonMDB = xmlNode.InnerText;
                     DataTable dt = JSON.ParseJSONMDB(jsonMDB, (MASTERDB)Enum.Parse(typeof(MASTERDB), MDBenumID, true));
                     ds.Tables.Add(dt);
                 }
@@ -66,7 +66,6 @@ namespace RTDDataProvider
         public static DataTable ParseLDB(string xmlLDBstring)
         {
             XmlDocument xmlLDB = new XmlDocument();
-            string jsonLDB = string.Empty;
             DataTable dt = new DataTable("LEVEL_DATA_MASTER");
             DataColumn dc = null;
             foreach (FieldInfo fi in typeof(LevelDataMaster).GetFields())
@@ -81,7 +80,56 @@ namespace RTDDataProvider
             {
                 if (xmlNode.Attributes["name"] != null)
                 {
-                    jsonLDB = xmlNode.InnerText;
+                    string jsonLDB = xmlNode.InnerText;
+                    DataTable dtTemp = JSON.ParseJSONLDB(jsonLDB);
+                    object[] obj = new object[dtTemp.Columns.Count];
+                    dtTemp.Rows[0].ItemArray.CopyTo(obj, 0);
+                    dt.Rows.Add(obj);
+                }
+            }
+            return dt;
+        }
+        public static DataSet ParsePlistMDB(Stream plistFileStream)
+        {
+            PListRoot plist = PListRoot.Load(plistFileStream);
+            plist.Format = PListFormat.Binary;
+            PListDict dict = (PListDict)plist.Root;
+            DataSet ds = new DataSet("MDB");
+
+            foreach (KeyValuePair<string, IPListElement> item in dict)
+            {
+                string key = item.Key;
+                if (!string.IsNullOrWhiteSpace(key) && key.StartsWith("MDBS", StringComparison.Ordinal))
+                {
+                    string MDBID = key;
+                    string MDBenumID = MDBID.Replace("MDBS", String.Empty);
+                    string jsonMDB = (PListString)item.Value;
+                    DataTable dt = JSON.ParseJSONMDB(jsonMDB, (MASTERDB)Enum.Parse(typeof(MASTERDB), MDBenumID, true));
+                    ds.Tables.Add(dt);
+                }
+            }
+            return ds;
+        }
+        public static DataTable ParsePlistLDB(Stream plistFileStream)
+        {
+            PListRoot plist = PListRoot.Load(plistFileStream);
+            plist.Format = PListFormat.Binary;
+            PListDict dict = (PListDict)plist.Root;
+            DataTable dt = new DataTable("LEVEL_DATA_MASTER");
+            DataColumn dc = null;
+            foreach (FieldInfo fi in typeof(LevelDataMaster).GetFields())
+            {
+                dc = new DataColumn();
+                dc.ColumnName = fi.Name;
+                dc.DataType = fi.FieldType;
+                dt.Columns.Add(dc);
+            }
+            foreach (KeyValuePair<string, IPListElement> item in dict)
+            {
+                string key = item.Key;
+                if (!string.IsNullOrWhiteSpace(key) && key.StartsWith("LDBS", StringComparison.Ordinal))
+                {
+                    string jsonLDB = (PListString)item.Value;
                     DataTable dtTemp = JSON.ParseJSONLDB(jsonLDB);
                     object[] obj = new object[dtTemp.Columns.Count];
                     dtTemp.Rows[0].ItemArray.CopyTo(obj, 0);
