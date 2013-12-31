@@ -10,18 +10,19 @@
                 </Grid>
             </StatusBarItem>
         </StatusBar>
-        <TabControl DockPanel.Dock="Top" Name="MainTab" SelectionChanged="MainTab_SelectionChanged">
+        <TabControl DockPanel.Dock="Top" Name="MainTab" SelectionChanged="MainTab_SelectionChanged" Padding="0">
             <TabItem Header="QuestViewer" Name="QuestViewerTabItem">
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid Grid.Column="0"  Name="QuestViewerDataGrid" AutoGenerateColumns="True" IsReadOnly="True" SelectionChanged="QuestViewerDataGrid_SelectionChanged" FrozenColumnCount="2" SelectionMode="Single" SelectionUnit="FullRow"></DataGrid>
+                    <DataGrid Grid.Column="0"  Name="QuestViewerDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestViewerDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
                     <WrapPanel Grid.Column="1" Orientation="Horizontal" Margin="0">
                         <RadioButton GroupName="QuestType" Content="Event" Width="100" IsChecked="True" Name="QuestTypeRadio_Event" Checked="QuestTypeRadio_Event_Checked"></RadioButton>
                         <RadioButton GroupName="QuestType" Content="Daily" Width="100" Name="QuestTypeRadio_Daily" Checked="QuestTypeRadio_Daily_Checked"></RadioButton>
                         <RadioButton GroupName="QuestType" Content="Main" Width="100" Name="QuestTypeRadio_Main" Checked="QuestTypeRadio_Main_Checked"></RadioButton>
+                        <Separator Width="300"/>
                         <TextBlock Text="id" Width="50"/>
                         <TextBox Name="QuestInfo_id" Width="50" IsReadOnly="True"></TextBox>
                         <TextBlock Text="name" Width="50"/>
@@ -32,10 +33,12 @@
                         <TextBox Name="QuestInfo_difficulty" Width="50" IsReadOnly="True"></TextBox>
                         <TextBlock Text="stamina" Width="50"/>
                         <TextBox Name="QuestInfo_stamina" Width="50" IsReadOnly="True"></TextBox>
+                        <Separator Width="300"/>
                         <TextBlock Text="category" Width="100"/>
                         <TextBox Name="QuestInfo_category" Width="200" IsReadOnly="True"></TextBox>
                         <TextBlock Text="text" Width="50"/>
                         <TextBox Name="QuestInfo_text" Width="250" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+                        <Separator Width="300"/>
                         <TextBlock Text="opentype" Width="100"/>
                         <TextBlock Text="opentypeParam" Width="200"/>
                         <TextBox Name="QuestInfo_opentype1_name" Width="100" IsReadOnly="True"></TextBox>
@@ -61,6 +64,7 @@
                         <TextBox Name="QuestInfo_panel_cane" Width="50" IsReadOnly="True"></TextBox>
                         <TextBox Name="QuestInfo_panel_heart" Width="25" IsReadOnly="True"></TextBox>
                         <TextBox Name="QuestInfo_panel_sp" Width="25" IsReadOnly="True"></TextBox>
+                        <Separator Width="300"/>
                         <TextBlock Text="challenge0" Width="50"/>
                         <TextBox Name="QuestInfo_challenge0" Width="250" IsReadOnly="True"></TextBox>
                         <TextBlock Text="challenge1" Width="50"/>
@@ -72,40 +76,33 @@
             </TabItem>
             <TabItem Header="MapViewer" Name="MapViewerTabItem">
                 <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Setter Property="Height" Value="25"/>
+                            <Setter Property="Width" Value="25"/>
+                            <Setter Property="TextAlignment" Value="Center"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="IsReadOnly" Value="True"/>
+                            <Setter Property="BorderThickness" Value="0.5"/>
+                        </Style>
+                    </Grid.Resources>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Grid Name="MapGrid">
-                        <Grid.Resources>
-                            <Style TargetType="{x:Type TextBox}">
-                                <Setter Property="Height" Value="25"/>
-                                <Setter Property="Width" Value="25"/>
-                                <Setter Property="TextAlignment" Value="Center"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="IsReadOnly" Value="True"/>
-                                <Setter Property="BorderThickness" Value="0.5"/>
-                            </Style>
-                        </Grid.Resources>
-                    </Grid>
-                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Disabled"
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="0" Grid.Column="0" Name="MapMarkGrid"></Grid>
+                    <ScrollViewer Grid.Row="0" Grid.Column="1" VerticalScrollBarVisibility="Disabled"
                                   HorizontalScrollBarVisibility="Auto" DockPanel.Dock="Top">
-                        <DataGrid Name="MapDataGrid" AutoGenerateColumns="True" IsReadOnly="True" ItemsSource="{Binding CellData}"  HeadersVisibility="None">
-                            <DataGrid.CellStyle>
-                                <Style TargetType="DataGridCell">
-                                    <Setter Property="FontWeight" Value="{Binding Bold}" />
-                                    <Setter Property="Foreground" Value="{Binding Foreground}" />
-                                    <Setter Property="Background" Value="{Binding Background}" />
-                                </Style>
-                            </DataGrid.CellStyle>
-                            <DataGridTextColumn></DataGridTextColumn>
-                        </DataGrid>
-
+                        <Grid Name="MapGrid"></Grid>
                     </ScrollViewer>
-                    <DataGrid Grid.Row="1" Name="MapMonsterGrid" AutoGenerateColumns="True" IsReadOnly="True" FrozenColumnCount="1" SelectionMode="Single" SelectionUnit="FullRow"></DataGrid>
+                    <DataGrid Grid.Row="1" Grid.ColumnSpan="2" Name="MapMonsterGrid" AutoGenerateColumns="True" FrozenColumnCount="1"></DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="CharaViewer" Name="CharaViewerTabItem">
@@ -127,11 +124,8 @@
                             </ComboBox>
                             <Button Grid.Column="1" Click="Button_Click">RunSQL</Button>
                         </StackPanel>
-
                     </Grid>
-                    <Separator Height="5" Margin="0" DockPanel.Dock="Top"/>
-                    <DataGrid  Name="CommonViewerDataGrid" AutoGenerateColumns="True" IsReadOnly="True">
-                    </DataGrid>
+                    <DataGrid  Name="CommonViewerDataGrid" AutoGenerateColumns="True"/>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Settings"  Name="SettingsTabItem">
@@ -147,6 +141,12 @@
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
             <Setter Property="Padding" Value="3,0,0,0"></Setter>
+        </Style>
+        <Style TargetType="DataGrid">
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
         </Style>
     </Window.Resources>
 </Window>

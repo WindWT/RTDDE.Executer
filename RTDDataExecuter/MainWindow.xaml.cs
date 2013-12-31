@@ -17,6 +17,7 @@ using System.Threading;
 using System.Data;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace RTDDataExecuter
 {
@@ -447,81 +448,24 @@ ORDER BY id DESC";
 
         #region MapViewer
 
-        public class MapCell : DependencyObject
-        {
-            public string CellData { get; set; }
-
-            public Brush Foreground
-            {
-                get { return (Brush)GetValue(ForegroundProperty); }
-                set { SetValue(ForegroundProperty, value); }
-            }
-            public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register("Foreground", typeof(Brush), typeof(MapCell), new UIPropertyMetadata());
-
-            public Brush Background
-            {
-                get { return (Brush)GetValue(BackgroundProperty); }
-                set { SetValue(BackgroundProperty, value); }
-            }
-            public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register("Background", typeof(Brush), typeof(MapCell), new UIPropertyMetadata());
-
-            public FontWeight Bold
-            {
-                get { return (FontWeight)GetValue(FontWeightProperty); }
-                set { SetValue(FontWeightProperty, value); }
-            }
-            public static readonly DependencyProperty FontWeightProperty = DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(MapCell), new UIPropertyMetadata());
-
-            public MapCell(string cellData)
-                : this(cellData, Brushes.Black, Brushes.Transparent, FontWeights.Normal)
-            {
-            }
-            public MapCell(string cellData, Brush foreground, Brush background, FontWeight bold)
-            {
-                this.CellData = cellData;
-                this.Foreground = foreground;
-                this.Background = background;
-                this.Bold = bold;
-            }
-            public override string ToString()
-            {
-                return CellData;
-            }
-        }
         private void InitMap(string levelID, int repeat = 1)
         {
-            MapGrid.Children.Clear();
-            MapGrid.ColumnDefinitions.Clear();
-            MapGrid.RowDefinitions.Clear();
-
-            Task<DataTable> initMonsterTask = new Task<DataTable>(getMonsterData, levelID);
+            Task<DataTable> initMonsterTask = new Task<DataTable>(GetMonsterData, levelID);
             initMonsterTask.ContinueWith(t =>
                 {
                     MapMonsterGrid.ItemsSource = t.Result.DefaultView;
                 }, uiTaskScheduler);
 
-            Task<DataTable> task = new Task<DataTable>(() =>
+            Task<MapTable> task = new Task<MapTable>(() =>
                 {
                     DB db = new DB();
                     DataTable dt = db.GetData("SELECT a.*,b.distance FROM level_data_master a left join quest_master b on a.level_data_id=b.id WHERE a.level_data_id=" + levelID);
-                    return dt;
-                }
-            );
-            task.ContinueWith(t =>
-            {
-                if (t.Exception != null)
-                {
-                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
-                    return;
-                }
-                if (t.Result.Rows.Count == 0)
-                {
-                    return;
-                }
-                else
-                {
-                    DataRow levelData = t.Result.Rows[0];
-                    DrawMap(
+                    if (dt.Rows.Count == 0)
+                    {
+                        throw new Exception("数据库取数失败。");
+                    }
+                    DataRow levelData = dt.Rows[0];
+                    return BindMonsterDataToMap(InitMapData(
                     levelData["map_data"].ToString(),
                     Convert.ToInt32(levelData["width"]),
                     Convert.ToInt32(levelData["height"]),
@@ -529,159 +473,330 @@ ORDER BY id DESC";
                     Convert.ToInt32(levelData["start_y"]),
                     Convert.ToInt32(levelData["distance"]),
                     repeat
-                    );
-                    ReDrawMap(levelID, initMonsterTask.Result);
+                    ), initMonsterTask.Result);
+                }
+            );
+            task.ContinueWith(t =>
+            {
+                ClearMap();
+                if (t.Exception != null)
+                {
+                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    return;
+                }
+                else
+                {
+                    DrawMap(t.Result);
                 }
             }, uiTaskScheduler);
             task.Start();
             initMonsterTask.Start();
         }
 
+        /*按列生成地图
         private void DrawMap(string mapData, int w, int h, int x, int y, int distance, int repeat)
         {
             if (repeat < 1)
             {
                 repeat = 1;
             }
-            for (int j = 0; j < h + 1; j++)
+            var mapTable = new MapTable();
+            //循环生成列
+            //-1列用于序号
+            for (int j = -1; j < h; j++)
             {
-                var colDef = new ColumnDefinition();
-                colDef.Width = new GridLength(25);
-                MapGrid.ColumnDefinitions.Add(colDef);
+                var mapColumn = new MapColumn();
+                for (int i = 0; i < (w * repeat) + 1; i++)
+                {
+                    var mapCell = new MapCell();
+                    if (j == -1)    //序号列
+                    {
+                        mapCell.CellData = ((y - i) % w).ToString();
+                    }
+                    else if (i % w == y && j == x)  //起点
+                    {
+                        mapCell.CellData = "★";
+                    }
+                    else if (i == w * repeat)   //序号行
+                    {
+                        mapCell.CellData = (distance - j + 3).ToString();    //magic number 3!
+                    }
+                    else
+                    {
+                        string cellData = mapData.Substring((j * w + i) * 2, 2);
+                        int cellDataInt = int.Parse(cellData, System.Globalization.NumberStyles.HexNumber);
+                        int num = 7 & cellDataInt >> 5;
+                        if (num > 0)
+                        {
+                            switch (1 << (num - 1))
+                            {
+                                //AttributeTypeLight,
+                                case 1:
+                                    {
+                                        mapCell.Background = Brushes.Yellow;
+                                        break;
+                                    }
+                                //AttributeTypeDark,
+                                case 2:
+                                    {
+                                        mapCell.Background = Brushes.Purple;
+                                        mapCell.Foreground = Brushes.White;
+                                        break;
+                                    }
+                                //AttributeTypeFire = 4,
+                                case 4:
+                                    {
+                                        mapCell.Background = Brushes.Pink;
+                                        break;
+                                    }
+                                //AttributeTypeWater = 8,
+                                case 8:
+                                    {
+                                        mapCell.Background = Brushes.Aqua;
+                                        break;
+                                    }
+                                //AttributeTypeBossStart = 16,
+                                case 16:
+                                    {
+                                        mapCell.Background = Brushes.Silver;
+                                        break;
+                                    }
+                                //AttributeTypeBoss = 32,
+                                case 32:
+                                    {
+                                        mapCell.Background = Brushes.Black;
+                                        break;
+                                    }
+                            }
+                        }
+
+                        var num2 = 31 & cellDataInt;
+                        if (num2 >= 24)
+                        {
+                            //this.TreasureID = num2 - 23;
+                            //this.EnemyUnitID = 0;
+                            //cellData = "箱" + (num2 - 23);
+                            cellData = "箱";
+                        }
+                        else
+                        {
+                            //this.EnemyUnitID = num2;
+                            //this.TreasureID = 0;
+                            cellData = "E" + (num2);
+                            if (num2 != 0)
+                            {
+                                //td.Attributes.Add("enemy", cellData);
+                            }
+                            if (num2 >= 17)
+                            {
+                                //E17以上一般都是史莱姆
+                                mapCell.Foreground = Brushes.Red;
+                                mapCell.fontWeight = FontWeights.Bold;
+                            }
+                        }
+                        if ((cellDataInt == 0) || (num2 == 0))
+                        {
+                            cellData = "";
+                        }
+                        mapCell.CellData = cellData;
+                    }
+                    mapColumn.MapCells.Add(mapCell);
+                }
+                mapTable.MapColumns.Add(mapColumn);
             }
+            MapDataGrid.DataContext = mapTable;
+        }*/
+
+        private MapTable InitMapData(string mapData, int w, int h, int x, int y, int distance, int repeat)
+        {
+            if (repeat < 1)
+            {
+                repeat = 1;
+            }
+            var mapTable = new MapTable();
+            mapTable.x = x;
+            mapTable.y = y;
+            mapTable.h = h;
+            mapTable.w = w;
+            mapTable.repeat = repeat;
+
             for (int r = 0; r < repeat; r++)
             {
                 for (int i = 0; i < w; i++)
                 {
-                    var rowDef = new RowDefinition();
-                    rowDef.Height = new GridLength(25);
-                    MapGrid.RowDefinitions.Add(rowDef);
-
-                    //添加行标记
-                    TextBox tbMark = new TextBox();
-                    tbMark.Text = (y - i).ToString();
-
-                    MapGrid.Children.Add(tbMark);
-                    tbMark.SetValue(Grid.RowProperty, i);
-                    tbMark.SetValue(Grid.ColumnProperty, 0);
-
+                    var mapRow = new MapRow();
                     for (int j = 0; j < h; j++)
                     {
-                        TextBox tb = new TextBox();
-                        //tb.Style = tbStyle;
+                        var mapCell = new MapCell();
 
                         string cellData = mapData.Substring((j * w + i) * 2, 2);
+                        int cellDataInt = int.Parse(cellData, System.Globalization.NumberStyles.HexNumber);
+                        int num = 7 & cellDataInt >> 5;
+                        if (num > 0)
+                        {
+                            switch (1 << (num - 1))
+                            {
+                                //AttributeTypeLight,
+                                case 1:
+                                    {
+                                        mapCell.Background = Brushes.Yellow;
+                                        break;
+                                    }
+                                //AttributeTypeDark,
+                                case 2:
+                                    {
+                                        mapCell.Background = Brushes.Purple;
+                                        mapCell.Foreground = Brushes.White;
+                                        break;
+                                    }
+                                //AttributeTypeFire = 4,
+                                case 4:
+                                    {
+                                        mapCell.Background = Brushes.Pink;
+                                        break;
+                                    }
+                                //AttributeTypeWater = 8,
+                                case 8:
+                                    {
+                                        mapCell.Background = Brushes.Aqua;
+                                        break;
+                                    }
+                                //AttributeTypeBossStart = 16,
+                                case 16:
+                                    {
+                                        mapCell.Background = Brushes.Silver;
+                                        break;
+                                    }
+                                //AttributeTypeBoss = 32,
+                                case 32:
+                                    {
+                                        mapCell.Background = Brushes.Black;
+                                        break;
+                                    }
+                            }
+                        }
+
+                        var num2 = 31 & cellDataInt;
+                        if (num2 >= 24)
+                        {
+                            //this.TreasureID = num2 - 23;
+                            //this.EnemyUnitID = 0;
+                            //cellData = "箱" + (num2 - 23);
+                            cellData = "箱";
+                        }
+                        else
+                        {
+                            //this.EnemyUnitID = num2;
+                            //this.TreasureID = 0;
+                            cellData = "E" + (num2);
+                            if (num2 != 0)
+                            {
+                                //td.Attributes.Add("enemy", cellData);
+                            }
+                            if (num2 >= 17)
+                            {
+                                //E17以上一般都是史莱姆
+                                mapCell.Foreground = Brushes.Red;
+                                mapCell.fontWeight = FontWeights.Bold;
+                            }
+                        }
+                        if ((cellDataInt == 0) || (num2 == 0))
+                        {
+                            cellData = "";
+                        }
                         if (i == y && j == x)
                         {
                             cellData = "★";
                         }
-                        if (cellData != "★")
-                        {
-                            int cellDataInt = int.Parse(cellData, System.Globalization.NumberStyles.HexNumber);
-                            int num = 7 & cellDataInt >> 5;
-                            if (num > 0)
-                            {
-                                switch (1 << (num - 1))
-                                {
-                                    //AttributeTypeLight,
-                                    case 1:
-                                        {
-                                            tb.Background = Brushes.Yellow;
-                                            break;
-                                        }
-                                    //AttributeTypeDark,
-                                    case 2:
-                                        {
-                                            tb.Background = Brushes.Purple;
-                                            tb.Foreground = Brushes.White;
-                                            break;
-                                        }
-                                    //AttributeTypeFire = 4,
-                                    case 4:
-                                        {
-                                            tb.Background = Brushes.Pink;
-                                            break;
-                                        }
-                                    //AttributeTypeWater = 8,
-                                    case 8:
-                                        {
-                                            tb.Background = Brushes.Aqua;
-                                            break;
-                                        }
-                                    //AttributeTypeBossStart = 16,
-                                    case 16:
-                                        {
-                                            tb.Background = Brushes.Silver;
-                                            break;
-                                        }
-                                    //AttributeTypeBoss = 32,
-                                    case 32:
-                                        {
-                                            tb.Background = Brushes.Black;
-                                            break;
-                                        }
-                                }
-                            }
 
-                            var num2 = 31 & cellDataInt;
-                            if (num2 >= 24)
-                            {
-                                //this.TreasureID = num2 - 23;
-                                //this.EnemyUnitID = 0;
-                                //cellData = "箱" + (num2 - 23);
-                                cellData = "箱";
-                            }
-                            else
-                            {
-                                //this.EnemyUnitID = num2;
-                                //this.TreasureID = 0;
-                                cellData = "E" + (num2);
-                                if (num2 != 0)
-                                {
-                                    //td.Attributes.Add("enemy", cellData);
-                                }
-                                if (num2 >= 17)
-                                {
-                                    //E17以上一般都是史莱姆
-                                    tb.Foreground = Brushes.Red;
-                                    tb.FontWeight = FontWeights.Bold;
-                                }
-                            }
-                            if ((cellDataInt == 0) || (num2 == 0))
-                            {
-                                cellData = "";
-                            }
-                        }
-                        tb.Text = cellData;
-
-                        MapGrid.Children.Add(tb);
-                        tb.SetValue(Grid.RowProperty, i);
-                        tb.SetValue(Grid.ColumnProperty, j + 1);
+                        mapCell.CellData = cellData;
+                        mapRow.MapCells.Add(mapCell);
                     }
+                    mapTable.MapRows.Add(mapRow);
                 }
             }
-            //添加标记
-            TextBox tbEmpty = new TextBox();
-            var rowDefMark = new RowDefinition();
-            rowDefMark.Height = new GridLength(25);
-            MapGrid.RowDefinitions.Add(rowDefMark);
 
-            MapGrid.Children.Add(tbEmpty);
-            tbEmpty.SetValue(Grid.RowProperty, w * repeat);
-            tbEmpty.SetValue(Grid.ColumnProperty, 0);
-
+            //添加底部标记
+            var mapMarkRow = new MapRow();
             for (int j = 0; j < h; j++)
             {
-                TextBox tbMark = new TextBox();
-                tbMark.Text = (distance - j + 3).ToString();    //magic number 3!
+                var mapCellMark = new MapCell((distance - j + 3).ToString());    //magic number 3!
+                mapMarkRow.MapCells.Add(mapCellMark);
+            }
+            mapTable.MapRows.Add(mapMarkRow);
 
-                MapGrid.Children.Add(tbMark);
-                tbMark.SetValue(Grid.RowProperty, w * repeat);
-                tbMark.SetValue(Grid.ColumnProperty, j + 1);
+            return mapTable;
+        }
+
+        private void ClearMap()
+        {
+            MapGrid.Children.Clear();
+            MapGrid.ColumnDefinitions.Clear();
+            MapGrid.RowDefinitions.Clear();
+            MapMarkGrid.Children.Clear();
+            MapMarkGrid.ColumnDefinitions.Clear();
+            MapMarkGrid.RowDefinitions.Clear();
+        }
+
+        private void DrawMap(MapTable map)
+        {
+            bool isFirstColDef = false;
+            int row = 0;
+            foreach (MapRow r in map.MapRows)
+            {
+                int col = 0;
+                MapGrid.RowDefinitions.Add(new RowDefinition()
+                {
+                    Height = new GridLength(25)
+                });
+                foreach (MapCell c in r.MapCells)
+                {
+                    if (!isFirstColDef)
+                    {
+                        MapGrid.ColumnDefinitions.Add(new ColumnDefinition()
+                        {
+                            Width = new GridLength(25)
+                        });
+                    }
+                    TextBox tb = new TextBox()
+                    {
+                        Text = c.CellData,
+                        Foreground = c.Foreground,
+                        Background = c.Background,
+                        FontWeight = c.fontWeight,
+                    };
+                    MapGrid.Children.Add(tb);
+
+                    tb.SetValue(Grid.RowProperty, row);
+                    tb.SetValue(Grid.ColumnProperty, col);
+                    col++;
+                }
+                isFirstColDef = true;
+                row++;
+            }
+            //绘制冻结行标记
+            MapMarkGrid.ColumnDefinitions.Add(new ColumnDefinition()
+                {
+                    Width = new GridLength(25)
+                });
+            for (int i = 0; i < row; i++)
+            {
+                MapMarkGrid.RowDefinitions.Add(new RowDefinition()
+                {
+                    Height = new GridLength(25)
+                });
+                TextBox tb = new TextBox()
+                    {
+                        Text = (i == (row - 1)) ? string.Empty : ((map.y - i) % map.h).ToString()
+                    };
+                MapMarkGrid.Children.Add(tb);
+
+                tb.SetValue(Grid.RowProperty, i);
+                tb.SetValue(Grid.ColumnProperty, 0);
             }
         }
 
-        private DataTable getMonsterData(object param)
+        private DataTable GetMonsterData(object param)
         {
             string levelID = param.ToString();
             DB db = new DB();
@@ -776,68 +891,68 @@ ORDER BY id DESC";
             return monsterData;
         }
 
-        private void ReDrawMap(string levelID, DataTable monsterData)
+        private MapTable BindMonsterDataToMap(MapTable map, DataTable monsterData)
         {
-            if (MapGrid.Children.Count == 0)
+            foreach (MapRow r in map.MapRows)
             {
-                return;
-            }
-            foreach (TextBox tb in MapGrid.Children)
-            {
-                string enemyNo = tb.Text;
-                DataRow[] foundRow = monsterData.Select("[#] = '" + enemyNo + "'");
-                if (foundRow.Length < 1)
-                    continue;
-                string enemyId = foundRow[0]["id"].ToString();
-                switch (enemyId)
+                foreach (MapCell c in r.MapCells)
                 {
-                    case "65002":   //移動床_上
-                        {
-                            int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
-                            enemyDropId -= 99;
-                            tb.Text = enemyDropId.ToString() + "↑";
-                            break;
-                        }
-                    case "65003":   //移動床_直進
-                        {
-                            int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
-                            enemyDropId -= 299;
-                            tb.Text = enemyDropId.ToString() + "→";
-                            break;
-                        }
-                    case "65004":   //移動床_下
-                        {
-                            int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
-                            enemyDropId -= 199;
-                            tb.Text = enemyDropId.ToString() + "↓";
-                            break;
-                        }
-                    case "22000":   //宝箱
-                        {
-                            tb.Text = "箱";
-                            tb.Foreground = Brushes.Red;
-                            tb.FontWeight = FontWeights.Bold;
-                            break;
-                        }
-                    case "40100":   //上り階段
-                        {
-                            int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
-                            //td.Text = "↗" + enemyDropId.ToString();
-                            //tb.Text = "<a href='Map.aspx?id=" + enemyDropId + "'>↗</a>";
-                            tb.Text = "↗";
-                            break;
-                        }
-                    case "65001":   //下り階段
-                        {
-                            int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
-                            //td.Text = "↘" + enemyDropId.ToString();
-                            //tb.Text = "<a href='Map.aspx?id=" + enemyDropId + "'>↘</a>";
-                            tb.Text = "↘";
-                            break;
-                        }
-                    default: break;
+                    string enemyNo = c.CellData;
+                    DataRow[] foundRow = monsterData.Select("[#] = '" + enemyNo + "'");
+                    if (foundRow.Length < 1)
+                        continue;
+                    string enemyId = foundRow[0]["id"].ToString();
+                    switch (enemyId)
+                    {
+                        case "65002":   //移動床_上
+                            {
+                                int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                enemyDropId -= 99;
+                                c.CellData = enemyDropId.ToString() + "↑";
+                                break;
+                            }
+                        case "65003":   //移動床_直進
+                            {
+                                int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                enemyDropId -= 299;
+                                c.CellData = enemyDropId.ToString() + "→";
+                                break;
+                            }
+                        case "65004":   //移動床_下
+                            {
+                                int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                enemyDropId -= 199;
+                                c.CellData = enemyDropId.ToString() + "↓";
+                                break;
+                            }
+                        case "22000":   //宝箱
+                            {
+                                c.CellData = "箱";
+                                c.Foreground = Brushes.Red;
+                                c.fontWeight = FontWeights.Bold;
+                                break;
+                            }
+                        case "40100":   //上り階段
+                            {
+                                int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                //td.Text = "↗" + enemyDropId.ToString();
+                                //tb.Text = "<a href='Map.aspx?id=" + enemyDropId + "'>↗</a>";
+                                c.CellData = "↗";
+                                break;
+                            }
+                        case "65001":   //下り階段
+                            {
+                                int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                //td.Text = "↘" + enemyDropId.ToString();
+                                //tb.Text = "<a href='Map.aspx?id=" + enemyDropId + "'>↘</a>";
+                                c.CellData = "↘";
+                                break;
+                            }
+                        default: break;
+                    }
                 }
             }
+            return map;
         }
 
         private static int RealCalc(int baseAttr, int up, int lv)
