@@ -11,8 +11,7 @@ namespace RTDDataExecuter
 {
     public partial class MainWindow : Window
     {
-        private static string QuestViewerSQL = @"SELECT id,
-       name,stamina,
+        private static string QuestViewerSQL = @"SELECT id,name,stamina,
 (select name from quest_category_master where quest_category_master.id=category) as category,
        ( CASE
                 WHEN open_type_1 = 4 THEN open_param_1 
@@ -47,6 +46,7 @@ namespace RTDDataExecuter
             Task<DataTable> task = new Task<DataTable>(() =>
             {
                 string sql = @"SELECT id,name,pt_num,difficulty,stamina,
+reward_money,reward_exp,reward_soul,
 (select name from quest_category_master where quest_category_master.id=category) as category,
 (select text from quest_category_master where quest_category_master.id=category) as text,
 open_type_1,open_param_1,
@@ -55,6 +55,9 @@ open_type_3,open_param_3,
 open_type_4,open_param_4,
 open_type_5,open_param_5,
 open_type_6,open_param_6,
+(SELECT target_name FROM SP_EVENT_MASTER where SP_EVENT_MASTER.sp_event_id=quest_master.sp_event_id) as sp_event_name,
+sp_event_id,
+(SELECT target_name FROM SP_EVENT_MASTER where SP_EVENT_MASTER.sp_event_id=quest_master.open_sp_event_id) as open_sp_event_name,open_sp_event_point,
 bonus_type,bonus_start,bonus_end,
 present_type,present_param,present_param_1,
 panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
@@ -102,6 +105,9 @@ panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
                 QuestInfo_stamina.Text = dr["stamina"].ToString();
                 QuestInfo_category.Text = dr["category"].ToString();
                 QuestInfo_text.Text = parseText(dr["text"].ToString());
+                QuestInfo_reward_money.Text = dr["reward_money"].ToString();
+                QuestInfo_reward_exp.Text = dr["reward_exp"].ToString();
+                QuestInfo_reward_soul.Text = dr["reward_soul"].ToString();
 
                 QuestInfo_opentype1_name.Text = t.Result[0]["opentype"];
                 QuestInfo_opentype1_value.Text = t.Result[0]["opentypeParam"];
@@ -115,6 +121,11 @@ panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
                 QuestInfo_opentype5_value.Text = t.Result[4]["opentypeParam"];
                 QuestInfo_opentype6_name.Text = t.Result[5]["opentype"];
                 QuestInfo_opentype6_value.Text = t.Result[5]["opentypeParam"];
+                QuestInfo_open_sp_event_name.Text = dr["open_sp_event_name"].ToString();
+                QuestInfo_open_sp_event_point.Text = dr["open_sp_event_point"].ToString();
+
+                QuestInfo_sp_event_id.Text = dr["sp_event_id"].ToString();
+                QuestInfo_sp_event_name.Text = dr["sp_event_name"].ToString();
 
                 QuestInfo_bonus.Text = parseBonustype(dr["bonus_type"].ToString());
                 QuestInfo_bonus_start.Text = parseRTDDate(dr["bonus_start"].ToString());

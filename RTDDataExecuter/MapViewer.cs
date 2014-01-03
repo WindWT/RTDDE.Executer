@@ -1,6 +1,8 @@
 ﻿using RTDDataProvider;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +14,8 @@ namespace RTDDataExecuter
     {
         private void InitMap(string levelID, int repeat = 1)
         {
+            bool isShowDropInfo = (bool)IsShowDropInfo.IsChecked;
+
             Task<DataTable> initMonsterTask = new Task<DataTable>(GetMonsterData, levelID);
             initMonsterTask.ContinueWith(t =>
             {
@@ -27,15 +31,30 @@ namespace RTDDataExecuter
                     throw new Exception("数据库取数失败。");
                 }
                 DataRow levelData = dt.Rows[0];
-                return BindMonsterDataToMap(InitMapData(
-                levelData["map_data"].ToString(),
-                Convert.ToInt32(levelData["width"]),
-                Convert.ToInt32(levelData["height"]),
-                Convert.ToInt32(levelData["start_x"]),
-                Convert.ToInt32(levelData["start_y"]),
-                Convert.ToInt32(levelData["distance"]),
-                repeat
-                ), initMonsterTask.Result);
+                if (isShowDropInfo == false)
+                {
+                    return BindMonsterDataToMap(InitMapData(
+                    levelData["map_data"].ToString(),
+                    Convert.ToInt32(levelData["width"]),
+                    Convert.ToInt32(levelData["height"]),
+                    Convert.ToInt32(levelData["start_x"]),
+                    Convert.ToInt32(levelData["start_y"]),
+                    Convert.ToInt32(levelData["distance"]),
+                    repeat
+                    ), initMonsterTask.Result);
+                }
+                else
+                {
+                    return BindDropDataToMap(BindMonsterDataToMap(InitMapData(
+                    levelData["map_data"].ToString(),
+                    Convert.ToInt32(levelData["width"]),
+                    Convert.ToInt32(levelData["height"]),
+                    Convert.ToInt32(levelData["start_x"]),
+                    Convert.ToInt32(levelData["start_y"]),
+                    Convert.ToInt32(levelData["distance"]),
+                    repeat
+                    ), initMonsterTask.Result), GetEnenyInfo(levelID));
+                }
             }
             );
             task.ContinueWith(t =>
@@ -272,9 +291,11 @@ namespace RTDDataExecuter
                         }
 
                         mapCell.CellData = cellData;
-                        mapRow.MapCells.Add(mapCell);
+                        mapCell.x = i;
+                        mapCell.y = j;
+                        mapRow.Cells.Add(mapCell);
                     }
-                    mapTable.MapRows.Add(mapRow);
+                    mapTable.Rows.Add(mapRow);
                 }
             }
 
@@ -283,9 +304,9 @@ namespace RTDDataExecuter
             for (int j = 0; j < h; j++)
             {
                 var mapCellMark = new MapCell((distance - j + 3).ToString());    //magic number 3!
-                mapMarkRow.MapCells.Add(mapCellMark);
+                mapMarkRow.Cells.Add(mapCellMark);
             }
-            mapTable.MapRows.Add(mapMarkRow);
+            mapTable.Rows.Add(mapMarkRow);
 
             return mapTable;
         }
@@ -304,14 +325,14 @@ namespace RTDDataExecuter
         {
             bool isFirstColDef = false;
             int row = 0;
-            foreach (MapRow r in map.MapRows)
+            foreach (MapRow r in map.Rows)
             {
                 int col = 0;
                 MapGrid.RowDefinitions.Add(new RowDefinition()
                 {
                     Height = new GridLength(25)
                 });
-                foreach (MapCell c in r.MapCells)
+                foreach (MapCell c in r.Cells)
                 {
                     if (!isFirstColDef)
                     {
@@ -326,11 +347,25 @@ namespace RTDDataExecuter
                         Foreground = c.Foreground,
                         Background = c.Background,
                         FontWeight = c.fontWeight,
+                        BorderBrush = c.BorderBrush,
+                        BorderThickness = c.BorderThickness
                     };
                     MapGrid.Children.Add(tb);
 
                     tb.SetValue(Grid.RowProperty, row);
                     tb.SetValue(Grid.ColumnProperty, col);
+
+                    if (String.IsNullOrWhiteSpace(c.drop_unit_id) == false)
+                    {
+                        if (c.drop_unit_id != "0")
+                        {
+                            tb.ToolTip = new TextBlock() { Text = parseUnitName(c.drop_unit_id) + "\n" + "觉醒pt:" + c.add_attribute_exp };
+                        }
+                        else
+                        {
+                            tb.ToolTip = new TextBlock() { Text = "觉醒pt:" + c.add_attribute_exp };
+                        }
+                    }
                     col++;
                 }
                 isFirstColDef = true;
@@ -455,9 +490,9 @@ namespace RTDDataExecuter
 
         private MapTable BindMonsterDataToMap(MapTable map, DataTable monsterData)
         {
-            foreach (MapRow r in map.MapRows)
+            foreach (MapRow r in map.Rows)
             {
-                foreach (MapCell c in r.MapCells)
+                foreach (MapCell c in r.Cells)
                 {
                     string enemyNo = c.CellData;
                     DataRow[] foundRow = monsterData.Select("[#] = '" + enemyNo + "'");
@@ -517,9 +552,98 @@ namespace RTDDataExecuter
             return map;
         }
 
-        private static int RealCalc(int baseAttr, int up, int lv)
+        private MapTable BindDropDataToMap(MapTable map, List<EnemyInfo> DropData)
         {
-            return (int)Math.Round(baseAttr * ((lv - 1) * (up * 0.01) + 1));
+            if (DropData == null || DropData.Count == 0)
+            {
+                return map;
+            }
+            foreach (MapRow r in map.Rows)
+            {
+                foreach (MapCell c in r.Cells)
+                {
+                    EnemyInfo ei = DropData.Find(o => { return o.x == c.x && o.y == c.y && !(o.x == 0 && o.y == 0); });
+                    if (ei != null)
+                    {
+                        c.drop_unit_id = ei.drop_unit_id.ToString();
+                        c.add_attribute_exp = ei.add_attribute_exp.ToString();
+                        switch (ei.drop_unit_id)
+                        {
+                            case 15004:
+                            case 15005:
+                            case 15006:
+                            case 15007:
+                                {
+                                    c.BorderBrush = Brushes.Green;
+                                    c.BorderThickness = new Thickness(2.5);
+                                    break;
+                                }
+                            case 15022:
+                                {
+                                    c.BorderBrush = Brushes.Black;
+                                    c.BorderThickness = new Thickness(2.5);
+                                    break;
+                                }
+                            case 15025:
+                            case 15026:
+                            case 15027:
+                                {
+                                    c.BorderBrush = Brushes.MediumTurquoise;
+                                    c.BorderThickness = new Thickness(2.5);
+                                    break;
+                                }
+                        }
+                    }
+                }
+            }
+            MapCell lastCell = map.Rows.Find(o => { return true; }).Cells.FindLast(o => { return true; });
+            EnemyInfo bossInfo = DropData.Find(o => { return o.enemy_id == 0; });
+            lastCell.drop_unit_id = bossInfo.drop_unit_id.ToString();
+            lastCell.add_attribute_exp = bossInfo.add_attribute_exp.ToString();
+            return map;
+        }
+
+        private List<EnemyInfo> GetEnenyInfo(string levelID)
+        {
+            List<EnemyInfo> ei = new List<EnemyInfo>();
+            string questFileName = "GAME.xml";
+            string dropFileName = "com.prime31.UnityPlayerNativeActivity.xml";
+            string iosFileName = "jp.co.acquire.RTD.plist";
+            if (File.Exists(questFileName) && File.Exists(dropFileName))
+            {
+                string questXml = string.Empty, dropXml = string.Empty;
+                using (StreamReader sr = new StreamReader(questFileName))
+                {
+                    questXml = sr.ReadToEnd();
+                }
+                using (StreamReader sr = new StreamReader(dropFileName))
+                {
+                    dropXml = sr.ReadToEnd();
+                }
+                try
+                {
+                    ei = XMLParser.ParseEnemyInfo(levelID, questXml, dropXml);
+                }
+                catch (Exception ex)
+                {
+                    StatusBarExceptionMessage.Text = ex.Message;
+                }
+            }
+            else if (File.Exists(iosFileName))
+            {
+                using (StreamReader sr = new StreamReader(iosFileName))
+                {
+                    try
+                    {
+                        ei = XMLParser.ParseEnemyInfo(levelID, sr.BaseStream);
+                    }
+                    catch (Exception ex)
+                    {
+                        StatusBarExceptionMessage.Text = ex.Message;
+                    }
+                }
+            }
+            return ei;
         }
     }
 }

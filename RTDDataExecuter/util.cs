@@ -316,9 +316,7 @@ namespace RTDDataExecuter
                 case "14":
                     {
                         result["opentype"] = "队长限定";
-                        string sql = @"SELECT name FROM unit_master WHERE id={0}";
-                        DB db = new DB();
-                        result["opentypeParam"] = db.GetString(String.Format(sql, opentypeParam));
+                        result["opentypeParam"] = parseUnitName(opentypeParam);
                         break;
                     }
                 default:
@@ -364,9 +362,7 @@ namespace RTDDataExecuter
                 case "4":
                     {
                         result["presenttype"] = "UNIT";
-                        string sql = @"SELECT name FROM unit_master WHERE id={0}";
-                        DB db = new DB();
-                        result["presentParam"] = db.GetString(String.Format(sql, presentParam));
+                        result["presentParam"] = parseUnitName(presentParam);
                         break;
                     }
                 default:
@@ -492,6 +488,12 @@ namespace RTDDataExecuter
             DateTime t = new DateTime(year, month, day, hour, 0, 0);
             return t.ToString("yyyy-MM-dd HH:mm");
         }
+        private static string parseUnitName(string unitId)
+        {
+            string sql = @"SELECT name FROM unit_master WHERE id={0}";
+            DB db = new DB();
+            return db.GetString(String.Format(sql, unitId));
+        }
         private static string parseText(string text)
         {
             if (string.IsNullOrEmpty(text))
@@ -539,6 +541,10 @@ namespace RTDDataExecuter
             }
             flowDoc.Blocks.Add(pr);
             return flowDoc;
+        }
+        private static int RealCalc(int baseAttr, int up, int lv)
+        {
+            return (int)Math.Round(baseAttr * ((lv - 1) * (up * 0.01) + 1));
         }
     }
 }

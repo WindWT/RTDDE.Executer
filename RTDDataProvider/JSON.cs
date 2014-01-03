@@ -634,6 +634,20 @@ namespace RTDDataProvider
         public int friend_point;
         public int unit_id;
     }
+    [Serializable]
+    public class EnemyInfo
+    {
+        public int enemy_id;
+        public int enemy_set_id;
+        public int x;
+        public int y;
+        public bool flag;
+        public int drop_data_id;
+        public int drop_unit_id;
+        public int drop_unit_level;
+        public int sp_event_point;
+        public int add_attribute_exp;
+    }
     #endregion
 
     public static class JSON
@@ -804,6 +818,16 @@ namespace RTDDataProvider
             DataTable dt = ConvertToDataTable(o);
             dt.PrimaryKey = new DataColumn[] { dt.Columns["level_data_id"] };
             return dt;
+        }
+        public static List<EnemyInfo> ParseEnemyInfo(string questId, string quest, string enemyInfo)
+        {
+            List<EnemyInfo> ei = new List<EnemyInfo>();
+            string currentQuestId = JObject.Parse(quest)["m_QuestID"].ToString();
+            if (questId == currentQuestId)
+            {
+                ei = JsonConvert.DeserializeObject<List<EnemyInfo>>(enemyInfo);
+            }
+            return ei;
         }
         #region Converting ObjectArray to Datatable
         private static DataTable ConvertToDataTable(Object[] array)

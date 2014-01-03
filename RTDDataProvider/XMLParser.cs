@@ -44,12 +44,12 @@ namespace RTDDataProvider
     }
     public static class XMLParser
     {
-        public static DataSet ParseMDB(string xmlMDBstring)
+        public static DataSet ParseMDB(string xmlMDBString)
         {
             XmlDocument xmlMDB = new XmlDocument();
             DataSet ds = new DataSet("MDB");
 
-            xmlMDB.LoadXml(xmlMDBstring);
+            xmlMDB.LoadXml(xmlMDBString);
             foreach (XmlNode xmlNode in xmlMDB.GetElementsByTagName("string"))
             {
                 if (xmlNode.Attributes["name"] != null)
@@ -63,7 +63,7 @@ namespace RTDDataProvider
             }
             return ds;
         }
-        public static DataTable ParseLDB(string xmlLDBstring)
+        public static DataTable ParseLDB(string xmlLDBString)
         {
             XmlDocument xmlLDB = new XmlDocument();
             DataTable dt = new DataTable("LEVEL_DATA_MASTER");
@@ -75,7 +75,7 @@ namespace RTDDataProvider
                 dc.DataType = fi.FieldType;
                 dt.Columns.Add(dc);
             }
-            xmlLDB.LoadXml(xmlLDBstring);
+            xmlLDB.LoadXml(xmlLDBString);
             foreach (XmlNode xmlNode in xmlLDB.GetElementsByTagName("string"))
             {
                 if (xmlNode.Attributes["name"] != null)
@@ -137,6 +137,61 @@ namespace RTDDataProvider
                 }
             }
             return dt;
+        }
+        public static List<EnemyInfo> ParseEnemyInfo(string questId, string xmlQuestString, string xmlEnemyInfoString)
+        {
+            XmlDocument xmlQuestInfo = new XmlDocument();
+            XmlDocument xmlEnemyInfo = new XmlDocument();
+            string jsonQuest = String.Empty, jsonEnemyInfo = String.Empty;
+
+            xmlQuestInfo.LoadXml(xmlQuestString);
+            foreach (XmlNode xmlNode in xmlQuestInfo.GetElementsByTagName("string"))
+            {
+                if (xmlNode.Attributes["name"] != null)
+                {
+                    if (xmlNode.Attributes["name"].Value == "RESTORE")
+                    {
+                        jsonQuest = xmlNode.InnerText;
+                        break;
+                    }
+                }
+            }
+            xmlEnemyInfo.LoadXml(xmlEnemyInfoString);
+            foreach (XmlNode xmlNode in xmlEnemyInfo.GetElementsByTagName("string"))
+            {
+                if (xmlNode.Attributes["name"] != null)
+                {
+                    if (xmlNode.Attributes["name"].Value == "QUEST_ENEMY_INFO")
+                    {
+                        jsonEnemyInfo = xmlNode.InnerText;
+                        break;
+                    }
+                }
+            }
+            return JSON.ParseEnemyInfo(questId, jsonQuest, jsonEnemyInfo);
+        }
+        public static List<EnemyInfo> ParseEnemyInfo(string questId, Stream plistFileStream)
+        {
+            PListRoot plist = PListRoot.Load(plistFileStream);
+            plist.Format = PListFormat.Binary;
+            PListDict dict = (PListDict)plist.Root;
+            string jsonQuest = String.Empty, jsonEnemyInfo = String.Empty;
+            foreach (KeyValuePair<string, IPListElement> item in dict)
+            {
+                string key = item.Key;
+                if (!string.IsNullOrWhiteSpace(key))
+                {
+                    if (key == "RESTORE")
+                    {
+                        jsonQuest = (PListString)item.Value;
+                    }
+                    else if (key == "QUEST_ENEMY_INFO")
+                    {
+                        jsonEnemyInfo = (PListString)item.Value;
+                    }
+                }
+            }
+            return JSON.ParseEnemyInfo(questId, jsonQuest, jsonEnemyInfo);
         }
     }
 }
