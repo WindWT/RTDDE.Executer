@@ -181,7 +181,7 @@ namespace RTDDataProvider
                 string key = item.Key;
                 if (!string.IsNullOrWhiteSpace(key))
                 {
-                    if (key == "RESTORE")
+                    if (key == "RESTORE")   //this keyValue is not valid
                     {
                         jsonQuest = (PListString)item.Value;
                     }

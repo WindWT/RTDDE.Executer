@@ -31,7 +31,7 @@ namespace RTDDataExecuter
             InitializeComponent();
         }
         private TaskScheduler uiTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-        
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string SQL = SQLTextBox.Text;
@@ -84,6 +84,10 @@ namespace RTDDataExecuter
                         UnitViewerDataGrid.ItemsSource = t.Result.DefaultView;
                     }, uiTaskScheduler);    //this Task work on ui thread
                     task.Start();
+                }
+                else if (QuestCategoryViewerTabItem.IsSelected)
+                {
+                    QuestCategoryViewerDataGrid_BindData();
                 }
                 else if (CommonViewerTabItem.IsSelected)
                 {

@@ -26,14 +26,58 @@ namespace RTDDataExecuter
         }
         private void UnitInfo_lv_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UnitInfo_BindData(UnitInfo_id.Text);
-        }
-        private void UnitInfo_BindData(string unitid)
-        {
             if (string.IsNullOrWhiteSpace(UnitInfo_lv.Text))
             {
                 UnitInfo_lv.Text = "1";
             }
+            Regex r = new Regex("[^0-9]");
+            if (r.Match(UnitInfo_lv.Text).Success)
+            {
+                UnitInfo_lv.Text = "1";
+            }
+            UnitInfo_BindData(UnitInfo_id.Text);
+        }
+        private void UnitInfo_g_id_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //防止死循环触发事件
+            if (UnitInfo_g_id.IsFocused)
+            {
+                if (string.IsNullOrWhiteSpace(UnitInfo_g_id.Text))
+                {
+                    UnitInfo_g_id.Text = "1";
+                }
+                Regex r = new Regex("[^0-9]");
+                if (r.Match(UnitInfo_g_id.Text).Success)
+                {
+                    UnitInfo_g_id.Text = "1";
+                }
+                string g_id = UnitInfo_g_id.Text;
+                Task<string> task = new Task<string>(() =>
+                {
+                    string sql = @"SELECT id FROM unit_master WHERE g_id={0}";
+                    DB db = new DB();
+                    return db.GetString(String.Format(sql, g_id));
+                });
+                task.ContinueWith(t =>
+                {
+                    if (t.Exception != null)
+                    {
+                        StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                        return;
+                    }
+                    if (string.IsNullOrWhiteSpace(t.Result) == false)
+                    {
+                        UnitInfo_id.Text = t.Result;
+                        UnitInfo_BindData(t.Result);
+                    }
+                }, uiTaskScheduler);
+                task.Start();
+            }
+        }
+
+        private static readonly object UnitInfo_BindingDataSyncObject = new object();
+        private void UnitInfo_BindData(string unitid)
+        {
             double thislevel = Convert.ToDouble(Convert.ToInt32(UnitInfo_lv.Text));
 
             Task<DataTable> task = new Task<DataTable>(() =>
@@ -81,6 +125,11 @@ namespace RTDDataExecuter
                     rare += "★";
                 }
                 UnitInfo_category.Text = rare;
+                UnitInfo_style.Text = parseStyletype(Convert.ToInt32(unitData["style"]));
+                UnitInfo_attribute.Text = parseAttributetype(Convert.ToByte(unitData["attribute"]));
+                UnitInfo_sub_a1.Text = parseAttributetype(Convert.ToByte(unitData["sub_a1"]));
+                UnitInfo_model.Text = unitData["model"].ToString();
+                UnitInfo_kind.Text = parseUnitKind(Convert.ToInt32(unitData["kind"]));
 
                 double maxlevel = Convert.ToDouble(unitData["lv_max"]);
                 UnitInfo_lv_max.Text = maxlevel.ToString("0");
@@ -148,8 +197,8 @@ namespace RTDDataExecuter
             partySkill_id.Text = skill.id.ToString();
             partySkill_name.Text = skill.name;
             partySkill_text.Document = parseTextToDocument(skill.text);
-            partySkill_attribute.Text = parseAttributetype((UnitAttribute)skill.attribute);
-            partySkill_style.Text = parseStyletype((Class)skill.style);
+            partySkill_attribute.Text = parseAttributetype(skill.attribute);
+            partySkill_style.Text = parseStyletype(skill.style);
             partySkill_type.Text = parseSkillType((PartySkillType)skill.type);
             partySkill_num.Text = skill.num.ToString();
             partySkill_num_01.Text = skill.num_01.ToString();
@@ -168,8 +217,8 @@ namespace RTDDataExecuter
             activeSkill_id.Text = skill.id.ToString();
             activeSkill_name.Text = skill.name;
             activeSkill_text.Document = parseTextToDocument(skill.text);
-            activeSkill_attribute.Text = parseAttributetype((UnitAttribute)skill.attribute);
-            activeSkill_style.Text = parseStyletype((Class)skill.style);
+            activeSkill_attribute.Text = parseAttributetype(skill.attribute);
+            activeSkill_style.Text = parseStyletype(skill.style);
             activeSkill_type.Text = parseSkillType((ActiveSkillType)skill.type);
             activeSkill_num.Text = skill.num.ToString();
             activeSkill_num_01.Text = skill.num_01.ToString();
@@ -190,8 +239,8 @@ namespace RTDDataExecuter
             panelSkill_id.Text = skill.id.ToString();
             panelSkill_name.Text = skill.name;
             panelSkill_text.Document = parseTextToDocument(skill.text);
-            panelSkill_attribute.Text = parseAttributetype((UnitAttribute)skill.attribute);
-            panelSkill_style.Text = parseStyletype((Class)skill.style);
+            panelSkill_attribute.Text = parseAttributetype(skill.attribute);
+            panelSkill_style.Text = parseStyletype(skill.style);
             panelSkill_type.Text = parseSkillType((PanelSkillType)skill.type);
             panelSkill_num.Text = skill.num.ToString();
             panelSkill_num_01.Text = skill.num_01.ToString();

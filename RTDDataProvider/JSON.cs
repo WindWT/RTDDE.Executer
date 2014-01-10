@@ -822,10 +822,17 @@ namespace RTDDataProvider
         public static List<EnemyInfo> ParseEnemyInfo(string questId, string quest, string enemyInfo)
         {
             List<EnemyInfo> ei = new List<EnemyInfo>();
-            string currentQuestId = JObject.Parse(quest)["m_QuestID"].ToString();
-            if (questId == currentQuestId)
+            if (String.IsNullOrWhiteSpace(quest))   //iOS workaround
             {
                 ei = JsonConvert.DeserializeObject<List<EnemyInfo>>(enemyInfo);
+            }
+            else
+            {
+                string currentQuestId = JObject.Parse(quest)["m_QuestID"].ToString();
+                if (questId == currentQuestId)
+                {
+                    ei = JsonConvert.DeserializeObject<List<EnemyInfo>>(enemyInfo);
+                }
             }
             return ei;
         }

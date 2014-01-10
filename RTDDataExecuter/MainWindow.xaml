@@ -41,17 +41,27 @@
                         <TextBox Name="QuestInfo_reward_money" Width="50" IsReadOnly="True"></TextBox>
                         <TextBlock Text="exp" Width="50"/>
                         <TextBox Name="QuestInfo_reward_exp" Width="50" IsReadOnly="True"></TextBox>
-                        <TextBlock Text="soul" Width="50"/>
-                        <TextBox Name="QuestInfo_reward_soul" Width="50" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="init_soul" Width="50"/>
+                        <TextBox Name="QuestInfo_init_soul" Width="50" IsReadOnly="True"></TextBox>
                         <Separator Width="300"/>
-                        <TextBlock Text="category" Width="100"/>
-                        <TextBox Name="QuestInfo_category" Width="200" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="category" Width="50"/>
+                        <TextBox Name="QuestInfo_category" Width="50" IsReadOnly="True"></TextBox>
+                        <TextBox Name="QuestInfo_category_name" Width="200" IsReadOnly="True"></TextBox>
                         <TextBlock Text="text" Width="50"/>
                         <TextBox Name="QuestInfo_text" Width="250" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
                         <Separator Width="300"/>
                     </WrapPanel>
                     <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
                         <StackPanel>
+                            <WrapPanel Name="QuestInfo_challenge">
+                                <TextBlock Text="gold" Width="50" />
+                                <RichTextBox Name="QuestInfo_challenge_gold" Width="250" IsReadOnly="True" BorderBrush="Gold"></RichTextBox>
+                                <TextBlock Text="silver" Width="50" />
+                                <RichTextBox Name="QuestInfo_challenge_silver" Width="250" IsReadOnly="True" BorderBrush="Silver"></RichTextBox>
+                                <TextBlock Text="bronze" Width="50" />
+                                <RichTextBox Name="QuestInfo_challenge_bronze" Width="250" IsReadOnly="True" BorderBrush="Brown"></RichTextBox>
+                                <Separator Width="300"/>
+                            </WrapPanel>
                             <WrapPanel>
                                 <TextBlock Text="opentype" Width="100"/>
                                 <TextBlock Text="opentypeParam" Width="200"/>
@@ -88,20 +98,12 @@
                                 <TextBox Name="QuestInfo_panel_sp" Width="25" IsReadOnly="True"></TextBox>
                                 <Separator Width="300"/>
                             </WrapPanel>
-                            <WrapPanel>
+                            <WrapPanel Name="QuestInfo_sp_event">
                                 <TextBlock Text="sp_event_id" Width="100"/>
                                 <TextBox Name="QuestInfo_sp_event_id" Width="200" IsReadOnly="True"></TextBox>
                                 <TextBlock Text="sp_event_name" Width="100"/>
                                 <TextBox Name="QuestInfo_sp_event_name" Width="200" IsReadOnly="True"></TextBox>
                                 <Separator Width="300"/>
-                            </WrapPanel>
-                            <WrapPanel>
-                                <TextBlock Text="challenge0" Width="50"/>
-                                <RichTextBox Name="QuestInfo_challenge0" Width="250" IsReadOnly="True"></RichTextBox>
-                                <TextBlock Text="challenge1" Width="50"/>
-                                <RichTextBox Name="QuestInfo_challenge1" Width="250" IsReadOnly="True"></RichTextBox>
-                                <TextBlock Text="challenge2" Width="50"/>
-                                <RichTextBox Name="QuestInfo_challenge2" Width="250" IsReadOnly="True"></RichTextBox>
                             </WrapPanel>
                         </StackPanel>
                     </ScrollViewer>
@@ -139,7 +141,51 @@
                 </Grid>
             </TabItem>
             <TabItem Header="QuestCategoryViewer" Name="QuestCategoryViewerTabItem">
-                <Grid></Grid>
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="300"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="QuestCategoryViewerDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestCategoryViewerDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
+                    <WrapPanel Grid.Column="1" Grid.Row="0">
+                        <RadioButton GroupName="QuestCategoryType" Content="Normal" Width="75" IsChecked="True" Name="QuestCategoryTypeRadio_Normal" Checked="QuestCategoryTypeRadio_Normal_Checked"></RadioButton>
+                        <RadioButton GroupName="QuestCategoryType" Content="Event" Width="75" Name="QuestCategoryTypeRadio_Event" Checked="QuestCategoryTypeRadio_Event_Checked"></RadioButton>
+                        <RadioButton GroupName="QuestCategoryType" Content="LargeEvent" Width="75" Name="QuestCategoryTypeRadio_LargeEvent" Checked="QuesCategorytTypeRadio_LargeEvent_Checked"></RadioButton>
+                        <RadioButton GroupName="QuestCategoryType" Content="Special" Width="75" Name="QuestCategoryTypeRadio_Special" Checked="QuestCategoryTypeRadio_Special_Checked"></RadioButton>
+                        <Separator Width="300"/>
+                        <TextBlock Text="id" Width="50"/>
+                        <TextBox Name="QuestCategoryInfo_id" Width="50" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="name" Width="50"/>
+                        <TextBox Name="QuestCategoryInfo_name" Width="150" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="order" Width="50"/>
+                        <TextBox Name="QuestCategoryInfo_order" Width="25" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="pt_num" Width="50"/>
+                        <TextBox Name="QuestCategoryInfo_pt_num" Width="25" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="icon" Width="50"/>
+                        <TextBox Name="QuestCategoryInfo_icon" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="kind" Width="50"/>
+                        <TextBox Name="QuestCategoryInfo_kind" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="zbtn_kind" Width="50"/>
+                        <TextBox Name="QuestCategoryInfo_zbtn_kind" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="text" Width="50"/>
+                        <TextBox Name="QuestCategoryInfo_text" Width="250" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+                        <Separator Width="300"/>
+                    </WrapPanel>
+                    <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel>
+                            <WrapPanel Name="QuestCategoryInfo_quest">
+                                
+                            </WrapPanel>
+                            <WrapPanel Name="QuestCategoryInfo_reward">
+                                
+                            </WrapPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
             </TabItem>
             <TabItem Header="UnitViewer" Name="UnitViewerTabItem">
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -153,28 +199,39 @@
                     </Grid.RowDefinitions>
                     <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="UnitViewerDataGrid" AutoGenerateColumns="True" SelectionChanged="UnitViewerDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
                     <WrapPanel Grid.Column="1" Grid.Row="0">
-                        <TextBlock Text="id" Width="20"/>
-                        <TextBox Name="UnitInfo_id" Width="50" IsReadOnly="True"></TextBox>
-                        <TextBlock Text="g_id" Width="30"/>
-                        <TextBox Name="UnitInfo_g_id" Width="50" IsReadOnly="True"></TextBox>
-                        <TextBlock Text="category" Width="50"/>
-                        <TextBox Name="UnitInfo_category" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="id" Width="50"/>
+                        <TextBox Name="UnitInfo_id" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="g_id" Width="50"/>
+                        <TextBox Name="UnitInfo_g_id" Width="100" TextChanged="UnitInfo_g_id_TextChanged"></TextBox>
                         <TextBlock Text="name" Width="50"/>
-                        <TextBox Name="UnitInfo_name" Width="250" IsReadOnly="True"></TextBox>
-                        <Separator Width="300"/>
-                        <RichTextBox Name="UnitInfo_story" IsReadOnly="True" Width="300"></RichTextBox>
-                        <TextBlock Text="ct_text" Width="50"/>
-                        <TextBox Name="UnitInfo_ct_text" Width="250" IsReadOnly="True"></TextBox>
-                        <TextBlock Text="sct_text" Width="50"/>
-                        <TextBox Name="UnitInfo_sct_text" Width="250" IsReadOnly="True"></TextBox>
-                        <TextBlock Text="sct6_text" Width="50"/>
-                        <TextBox Name="UnitInfo_sct6_text" Width="250" IsReadOnly="True"></TextBox>
-                        <TextBlock Text="a_skill_text" Width="50"/>
-                        <TextBox Name="UnitInfo_a_skill_text" Width="250" IsReadOnly="True"></TextBox>
+                        <TextBox Name="UnitInfo_name" Width="175" IsReadOnly="True"></TextBox>
+                        <TextBox Name="UnitInfo_category" Width="75" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="style" Width="50"/>
+                        <TextBox Name="UnitInfo_style" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="kind" Width="50"/>
+                        <TextBox Name="UnitInfo_kind" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="attribute" Width="50"/>
+                        <TextBox Name="UnitInfo_attribute" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="sub_a1" Width="50"/>
+                        <TextBox Name="UnitInfo_sub_a1" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="model" Width="50"/>
+                        <TextBox Name="UnitInfo_model" Width="250" IsReadOnly="True"></TextBox>
                         <Separator Width="300"/>
                     </WrapPanel>
                     <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
                         <StackPanel>
+                            <WrapPanel Name="UnitInfo_Panel_Story">
+                                <RichTextBox Name="UnitInfo_story" IsReadOnly="True" Width="300"></RichTextBox>
+                                <TextBlock Text="ct_text" Width="50"/>
+                                <TextBox Name="UnitInfo_ct_text" Width="250" IsReadOnly="True"></TextBox>
+                                <TextBlock Text="sct_text" Width="50"/>
+                                <TextBox Name="UnitInfo_sct_text" Width="250" IsReadOnly="True"></TextBox>
+                                <TextBlock Text="sct6_text" Width="50"/>
+                                <TextBox Name="UnitInfo_sct6_text" Width="250" IsReadOnly="True"></TextBox>
+                                <TextBlock Text="a_skill_text" Width="50"/>
+                                <TextBox Name="UnitInfo_a_skill_text" Width="250" IsReadOnly="True"></TextBox>
+                                <Separator Width="300"/>
+                            </WrapPanel>
                             <WrapPanel Name="UnitInfo_Panel_General">
                                 <TextBlock Text="lv" Width="50"/>
                                 <TextBox Name="UnitInfo_lv" Width="100" TextChanged="UnitInfo_lv_TextChanged"></TextBox>
@@ -299,7 +356,7 @@
                     <Button Name="ImportMDBSButton" Click="ImportMDBSButton_Click">导入MDBS</Button>
                     <Button Name="ImportLDBSButton" Click="ImportLDBSButton_Click">导入LDBS</Button>
                     <Button Name="ImportplistButton" Click="ImportplistButton_Click">导入plist</Button>
-                    <CheckBox Name="IsShowDropInfo">Secret</CheckBox>
+                    <CheckBox Name="IsShowDropInfo">WILL CAUSE EXCEPTION FOR IOS</CheckBox>
                 </StackPanel>
             </TabItem>
         </TabControl>

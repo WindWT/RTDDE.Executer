@@ -215,6 +215,87 @@ namespace RTDDataExecuter
         BATTLE,
         ALL
     }
+    public enum AssignID
+    {
+        SWORD,
+        GREATSWORD,
+        LANCE,
+        PILEBANKER,
+        BOW,
+        GUN,
+        STICK,
+        ARTIFACT,
+        STICK_FEMALE,
+        TWO_SWORD,
+        TWIN_LANCE,
+        CANNON,
+        CHAOS_SWD,
+        CHAOS_GUN,
+        CHAOS_BAN,
+        CHAOS_ART,
+        BOW_MALE,
+        KUNGFU,
+        POK_LANCE,
+        POK_STICK,
+        LACNE_FEMALE,
+        RAPIA,
+        ORG_SWORD,
+        ORG_GUN,
+        GRT_FEMALE,
+        ART_FEMALE,
+        POK_SWORD,
+        POK_CAN,
+        ORG_LAN,
+        WIN_SWORD,
+        WIN_LANCE,
+        WIN_BOW,
+        WIN_STICK,
+        GOD_BOW,
+        ORG_STICK,
+        PLAYER_END,
+        MS01SLA,
+        MS01SQU,
+        MS01WOLF,
+        MS01DRA,
+        MS01BEAR,
+        MS01SCO,
+        MS02DRA,
+        MS02FOUR,
+        MS03DRA,
+        MS03FOUR,
+        MS03FLY,
+        MS04LEGEND,
+        MS00DEATH,
+        MS01SLAsilver,
+        MS02SLAgold,
+        MS00TREunit,
+        MS05RYUunit,
+        MS01BIRD,
+        MS01CRAB,
+        MS00KAIDAN,
+        MS00FLOOR,
+        MS01ELEMENT,
+        MS03FOUR02,
+        MS01UNIT,
+        MS01FISH,
+        MS02SHARK,
+        MS03OCT,
+        MS03SEA,
+        MS00WALL,
+        MS01ORG,
+        MS01POK,
+        MS01FLY,
+        MS03ORG_SWORD,
+        MS04_DRA_HEAD,
+        MS04_DRA_TAIL,
+        MS04_DRA_WING,
+        MS01WIN,
+        MS01_SLAWING,
+        MS03_BD_CHAU,
+        MS03_BD_GIGA,
+        MS03_BD_RUSA,
+        MAX
+    }
     public partial class MainWindow : Window
     {
         private static Dictionary<string, string> parseOpentype(string opentype, string opentypeParam)
@@ -328,49 +409,17 @@ namespace RTDDataExecuter
             }
             return result;
         }
-        private static Dictionary<string, string> parsePresenttype(string presenttype, string presentParam)
+        private static string parsePresenttype(string presenttype)
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
-            result.Add("presenttype", "未知");
-            result.Add("presentParam", "未知");
             switch (presenttype)
             {
-                case "0":
-                    {
-                        result["presenttype"] = "无";
-                        result["presentParam"] = String.Empty;
-                        break;
-                    }
-                case "1":
-                    {
-                        result["presenttype"] = "COIN";
-                        result["presentParam"] = presentParam;
-                        break;
-                    }
-                case "2":
-                    {
-                        result["presenttype"] = "FP";
-                        result["presentParam"] = presentParam;
-                        break;
-                    }
-                case "3":
-                    {
-                        result["presenttype"] = "STONE";
-                        result["presentParam"] = presentParam;
-                        break;
-                    }
-                case "4":
-                    {
-                        result["presenttype"] = "UNIT";
-                        result["presentParam"] = parseUnitName(presentParam);
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
+                case "0": return "无";
+                case "1": return "COIN";
+                case "2": return "FP";
+                case "3": return "STONE";
+                case "4": return "UNIT";
+                default: return string.Empty;
             }
-            return result;
         }
         private static string parseBonustype(string bonustype)
         {
@@ -403,65 +452,167 @@ namespace RTDDataExecuter
                 default: return string.Empty;
             }
         }
-        private static string parseAttributetype(UnitAttribute attributetype)
+        private static string parseAttributetype(int attributetype)
         {
-            return attributetype.ToString();
-            /*switch (attributetype)
-            {
-                case UnitAttribute.NONE:
-                    {
-                        return "无";
-                    }
-                case UnitAttribute.LIGHT:
-                    {
-                        return "光";
-                    }
-                case UnitAttribute.DARK:
-                    {
-                        return "暗";
-                    }
-                case UnitAttribute.FIRE:
-                    {
-                        return "火";
-                    }
-                case UnitAttribute.WATER:
-                    {
-                        return "水";
-                    }
-                case UnitAttribute.ALL:
-                    {
-                        return "ALL";
-                    }
-                default: return string.Empty;
-            }*/
+            return parseRealAttributetype(attributetype).ToString();
         }
-        private static string parseStyletype(Class styletype)
+        private static UnitAttribute parseRealAttributetype(int attributetype)
         {
-            return styletype.ToString();
-            /*switch (styletype)
+            switch (attributetype)
             {
-                case Class.KNIGHT:
+                case 1:
+                    return UnitAttribute.NONE;
+                case 2:
+                    return UnitAttribute.FIRE;
+                case 3:
+                    return UnitAttribute.WATER;
+                case 4:
+                    return UnitAttribute.LIGHT;
+                case 5:
+                    return UnitAttribute.DARK;
+                default:
+                    return UnitAttribute.NONE;
+            }
+        }
+        private static string parseStyletype(int styletype)
+        {
+            return parseRealStyletype(styletype).ToString();
+        }
+        private static Class parseRealStyletype(int styletype)
+        {
+            switch (styletype)
+            {
+                case 1:
+                    return Class.KNIGHT;
+                case 2:
+                    return Class.LANCER;
+                case 3:
+                    return Class.ARCHER;
+                case 4:
+                    return Class.WIZARD;
+                default:
+                    return Class.KNIGHT;
+            }
+        }
+        private static string parseUnitKind(int kind)
+        {
+            return parseRealUnitKind(kind).ToString(); ;
+        }
+        private static AssignID parseRealUnitKind(int kind)
+        {
+            switch (kind)
+            {
+                case 1:
+                    return AssignID.SWORD;
+                case 2:
+                    return AssignID.GREATSWORD;
+                case 3:
+                    return AssignID.TWO_SWORD;
+                case 4:
+                    return AssignID.CHAOS_SWD;
+                case 5:
+                    return AssignID.RAPIA;
+                case 6:
+                    return AssignID.ORG_SWORD;
+                case 7:
+                    return AssignID.GRT_FEMALE;
+                case 8:
+                    return AssignID.POK_SWORD;
+                case 9:
+                    return AssignID.WIN_SWORD;
+                default:
+                    switch (kind)
                     {
-                        return "剑";
+                        case 101:
+                            return AssignID.LANCE;
+                        case 102:
+                            return AssignID.PILEBANKER;
+                        case 103:
+                            return AssignID.TWIN_LANCE;
+                        case 104:
+                            return AssignID.CHAOS_BAN;
+                        case 105:
+                            return AssignID.KUNGFU;
+                        case 106:
+                            return AssignID.POK_LANCE;
+                        case 107:
+                            return AssignID.LACNE_FEMALE;
+                        case 108:
+                            return AssignID.ORG_LAN;
+                        case 109:
+                            return AssignID.WIN_LANCE;
+                        default:
+                            switch (kind)
+                            {
+                                case 201:
+                                    return AssignID.BOW;
+                                case 202:
+                                    return AssignID.GUN;
+                                case 203:
+                                    return AssignID.CANNON;
+                                case 204:
+                                    return AssignID.CHAOS_GUN;
+                                case 205:
+                                    return AssignID.BOW_MALE;
+                                case 206:
+                                    return AssignID.ORG_GUN;
+                                case 207:
+                                    return AssignID.POK_CAN;
+                                case 208:
+                                    return AssignID.WIN_BOW;
+                                case 209:
+                                    return AssignID.GOD_BOW;
+                                default:
+                                    switch (kind)
+                                    {
+                                        case 301:
+                                            return AssignID.STICK;
+                                        case 302:
+                                            return AssignID.ARTIFACT;
+                                        case 303:
+                                            return AssignID.STICK_FEMALE;
+                                        case 304:
+                                            return AssignID.CHAOS_ART;
+                                        case 305:
+                                            return AssignID.POK_STICK;
+                                        case 306:
+                                            return AssignID.ART_FEMALE;
+                                        case 307:
+                                            return AssignID.WIN_STICK;
+                                        case 308:
+                                            return AssignID.ORG_STICK;
+                                        default:
+                                            return AssignID.SWORD;
+                                    }
+                                    break;
+                            }
+                            break;
                     }
-                case Class.LANCER:
-                    {
-                        return "枪";
-                    }
-                case Class.ARCHER:
-                    {
-                        return "弓";
-                    }
-                case Class.WIZARD:
-                    {
-                        return "杖";
-                    }
-                case Class.ALL:
-                    {
-                        return "ALL";
-                    }
+                    break;
+            }
+        }
+        private static string parseQuestKind(string kind)
+        {
+            switch (kind)
+            {
+                case "0": return "NORMAL";
+                case "1000": return "EVENT";
+                case "1010": return "RUINS";
+                case "1011": return "CAVE";
+                case "1020": return "SP_EVENT";
                 default: return string.Empty;
-            }*/
+            }
+        }
+        private static string parseZBTNKind(string kind)
+        {
+            switch (kind)
+            {
+                case "0": return "NORMAL";
+                case "1": return "EVENT";
+                case "2": return "LARGE_EVENT";
+                case "3": return "SPECIAL";
+                default: return string.Empty;
+            }
         }
         private static string parseSkillType<T>(T skilltype)
         {

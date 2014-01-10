@@ -390,6 +390,7 @@ namespace RTDDataExecuter
 
                 tb.SetValue(Grid.RowProperty, i);
                 tb.SetValue(Grid.ColumnProperty, 0);
+                var a = new { Id = "10023", g_Id = 11 };
             }
         }
 

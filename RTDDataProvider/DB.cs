@@ -140,7 +140,12 @@ namespace RTDDataProvider
                 connection.Open();
                 SQLiteCommand cmd = new SQLiteCommand(sql, connection);
 
-                string result = (string)cmd.ExecuteScalar();
+                object o = cmd.ExecuteScalar();
+                string result = string.Empty;
+                if (o != null)
+                {
+                    result = o.ToString();
+                }
 
                 connection.Close();
                 return result;
