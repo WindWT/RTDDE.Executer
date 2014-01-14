@@ -3,4 +3,9 @@ RTDDataExplorer
 
 RoDora Data Explorer
 
-Require IIS
+TODO
+===============
+DAL Rewrite
+Search
+Config file
+CommonViewer Enhance
