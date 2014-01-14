@@ -23,7 +23,7 @@ namespace RTDDataExecuter
 {
     public partial class MainWindow : Window
     {
-        private static string QuestCategoryViewerSQL = "SELECT id,name,text FROM quest_category_master order by id";
+        private static string QuestCategoryViewerSQL = "SELECT id,name,display_order FROM quest_category_master order by id";
         private void QuestCategoryViewerDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (QuestCategoryViewerDataGrid.SelectedItem == null)

@@ -10,8 +10,7 @@ namespace RTDDataExecuter
         public string CellData { get; set; }
         public Brush Foreground { get; set; }
         public Brush Background { get; set; }
-        public Brush BorderBrush { get; set; }
-        public Thickness BorderThickness { get; set; }
+        public Color OverlayColor { get; set; }
         public FontWeight fontWeight { get; set; }
         public string drop_unit_id { get; set; }
         public string add_attribute_exp { get; set; }
@@ -23,21 +22,20 @@ namespace RTDDataExecuter
         {
         }
         public MapCell(string cellData)
-            : this(cellData, Brushes.Black, Brushes.Transparent, FontWeights.Normal)
+            : this(cellData, Brushes.Black, Brushes.White, FontWeights.Normal)
         {
         }
         public MapCell(string cellData, Brush foreground, Brush background, FontWeight bold)
-            : this(cellData, foreground, background, bold, Brushes.DarkGray, 0.5)
+            : this(cellData, foreground, background, bold, Colors.Transparent)
         {
         }
-        public MapCell(string cellData, Brush foreground, Brush background, FontWeight bold, Brush borderBrush, double borderThickness)
+        public MapCell(string cellData, Brush foreground, Brush background, FontWeight bold, Color overlayColor)
         {
             this.CellData = cellData;
             this.Foreground = foreground;
             this.Background = background;
             this.fontWeight = bold;
-            this.BorderBrush = borderBrush;
-            this.BorderThickness = new Thickness(borderThickness);
+            this.OverlayColor = overlayColor;
             this.drop_unit_id = string.Empty;
             this.add_attribute_exp = string.Empty;
         }

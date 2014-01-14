@@ -263,7 +263,18 @@ namespace RTDDataExecuter
                             //this.TreasureID = num2 - 23;
                             //this.EnemyUnitID = 0;
                             //cellData = "箱" + (num2 - 23);
-                            cellData = "箱";
+                            //cellData = "箱";
+                            switch (num2 - 23)
+                            {
+                                case 1: cellData = "?"; break;
+                                case 2: cellData = "$?$"; break;
+                                case 3: cellData = "♥"; break;
+                                case 4: cellData = "魂"; break;
+                                case 5: cellData = "+1"; break;
+                                case 6: cellData = "$"; break;
+                                default: cellData = "箱" + (num2 - 23).ToString(); break;
+                            }
+                            mapCell.fontWeight = FontWeights.Bold;
                         }
                         else
                         {
@@ -346,12 +357,29 @@ namespace RTDDataExecuter
                         Text = c.CellData,
                         Foreground = c.Foreground,
                         Background = c.Background,
-                        FontWeight = c.fontWeight,
-                        BorderBrush = c.BorderBrush,
-                        BorderThickness = c.BorderThickness
+                        FontWeight = c.fontWeight
                     };
-                    MapGrid.Children.Add(tb);
+                    System.Windows.Shapes.Rectangle rec = new System.Windows.Shapes.Rectangle()
+                    {
+                        Fill = new LinearGradientBrush()
+                        {
+                            StartPoint = new Point(0, 0),
+                            EndPoint = new Point(5, 5),
+                            MappingMode = BrushMappingMode.Absolute,
+                            SpreadMethod = GradientSpreadMethod.Repeat,
+                            GradientStops = new GradientStopCollection()
+                            {
+                                new GradientStop(c.OverlayColor,0.25),
+                                new GradientStop(Colors.Transparent,0.25)
+                            }
+                        }
+                    };
+                    MapGrid.Children.Add(rec);
+                    rec.SetValue(Grid.RowProperty, row);
+                    rec.SetValue(Grid.ColumnProperty, col);
+                    rec.SetValue(Grid.ZIndexProperty, 2);
 
+                    MapGrid.Children.Add(tb);
                     tb.SetValue(Grid.RowProperty, row);
                     tb.SetValue(Grid.ColumnProperty, col);
 
@@ -390,7 +418,6 @@ namespace RTDDataExecuter
 
                 tb.SetValue(Grid.RowProperty, i);
                 tb.SetValue(Grid.ColumnProperty, 0);
-                var a = new { Id = "10023", g_Id = 11 };
             }
         }
 
@@ -575,22 +602,24 @@ namespace RTDDataExecuter
                             case 15006:
                             case 15007:
                                 {
-                                    c.BorderBrush = Brushes.Green;
-                                    c.BorderThickness = new Thickness(2.5);
+                                    c.OverlayColor = Colors.Green;
                                     break;
                                 }
                             case 15022:
                                 {
-                                    c.BorderBrush = Brushes.Black;
-                                    c.BorderThickness = new Thickness(2.5);
+                                    c.OverlayColor = Colors.Black;
+                                    break;
+                                }
+                            case 15014:
+                                {
+                                    c.OverlayColor = Colors.Silver;
                                     break;
                                 }
                             case 15025:
                             case 15026:
                             case 15027:
                                 {
-                                    c.BorderBrush = Brushes.MediumTurquoise;
-                                    c.BorderThickness = new Thickness(2.5);
+                                    c.OverlayColor = Colors.MediumTurquoise;
                                     break;
                                 }
                         }
