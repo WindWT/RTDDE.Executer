@@ -22,5 +22,29 @@ namespace RTDDataExecuter.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsShowDropInfo {
+            get {
+                return ((bool)(this["IsShowDropInfo"]));
+            }
+            set {
+                this["IsShowDropInfo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsShowBoxInfo {
+            get {
+                return ((bool)(this["IsShowBoxInfo"]));
+            }
+            set {
+                this["IsShowBoxInfo"] = value;
+            }
+        }
     }
 }

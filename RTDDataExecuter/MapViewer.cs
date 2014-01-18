@@ -12,10 +12,15 @@ namespace RTDDataExecuter
 {
     public partial class MainWindow : Window
     {
+        private void MapViewerTabItem_Selected(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(QuestInfo_id.Text))
+            {
+                InitMap(QuestInfo_id.Text);
+            }
+        }
         private void InitMap(string levelID, int repeat = 1)
         {
-            bool isShowDropInfo = (bool)IsShowDropInfo.IsChecked;
-
             Task<DataTable> initMonsterTask = new Task<DataTable>(GetMonsterData, levelID);
             initMonsterTask.ContinueWith(t =>
             {
@@ -31,7 +36,7 @@ namespace RTDDataExecuter
                     throw new Exception("数据库取数失败。");
                 }
                 DataRow levelData = dt.Rows[0];
-                if (isShowDropInfo == false)
+                if (IsShowDropInfo == false)
                 {
                     return BindMonsterDataToMap(InitMapData(
                     levelData["map_data"].ToString(),
@@ -260,21 +265,24 @@ namespace RTDDataExecuter
                         var num2 = 31 & cellDataInt;
                         if (num2 >= 24)
                         {
-                            //this.TreasureID = num2 - 23;
-                            //this.EnemyUnitID = 0;
-                            //cellData = "箱" + (num2 - 23);
-                            //cellData = "箱";
-                            switch (num2 - 23)
+                            if (IsShowBoxInfo)
                             {
-                                case 1: cellData = "?"; break;
-                                case 2: cellData = "$?$"; break;
-                                case 3: cellData = "♥"; break;
-                                case 4: cellData = "魂"; break;
-                                case 5: cellData = "+1"; break;
-                                case 6: cellData = "$"; break;
-                                default: cellData = "箱" + (num2 - 23).ToString(); break;
+                                switch (num2 - 23)
+                                {
+                                    case 1: cellData = "?"; break;
+                                    case 2: cellData = "?$"; break;
+                                    case 3: cellData = "♥"; break;
+                                    case 4: cellData = "魂"; break;
+                                    case 5: cellData = "+1"; break;
+                                    case 6: cellData = "$"; break;
+                                    default: cellData = "箱" + (num2 - 23).ToString(); break;
+                                }
+                                mapCell.fontWeight = FontWeights.Bold;
                             }
-                            mapCell.fontWeight = FontWeights.Bold;
+                            else
+                            {
+                                cellData = "箱";
+                            }
                         }
                         else
                         {
@@ -387,11 +395,11 @@ namespace RTDDataExecuter
                     {
                         if (c.drop_unit_id != "0")
                         {
-                            tb.ToolTip = new TextBlock() { Text = parseUnitName(c.drop_unit_id) + "\n" + "觉醒pt:" + c.add_attribute_exp };
+                            rec.ToolTip = new TextBlock() { Text = parseUnitName(c.drop_unit_id) + "\n" + "觉醒pt:" + c.add_attribute_exp };
                         }
                         else
                         {
-                            tb.ToolTip = new TextBlock() { Text = "觉醒pt:" + c.add_attribute_exp };
+                            rec.ToolTip = new TextBlock() { Text = "觉醒pt:" + c.add_attribute_exp };
                         }
                     }
                     col++;

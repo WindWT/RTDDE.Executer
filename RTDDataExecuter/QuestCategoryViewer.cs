@@ -23,7 +23,6 @@ namespace RTDDataExecuter
 {
     public partial class MainWindow : Window
     {
-        private static string QuestCategoryViewerSQL = "SELECT id,name,display_order FROM quest_category_master order by id";
         private void QuestCategoryViewerDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (QuestCategoryViewerDataGrid.SelectedItem == null)
@@ -162,6 +161,17 @@ order by point";
             taskQuest.Start();
             taskReward.Start();
         }
+        private void QuestCategoryViewerDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (sender != null)
+            {
+                DataGridRow dgr = sender as DataGridRow;
+                string id = ((DataRowView)dgr.Item).Row["id"].ToString();
+                string name = ((DataRowView)dgr.Item).Row["name"].ToString();
+                QuestSearch_category.Text = id;
+                QuestSearch_category_name.Text = name;
+            }
+        }
 
         private void QuestCategoryTypeRadio_Normal_Checked(object sender, RoutedEventArgs e)
         {
@@ -181,15 +191,15 @@ order by point";
         }
         private void QuestCategoryTypeRadio_Checked(int zbtn_kind)
         {
-            QuestCategoryViewerSQL = string.Format("SELECT id,name,text FROM quest_category_master WHERE zbtn_kind={0} order by id", zbtn_kind.ToString());
-            QuestCategoryViewerDataGrid_BindData();
+            string sql = string.Format("SELECT id,name,text FROM quest_category_master WHERE zbtn_kind={0} order by id", zbtn_kind.ToString());
+            QuestCategoryViewerDataGrid_BindData(sql);
         }
-        private void QuestCategoryViewerDataGrid_BindData()
+        private void QuestCategoryViewerDataGrid_BindData(string sql)
         {
             Task<DataTable> task = new Task<DataTable>(() =>
             {
                 DB db = new DB();
-                return db.GetData(QuestCategoryViewerSQL);
+                return db.GetData(sql);
             });
             task.ContinueWith(t =>
             {

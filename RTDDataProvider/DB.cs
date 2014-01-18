@@ -121,10 +121,21 @@ namespace RTDDataProvider
         }
         public DataTable GetData(string sql)
         {
+            return GetData(sql, null);
+        }
+        public DataTable GetData(string sql, List<SQLiteParameter> paras)
+        {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
                 SQLiteCommand cmd = new SQLiteCommand(sql, connection);
+                if (paras != null)
+                {
+                    foreach (var para in paras)
+                    {
+                        cmd.Parameters.Add(para);
+                    }
+                }
 
                 DataTable dt = new DataTable();
                 dt.Load(cmd.ExecuteReader());

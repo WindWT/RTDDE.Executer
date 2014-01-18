@@ -6,34 +6,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Data.SQLite;
 
 namespace RTDDataExecuter
 {
     public partial class MainWindow : Window
     {
-        private static string QuestViewerSQL = @"SELECT id,name,stamina,
-(select name from quest_category_master where quest_category_master.id=category) as category,
-       ( CASE
-                WHEN open_type_1 = 4 THEN open_param_1 
-                WHEN open_type_2 = 4 THEN open_param_2 
-                WHEN open_type_3 = 4 THEN open_param_3 
-                WHEN open_type_4 = 4 THEN open_param_4 
-                WHEN open_type_5 = 4 THEN open_param_5 
-                WHEN open_type_6 = 4 THEN open_param_6 
-                ELSE 0 
-       END ) AS start,
-       ( CASE
-                WHEN open_type_1 = 5 THEN open_param_1 
-                WHEN open_type_2 = 5 THEN open_param_2 
-                WHEN open_type_3 = 5 THEN open_param_3 
-                WHEN open_type_4 = 5 THEN open_param_4 
-                WHEN open_type_5 = 5 THEN open_param_5 
-                WHEN open_type_6 = 5 THEN open_param_6 
-                ELSE 0 
-       END ) AS [end]
-  FROM quest_master
- ORDER BY start DESC,end DESC,id DESC;";
-
         private void QuestViewerDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (QuestViewerDataGrid.SelectedItem == null)
@@ -182,7 +160,7 @@ panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
 
         private void QuestTypeRadio_Event_Checked(object sender, RoutedEventArgs e)
         {
-            QuestViewerSQL = @"SELECT id,name,stamina,
+            string sql = @"SELECT id,name,stamina,
 (select name from quest_category_master where quest_category_master.id=category) as category,
        ( CASE
                 WHEN open_type_1 = 4 THEN open_param_1 
@@ -204,13 +182,13 @@ panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
        END ) AS [end]
   FROM quest_master
  ORDER BY start DESC,end DESC,id DESC;";
-            QuestViewerDataGrid_BindData();
+            QuestViewerDataGrid_BindData(sql);
         }
 
         private void QuestTypeRadio_Daily_Checked(object sender, RoutedEventArgs e)
         {
             string today = DateTime.Today.AddHours(1).ToString("yyyyMMddHH");
-            QuestViewerSQL = @"SELECT id,name,stamina,
+            string sql = @"SELECT id,name,stamina,
 (select name from quest_category_master where quest_category_master.id=category) as category,
 (select text from quest_category_master where quest_category_master.id=category) as text,
        ( CASE
@@ -254,25 +232,67 @@ WHERE DayOfWeek>=0
 AND isDisabled=0
 AND ([end]>" + today + @" OR [end]=0)
 ORDER BY DayOfWeek,id DESC";
-            QuestViewerDataGrid_BindData();
+            QuestViewerDataGrid_BindData(sql);
         }
 
         private void QuestTypeRadio_Main_Checked(object sender, RoutedEventArgs e)
         {
-            QuestViewerSQL = @"SELECT id,name,stamina,
+            string sql = @"SELECT id,name,stamina,
 (select name from quest_category_master where quest_category_master.id=category) as category
 FROM QUEST_MASTER
 WHERE category<1000
 ORDER BY id DESC";
-            QuestViewerDataGrid_BindData();
+            QuestViewerDataGrid_BindData(sql);
         }
 
-        private void QuestViewerDataGrid_BindData()
+        private void QuestSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            QuestTypeRadio_Event.IsChecked = false;
+            QuestTypeRadio_Daily.IsChecked = false;
+            QuestTypeRadio_Main.IsChecked = false;
+
+            string sql = @"SELECT id,name,stamina,
+(select name from quest_category_master where quest_category_master.id=category) as category_name
+FROM QUEST_MASTER WHERE ";
+            if (String.IsNullOrWhiteSpace(QuestSearch_id.Text) == false)
+            {
+                sql += "id=" + QuestSearch_id.Text + " AND ";
+            }
+            if (String.IsNullOrWhiteSpace(QuestSearch_name.Text) == false)
+            {
+                sql += "name LIKE '%" + QuestSearch_name.Text + "%' AND ";
+            }
+            if (String.IsNullOrWhiteSpace(QuestSearch_category.Text) == false)
+            {
+                sql += "category=" + QuestSearch_category.Text + " AND ";
+            }
+            if (String.IsNullOrWhiteSpace(QuestSearch_category_name.Text) == false)
+            {
+                sql += "category_name LIKE '%" + QuestSearch_category_name.Text + "%' AND ";
+            }
+            sql += " 1=1 ORDER BY id DESC";
+            QuestViewerDataGrid_BindData(sql);
+        }
+
+        private void QuestSearchClear_Click(object sender, RoutedEventArgs e)
+        {
+            QuestSearch_id.Text = String.Empty;
+            QuestSearch_name.Text = String.Empty;
+            QuestSearch_category.Text = String.Empty;
+            QuestSearch_category_name.Text = String.Empty;
+            QuestTypeRadio_Event.IsChecked = true;
+        }
+
+        private void QuestViewerDataGrid_BindData(string sql)
+        {
+            QuestViewerDataGrid_BindData(sql, null);
+        }
+        private void QuestViewerDataGrid_BindData(string sql, List<SQLiteParameter> paras)
         {
             Task<DataTable> task = new Task<DataTable>(() =>
             {
                 DB db = new DB();
-                return db.GetData(QuestViewerSQL);
+                return db.GetData(sql, paras);
             });
             task.ContinueWith(t =>
             {

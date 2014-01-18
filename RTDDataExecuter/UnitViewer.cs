@@ -12,6 +12,24 @@ namespace RTDDataExecuter
 {
     public partial class MainWindow : Window
     {
+        private void UnitViewerTabItem_Loaded(object sender, RoutedEventArgs e)
+        {
+            Task<DataTable> task = new Task<DataTable>(() =>
+            {
+                DB db = new DB();
+                return db.GetData("SELECT id,g_id,name FROM UNIT_MASTER order by g_id");
+            });
+            task.ContinueWith(t =>
+            {
+                if (t.Exception != null)
+                {
+                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    return;
+                }
+                UnitViewerDataGrid.ItemsSource = t.Result.DefaultView;
+            }, uiTaskScheduler);    //this Task work on ui thread
+            task.Start();
+        }
         private void UnitViewerDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (UnitViewerDataGrid.SelectedItem == null)

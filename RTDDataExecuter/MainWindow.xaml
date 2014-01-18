@@ -4,13 +4,13 @@
         Title="RTDDataExecuter"  MinWidth="640" MinHeight="480" Width="640" Height="480" Icon="Resources/Icon256.ico">
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom" Height="20" VerticalAlignment="Bottom">
-            <StatusBarItem>
+            <StatusBarItem Padding="0" Margin="0">
                 <Grid>
-                    <TextBlock Name="StatusBarExceptionMessage" VerticalAlignment="Top" HorizontalAlignment="Left"></TextBlock>
+                    <TextBox Name="StatusBarExceptionMessage" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True" TextChanged="StatusBarExceptionMessage_TextChanged" Visibility="Collapsed"></TextBox>
                 </Grid>
             </StatusBarItem>
         </StatusBar>
-        <TabControl DockPanel.Dock="Top" Name="MainTab" SelectionChanged="MainTab_SelectionChanged" Padding="0">
+        <TabControl DockPanel.Dock="Top" Name="MainTab" Padding="0">
             <TabItem Header="QuestViewer" Name="QuestViewerTabItem">
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
@@ -26,6 +26,25 @@
                         <RadioButton GroupName="QuestType" Content="Event" Width="100" IsChecked="True" Name="QuestTypeRadio_Event" Checked="QuestTypeRadio_Event_Checked"></RadioButton>
                         <RadioButton GroupName="QuestType" Content="Daily" Width="100" Name="QuestTypeRadio_Daily" Checked="QuestTypeRadio_Daily_Checked"></RadioButton>
                         <RadioButton GroupName="QuestType" Content="Main" Width="100" Name="QuestTypeRadio_Main" Checked="QuestTypeRadio_Main_Checked"></RadioButton>
+                        <Separator Width="300"/>
+                        <Expander Width="300" BorderThickness="0">
+                            <Expander.Header>
+                                <Label Content="Search"></Label>
+                            </Expander.Header>
+                            <Expander.Content>
+                                <WrapPanel>
+                                    <TextBlock Text="id" Width="50"/>
+                                    <TextBox Name="QuestSearch_id" Width="50" TextChanged="QuestSearch_TextChanged"></TextBox>
+                                    <TextBlock Text="name" Width="50"/>
+                                    <TextBox Name="QuestSearch_name" Width="150" TextChanged="QuestSearch_TextChanged"></TextBox>
+                                    <TextBlock Text="category" Width="50"/>
+                                    <TextBox Name="QuestSearch_category" Width="50" TextChanged="QuestSearch_TextChanged"></TextBox>
+                                    <TextBox Name="QuestSearch_category_name" Width="200" TextChanged="QuestSearch_TextChanged"></TextBox>
+                                    <Button Name="QuestSearchClear" Width="300" Click="QuestSearchClear_Click">Clear</Button>
+                                    <Separator Width="300"/>
+                                </WrapPanel>
+                            </Expander.Content>
+                        </Expander>
                         <Separator Width="300"/>
                         <TextBlock Text="id" Width="50"/>
                         <TextBox Name="QuestInfo_id" Width="50" IsReadOnly="True"></TextBox>
@@ -109,7 +128,7 @@
                     </ScrollViewer>
                 </Grid>
             </TabItem>
-            <TabItem Header="MapViewer" Name="MapViewerTabItem">
+            <TabItem Header="MapViewer" Name="MapViewerTabItem" Selector.Selected="MapViewerTabItem_Selected">
                 <Grid>
                     <Grid.Resources>
                         <Style TargetType="{x:Type TextBox}">
@@ -153,7 +172,13 @@
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="QuestCategoryViewerDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestCategoryViewerDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
+                    <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="QuestCategoryViewerDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestCategoryViewerDataGrid_SelectionChanged" FrozenColumnCount="2" >
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <EventSetter Event="MouseDoubleClick" Handler="QuestCategoryViewerDataGrid_MouseDoubleClick"/>
+                            </Style>
+                        </DataGrid.RowStyle>
+                    </DataGrid>
                     <WrapPanel Grid.Column="1" Grid.Row="0">
                         <RadioButton GroupName="QuestCategoryType" Content="Normal" Width="75" IsChecked="True" Name="QuestCategoryTypeRadio_Normal" Checked="QuestCategoryTypeRadio_Normal_Checked"></RadioButton>
                         <RadioButton GroupName="QuestCategoryType" Content="Event" Width="75" Name="QuestCategoryTypeRadio_Event" Checked="QuestCategoryTypeRadio_Event_Checked"></RadioButton>
@@ -181,16 +206,16 @@
                     <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
                         <StackPanel>
                             <WrapPanel Name="QuestCategoryInfo_quest">
-                                
+
                             </WrapPanel>
                             <WrapPanel Name="QuestCategoryInfo_reward">
-                                
+
                             </WrapPanel>
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
             </TabItem>
-            <TabItem Header="UnitViewer" Name="UnitViewerTabItem">
+            <TabItem Header="UnitViewer" Name="UnitViewerTabItem" Loaded="UnitViewerTabItem_Loaded">
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -334,21 +359,21 @@
                     </ScrollViewer>
                 </Grid>
             </TabItem>
-            <TabItem Header="CommonViewer" Name="CommonViewerTabItem">
+            <TabItem Header="CommonViewer" Name="CommonViewerTabItem" Loaded="CommonViewerTabItem_Loaded">
                 <DockPanel>
                     <Grid HorizontalAlignment="Stretch" Height="40" DockPanel.Dock="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="75"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Name="SQLTextBox" AcceptsReturn="True" AcceptsTab="True" VerticalScrollBarVisibility="Auto"/>
+                        <TextBox Grid.Column="0" Name="CommonViewerSQLTextBox" AcceptsReturn="True" AcceptsTab="True" VerticalScrollBarVisibility="Auto"/>
                         <StackPanel Grid.Column="1">
                             <ComboBox>
                                 <ComboBoxItem></ComboBoxItem>
                                 <ComboBoxItem></ComboBoxItem>
                                 <ComboBoxItem></ComboBoxItem>
                             </ComboBox>
-                            <Button Grid.Column="1" Click="Button_Click">RunSQL</Button>
+                            <Button Name="CommonViewerRunSQL" Grid.Column="1" Click="CommonViewerRunSQL_Click">RunSQL</Button>
                         </StackPanel>
                     </Grid>
                     <DataGrid  Name="CommonViewerDataGrid" AutoGenerateColumns="True"/>
@@ -359,7 +384,8 @@
                     <Button Name="ImportMDBSButton" Click="ImportMDBSButton_Click">导入MDBS</Button>
                     <Button Name="ImportLDBSButton" Click="ImportLDBSButton_Click">导入LDBS</Button>
                     <Button Name="ImportplistButton" Click="ImportplistButton_Click">导入plist</Button>
-                    <CheckBox Name="IsShowDropInfo">WILL CAUSE EXCEPTION FOR IOS</CheckBox>
+                    <CheckBox Name="IsShowDropInfoCheckBox" Checked="IsShowDropInfoCheckBox_Checked" Unchecked="IsShowDropInfoCheckBox_Unchecked">Show drop info and exp info(may NOT working on iOS)</CheckBox>
+                    <CheckBox Name="IsShowBoxInfoCheckBox"  Checked="IsShowBoxInfoCheckBox_Checked" Unchecked="IsShowBoxInfoCheckBox_Unchecked" >Check to show box type</CheckBox>
                 </StackPanel>
             </TabItem>
         </TabControl>

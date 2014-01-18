@@ -18,6 +18,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using System.Configuration;
 
 namespace RTDDataExecuter
 {
@@ -29,16 +31,27 @@ namespace RTDDataExecuter
         public MainWindow()
         {
             InitializeComponent();
+            InitSettings();
         }
         private TaskScheduler uiTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void CommonViewerTabItem_Loaded(object sender, RoutedEventArgs e)
         {
-            string SQL = SQLTextBox.Text;
+            string sql = "SELECT * FROM USER_RANK_MASTER";
+            CommonViewerSQLTextBox.Text = sql;
+            CommonViewerDataGrid_BindData(sql);
+        }
+        private void CommonViewerRunSQL_Click(object sender, RoutedEventArgs e)
+        {
+            string sql = CommonViewerSQLTextBox.Text;
+            CommonViewerDataGrid_BindData(sql);
+        }
+        private void CommonViewerDataGrid_BindData(string sql)
+        {
             Task<DataTable> task = new Task<DataTable>(() =>
             {
                 DB db = new DB();
-                return db.GetData(SQL);
+                return db.GetData(sql);
             });
             task.ContinueWith(t =>
             {
@@ -52,141 +65,24 @@ namespace RTDDataExecuter
             task.Start();
         }
 
-        private void MainTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //异常信息显示5秒之后消失。
+        private DispatcherTimer dispatcherTimer = null;
+        private void StatusBarExceptionMessage_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (e.Source is TabControl)
+            if (string.IsNullOrWhiteSpace(StatusBarExceptionMessage.Text))
             {
-                if (QuestViewerTabItem.IsSelected)
-                {
-                    QuestViewerDataGrid_BindData();
-                }
-                else if (MapViewerTabItem.IsSelected)
-                {
-                    if (!string.IsNullOrWhiteSpace(QuestInfo_id.Text))
-                    {
-                        InitMap(QuestInfo_id.Text);
-                    }
-                }
-                else if (UnitViewerTabItem.IsSelected)
-                {
-                    Task<DataTable> task = new Task<DataTable>(() =>
-                    {
-                        DB db = new DB();
-                        return db.GetData("SELECT id,g_id,name FROM UNIT_MASTER order by g_id");
-                    });
-                    task.ContinueWith(t =>
-                    {
-                        if (t.Exception != null)
-                        {
-                            StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
-                            return;
-                        }
-                        UnitViewerDataGrid.ItemsSource = t.Result.DefaultView;
-                    }, uiTaskScheduler);    //this Task work on ui thread
-                    task.Start();
-                }
-                else if (QuestCategoryViewerTabItem.IsSelected)
-                {
-                    QuestCategoryViewerDataGrid_BindData();
-                }
-                else if (CommonViewerTabItem.IsSelected)
-                {
-                    Task<DataTable> task = new Task<DataTable>(() =>
-                    {
-                        DB db = new DB();
-                        return db.GetData("SELECT * FROM USER_RANK_MASTER");
-                    });
-                    task.ContinueWith(t =>
-                    {
-                        if (t.Exception != null)
-                        {
-                            StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
-                            return;
-                        }
-                        CommonViewerDataGrid.ItemsSource = t.Result.DefaultView;
-                    }, uiTaskScheduler);    //this Task work on ui thread
-                    task.Start();
-                }
+                StatusBarExceptionMessage.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                StatusBarExceptionMessage.Visibility = Visibility.Visible;
+                dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+                dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
+                dispatcherTimer.Tick += new EventHandler((a, b) => { StatusBarExceptionMessage.Visibility = Visibility.Collapsed; });
+                dispatcherTimer.Start();
             }
         }
-        #region settings
-        private void ImportMDBSButton_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            ofd.DefaultExt = ".xml";
-            ofd.Filter = "MDBS File|MDBS.xml";
-            if (ofd.ShowDialog() == true)
-            {
-                using (StreamReader sr = new StreamReader(ofd.FileName))
-                {
-                    string xmlMDB = sr.ReadToEnd();
-                    try
-                    {
-                        DataSet ds = XMLParser.ParseMDB(xmlMDB);
-                        DB db = new DB();
-                        db.ImportDataSet(ds, true);
-                    }
-                    catch (Exception ex)
-                    {
-                        StatusBarExceptionMessage.Text = ex.Message;
-                    }
-                }
-            }
-        }
-        private void ImportLDBSButton_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            ofd.DefaultExt = ".xml";
-            ofd.Filter = "LDBS File|LDBS.xml";
-            if (ofd.ShowDialog() == true)
-            {
-                using (StreamReader sr = new StreamReader(ofd.FileName))
-                {
-                    string xmlLDB = sr.ReadToEnd();
-                    try
-                    {
-                        DataTable dt = XMLParser.ParseLDB(xmlLDB);
-                        DataSet lds = new DataSet("LDB");
-                        lds.Tables.Add(dt);
-                        DB db = new DB();
-                        db.ImportDataSet(lds, false);
-                    }
-                    catch (Exception ex)
-                    {
-                        StatusBarExceptionMessage.Text = ex.Message;
-                    }
-                }
-            }
-        }
-        private void ImportplistButton_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            ofd.DefaultExt = ".plist";
-            ofd.Filter = "plist File|*.plist";
-            if (ofd.ShowDialog() == true)
-            {
-                using (StreamReader sr = new StreamReader(ofd.FileName))
-                {
-                    try
-                    {
-                        DataSet ds = XMLParser.ParsePlistMDB(sr.BaseStream);
-                        DB db = new DB();
-                        db.ImportDataSet(ds, true);
 
-                        sr.BaseStream.Position = 0;
 
-                        DataTable dt = XMLParser.ParsePlistLDB(sr.BaseStream);
-                        DataSet lds = new DataSet("LDB");
-                        lds.Tables.Add(dt);
-                        db.ImportDataSet(lds, false);
-                    }
-                    catch (Exception ex)
-                    {
-                        StatusBarExceptionMessage.Text = ex.Message;
-                    }
-                }
-            }
-        }
-        #endregion
     }
 }
