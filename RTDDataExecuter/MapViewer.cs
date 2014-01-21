@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,11 +13,12 @@ namespace RTDDataExecuter
 {
     public partial class MainWindow : Window
     {
-        private void MapViewerTabItem_Selected(object sender, RoutedEventArgs e)
+        private void MapTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(QuestInfo_id.Text))
+            if (!string.IsNullOrWhiteSpace(QuestInfo_id.Text) && ((Grid)sender).IsVisible == true)
             {
-                InitMap(QuestInfo_id.Text);
+                string levelID = QuestInfo_id.Text;
+                InitMap(levelID);
             }
         }
         private void InitMap(string levelID, int repeat = 1)
@@ -433,7 +435,7 @@ namespace RTDDataExecuter
         {
             string levelID = param.ToString();
             DB db = new DB();
-            DataTable questData = db.GetData("SELECT * FROM quest_master WHERE id=" + levelID);
+
             DataTable monsterData = new DataTable();
             monsterData.Columns.Add("#", typeof(string));
             monsterData.Columns.Add("id", typeof(int));
@@ -441,22 +443,8 @@ namespace RTDDataExecuter
             monsterData.Columns.Add("lv_max", typeof(int));
             monsterData.Columns.Add("rate", typeof(int));
             monsterData.Columns.Add("drop_id", typeof(int));
-            monsterData.Columns.Add("isDragon", typeof(int));
-            monsterData.Columns.Add("name", typeof(string));
-            monsterData.Columns.Add("model", typeof(string));
-            monsterData.Columns.Add("texture", typeof(string));
-            monsterData.Columns.Add("type", typeof(int));
-            monsterData.Columns.Add("attribute", typeof(int));
-            monsterData.Columns.Add("soul_pt", typeof(int));
-            monsterData.Columns.Add("gold_pt", typeof(int));
-            monsterData.Columns.Add("turn", typeof(int));
-            //monsterData.Columns.Add("LvMinLife", typeof(int));
-            monsterData.Columns.Add("LvMaxLife", typeof(int));
-            //monsterData.Columns.Add("LvMinATK", typeof(int));
-            monsterData.Columns.Add("LvMaxATK", typeof(int));
-            //monsterData.Columns.Add("LvMinDEF", typeof(int));
-            monsterData.Columns.Add("LvMaxDEF", typeof(int));
 
+            DataTable questData = db.GetData("SELECT * FROM quest_master WHERE id=" + levelID);
             if (questData.Rows.Count == 0)
             {
                 return monsterData;
@@ -496,32 +484,94 @@ namespace RTDDataExecuter
                 enemyTableData.Rows[0]["death_rate"],
                 enemyTableData.Rows[0]["death_drop_id"]
                 });
-            foreach (DataRow dr in monsterData.Rows)
-            {
-                DataTable enemyUnitTable = db.GetData("SELECT * FROM enemy_unit_master WHERE id=" + dr["id"]);
-                if (enemyUnitTable.Rows.Count == 0)
-                {
-                    continue;
-                }
-                DataRow enemyUnitRow = enemyUnitTable.Rows[0];
-                dr["isDragon"] = enemyUnitRow["flag"];
-                dr["name"] = enemyUnitRow["name"];
-                dr["model"] = enemyUnitRow["model"];
-                dr["texture"] = enemyUnitRow["texture"];
-                dr["type"] = enemyUnitRow["type"];
-                dr["attribute"] = enemyUnitRow["attribute"];
-                dr["soul_pt"] = enemyUnitRow["soul_pt"];
-                dr["gold_pt"] = enemyUnitRow["gold_pt"];
-                dr["turn"] = enemyUnitRow["turn"];
-                //dr["LvMinLife"] = RealCalc(Convert.ToInt32(enemyUnitRow["life"]), Convert.ToInt32(enemyUnitRow["up_life"]), Convert.ToInt32(dr["lv_min"]));
-                dr["LvMaxLife"] = RealCalc(Convert.ToInt32(enemyUnitRow["life"]), Convert.ToInt32(enemyUnitRow["up_life"]), Convert.ToInt32(dr["lv_max"]));
-                //dr["LvMinATK"] = RealCalc(Convert.ToInt32(enemyUnitRow["attack"]), Convert.ToInt32(enemyUnitRow["up_attack"]), Convert.ToInt32(dr["lv_min"]));
-                dr["LvMaxATK"] = RealCalc(Convert.ToInt32(enemyUnitRow["attack"]), Convert.ToInt32(enemyUnitRow["up_attack"]), Convert.ToInt32(dr["lv_max"]));
-                //dr["LvMinDEF"] = RealCalc(Convert.ToInt32(enemyUnitRow["defense"]), Convert.ToInt32(enemyUnitRow["up_defense"]), Convert.ToInt32(dr["lv_min"]));
-                dr["LvMaxDEF"] = RealCalc(Convert.ToInt32(enemyUnitRow["defense"]), Convert.ToInt32(enemyUnitRow["up_defense"]), Convert.ToInt32(dr["lv_max"]));
-            }
 
             return monsterData;
+        }
+
+        private void MapMonsterGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MapMonsterGrid.SelectedItem == null)
+            {
+                //avoid Exception
+                return;
+            }
+            DataRow mmInfoRow = ((DataRowView)MapMonsterGrid.SelectedItem).Row;
+            MapEnemyInfo_Mark.Text = mmInfoRow["#"].ToString();
+            MapEnemyInfo_id.Text = mmInfoRow["id"].ToString();
+            MapEnemyInfo_rate.Text = mmInfoRow["rate"].ToString();
+            MapEnemyInfo_lv_min.Text = mmInfoRow["lv_min"].ToString();
+            MapEnemyInfo_lv_max.Text = mmInfoRow["lv_max"].ToString();
+            MapEnemyInfo_drop_id.Text = mmInfoRow["drop_id"].ToString();
+
+            MapEnemyInfo_lv.Text = "-1";  //force rebind
+        }
+
+        private void MapEnemyInfo_lv_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(MapEnemyInfo_lv.Text))
+            {
+                MapEnemyInfo_lv.Text = "0";
+            }
+            Regex r = new Regex("[^0-9]");
+            if (r.Match(MapEnemyInfo_lv.Text).Success)
+            {
+                MapEnemyInfo_lv.Text = "0";
+            }
+            MapEnemyInfo_DataBind();
+        }
+
+        private void MapEnemyInfo_DataBind()
+        {
+            if (string.IsNullOrWhiteSpace(MapEnemyInfo_id.Text))
+            {
+                return;
+            }
+            string enemyId = MapEnemyInfo_id.Text;
+            Task<DataTable> task = new Task<DataTable>(() =>
+            {
+                string sql = "SELECT * FROM enemy_unit_master WHERE id={0}";
+                DB db = new DB();
+                return db.GetData(String.Format(sql, enemyId));
+            });
+            task.ContinueWith(t =>
+            {
+                if (t.Exception != null)
+                {
+                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    return;
+                }
+                if (t.Result == null || t.Result.Rows.Count == 0)
+                {
+                    return;
+                }
+                DataRow dr = t.Result.Rows[0];
+
+                MapEnemyInfo_name.Text = dr["name"].ToString();
+                MapEnemyInfo_model.Text = dr["model"].ToString();
+                MapEnemyInfo_texture.Text = dr["texture"].ToString();
+                MapEnemyInfo_type.Text = parseEnemyType(Convert.ToInt32(dr["type"]));
+                MapEnemyInfo_isDragon.Text = Convert.ToBoolean(dr["flag"]).ToString();
+                MapEnemyInfo_attribute.Text = parseAttributetype(Convert.ToInt32(dr["attribute"]));
+                MapEnemyInfo_soul_pt.Text = dr["soul_pt"].ToString();
+                MapEnemyInfo_gold_pt.Text = dr["gold_pt"].ToString();
+                MapEnemyInfo_turn.Text = dr["turn"].ToString();
+
+                int lv = Convert.ToInt32(MapEnemyInfo_lv.Text);
+                int lv_max = Convert.ToInt32(MapEnemyInfo_lv_max.Text);
+                if (lv > lv_max)
+                {
+                    lv = lv_max;
+                    MapEnemyInfo_lv.Text = lv.ToString("0");
+                }
+                MapEnemyInfo_life.Text = RealCalc(Convert.ToInt32(dr["life"]), Convert.ToInt32(dr["up_life"]), lv).ToString();
+                MapEnemyInfo_atk.Text = RealCalc(Convert.ToInt32(dr["attack"]), Convert.ToInt32(dr["up_attack"]), lv).ToString();
+                MapEnemyInfo_def.Text = RealCalc(Convert.ToInt32(dr["defense"]), Convert.ToInt32(dr["up_defense"]), lv).ToString();
+
+                MapEnemyInfo_pat.Text = parseAttackPattern(Convert.ToInt32(dr["pat"]));
+                MapEnemyInfo_p0.Text = dr["p0"].ToString();
+
+            }, uiTaskScheduler);
+            task.Start();
         }
 
         private MapTable BindMonsterDataToMap(MapTable map, DataTable monsterData)

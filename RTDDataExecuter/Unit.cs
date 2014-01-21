@@ -12,7 +12,7 @@ namespace RTDDataExecuter
 {
     public partial class MainWindow : Window
     {
-        private void UnitViewerTabItem_Loaded(object sender, RoutedEventArgs e)
+        private void UnitTab_Initialized(object sender, EventArgs e)
         {
             Task<DataTable> task = new Task<DataTable>(() =>
             {
@@ -26,18 +26,18 @@ namespace RTDDataExecuter
                     StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
                     return;
                 }
-                UnitViewerDataGrid.ItemsSource = t.Result.DefaultView;
+                UnitDataGrid.ItemsSource = t.Result.DefaultView;
             }, uiTaskScheduler);    //this Task work on ui thread
             task.Start();
         }
-        private void UnitViewerDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void UnitDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (UnitViewerDataGrid.SelectedItem == null)
+            if (UnitDataGrid.SelectedItem == null)
             {
                 //avoid Exception
                 return;
             }
-            string unitid = ((DataRowView)UnitViewerDataGrid.SelectedItem).Row["id"].ToString();
+            string unitid = ((DataRowView)UnitDataGrid.SelectedItem).Row["id"].ToString();
             UnitInfo_id.Text = unitid;
             UnitInfo_lv.Text = "1";
             UnitInfo_BindData(unitid);
@@ -93,7 +93,6 @@ namespace RTDDataExecuter
             }
         }
 
-        private static readonly object UnitInfo_BindingDataSyncObject = new object();
         private void UnitInfo_BindData(string unitid)
         {
             double thislevel = Convert.ToDouble(Convert.ToInt32(UnitInfo_lv.Text));
@@ -108,11 +107,11 @@ namespace RTDDataExecuter
             {
                 List<SkillMaster> skillList = new List<SkillMaster>();
                 Task.WaitAll(task);
-                DataRow unitData = task.Result.Rows[0];
-                if (unitData == null || unitData.ItemArray.Length == 0)
+                if (task.Result == null || task.Result.Rows.Count == 0)
                 {
                     return null;
                 }
+                DataRow unitData = task.Result.Rows[0];
                 int partyRankSkillId = Convert.ToInt32(unitData["p_skill_id"]);
                 int activeRankSkillId = Convert.ToInt32(unitData["a_skill_id"]);
                 int panelRankSkillId = Convert.ToInt32(unitData["panel_skill_id"]);
@@ -130,11 +129,11 @@ namespace RTDDataExecuter
                     StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
                     return;
                 }
-                DataRow unitData = task.Result.Rows[0];
-                if (unitData == null || unitData.ItemArray.Length == 0)
+                if (task.Result == null || task.Result.Rows.Count == 0)
                 {
                     return;
                 }
+                DataRow unitData = task.Result.Rows[0];
                 UnitInfo_g_id.Text = unitData["g_id"].ToString();
                 UnitInfo_name.Text = unitData["name"].ToString();
                 string rare = string.Empty;
@@ -217,7 +216,7 @@ namespace RTDDataExecuter
             partySkill_text.Document = parseTextToDocument(skill.text);
             partySkill_attribute.Text = parseAttributetype(skill.attribute);
             partySkill_style.Text = parseStyletype(skill.style);
-            partySkill_type.Text = parseSkillType((PartySkillType)skill.type);
+            partySkill_type.Text = parseSkillType((PassiveSkillType)skill.type);
             partySkill_num.Text = skill.num.ToString();
             partySkill_num_01.Text = skill.num_01.ToString();
             partySkill_num_02.Text = skill.num_02.ToString();

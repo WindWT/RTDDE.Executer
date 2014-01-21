@@ -12,21 +12,21 @@ namespace RTDDataExecuter
 {
     public partial class MainWindow : Window
     {
-        private void QuestViewerDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void QuestDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (QuestViewerDataGrid.SelectedItem == null)
+            if (QuestDataGrid.SelectedItem == null)
             {
                 //avoid Exception
                 return;
             }
-            string eqInfo_id = ((DataRowView)QuestViewerDataGrid.SelectedItem).Row["id"].ToString();
+            string eqInfo_id = ((DataRowView)QuestDataGrid.SelectedItem).Row["id"].ToString();
             QuestInfo_id.Text = eqInfo_id;
             Task<DataTable> task = new Task<DataTable>(() =>
             {
                 string sql = @"SELECT id,name,pt_num,difficulty,stamina,soul,
 reward_money,reward_exp,reward_soul,category,
 (select name from quest_category_master where quest_category_master.id=category) as category_name,
-(select text from quest_category_master where quest_category_master.id=category) as text,
+(select text from quest_category_master where quest_category_master.id=category) as category_text,
 open_type_1,open_param_1,
 open_type_2,open_param_2,
 open_type_3,open_param_3,
@@ -51,11 +51,11 @@ panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
             {
                 List<Dictionary<string, string>> opentypeList = new List<Dictionary<string, string>>();
                 Task.WaitAll(task);
-                DataRow dr = task.Result.Rows[0];
-                if (dr == null || dr.ItemArray.Length == 0)
+                if (task.Result == null || task.Result.Rows.Count == 0)
                 {
                     return null;
                 }
+                DataRow dr = task.Result.Rows[0];
                 opentypeList.Add(parseOpentype(dr["open_type_1"].ToString(), dr["open_param_1"].ToString()));
                 opentypeList.Add(parseOpentype(dr["open_type_2"].ToString(), dr["open_param_2"].ToString()));
                 opentypeList.Add(parseOpentype(dr["open_type_3"].ToString(), dr["open_param_3"].ToString()));
@@ -72,18 +72,18 @@ panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
                     StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
                     return;
                 }
-                DataRow dr = task.Result.Rows[0];
-                if (dr == null || dr.ItemArray.Length == 0)
+                if (task.Result == null || task.Result.Rows.Count == 0)
                 {
                     return;
                 }
+                DataRow dr = task.Result.Rows[0];
                 QuestInfo_name.Text = dr["name"].ToString();
                 QuestInfo_pt.Text = dr["pt_num"].ToString();
                 QuestInfo_difficulty.Text = dr["difficulty"].ToString();
                 QuestInfo_stamina.Text = dr["stamina"].ToString();
                 QuestInfo_category.Text = dr["category"].ToString();
                 QuestInfo_category_name.Text = dr["category_name"].ToString();
-                QuestInfo_text.Text = parseText(dr["text"].ToString());
+                QuestInfo_text.Text = parseText(dr["category_text"].ToString());
                 QuestInfo_reward_money.Text = dr["reward_money"].ToString();
                 QuestInfo_reward_exp.Text = dr["reward_exp"].ToString();
                 QuestInfo_init_soul.Text = dr["soul"].ToString();
@@ -182,7 +182,7 @@ panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
        END ) AS [end]
   FROM quest_master
  ORDER BY start DESC,end DESC,id DESC;";
-            QuestViewerDataGrid_BindData(sql);
+            QuestDataGrid_BindData(sql);
         }
 
         private void QuestTypeRadio_Daily_Checked(object sender, RoutedEventArgs e)
@@ -232,7 +232,7 @@ WHERE DayOfWeek>=0
 AND isDisabled=0
 AND ([end]>" + today + @" OR [end]=0)
 ORDER BY DayOfWeek,id DESC";
-            QuestViewerDataGrid_BindData(sql);
+            QuestDataGrid_BindData(sql);
         }
 
         private void QuestTypeRadio_Main_Checked(object sender, RoutedEventArgs e)
@@ -242,7 +242,7 @@ ORDER BY DayOfWeek,id DESC";
 FROM QUEST_MASTER
 WHERE category<1000
 ORDER BY id DESC";
-            QuestViewerDataGrid_BindData(sql);
+            QuestDataGrid_BindData(sql);
         }
 
         private void QuestSearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -271,7 +271,7 @@ FROM QUEST_MASTER WHERE ";
                 sql += "category_name LIKE '%" + QuestSearch_category_name.Text + "%' AND ";
             }
             sql += " 1=1 ORDER BY id DESC";
-            QuestViewerDataGrid_BindData(sql);
+            QuestDataGrid_BindData(sql);
         }
 
         private void QuestSearchClear_Click(object sender, RoutedEventArgs e)
@@ -283,11 +283,11 @@ FROM QUEST_MASTER WHERE ";
             QuestTypeRadio_Event.IsChecked = true;
         }
 
-        private void QuestViewerDataGrid_BindData(string sql)
+        private void QuestDataGrid_BindData(string sql)
         {
-            QuestViewerDataGrid_BindData(sql, null);
+            QuestDataGrid_BindData(sql, null);
         }
-        private void QuestViewerDataGrid_BindData(string sql, List<SQLiteParameter> paras)
+        private void QuestDataGrid_BindData(string sql, List<SQLiteParameter> paras)
         {
             Task<DataTable> task = new Task<DataTable>(() =>
             {
@@ -301,7 +301,7 @@ FROM QUEST_MASTER WHERE ";
                     StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
                     return;
                 }
-                QuestViewerDataGrid.ItemsSource = t.Result.DefaultView;
+                QuestDataGrid.ItemsSource = t.Result.DefaultView;
             }, uiTaskScheduler);    //this Task work on ui thread
             task.Start();
         }

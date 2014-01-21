@@ -218,6 +218,8 @@ namespace RTDDataProvider
         public int turn;
         public int ui;
         public short atk_ef_id;
+        public int pat;
+        public int p0;
     }
     [Serializable]
     public class GlobalParamsMaster
@@ -323,6 +325,7 @@ namespace RTDDataProvider
         public string name;
         public string text;
         public int display_order;
+        public string banner;
     }
     [Serializable]
     public class QuestChallengeMaster
@@ -407,6 +410,9 @@ namespace RTDDataProvider
         public int tflg_cmd_1;
         public int tflg_idx_1;
         public int sp_guide_id;
+        public string banner;
+        public int bgm_f;
+        public int bgm_b;
     }
     [Serializable]
     public class SequenceLoginBonusMaster

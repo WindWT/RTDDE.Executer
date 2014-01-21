@@ -20,6 +20,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Configuration;
+using System.Windows.Controls.Primitives;
 
 namespace RTDDataExecuter
 {
@@ -35,18 +36,79 @@ namespace RTDDataExecuter
         }
         private TaskScheduler uiTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
-        private void CommonViewerTabItem_Loaded(object sender, RoutedEventArgs e)
+        private void TabStrip_Unchecked(object sender, RoutedEventArgs e)
+        {
+            int checkedTabNumber = 0;
+            foreach (var children in TabGrid.Children)
+            {
+                if (children is ToggleButton)
+                {
+                    if (((ToggleButton)children).IsChecked == true)
+                    {
+                        checkedTabNumber++;
+                    }
+                }
+            }
+            if (checkedTabNumber == 0)
+            {
+                ((ToggleButton)sender).IsChecked = true;
+            }
+        }
+        private void TabStrip_Checked(object sender, RoutedEventArgs e)
+        {
+            ChangeTab(((ToggleButton)sender).Name.Replace("_TabStrip", String.Empty));
+        }
+        private void ChangeTab(string name)
+        {
+            if (MainGrid == null)
+            {
+                return;
+            }
+            foreach (var children in MainGrid.Children)
+            {
+                if (children is Grid)
+                {
+                    if (((Grid)children).Name != name + "Tab")
+                    {
+                        ((Grid)children).Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        ((Grid)children).Visibility = Visibility.Visible;
+                    }
+                }
+            }
+            foreach (var children in TabGrid.Children)
+            {
+                if (children is ToggleButton)
+                {
+                    if (((ToggleButton)children).Name != name + "_TabStrip")
+                    {
+                        ((ToggleButton)children).IsChecked = false;
+                    }
+                    else
+                    {
+                        if (((ToggleButton)children).IsChecked == false)
+                        {
+                            ((ToggleButton)children).IsChecked = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void CommonTab_Initialized(object sender, EventArgs e)
         {
             string sql = "SELECT * FROM USER_RANK_MASTER";
-            CommonViewerSQLTextBox.Text = sql;
-            CommonViewerDataGrid_BindData(sql);
+            CommonSQLTextBox.Text = sql;
+            CommonDataGrid_BindData(sql);
         }
-        private void CommonViewerRunSQL_Click(object sender, RoutedEventArgs e)
+        private void CommonRunSQL_Click(object sender, RoutedEventArgs e)
         {
-            string sql = CommonViewerSQLTextBox.Text;
-            CommonViewerDataGrid_BindData(sql);
+            string sql = CommonSQLTextBox.Text;
+            CommonDataGrid_BindData(sql);
         }
-        private void CommonViewerDataGrid_BindData(string sql)
+        private void CommonDataGrid_BindData(string sql)
         {
             Task<DataTable> task = new Task<DataTable>(() =>
             {
@@ -60,7 +122,7 @@ namespace RTDDataExecuter
                     StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
                     return;
                 }
-                CommonViewerDataGrid.ItemsSource = t.Result.DefaultView;
+                CommonDataGrid.ItemsSource = t.Result.DefaultView;
             }, uiTaskScheduler);    //this Task work on ui thread
             task.Start();
         }
@@ -78,11 +140,12 @@ namespace RTDDataExecuter
                 StatusBarExceptionMessage.Visibility = Visibility.Visible;
                 dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
                 dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
-                dispatcherTimer.Tick += new EventHandler((a, b) => { StatusBarExceptionMessage.Visibility = Visibility.Collapsed; });
+                dispatcherTimer.Tick += new EventHandler((a, b) =>
+                {
+                    StatusBarExceptionMessage.Text = String.Empty;
+                });
                 dispatcherTimer.Start();
             }
         }
-
-
     }
 }

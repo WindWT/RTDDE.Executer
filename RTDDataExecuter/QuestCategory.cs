@@ -23,14 +23,14 @@ namespace RTDDataExecuter
 {
     public partial class MainWindow : Window
     {
-        private void QuestCategoryViewerDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void QuestCategoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (QuestCategoryViewerDataGrid.SelectedItem == null)
+            if (QuestCategoryDataGrid.SelectedItem == null)
             {
                 //avoid Exception
                 return;
             }
-            string qcInfo_id = ((DataRowView)QuestCategoryViewerDataGrid.SelectedItem).Row["id"].ToString();
+            string qcInfo_id = ((DataRowView)QuestCategoryDataGrid.SelectedItem).Row["id"].ToString();
             QuestCategoryInfo_id.Text = qcInfo_id;
             Task<DataTable> task = new Task<DataTable>(() =>
             {
@@ -40,22 +40,22 @@ namespace RTDDataExecuter
             });
             Task<DataTable> taskQuest = new Task<DataTable>(() =>
             {
-                DataRow dr = task.Result.Rows[0];
-                if (dr == null || dr.ItemArray.Length == 0)
+                if (task.Result == null || task.Result.Rows.Count == 0)
                 {
                     return null;
                 }
+                DataRow dr = task.Result.Rows[0];
                 string sql = "SELECT * FROM quest_master WHERE category={0} order by display_order DESC";
                 DB db = new DB();
                 return db.GetData(String.Format(sql, qcInfo_id));
             });
             Task<DataTable> taskReward = new Task<DataTable>(() =>
             {
-                DataRow dr = task.Result.Rows[0];
-                if (dr == null || dr.ItemArray.Length == 0)
+                if (task.Result == null || task.Result.Rows.Count == 0)
                 {
                     return null;
                 }
+                DataRow dr = task.Result.Rows[0];
                 string sql = @"select *,
 (case when present_type=4 
 then (select name from unit_master where unit_master.id=quest_challenge_reward_master.present_param_0) 
@@ -72,11 +72,11 @@ order by point";
                         StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
                         return;
                     }
-                    DataRow dr = t.Result.Rows[0];
-                    if (dr == null || dr.ItemArray.Length == 0)
+                    if (t.Result == null || t.Result.Rows.Count == 0)
                     {
                         return;
                     }
+                    DataRow dr = t.Result.Rows[0];
                     Task.WaitAll(taskQuest, taskReward);
                     if (taskQuest.Exception != null)
                     {
@@ -161,7 +161,7 @@ order by point";
             taskQuest.Start();
             taskReward.Start();
         }
-        private void QuestCategoryViewerDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void QuestCategoryDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (sender != null)
             {
@@ -170,6 +170,8 @@ order by point";
                 string name = ((DataRowView)dgr.Item).Row["name"].ToString();
                 QuestSearch_category.Text = id;
                 QuestSearch_category_name.Text = name;
+                ChangeTab("Quest");
+                QuestSearchExpander.IsExpanded = true;
             }
         }
 
@@ -192,9 +194,9 @@ order by point";
         private void QuestCategoryTypeRadio_Checked(int zbtn_kind)
         {
             string sql = string.Format("SELECT id,name,text FROM quest_category_master WHERE zbtn_kind={0} order by id", zbtn_kind.ToString());
-            QuestCategoryViewerDataGrid_BindData(sql);
+            QuestCategoryDataGrid_BindData(sql);
         }
-        private void QuestCategoryViewerDataGrid_BindData(string sql)
+        private void QuestCategoryDataGrid_BindData(string sql)
         {
             Task<DataTable> task = new Task<DataTable>(() =>
             {
@@ -208,7 +210,7 @@ order by point";
                     StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
                     return;
                 }
-                QuestCategoryViewerDataGrid.ItemsSource = t.Result.DefaultView;
+                QuestCategoryDataGrid.ItemsSource = t.Result.DefaultView;
             }, uiTaskScheduler);    //this Task work on ui thread
             task.Start();
         }

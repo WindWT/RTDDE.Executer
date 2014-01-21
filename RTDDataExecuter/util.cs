@@ -38,7 +38,7 @@ namespace RTDDataExecuter
         WIZARD,
         ALL
     }
-    public enum PartySkillType
+    public enum PassiveSkillType
     {
         MAX_LIFE_GRADEUP = 1,
         ATTACK_GRADEUP,
@@ -121,6 +121,7 @@ namespace RTDDataExecuter
         DAMAGE_DRAIN,
         SERIAL_HEAL_UP,
         ATTACK_ENHANCE,
+        MOVE_ENHANCE,
         BUFFER
     }
     public enum ActiveSkillType
@@ -183,7 +184,9 @@ namespace RTDDataExecuter
         MoneyAttack,
         LimitEnhance,
         DamageAttack,
-        CounterAttackUp
+        CounterAttackUp,
+        ExPanelAttack,
+        SoulPunisher
     }
     public enum PanelSkillType
     {
@@ -207,7 +210,8 @@ namespace RTDDataExecuter
         BATTLE_EVASION,
         LIMIT_LIFERECOVER_FIX,
         LIFE_UP_LIMIT,
-        RANDOM_EFFECT
+        RANDOM_EFFECT,
+        ENEMY_DAMAGE_AND_DEFENCE_DOWN
     }
     public enum SkillPhase
     {
@@ -252,6 +256,7 @@ namespace RTDDataExecuter
         WIN_STICK,
         GOD_BOW,
         ORG_STICK,
+        POK_ART,
         PLAYER_END,
         MS01SLA,
         MS01SQU,
@@ -294,6 +299,55 @@ namespace RTDDataExecuter
         MS03_BD_CHAU,
         MS03_BD_GIGA,
         MS03_BD_RUSA,
+        MAX
+    }
+    public enum ENEMY_TYPE
+    {
+        SLIME = 1,
+        SQUIRREL,
+        WOLF,
+        DRAGON_EGG,
+        BEAR,
+        SCORPION,
+        DRAGON1,
+        BOAR,
+        DRAGON2,
+        DRAGON3,
+        DRAGON4,
+        DRAGON5,
+        DEATH,
+        SILVER_SLIME,
+        GOLD_SLIME,
+        TREASURE,
+        STAIRS = 20,
+        MOVING_PANEL,
+        UNIT_ENEMY_GHOST,
+        TEMP_0,
+        UNIT_ENEMY_HUMAN,
+        FISH,
+        SHARK,
+        OCTOPUS,
+        DRAGON_HIGH_NECK,
+        WALL,
+        UNIT_ENEMY_POKKULU,
+        UNIT_ENEMY_ORG,
+        FLIGHT,
+        UNIT_ENEMY_ONLY_ORG,
+        HUGE_DRAGON_HEAD,
+        HUGE_DRAGON_TAIL,
+        HUGE_DRAGON_WING,
+        CHARACTER_WING,
+        SLIME_WING,
+        ELEMENT,
+        GIANT,
+        JELLY
+    }
+    public enum AttackPattern
+    {
+        NORMAL,
+        QUICK,
+        DELAY,
+        DOWN_SOUL,
         MAX
     }
     public partial class MainWindow : Window
@@ -581,6 +635,8 @@ namespace RTDDataExecuter
                                             return AssignID.WIN_STICK;
                                         case 308:
                                             return AssignID.ORG_STICK;
+                                        case 309:
+                                            return AssignID.POK_ART;
                                         default:
                                             return AssignID.SWORD;
                                     }
@@ -617,6 +673,14 @@ namespace RTDDataExecuter
         private static string parseSkillType<T>(T skilltype)
         {
             return skilltype.ToString();
+        }
+        private static string parseEnemyType(int type)
+        {
+            return ((ENEMY_TYPE)type).ToString();
+        }
+        private static string parseAttackPattern(int type)
+        {
+            return ((AttackPattern)type).ToString();
         }
         private static string parseRTDDate(string rtdDate)
         {

@@ -51,6 +51,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>3EF19707CC335DDFA5C364F131B579AFDC16B6CF</ManifestCertificateThumbprint>
@@ -104,10 +108,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="MapViewer.cs" />
-    <Compile Include="QuestCategoryViewer.cs" />
-    <Compile Include="QuestViewer.cs" />
+    <Compile Include="QuestCategory.cs" />
+    <Compile Include="Quest.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="UnitViewer.cs" />
+    <Compile Include="Unit.cs" />
     <Compile Include="util.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
