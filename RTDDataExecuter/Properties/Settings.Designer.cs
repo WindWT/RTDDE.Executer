@@ -46,5 +46,17 @@ namespace RTDDataExecuter.Properties {
                 this["IsShowBoxInfo"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsEnableLevelLimiter {
+            get {
+                return ((bool)(this["IsEnableLevelLimiter"]));
+            }
+            set {
+                this["IsEnableLevelLimiter"] = value;
+            }
+        }
     }
 }

@@ -33,6 +33,15 @@ namespace RTDDataExecuter
         {
             InitializeComponent();
             InitSettings();
+            new WindowResizer(this,
+                new WindowBorder(BorderPosition.TopLeft, topLeft),
+                new WindowBorder(BorderPosition.Top, top),
+                new WindowBorder(BorderPosition.TopRight, topRight),
+                new WindowBorder(BorderPosition.Right, right),
+                new WindowBorder(BorderPosition.BottomRight, bottomRight),
+                new WindowBorder(BorderPosition.Bottom, bottom),
+                new WindowBorder(BorderPosition.BottomLeft, bottomLeft),
+                new WindowBorder(BorderPosition.Left, left));
         }
         private TaskScheduler uiTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
@@ -146,6 +155,36 @@ namespace RTDDataExecuter
                 });
                 dispatcherTimer.Start();
             }
+        }
+
+        private void MoveBar_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void MoveBar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (this.WindowState == System.Windows.WindowState.Normal)
+            {
+                this.WindowState = System.Windows.WindowState.Maximized;
+            }
+            else
+            {
+                this.WindowState = System.Windows.WindowState.Normal;
+            }
+        }
+
+        private void MinimizedButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = System.Windows.WindowState.Minimized;
         }
     }
 }

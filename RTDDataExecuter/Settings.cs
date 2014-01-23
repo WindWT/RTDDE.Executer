@@ -133,12 +133,28 @@ namespace RTDDataExecuter
                 Properties.Settings.Default.Save();
             }
         }
+        private bool isEnableLevelLimiter = Properties.Settings.Default.IsEnableLevelLimiter;
+        public bool IsEnableLevelLimiter
+        {
+            get
+            {
+                return isEnableLevelLimiter;
+            }
+            set
+            {
+                isEnableLevelLimiter = value;
+                Properties.Settings.Default.IsEnableLevelLimiter = value;
+                Properties.Settings.Default.Save();
+            }
+        }        
         private void InitSettings()
         {
             IsShowDropInfo = Properties.Settings.Default.IsShowDropInfo;
             IsShowBoxInfo = Properties.Settings.Default.IsShowBoxInfo;
+            IsEnableLevelLimiter = Properties.Settings.Default.IsEnableLevelLimiter;
             IsShowDropInfoCheckBox.IsChecked = IsShowDropInfo;
             IsShowBoxInfoCheckBox.IsChecked = IsShowBoxInfo;
+            IsEnableLevelLimiterCheckBox.IsChecked = IsEnableLevelLimiter;
         }
         private void IsShowDropInfoCheckBox_Checked(object sender, RoutedEventArgs e)
         {
@@ -155,6 +171,14 @@ namespace RTDDataExecuter
         private void IsShowBoxInfoCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             IsShowBoxInfo = false;
+        }
+        private void IsEnableLevelLimiterCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            IsEnableLevelLimiter = true;
+        }
+        private void IsEnableLevelLimiterCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            IsEnableLevelLimiter = false;
         }
     }
 }

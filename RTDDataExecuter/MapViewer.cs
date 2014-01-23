@@ -26,6 +26,11 @@ namespace RTDDataExecuter
             Task<DataTable> initMonsterTask = new Task<DataTable>(GetMonsterData, levelID);
             initMonsterTask.ContinueWith(t =>
             {
+                if (t.Exception != null)
+                {
+                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    return;
+                }
                 MapMonsterGrid.ItemsSource = t.Result.DefaultView;
             }, uiTaskScheduler);
 
@@ -451,6 +456,10 @@ namespace RTDDataExecuter
             }
             string enemy_table_id = questData.Rows[0]["enemy_table_id"].ToString();
             DataTable enemyTableData = db.GetData("SELECT * FROM enemy_table_master WHERE id=" + enemy_table_id);
+            if (enemyTableData.Rows.Count == 0)
+            {
+                throw new Exception("数据不存在。");
+            }
             for (int i = 1; i <= 18; i++)
             {
                 if (enemyTableData.Rows[0]["enemy" + i + "_set_id"].ToString() != "0")
@@ -510,12 +519,12 @@ namespace RTDDataExecuter
         {
             if (string.IsNullOrWhiteSpace(MapEnemyInfo_lv.Text))
             {
-                MapEnemyInfo_lv.Text = "0";
+                MapEnemyInfo_lv.Text = "99";
             }
             Regex r = new Regex("[^0-9]");
             if (r.Match(MapEnemyInfo_lv.Text).Success)
             {
-                MapEnemyInfo_lv.Text = "0";
+                MapEnemyInfo_lv.Text = "99";
             }
             MapEnemyInfo_DataBind();
         }
@@ -558,7 +567,7 @@ namespace RTDDataExecuter
 
                 int lv = Convert.ToInt32(MapEnemyInfo_lv.Text);
                 int lv_max = Convert.ToInt32(MapEnemyInfo_lv_max.Text);
-                if (lv > lv_max)
+                if (IsEnableLevelLimiter && (lv > lv_max))
                 {
                     lv = lv_max;
                     MapEnemyInfo_lv.Text = lv.ToString("0");

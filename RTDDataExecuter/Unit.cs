@@ -150,7 +150,7 @@ namespace RTDDataExecuter
 
                 double maxlevel = Convert.ToDouble(unitData["lv_max"]);
                 UnitInfo_lv_max.Text = maxlevel.ToString("0");
-                if (thislevel > maxlevel)
+                if (IsEnableLevelLimiter && (thislevel > maxlevel))
                 {
                     thislevel = maxlevel;
                     UnitInfo_lv.Text = maxlevel.ToString("0");
