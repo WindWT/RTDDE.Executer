@@ -23,6 +23,7 @@
             <Setter Property="SelectionMode" Value="Single"/>
             <Setter Property="SelectionUnit" Value="FullRow"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="EnableRowVirtualization" Value="True"/>
         </Style>
         <Style TargetType="DataGridColumnHeader">
             <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
@@ -38,8 +39,9 @@
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
             <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="BorderBrush" Value="Black"/>
             <Setter Property="Padding" Value="10,5,10,5"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
@@ -140,7 +142,8 @@
             <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
         <DockPanel  Grid.RowSpan="3" Grid.ColumnSpan="3">
-            <StatusBar DockPanel.Dock="Bottom" Height="20" VerticalAlignment="Bottom">
+            <StatusBar DockPanel.Dock="Bottom" Height="20" VerticalAlignment="Bottom" 
+                       Background="{StaticResource HighlightBrush}">
                 <StatusBarItem Padding="0" Margin="0">
                     <TextBox Name="StatusBarExceptionMessage" 
                              VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True" 
@@ -203,7 +206,6 @@
                                     <TextBox Name="QuestSearch_category" Width="50" TextChanged="QuestSearch_TextChanged"></TextBox>
                                     <TextBox Name="QuestSearch_category_name" Width="200" TextChanged="QuestSearch_TextChanged"></TextBox>
                                     <Button Name="QuestSearchClear" Width="300" Click="QuestSearchClear_Click">Clear</Button>
-                                    <Separator Width="300"/>
                                 </WrapPanel>
                             </Expander.Content>
                         </Expander>
@@ -230,20 +232,20 @@
                         <TextBox Name="QuestInfo_category_name" Width="200" IsReadOnly="True"></TextBox>
                         <TextBlock Text="text" Width="50"/>
                         <TextBox Name="QuestInfo_text" Width="250" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
-                        <Separator Width="300"/>
                     </WrapPanel>
                     <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
                         <StackPanel>
                             <WrapPanel Name="QuestInfo_challenge">
+                                <Separator Width="300"/>
                                 <TextBlock Text="gold" Width="50" />
                                 <RichTextBox Name="QuestInfo_challenge_gold" Width="250" IsReadOnly="True" BorderBrush="Gold"></RichTextBox>
                                 <TextBlock Text="silver" Width="50" />
                                 <RichTextBox Name="QuestInfo_challenge_silver" Width="250" IsReadOnly="True" BorderBrush="Silver"></RichTextBox>
                                 <TextBlock Text="bronze" Width="50" />
                                 <RichTextBox Name="QuestInfo_challenge_bronze" Width="250" IsReadOnly="True" BorderBrush="Brown"></RichTextBox>
-                                <Separator Width="300"/>
                             </WrapPanel>
                             <WrapPanel>
+                                <Separator Width="300"/>
                                 <TextBlock Text="opentype" Width="100"/>
                                 <TextBlock Text="opentypeParam" Width="200"/>
                                 <TextBox Name="QuestInfo_opentype1_name" Width="100" IsReadOnly="True"></TextBox>
@@ -277,14 +279,13 @@
                                 <TextBox Name="QuestInfo_panel_cane" Width="50" IsReadOnly="True"></TextBox>
                                 <TextBox Name="QuestInfo_panel_heart" Width="25" IsReadOnly="True"></TextBox>
                                 <TextBox Name="QuestInfo_panel_sp" Width="25" IsReadOnly="True"></TextBox>
-                                <Separator Width="300"/>
                             </WrapPanel>
                             <WrapPanel Name="QuestInfo_sp_event">
+                                <Separator Width="300"/>
                                 <TextBlock Text="sp_event_id" Width="100"/>
                                 <TextBox Name="QuestInfo_sp_event_id" Width="200" IsReadOnly="True"></TextBox>
                                 <TextBlock Text="sp_event_name" Width="100"/>
                                 <TextBox Name="QuestInfo_sp_event_name" Width="200" IsReadOnly="True"></TextBox>
-                                <Separator Width="300"/>
                             </WrapPanel>
                         </StackPanel>
                     </ScrollViewer>
@@ -293,18 +294,22 @@
                     <DockPanel LastChildFill="True">
                         <Grid DockPanel.Dock="Top">
                             <Grid.Resources>
-                                <Style TargetType="{x:Type TextBox}">
+                                <Style TargetType="{x:Type Border}">
                                     <Setter Property="Height" Value="25"/>
                                     <Setter Property="Width" Value="25"/>
+                                    <Setter Property="BorderThickness" Value="0.5"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource PressedBrush}"/>
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                </Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
                                     <Setter Property="TextAlignment" Value="Center"/>
-                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="HorizontalAlignment" Value="Center"/>
-                                    <Setter Property="IsReadOnly" Value="True"/>
                                     <Setter Property="Foreground" Value="Black"/>
-                                    <Setter Property="Background" Value="White"/>
-                                    <Setter Property="BorderThickness" Value="0.5"/>
                                     <Setter Property="FontSize" Value="12"/>
                                 </Style>
                             </Grid.Resources>
@@ -313,8 +318,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid Grid.Column="0" Name="MapMarkGrid"></Grid>
-                            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Disabled"
-                                  HorizontalScrollBarVisibility="Auto" DockPanel.Dock="Top">
+                            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" DockPanel.Dock="Top">
                                 <Grid Name="MapGrid"></Grid>
                             </ScrollViewer>
                         </Grid>
@@ -421,7 +425,6 @@
                         <TextBox Name="QuestCategoryInfo_zbtn_kind" Width="100" IsReadOnly="True"></TextBox>
                         <TextBlock Text="text" Width="50"/>
                         <TextBox Name="QuestCategoryInfo_text" Width="250" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
-                        <Separator Width="300"/>
                     </WrapPanel>
                     <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
                         <StackPanel>
@@ -478,15 +481,14 @@
                                     <TextBox Name="UnitInfo_sct6_text" Width="250" IsReadOnly="True"></TextBox>
                                     <TextBlock Text="a_skill_text" Width="50"/>
                                     <TextBox Name="UnitInfo_a_skill_text" Width="250" IsReadOnly="True"></TextBox>
-                                    <Separator Width="300"/>
                                 </WrapPanel>
                             </Expander.Content>
                         </Expander>
-                        <Separator Width="300"/>
                     </WrapPanel>
                     <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
                         <StackPanel>
                             <WrapPanel Name="UnitInfo_Panel_General">
+                                <Separator Width="300"/>
                                 <TextBlock Text="lv" Width="50"/>
                                 <TextBox Name="UnitInfo_lv" Width="100" TextChanged="UnitInfo_lv_TextChanged"></TextBox>
                                 <TextBlock Text="lv_max" Width="50"/>
@@ -589,14 +591,16 @@
                         <Grid HorizontalAlignment="Stretch" DockPanel.Dock="Top">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox Grid.Column="0" Name="CommonSQLTextBox" AcceptsReturn="True" AcceptsTab="True" VerticalScrollBarVisibility="Auto"/>
+                            <TextBox Grid.Column="0" Name="CommonSQLTextBox"
+                                     AcceptsReturn="True" AcceptsTab="True" 
+                                     VerticalScrollBarVisibility="Auto"
+                                     Text="{Binding ElementName=CommonSQLComboBox,Path=SelectedValue}"/>
                             <StackPanel Grid.Column="1">
-                                <ComboBox>
-                                    <ComboBoxItem></ComboBoxItem>
-                                    <ComboBoxItem></ComboBoxItem>
-                                    <ComboBoxItem></ComboBoxItem>
+                                <ComboBox Name="CommonSQLComboBox" ItemsSource="{Binding CommonSQLList}"
+                                          DisplayMemberPath="Name" SelectedValuePath="SQL"
+                                          SelectionChanged="CommonSQLComboBox_SelectionChanged">
                                 </ComboBox>
                                 <Button Name="CommonRunSQL" Grid.Column="1" Click="CommonRunSQL_Click">
                                     <TextBlock Text="RunSQL" HorizontalAlignment="Center"/>

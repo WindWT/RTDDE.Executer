@@ -107,6 +107,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common.cs" />
     <Compile Include="MapViewer.cs" />
     <Compile Include="QuestCategory.cs" />
     <Compile Include="Quest.cs" />

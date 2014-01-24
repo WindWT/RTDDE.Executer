@@ -106,35 +106,7 @@ namespace RTDDataExecuter
             }
         }
 
-        private void CommonTab_Initialized(object sender, EventArgs e)
-        {
-            string sql = "SELECT * FROM USER_RANK_MASTER";
-            CommonSQLTextBox.Text = sql;
-            CommonDataGrid_BindData(sql);
-        }
-        private void CommonRunSQL_Click(object sender, RoutedEventArgs e)
-        {
-            string sql = CommonSQLTextBox.Text;
-            CommonDataGrid_BindData(sql);
-        }
-        private void CommonDataGrid_BindData(string sql)
-        {
-            Task<DataTable> task = new Task<DataTable>(() =>
-            {
-                DB db = new DB();
-                return db.GetData(sql);
-            });
-            task.ContinueWith(t =>
-            {
-                if (t.Exception != null)
-                {
-                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
-                    return;
-                }
-                CommonDataGrid.ItemsSource = t.Result.DefaultView;
-            }, uiTaskScheduler);    //this Task work on ui thread
-            task.Start();
-        }
+        
 
         //异常信息显示5秒之后消失。
         private DispatcherTimer dispatcherTimer = null;

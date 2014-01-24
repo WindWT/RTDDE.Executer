@@ -367,11 +367,10 @@ namespace RTDDataExecuter
                             Width = new GridLength(25)
                         });
                     }
-                    TextBox tb = new TextBox()
+                    TextBlock tb = new TextBlock()
                     {
                         Text = c.CellData,
                         Foreground = c.Foreground,
-                        Background = c.Background,
                         FontWeight = c.fontWeight
                     };
                     System.Windows.Shapes.Rectangle rec = new System.Windows.Shapes.Rectangle()
@@ -389,14 +388,20 @@ namespace RTDDataExecuter
                             }
                         }
                     };
+                    Border b = new Border()
+                    {
+                        Background = c.Background,
+                        Child = tb
+                    };
+
                     MapGrid.Children.Add(rec);
                     rec.SetValue(Grid.RowProperty, row);
                     rec.SetValue(Grid.ColumnProperty, col);
                     rec.SetValue(Grid.ZIndexProperty, 2);
 
-                    MapGrid.Children.Add(tb);
-                    tb.SetValue(Grid.RowProperty, row);
-                    tb.SetValue(Grid.ColumnProperty, col);
+                    MapGrid.Children.Add(b);
+                    b.SetValue(Grid.RowProperty, row);
+                    b.SetValue(Grid.ColumnProperty, col);
 
                     if (String.IsNullOrWhiteSpace(c.drop_unit_id) == false)
                     {
@@ -425,14 +430,16 @@ namespace RTDDataExecuter
                 {
                     Height = new GridLength(25)
                 });
-                TextBox tb = new TextBox()
+                TextBlock tb = new TextBlock()
                 {
                     Text = (i == (row - 1)) ? string.Empty : ((map.y - i) % map.h).ToString()
                 };
-                MapMarkGrid.Children.Add(tb);
+                Border b = new Border();
+                b.Child = tb;
+                MapMarkGrid.Children.Add(b);
 
-                tb.SetValue(Grid.RowProperty, i);
-                tb.SetValue(Grid.ColumnProperty, 0);
+                b.SetValue(Grid.RowProperty, i);
+                b.SetValue(Grid.ColumnProperty, 0);
             }
         }
 
