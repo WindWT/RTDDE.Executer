@@ -140,6 +140,7 @@
         </Style>
         <Style TargetType="RichTextBox">
             <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PressedBrush}"/>
         </Style>
         <Style TargetType="Separator">
             <Setter Property="Background" Value="{StaticResource SeparatorBrush}"/>
