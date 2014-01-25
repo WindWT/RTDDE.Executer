@@ -40,6 +40,7 @@ bonus_type,bonus_start,bonus_end,
 present_type,present_param,present_param_1,
 (case when present_type=4 then (select name from unit_master where unit_master.id=quest_master.present_param) else present_param end) as present_param_name ,
 panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
+bgm_f,bgm_b,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_0) as challenge0,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_1) as challenge1,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_2) as challenge2
@@ -56,12 +57,12 @@ panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
                     return null;
                 }
                 DataRow dr = task.Result.Rows[0];
-                opentypeList.Add(parseOpentype(dr["open_type_1"].ToString(), dr["open_param_1"].ToString()));
-                opentypeList.Add(parseOpentype(dr["open_type_2"].ToString(), dr["open_param_2"].ToString()));
-                opentypeList.Add(parseOpentype(dr["open_type_3"].ToString(), dr["open_param_3"].ToString()));
-                opentypeList.Add(parseOpentype(dr["open_type_4"].ToString(), dr["open_param_4"].ToString()));
-                opentypeList.Add(parseOpentype(dr["open_type_5"].ToString(), dr["open_param_5"].ToString()));
-                opentypeList.Add(parseOpentype(dr["open_type_6"].ToString(), dr["open_param_6"].ToString()));
+                opentypeList.Add(Utility.parseOpentype(dr["open_type_1"].ToString(), dr["open_param_1"].ToString()));
+                opentypeList.Add(Utility.parseOpentype(dr["open_type_2"].ToString(), dr["open_param_2"].ToString()));
+                opentypeList.Add(Utility.parseOpentype(dr["open_type_3"].ToString(), dr["open_param_3"].ToString()));
+                opentypeList.Add(Utility.parseOpentype(dr["open_type_4"].ToString(), dr["open_param_4"].ToString()));
+                opentypeList.Add(Utility.parseOpentype(dr["open_type_5"].ToString(), dr["open_param_5"].ToString()));
+                opentypeList.Add(Utility.parseOpentype(dr["open_type_6"].ToString(), dr["open_param_6"].ToString()));
                 return opentypeList;
             }
             );
@@ -83,10 +84,12 @@ panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
                 QuestInfo_stamina.Text = dr["stamina"].ToString();
                 QuestInfo_category.Text = dr["category"].ToString();
                 QuestInfo_category_name.Text = dr["category_name"].ToString();
-                QuestInfo_text.Text = parseText(dr["category_text"].ToString());
+                QuestInfo_text.Text = Utility.parseText(dr["category_text"].ToString());
                 QuestInfo_reward_money.Text = dr["reward_money"].ToString();
                 QuestInfo_reward_exp.Text = dr["reward_exp"].ToString();
                 QuestInfo_init_soul.Text = dr["soul"].ToString();
+                QuestInfo_bgm_f.Text = Utility.parseBgmFileName(Convert.ToInt32(dr["bgm_f"]));
+                QuestInfo_bgm_b.Text = Utility.parseBgmFileName(Convert.ToInt32(dr["bgm_b"]));
 
                 QuestInfo_opentype1_name.Text = t.Result[0]["opentype"];
                 QuestInfo_opentype1_value.Text = t.Result[0]["opentypeParam"];
@@ -125,9 +128,9 @@ panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
                     QuestInfo_sp_event_name.Text = dr["sp_event_name"].ToString();
                 }
 
-                QuestInfo_bonus.Text = parseBonustype(dr["bonus_type"].ToString());
-                QuestInfo_bonus_start.Text = parseRTDDate(dr["bonus_start"].ToString());
-                QuestInfo_bonus_end.Text = parseRTDDate(dr["bonus_end"].ToString());
+                QuestInfo_bonus.Text = Utility.parseBonustype(dr["bonus_type"].ToString());
+                QuestInfo_bonus_start.Text = Utility.parseRTDDate(dr["bonus_start"].ToString());
+                QuestInfo_bonus_end.Text = Utility.parseRTDDate(dr["bonus_end"].ToString());
 
                 QuestInfo_panel_sword.Text = dr["panel_sword"].ToString();
                 QuestInfo_panel_lance.Text = dr["panel_lance"].ToString();
@@ -145,12 +148,12 @@ panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
                 else
                 {
                     QuestInfo_challenge.Visibility = Visibility.Visible;
-                    QuestInfo_challenge_gold.Document = parseTextToDocument(dr["challenge2"].ToString());
-                    QuestInfo_challenge_silver.Document = parseTextToDocument(dr["challenge1"].ToString());
-                    QuestInfo_challenge_bronze.Document = parseTextToDocument(dr["challenge0"].ToString());
+                    QuestInfo_challenge_gold.Document = Utility.parseTextToDocument(dr["challenge2"].ToString());
+                    QuestInfo_challenge_silver.Document = Utility.parseTextToDocument(dr["challenge1"].ToString());
+                    QuestInfo_challenge_bronze.Document = Utility.parseTextToDocument(dr["challenge0"].ToString());
                 }
 
-                QuestInfo_present_type.Text = parsePresenttype(dr["present_type"].ToString());
+                QuestInfo_present_type.Text = Utility.parsePresenttype(dr["present_type"].ToString());
                 QuestInfo_present_param.Text = dr["present_param_name"].ToString();
                 QuestInfo_present_param_1.Text = dr["present_param_1"].ToString();
             }, uiTaskScheduler);    //this Task work on ui thread

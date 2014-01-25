@@ -92,10 +92,10 @@ order by point";
                     QuestCategoryInfo_name.Text = dr["name"].ToString();
                     QuestCategoryInfo_order.Text = dr["display_order"].ToString();
                     QuestCategoryInfo_icon.Text = dr["icon"].ToString();
-                    QuestCategoryInfo_kind.Text = parseQuestKind(dr["kind"].ToString());
-                    QuestCategoryInfo_zbtn_kind.Text = parseZBTNKind(dr["zbtn_kind"].ToString());
+                    QuestCategoryInfo_kind.Text = Utility.parseQuestKind(dr["kind"].ToString());
+                    QuestCategoryInfo_zbtn_kind.Text = Utility.parseZBTNKind(dr["zbtn_kind"].ToString());
                     QuestCategoryInfo_pt_num.Text = dr["pt_num"].ToString();
-                    QuestCategoryInfo_text.Text = parseText(dr["text"].ToString());
+                    QuestCategoryInfo_text.Text = Utility.parseText(dr["text"].ToString());
 
                     DataTable dtQuest = taskQuest.Result;
                     if (dtQuest == null || dtQuest.Rows.Count == 0)
@@ -140,7 +140,7 @@ order by point";
                             });
                             QuestCategoryInfo_reward.Children.Add(new TextBox()
                             {
-                                Text = parsePresenttype(drReward["present_type"].ToString()),
+                                Text = Utility.parsePresenttype(drReward["present_type"].ToString()),
                                 Width = 50
                             });
                             QuestCategoryInfo_reward.Children.Add(new TextBox()

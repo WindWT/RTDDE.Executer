@@ -407,7 +407,7 @@ namespace RTDDataExecuter
                     {
                         if (c.drop_unit_id != "0")
                         {
-                            rec.ToolTip = new TextBlock() { Text = parseUnitName(c.drop_unit_id) + "\n" + "觉醒pt:" + c.add_attribute_exp };
+                            rec.ToolTip = new TextBlock() { Text = Utility.parseUnitName(c.drop_unit_id) + "\n" + "觉醒pt:" + c.add_attribute_exp };
                         }
                         else
                         {
@@ -565,9 +565,9 @@ namespace RTDDataExecuter
                 MapEnemyInfo_name.Text = dr["name"].ToString();
                 MapEnemyInfo_model.Text = dr["model"].ToString();
                 MapEnemyInfo_texture.Text = dr["texture"].ToString();
-                MapEnemyInfo_type.Text = parseEnemyType(Convert.ToInt32(dr["type"]));
+                MapEnemyInfo_type.Text = Utility.parseEnemyType(Convert.ToInt32(dr["type"]));
                 MapEnemyInfo_isDragon.Text = Convert.ToBoolean(dr["flag"]).ToString();
-                MapEnemyInfo_attribute.Text = parseAttributetype(Convert.ToInt32(dr["attribute"]));
+                MapEnemyInfo_attribute.Text = Utility.parseAttributetype(Convert.ToInt32(dr["attribute"]));
                 MapEnemyInfo_soul_pt.Text = dr["soul_pt"].ToString();
                 MapEnemyInfo_gold_pt.Text = dr["gold_pt"].ToString();
                 MapEnemyInfo_turn.Text = dr["turn"].ToString();
@@ -579,11 +579,11 @@ namespace RTDDataExecuter
                     lv = lv_max;
                     MapEnemyInfo_lv.Text = lv.ToString("0");
                 }
-                MapEnemyInfo_life.Text = RealCalc(Convert.ToInt32(dr["life"]), Convert.ToInt32(dr["up_life"]), lv).ToString();
-                MapEnemyInfo_atk.Text = RealCalc(Convert.ToInt32(dr["attack"]), Convert.ToInt32(dr["up_attack"]), lv).ToString();
-                MapEnemyInfo_def.Text = RealCalc(Convert.ToInt32(dr["defense"]), Convert.ToInt32(dr["up_defense"]), lv).ToString();
+                MapEnemyInfo_life.Text = Utility.RealCalc(Convert.ToInt32(dr["life"]), Convert.ToInt32(dr["up_life"]), lv).ToString();
+                MapEnemyInfo_atk.Text = Utility.RealCalc(Convert.ToInt32(dr["attack"]), Convert.ToInt32(dr["up_attack"]), lv).ToString();
+                MapEnemyInfo_def.Text = Utility.RealCalc(Convert.ToInt32(dr["defense"]), Convert.ToInt32(dr["up_defense"]), lv).ToString();
 
-                MapEnemyInfo_pat.Text = parseAttackPattern(Convert.ToInt32(dr["pat"]));
+                MapEnemyInfo_pat.Text = Utility.parseAttackPattern(Convert.ToInt32(dr["pat"]));
                 MapEnemyInfo_p0.Text = dr["p0"].ToString();
 
             }, uiTaskScheduler);

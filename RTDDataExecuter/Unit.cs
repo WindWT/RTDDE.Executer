@@ -142,11 +142,11 @@ namespace RTDDataExecuter
                     rare += "★";
                 }
                 UnitInfo_category.Text = rare;
-                UnitInfo_style.Text = parseStyletype(Convert.ToInt32(unitData["style"]));
-                UnitInfo_attribute.Text = parseAttributetype(Convert.ToByte(unitData["attribute"]));
-                UnitInfo_sub_a1.Text = parseAttributetype(Convert.ToByte(unitData["sub_a1"]));
+                UnitInfo_style.Text = Utility.parseStyletype(Convert.ToInt32(unitData["style"]));
+                UnitInfo_attribute.Text = Utility.parseAttributetype(Convert.ToByte(unitData["attribute"]));
+                UnitInfo_sub_a1.Text = Utility.parseAttributetype(Convert.ToByte(unitData["sub_a1"]));
                 UnitInfo_model.Text = unitData["model"].ToString();
-                UnitInfo_kind.Text = parseUnitKind(Convert.ToInt32(unitData["kind"]));
+                UnitInfo_kind.Text = Utility.parseUnitKind(Convert.ToInt32(unitData["kind"]));
 
                 double maxlevel = Convert.ToDouble(unitData["lv_max"]);
                 UnitInfo_lv_max.Text = maxlevel.ToString("0");
@@ -187,7 +187,7 @@ namespace RTDDataExecuter
                 int set_pt = Convert.ToInt32(unitData["set_pt"]);
                 UnitInfo_pt.Text = ((int)((float)(thislevel - 1) * Math.Pow((float)set_pt, 0.5f) + (float)set_pt)).ToString("0");
                 //story
-                UnitInfo_story.Document = parseTextToDocument(unitData["story"].ToString());
+                UnitInfo_story.Document = Utility.parseTextToDocument(unitData["story"].ToString());
                 //cutin
                 UnitInfo_ct_text.Text = unitData["ct_text"].ToString();
                 UnitInfo_sct_text.Text = unitData["sct_text"].ToString();
@@ -213,10 +213,10 @@ namespace RTDDataExecuter
 
             partySkill_id.Text = skill.id.ToString();
             partySkill_name.Text = skill.name;
-            partySkill_text.Document = parseTextToDocument(skill.text);
-            partySkill_attribute.Text = parseAttributetype(skill.attribute);
-            partySkill_style.Text = parseStyletype(skill.style);
-            partySkill_type.Text = parseSkillType((PassiveSkillType)skill.type);
+            partySkill_text.Document = Utility.parseTextToDocument(skill.text);
+            partySkill_attribute.Text = Utility.parseAttributetype(skill.attribute);
+            partySkill_style.Text = Utility.parseStyletype(skill.style);
+            partySkill_type.Text = Utility.parseSkillType((PassiveSkillType)skill.type);
             partySkill_num.Text = skill.num.ToString();
             partySkill_num_01.Text = skill.num_01.ToString();
             partySkill_num_02.Text = skill.num_02.ToString();
@@ -233,10 +233,10 @@ namespace RTDDataExecuter
 
             activeSkill_id.Text = skill.id.ToString();
             activeSkill_name.Text = skill.name;
-            activeSkill_text.Document = parseTextToDocument(skill.text);
-            activeSkill_attribute.Text = parseAttributetype(skill.attribute);
-            activeSkill_style.Text = parseStyletype(skill.style);
-            activeSkill_type.Text = parseSkillType((ActiveSkillType)skill.type);
+            activeSkill_text.Document = Utility.parseTextToDocument(skill.text);
+            activeSkill_attribute.Text = Utility.parseAttributetype(skill.attribute);
+            activeSkill_style.Text = Utility.parseStyletype(skill.style);
+            activeSkill_type.Text = Utility.parseSkillType((ActiveSkillType)skill.type);
             activeSkill_num.Text = skill.num.ToString();
             activeSkill_num_01.Text = skill.num_01.ToString();
             activeSkill_num_02.Text = skill.num_02.ToString();
@@ -255,10 +255,10 @@ namespace RTDDataExecuter
 
             panelSkill_id.Text = skill.id.ToString();
             panelSkill_name.Text = skill.name;
-            panelSkill_text.Document = parseTextToDocument(skill.text);
-            panelSkill_attribute.Text = parseAttributetype(skill.attribute);
-            panelSkill_style.Text = parseStyletype(skill.style);
-            panelSkill_type.Text = parseSkillType((PanelSkillType)skill.type);
+            panelSkill_text.Document = Utility.parseTextToDocument(skill.text);
+            panelSkill_attribute.Text = Utility.parseAttributetype(skill.attribute);
+            panelSkill_style.Text = Utility.parseStyletype(skill.style);
+            panelSkill_type.Text = Utility.parseSkillType((PanelSkillType)skill.type);
             panelSkill_num.Text = skill.num.ToString();
             panelSkill_num_01.Text = skill.num_01.ToString();
             panelSkill_num_02.Text = skill.num_02.ToString();

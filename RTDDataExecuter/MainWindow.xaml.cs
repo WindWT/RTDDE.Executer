@@ -121,10 +121,14 @@ namespace RTDDataExecuter
                 StatusBarExceptionMessage.Visibility = Visibility.Visible;
                 dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
                 dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
-                dispatcherTimer.Tick += new EventHandler((a, b) =>
+                EventHandler eh = null;
+                eh = (a,b) =>
                 {
+                    dispatcherTimer.Tick -= eh;
+                    dispatcherTimer.Stop();
                     StatusBarExceptionMessage.Text = String.Empty;
-                });
+                };
+                dispatcherTimer.Tick += eh;
                 dispatcherTimer.Start();
             }
         }

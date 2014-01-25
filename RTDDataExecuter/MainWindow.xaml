@@ -12,9 +12,20 @@
         <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource HighlightColor}" />
         <SolidColorBrush x:Key="PressedBrush" Color="{StaticResource PressedColor}" />
 
+        <LinearGradientBrush x:Key="SeparatorBrush" MappingMode="Absolute"
+                             SpreadMethod="Repeat"
+                             StartPoint="0,0" EndPoint="10,0">
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Color="Transparent" Offset="0.25"/>
+                <GradientStop Color="{StaticResource DefaultColor}" Offset="0.25"/>
+                <GradientStop Color="{StaticResource DefaultColor}" Offset="0.75"/>
+                <GradientStop Color="Transparent" Offset="0.75"/>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="Padding" Value="3,0,0,0"></Setter>
+            <Setter Property="Padding" Value="0,1,0,1"></Setter>
         </Style>
         <Style TargetType="DataGrid">
             <Setter Property="HeadersVisibility" Value="Column"/>
@@ -124,10 +135,14 @@
             </Style.Triggers>
         </Style>
         <Style TargetType="TextBox">
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PressedBrush}"/>
+        </Style>
+        <Style TargetType="RichTextBox">
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
         </Style>
         <Style TargetType="Separator">
-            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Background" Value="{StaticResource SeparatorBrush}"/>
         </Style>
     </Window.Resources>
     <Grid Background="White">
@@ -226,6 +241,10 @@
                         <TextBox Name="QuestInfo_reward_exp" Width="50" IsReadOnly="True"></TextBox>
                         <TextBlock Text="init_soul" Width="50"/>
                         <TextBox Name="QuestInfo_init_soul" Width="50" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="bgm_f" Width="50"/>
+                        <TextBox Name="QuestInfo_bgm_f" Width="100" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="bgm_b" Width="50"/>
+                        <TextBox Name="QuestInfo_bgm_b" Width="100" IsReadOnly="True"></TextBox>
                         <Separator Width="300"/>
                         <TextBlock Text="category" Width="50"/>
                         <TextBox Name="QuestInfo_category" Width="50" IsReadOnly="True"></TextBox>
@@ -237,11 +256,11 @@
                         <StackPanel>
                             <WrapPanel Name="QuestInfo_challenge">
                                 <Separator Width="300"/>
-                                <TextBlock Text="gold" Width="50" />
+                                <TextBlock Text="gold" Foreground="Gold" Width="50" />
                                 <RichTextBox Name="QuestInfo_challenge_gold" Width="250" IsReadOnly="True" BorderBrush="Gold"></RichTextBox>
-                                <TextBlock Text="silver" Width="50" />
+                                <TextBlock Text="silver" Foreground="Silver" Width="50" />
                                 <RichTextBox Name="QuestInfo_challenge_silver" Width="250" IsReadOnly="True" BorderBrush="Silver"></RichTextBox>
-                                <TextBlock Text="bronze" Width="50" />
+                                <TextBlock Text="bronze" Foreground="Brown" Width="50" />
                                 <RichTextBox Name="QuestInfo_challenge_bronze" Width="250" IsReadOnly="True" BorderBrush="Brown"></RichTextBox>
                             </WrapPanel>
                             <WrapPanel>
@@ -520,10 +539,10 @@
                                 <TextBox Name="partySkill_attribute" Width="100" IsReadOnly="True"></TextBox>
                                 <TextBlock Text="style" Width="50"/>
                                 <TextBox Name="partySkill_style" Width="100" IsReadOnly="True"></TextBox>
-                                <TextBox Name="partySkill_num_text" Width="75" IsReadOnly="True"></TextBox>
+                                <!--<TextBox Name="partySkill_num_text" Width="75" IsReadOnly="True"></TextBox>
                                 <TextBox Name="partySkill_num_01_text" Width="75" IsReadOnly="True"></TextBox>
                                 <TextBox Name="partySkill_num_02_text" Width="75" IsReadOnly="True"></TextBox>
-                                <TextBox Name="partySkill_num_03_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="partySkill_num_03_text" Width="75" IsReadOnly="True"></TextBox>-->
                                 <TextBox Name="partySkill_num" Width="75" IsReadOnly="True"></TextBox>
                                 <TextBox Name="partySkill_num_01" Width="75" IsReadOnly="True"></TextBox>
                                 <TextBox Name="partySkill_num_02" Width="75" IsReadOnly="True"></TextBox>
@@ -547,10 +566,10 @@
                                 <TextBox Name="activeSkill_attribute" Width="100" IsReadOnly="True"></TextBox>
                                 <TextBlock Text="style" Width="50"/>
                                 <TextBox Name="activeSkill_style" Width="100" IsReadOnly="True"></TextBox>
-                                <TextBox Name="activeSkill_num_text" Width="75" IsReadOnly="True"></TextBox>
+                                <!--<TextBox Name="activeSkill_num_text" Width="75" IsReadOnly="True"></TextBox>
                                 <TextBox Name="activeSkill_num_01_text" Width="75" IsReadOnly="True"></TextBox>
                                 <TextBox Name="activeSkill_num_02_text" Width="75" IsReadOnly="True"></TextBox>
-                                <TextBox Name="activeSkill_num_03_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="activeSkill_num_03_text" Width="75" IsReadOnly="True"></TextBox>-->
                                 <TextBox Name="activeSkill_num" Width="75" IsReadOnly="True"></TextBox>
                                 <TextBox Name="activeSkill_num_01" Width="75" IsReadOnly="True"></TextBox>
                                 <TextBox Name="activeSkill_num_02" Width="75" IsReadOnly="True"></TextBox>
@@ -574,10 +593,10 @@
                                 <TextBox Name="panelSkill_attribute" Width="100" IsReadOnly="True"></TextBox>
                                 <TextBlock Text="style" Width="50"/>
                                 <TextBox Name="panelSkill_style" Width="100" IsReadOnly="True"></TextBox>
-                                <TextBox Name="panelSkill_num_text" Width="75" IsReadOnly="True"></TextBox>
+                                <!--<TextBox Name="panelSkill_num_text" Width="75" IsReadOnly="True"></TextBox>
                                 <TextBox Name="panelSkill_num_01_text" Width="75" IsReadOnly="True"></TextBox>
                                 <TextBox Name="panelSkill_num_02_text" Width="75" IsReadOnly="True"></TextBox>
-                                <TextBox Name="panelSkill_num_03_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="panelSkill_num_03_text" Width="75" IsReadOnly="True"></TextBox>-->
                                 <TextBox Name="panelSkill_num" Width="75" IsReadOnly="True"></TextBox>
                                 <TextBox Name="panelSkill_num_01" Width="75" IsReadOnly="True"></TextBox>
                                 <TextBox Name="panelSkill_num_02" Width="75" IsReadOnly="True"></TextBox>
@@ -596,7 +615,7 @@
                             <TextBox Grid.Column="0" Name="CommonSQLTextBox"
                                      AcceptsReturn="True" AcceptsTab="True" 
                                      VerticalScrollBarVisibility="Auto"
-                                     Text="{Binding ElementName=CommonSQLComboBox,Path=SelectedValue}"/>
+                                     Text="{Binding ElementName=CommonSQLComboBox,Path=SelectedValue,Mode=OneWay}"/>
                             <StackPanel Grid.Column="1">
                                 <ComboBox Name="CommonSQLComboBox" ItemsSource="{Binding CommonSQLList}"
                                           DisplayMemberPath="Name" SelectedValuePath="SQL"

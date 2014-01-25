@@ -113,7 +113,6 @@
     <Compile Include="Quest.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Unit.cs" />
-    <Compile Include="util.cs" />
     <Compile Include="WindowBorder.cs" />
     <Compile Include="WindowResizer.cs" />
     <Page Include="MainWindow.xaml">

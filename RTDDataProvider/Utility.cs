@@ -1,25 +1,13 @@
-﻿using RTDDataProvider;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace RTDDataExecuter
+namespace RTDDataProvider
 {
     public enum UnitAttribute : byte
     {
@@ -350,9 +338,9 @@ namespace RTDDataExecuter
         DOWN_SOUL,
         MAX
     }
-    public partial class MainWindow : Window
+    public static class Utility
     {
-        private static Dictionary<string, string> parseOpentype(string opentype, string opentypeParam)
+        public static Dictionary<string, string> parseOpentype(string opentype, string opentypeParam)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
             result.Add("opentype", "未知");
@@ -463,7 +451,7 @@ namespace RTDDataExecuter
             }
             return result;
         }
-        private static string parsePresenttype(string presenttype)
+        public static string parsePresenttype(string presenttype)
         {
             switch (presenttype)
             {
@@ -475,7 +463,7 @@ namespace RTDDataExecuter
                 default: return string.Empty;
             }
         }
-        private static string parseBonustype(string bonustype)
+        public static string parseBonustype(string bonustype)
         {
             switch (bonustype)
             {
@@ -506,11 +494,11 @@ namespace RTDDataExecuter
                 default: return string.Empty;
             }
         }
-        private static string parseAttributetype(int attributetype)
+        public static string parseAttributetype(int attributetype)
         {
             return parseRealAttributetype(attributetype).ToString();
         }
-        private static UnitAttribute parseRealAttributetype(int attributetype)
+        public static UnitAttribute parseRealAttributetype(int attributetype)
         {
             switch (attributetype)
             {
@@ -528,11 +516,11 @@ namespace RTDDataExecuter
                     return UnitAttribute.NONE;
             }
         }
-        private static string parseStyletype(int styletype)
+        public static string parseStyletype(int styletype)
         {
             return parseRealStyletype(styletype).ToString();
         }
-        private static Class parseRealStyletype(int styletype)
+        public static Class parseRealStyletype(int styletype)
         {
             switch (styletype)
             {
@@ -548,11 +536,11 @@ namespace RTDDataExecuter
                     return Class.KNIGHT;
             }
         }
-        private static string parseUnitKind(int kind)
+        public static string parseUnitKind(int kind)
         {
             return parseRealUnitKind(kind).ToString(); ;
         }
-        private static AssignID parseRealUnitKind(int kind)
+        public static AssignID parseRealUnitKind(int kind)
         {
             switch (kind)
             {
@@ -640,14 +628,11 @@ namespace RTDDataExecuter
                                         default:
                                             return AssignID.SWORD;
                                     }
-                                    break;
                             }
-                            break;
                     }
-                    break;
             }
         }
-        private static string parseQuestKind(string kind)
+        public static string parseQuestKind(string kind)
         {
             switch (kind)
             {
@@ -659,7 +644,7 @@ namespace RTDDataExecuter
                 default: return string.Empty;
             }
         }
-        private static string parseZBTNKind(string kind)
+        public static string parseZBTNKind(string kind)
         {
             switch (kind)
             {
@@ -670,19 +655,19 @@ namespace RTDDataExecuter
                 default: return string.Empty;
             }
         }
-        private static string parseSkillType<T>(T skilltype)
+        public static string parseSkillType<T>(T skilltype)
         {
             return skilltype.ToString();
         }
-        private static string parseEnemyType(int type)
+        public static string parseEnemyType(int type)
         {
             return ((ENEMY_TYPE)type).ToString();
         }
-        private static string parseAttackPattern(int type)
+        public static string parseAttackPattern(int type)
         {
             return ((AttackPattern)type).ToString();
         }
-        private static string parseRTDDate(string rtdDate)
+        public static string parseRTDDate(string rtdDate)
         {
             if (string.IsNullOrWhiteSpace(rtdDate))
             {
@@ -703,13 +688,13 @@ namespace RTDDataExecuter
             DateTime t = new DateTime(year, month, day, hour, 0, 0);
             return t.ToString("yyyy-MM-dd HH:mm");
         }
-        private static string parseUnitName(string unitId)
+        public static string parseUnitName(string unitId)
         {
             string sql = @"SELECT name FROM unit_master WHERE id={0}";
             DB db = new DB();
             return db.GetString(String.Format(sql, unitId));
         }
-        private static string parseText(string text)
+        public static string parseText(string text)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -719,13 +704,13 @@ namespace RTDDataExecuter
             Regex r = new Regex(@"(\[[a-zA-Z0-9]{6}\])(.*?)(\[-\])");
             return r.Replace(text, new MatchEvaluator(parseTextEvaluator));
         }
-        private static string parseTextEvaluator(Match m)
+        public static string parseTextEvaluator(Match m)
         {
             string color = m.Groups[1].Value.Trim(new char[] { '[', ']' });
             //return String.Format("<span style='color:#{0}'>{1}</span>", color, m.Groups[2].Value);
             return m.Groups[2].Value;
         }
-        private static FlowDocument parseTextToDocument(string text)
+        public static FlowDocument parseTextToDocument(string text)
         {
             var flowDoc = new FlowDocument();
             //string[] textParas = text.Split(new string[] { "\\n" }, StringSplitOptions.None);
@@ -757,9 +742,13 @@ namespace RTDDataExecuter
             flowDoc.Blocks.Add(pr);
             return flowDoc;
         }
-        private static int RealCalc(int baseAttr, int up, int lv)
+        public static int RealCalc(int baseAttr, int up, int lv)
         {
             return (int)Math.Round(baseAttr * ((lv - 1) * (up * 0.01) + 1));
+        }
+        public static string parseBgmFileName(int no)
+        {
+            return "bgm_rtd_" + no.ToString("D2");
         }
     }
 }
