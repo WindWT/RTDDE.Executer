@@ -638,6 +638,7 @@
                         <CheckBox Name="IsShowDropInfoCheckBox" Checked="IsShowDropInfoCheckBox_Checked" Unchecked="IsShowDropInfoCheckBox_Unchecked">Show drop info and exp info(may NOT working on iOS)</CheckBox>
                         <CheckBox Name="IsShowBoxInfoCheckBox"  Checked="IsShowBoxInfoCheckBox_Checked" Unchecked="IsShowBoxInfoCheckBox_Unchecked" >Check to show box type</CheckBox>
                         <CheckBox Name="IsEnableLevelLimiterCheckBox"  Checked="IsEnableLevelLimiterCheckBox_Checked" Unchecked="IsEnableLevelLimiterCheckBox_Unchecked" >Check to enable level limiter</CheckBox>
+                        <CheckBox Name="IsDefaultLvMaxCheckBox"  Checked="IsDefaultLvMaxCheckBox_Checked"  Unchecked="IsDefaultLvMaxCheckBox_Unchecked" >Check to set lv to max by default</CheckBox>
                     </StackPanel>
                 </Grid>
             </Grid>

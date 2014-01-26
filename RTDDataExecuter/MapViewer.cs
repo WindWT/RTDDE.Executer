@@ -519,21 +519,41 @@ namespace RTDDataExecuter
             MapEnemyInfo_lv_max.Text = mmInfoRow["lv_max"].ToString();
             MapEnemyInfo_drop_id.Text = mmInfoRow["drop_id"].ToString();
 
-            MapEnemyInfo_lv.Text = "-1";  //force rebind
+            if (IsDefaultLvMax)
+            {
+                MapEnemyInfo_lv.Text = "99";
+            }
+            else
+            {
+                MapEnemyInfo_lv.Text = "1";
+            }
+            MapEnemyInfo_DataBind();
         }
 
         private void MapEnemyInfo_lv_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(MapEnemyInfo_lv.Text))
+            if (MapEnemyInfo_lv.IsFocused)
             {
-                MapEnemyInfo_lv.Text = "99";
+                if (string.IsNullOrWhiteSpace(MapEnemyInfo_lv.Text))
+                {
+                    MapEnemyInfo_lv.Text = "";
+                }
+                Regex r = new Regex("[^0-9]");
+                if (r.Match(MapEnemyInfo_lv.Text).Success)
+                {
+                    if (IsDefaultLvMax)
+                    {
+                        MapEnemyInfo_lv.Text = "99";
+                        return;
+                    }
+                    else
+                    {
+                        MapEnemyInfo_lv.Text = "1";
+                        return;
+                    }
+                }
+                MapEnemyInfo_DataBind();
             }
-            Regex r = new Regex("[^0-9]");
-            if (r.Match(MapEnemyInfo_lv.Text).Success)
-            {
-                MapEnemyInfo_lv.Text = "99";
-            }
-            MapEnemyInfo_DataBind();
         }
 
         private void MapEnemyInfo_DataBind()

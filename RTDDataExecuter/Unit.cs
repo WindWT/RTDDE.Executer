@@ -39,21 +39,42 @@ namespace RTDDataExecuter
             }
             string unitid = ((DataRowView)UnitDataGrid.SelectedItem).Row["id"].ToString();
             UnitInfo_id.Text = unitid;
-            UnitInfo_lv.Text = "1";
+
+            if (IsDefaultLvMax)
+            {
+                UnitInfo_lv.Text = "99";
+            }
+            else
+            {
+                UnitInfo_lv.Text = "1";
+            }
+
             UnitInfo_BindData(unitid);
         }
         private void UnitInfo_lv_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(UnitInfo_lv.Text))
+            if (UnitInfo_lv.IsFocused)
             {
-                UnitInfo_lv.Text = "1";
+                if (string.IsNullOrWhiteSpace(UnitInfo_lv.Text))
+                {
+                    UnitInfo_lv.Text = "";
+                }
+                Regex r = new Regex("[^0-9]");
+                if (r.Match(UnitInfo_lv.Text).Success)
+                {
+                    if (IsDefaultLvMax)
+                    {
+                        UnitInfo_lv.Text = "99";     //This will trigger itself again
+                        return;
+                    }
+                    else
+                    {
+                        UnitInfo_lv.Text = "1";
+                        return;
+                    }
+                }
+                UnitInfo_BindData(UnitInfo_id.Text);
             }
-            Regex r = new Regex("[^0-9]");
-            if (r.Match(UnitInfo_lv.Text).Success)
-            {
-                UnitInfo_lv.Text = "1";
-            }
-            UnitInfo_BindData(UnitInfo_id.Text);
         }
         private void UnitInfo_g_id_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -70,6 +91,14 @@ namespace RTDDataExecuter
                     UnitInfo_g_id.Text = "1";
                 }
                 string g_id = UnitInfo_g_id.Text;
+                if (IsDefaultLvMax)
+                {
+                    UnitInfo_lv.Text = "99"; 
+                }
+                else
+                {
+                    UnitInfo_lv.Text = "1";
+                }
                 Task<string> task = new Task<string>(() =>
                 {
                     string sql = @"SELECT id FROM unit_master WHERE g_id={0}";
@@ -95,6 +124,10 @@ namespace RTDDataExecuter
 
         private void UnitInfo_BindData(string unitid)
         {
+            if (string.IsNullOrWhiteSpace(UnitInfo_lv.Text))
+            {
+                return;
+            }
             double thislevel = Convert.ToDouble(Convert.ToInt32(UnitInfo_lv.Text));
 
             Task<DataTable> task = new Task<DataTable>(() =>
