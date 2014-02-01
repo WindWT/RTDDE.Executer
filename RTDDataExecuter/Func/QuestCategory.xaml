@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="RTDDataExecuter.QuestCategory"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d">
+    <Grid Name="QuestCategoryTab" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="QuestCategoryDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestCategoryDataGrid_SelectionChanged" FrozenColumnCount="2" >
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <EventSetter Event="MouseDoubleClick" Handler="QuestCategoryDataGrid_MouseDoubleClick"/>
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
+        <WrapPanel Grid.Column="1" Grid.Row="0">
+            <RadioButton GroupName="QuestCategoryType" Content="Normal" Width="75" IsChecked="True" Name="QuestCategoryTypeRadio_Normal" Checked="QuestCategoryTypeRadio_Normal_Checked"></RadioButton>
+            <RadioButton GroupName="QuestCategoryType" Content="Event" Width="75" Name="QuestCategoryTypeRadio_Event" Checked="QuestCategoryTypeRadio_Event_Checked"></RadioButton>
+            <RadioButton GroupName="QuestCategoryType" Content="LargeEvent" Width="75" Name="QuestCategoryTypeRadio_LargeEvent" Checked="QuesCategorytTypeRadio_LargeEvent_Checked"></RadioButton>
+            <RadioButton GroupName="QuestCategoryType" Content="Special" Width="75" Name="QuestCategoryTypeRadio_Special" Checked="QuestCategoryTypeRadio_Special_Checked"></RadioButton>
+            <Separator Width="300"/>
+            <TextBlock Text="id" Width="50"/>
+            <TextBox Name="QuestCategoryInfo_id" Width="50" IsReadOnly="True"></TextBox>
+            <TextBlock Text="name" Width="50"/>
+            <TextBox Name="QuestCategoryInfo_name" Width="150" IsReadOnly="True"></TextBox>
+            <TextBlock Text="order" Width="50"/>
+            <TextBox Name="QuestCategoryInfo_order" Width="25" IsReadOnly="True"></TextBox>
+            <TextBlock Text="pt_num" Width="50"/>
+            <TextBox Name="QuestCategoryInfo_pt_num" Width="25" IsReadOnly="True"></TextBox>
+            <TextBlock Text="icon" Width="50"/>
+            <TextBox Name="QuestCategoryInfo_icon" Width="100" IsReadOnly="True"></TextBox>
+            <TextBlock Text="kind" Width="50"/>
+            <TextBox Name="QuestCategoryInfo_kind" Width="100" IsReadOnly="True"></TextBox>
+            <TextBlock Text="zbtn_kind" Width="50"/>
+            <TextBox Name="QuestCategoryInfo_zbtn_kind" Width="100" IsReadOnly="True"></TextBox>
+            <TextBlock Text="text" Width="50"/>
+            <TextBox Name="QuestCategoryInfo_text" Width="250" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+        </WrapPanel>
+        <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                <WrapPanel Name="QuestCategoryInfo_quest">
+
+                </WrapPanel>
+                <WrapPanel Name="QuestCategoryInfo_reward">
+
+                </WrapPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

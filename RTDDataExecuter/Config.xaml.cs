@@ -1,14 +1,10 @@
 ﻿using RTDDataProvider;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,15 +14,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Threading;
-using System.Configuration;
-using System.ComponentModel;
-using System.Linq.Expressions;
 
 namespace RTDDataExecuter
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Config.xaml 的交互逻辑
+    /// </summary>
+    public partial class Config : UserControl
     {
+        public Config()
+        {
+            InitializeComponent();
+        }
         private void ImportMDBSButton_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
@@ -45,7 +44,7 @@ namespace RTDDataExecuter
                     }
                     catch (Exception ex)
                     {
-                        StatusBarExceptionMessage.Text = ex.Message;
+                        Utility.LogException(ex.Message);
                     }
                 }
             }
@@ -70,7 +69,7 @@ namespace RTDDataExecuter
                     }
                     catch (Exception ex)
                     {
-                        StatusBarExceptionMessage.Text = ex.Message;
+                        Utility.LogException(ex.Message);
                     }
                 }
             }
@@ -99,110 +98,53 @@ namespace RTDDataExecuter
                     }
                     catch (Exception ex)
                     {
-                        StatusBarExceptionMessage.Text = ex.Message;
+                        Utility.LogException(ex.Message);
                     }
                 }
             }
         }
-
-        private bool isShowDropInfo = Properties.Settings.Default.IsShowDropInfo;
-        public bool IsShowDropInfo
+        public void InitSettings()
         {
-            get
-            {
-                return isShowDropInfo;
-            }
-            set
-            {
-                isShowDropInfo = value;
-                Properties.Settings.Default.IsShowDropInfo = value;
-                Properties.Settings.Default.Save();
-            }
-        }
-        private bool isShowBoxInfo = Properties.Settings.Default.IsShowBoxInfo;
-        public bool IsShowBoxInfo
-        {
-            get
-            {
-                return isShowBoxInfo;
-            }
-            set
-            {
-                isShowBoxInfo = value;
-                Properties.Settings.Default.IsShowBoxInfo = value;
-                Properties.Settings.Default.Save();
-            }
-        }
-        private bool isEnableLevelLimiter = Properties.Settings.Default.IsEnableLevelLimiter;
-        public bool IsEnableLevelLimiter
-        {
-            get
-            {
-                return isEnableLevelLimiter;
-            }
-            set
-            {
-                isEnableLevelLimiter = value;
-                Properties.Settings.Default.IsEnableLevelLimiter = value;
-                Properties.Settings.Default.Save();
-            }
-        }
-        private bool isDefaultLvMax = Properties.Settings.Default.IsDefaultLvMax;
-        public bool IsDefaultLvMax
-        {
-            get
-            {
-                return isDefaultLvMax;
-            }
-            set
-            {
-                isDefaultLvMax = value;
-                Properties.Settings.Default.IsDefaultLvMax = value;
-                Properties.Settings.Default.Save();
-            }
-        }
-        private void InitSettings()
-        {
-            IsShowDropInfo = Properties.Settings.Default.IsShowDropInfo;
-            IsShowBoxInfo = Properties.Settings.Default.IsShowBoxInfo;
-            IsEnableLevelLimiter = Properties.Settings.Default.IsEnableLevelLimiter;
-            IsDefaultLvMax = Properties.Settings.Default.IsDefaultLvMax;
-            IsShowDropInfoCheckBox.IsChecked = IsShowDropInfo;
-            IsShowBoxInfoCheckBox.IsChecked = IsShowBoxInfo;
-            IsEnableLevelLimiterCheckBox.IsChecked = IsEnableLevelLimiter;
-            IsDefaultLvMaxCheckBox.IsChecked = IsDefaultLvMax;
+            Settings.IsShowDropInfo = Properties.Settings.Default.IsShowDropInfo;
+            Settings.IsShowBoxInfo = Properties.Settings.Default.IsShowBoxInfo;
+            Settings.IsEnableLevelLimiter = Properties.Settings.Default.IsEnableLevelLimiter;
+            Settings.IsDefaultLvMax = Properties.Settings.Default.IsDefaultLvMax;
+            IsShowDropInfoCheckBox.IsChecked = Settings.IsShowDropInfo;
+            IsShowBoxInfoCheckBox.IsChecked = Settings.IsShowBoxInfo;
+            IsEnableLevelLimiterCheckBox.IsChecked = Settings.IsEnableLevelLimiter;
+            IsDefaultLvMaxCheckBox.IsChecked = Settings.IsDefaultLvMax;
         }
         private void IsShowDropInfoCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            IsShowDropInfo = true;
+            Settings.IsShowDropInfo = true;
         }
         private void IsShowDropInfoCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            IsShowDropInfo = false;
+            Settings.IsShowDropInfo = false;
         }
         private void IsShowBoxInfoCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            IsShowBoxInfo = true;
+            Settings.IsShowBoxInfo = true;
         }
         private void IsShowBoxInfoCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            IsShowBoxInfo = false;
+            Settings.IsShowBoxInfo = false;
         }
         private void IsEnableLevelLimiterCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            IsEnableLevelLimiter = true;
+            Settings.IsEnableLevelLimiter = true;
         }
         private void IsEnableLevelLimiterCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            IsEnableLevelLimiter = false;
+            Settings.IsEnableLevelLimiter = false;
         }
         private void IsDefaultLvMaxCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            IsDefaultLvMax = true;
+            Settings.IsDefaultLvMax = true;
         }
         private void IsDefaultLvMaxCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            IsDefaultLvMax = false;
+            Settings.IsDefaultLvMax = false;
         }
     }
 }

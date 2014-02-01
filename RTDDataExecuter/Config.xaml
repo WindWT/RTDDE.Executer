@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="RTDDataExecuter.Config"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" >
+    <Grid Name="ConfigTab">
+        <StackPanel Background="#FFE5E5E5">
+            <Button Name="ImportMDBSButton" Click="ImportMDBSButton_Click">导入MDBS</Button>
+            <Button Name="ImportLDBSButton" Click="ImportLDBSButton_Click">导入LDBS</Button>
+            <Button Name="ImportplistButton" Click="ImportplistButton_Click">导入plist</Button>
+            <CheckBox Name="IsShowDropInfoCheckBox" Checked="IsShowDropInfoCheckBox_Checked" Unchecked="IsShowDropInfoCheckBox_Unchecked">Show drop info and exp info(may NOT working on iOS)</CheckBox>
+            <CheckBox Name="IsShowBoxInfoCheckBox"  Checked="IsShowBoxInfoCheckBox_Checked" Unchecked="IsShowBoxInfoCheckBox_Unchecked" >Check to show box type</CheckBox>
+            <CheckBox Name="IsEnableLevelLimiterCheckBox"  Checked="IsEnableLevelLimiterCheckBox_Checked" Unchecked="IsEnableLevelLimiterCheckBox_Unchecked" >Check to enable level limiter</CheckBox>
+            <CheckBox Name="IsDefaultLvMaxCheckBox"  Checked="IsDefaultLvMaxCheckBox_Checked"  Unchecked="IsDefaultLvMaxCheckBox_Unchecked" >Check to set lv to max by default</CheckBox>
+        </StackPanel>
+    </Grid>
+</UserControl>

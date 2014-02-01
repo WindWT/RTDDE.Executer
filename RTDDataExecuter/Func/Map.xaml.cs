@@ -3,18 +3,35 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace RTDDataExecuter
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Map.xaml 的交互逻辑
+    /// </summary>
+    public partial class Map : UserControl
     {
+        public Map()
+        {
+            InitializeComponent();
+        }
         private void MapTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            var w = (MainWindow)Application.Current.MainWindow;
+            var QuestInfo_id = (TextBox)w.Quest.FindName("QuestInfo_id");
             if (!string.IsNullOrWhiteSpace(QuestInfo_id.Text) && ((Grid)sender).IsVisible == true)
             {
                 string levelID = QuestInfo_id.Text;
@@ -28,11 +45,11 @@ namespace RTDDataExecuter
             {
                 if (t.Exception != null)
                 {
-                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    Utility.LogException(t.Exception.InnerException.Message);
                     return;
                 }
                 MapMonsterGrid.ItemsSource = t.Result.DefaultView;
-            }, uiTaskScheduler);
+            }, MainWindow.uiTaskScheduler);
 
             Task<MapTable> task = new Task<MapTable>(() =>
             {
@@ -43,7 +60,7 @@ namespace RTDDataExecuter
                     throw new Exception("数据库取数失败。");
                 }
                 DataRow levelData = dt.Rows[0];
-                if (IsShowDropInfo == false)
+                if (Settings.IsShowDropInfo == false)
                 {
                     return BindMonsterDataToMap(InitMapData(
                     levelData["map_data"].ToString(),
@@ -74,14 +91,14 @@ namespace RTDDataExecuter
                 ClearMap();
                 if (t.Exception != null)
                 {
-                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    Utility.LogException(t.Exception.InnerException.Message);
                     return;
                 }
                 else
                 {
                     DrawMap(t.Result);
                 }
-            }, uiTaskScheduler);
+            }, MainWindow.uiTaskScheduler);
             task.Start();
             initMonsterTask.Start();
         }
@@ -272,7 +289,7 @@ namespace RTDDataExecuter
                         var num2 = 31 & cellDataInt;
                         if (num2 >= 24)
                         {
-                            if (IsShowBoxInfo)
+                            if (Settings.IsShowBoxInfo)
                             {
                                 switch (num2 - 23)
                                 {
@@ -519,7 +536,7 @@ namespace RTDDataExecuter
             MapEnemyInfo_lv_max.Text = mmInfoRow["lv_max"].ToString();
             MapEnemyInfo_drop_id.Text = mmInfoRow["drop_id"].ToString();
 
-            if (IsDefaultLvMax)
+            if (Settings.IsDefaultLvMax)
             {
                 MapEnemyInfo_lv.Text = "99";
             }
@@ -541,7 +558,7 @@ namespace RTDDataExecuter
                 Regex r = new Regex("[^0-9]");
                 if (r.Match(MapEnemyInfo_lv.Text).Success)
                 {
-                    if (IsDefaultLvMax)
+                    if (Settings.IsDefaultLvMax)
                     {
                         MapEnemyInfo_lv.Text = "99";
                         return;
@@ -573,7 +590,7 @@ namespace RTDDataExecuter
             {
                 if (t.Exception != null)
                 {
-                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    Utility.LogException(t.Exception.InnerException.Message);
                     return;
                 }
                 if (t.Result == null || t.Result.Rows.Count == 0)
@@ -594,7 +611,7 @@ namespace RTDDataExecuter
 
                 int lv = Convert.ToInt32(MapEnemyInfo_lv.Text);
                 int lv_max = Convert.ToInt32(MapEnemyInfo_lv_max.Text);
-                if (IsEnableLevelLimiter && (lv > lv_max))
+                if (Settings.IsEnableLevelLimiter && (lv > lv_max))
                 {
                     lv = lv_max;
                     MapEnemyInfo_lv.Text = lv.ToString("0");
@@ -606,7 +623,7 @@ namespace RTDDataExecuter
                 MapEnemyInfo_pat.Text = Utility.parseAttackPattern(Convert.ToInt32(dr["pat"]));
                 MapEnemyInfo_p0.Text = dr["p0"].ToString();
 
-            }, uiTaskScheduler);
+            }, MainWindow.uiTaskScheduler);
             task.Start();
         }
 
@@ -750,7 +767,7 @@ namespace RTDDataExecuter
                 }
                 catch (Exception ex)
                 {
-                    StatusBarExceptionMessage.Text = ex.Message;
+                    Utility.LogException(ex.Message);
                 }
             }
             else if (File.Exists(iosFileName))
@@ -763,7 +780,7 @@ namespace RTDDataExecuter
                     }
                     catch (Exception ex)
                     {
-                        StatusBarExceptionMessage.Text = ex.Message;
+                        Utility.LogException(ex.Message);
                     }
                 }
             }

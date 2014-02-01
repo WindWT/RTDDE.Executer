@@ -2,16 +2,31 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SQLite;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
-using System.Data.SQLite;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace RTDDataExecuter
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Quest.xaml 的交互逻辑
+    /// </summary>
+    public partial class Quest : UserControl
     {
+        public Quest()
+        {
+            InitializeComponent();
+        }
         private void QuestDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (QuestDataGrid.SelectedItem == null)
@@ -70,7 +85,7 @@ bgm_f,bgm_b,
             {
                 if (t.Exception != null)
                 {
-                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    Utility.LogException(t.Exception.InnerException.Message);
                     return;
                 }
                 if (task.Result == null || task.Result.Rows.Count == 0)
@@ -156,7 +171,7 @@ bgm_f,bgm_b,
                 QuestInfo_present_type.Text = Utility.parsePresenttype(dr["present_type"].ToString());
                 QuestInfo_present_param.Text = dr["present_param_name"].ToString();
                 QuestInfo_present_param_1.Text = dr["present_param_1"].ToString();
-            }, uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
             task.Start();
             taskParse.Start();
         }
@@ -263,7 +278,7 @@ FROM QUEST_MASTER WHERE ";
             }
             if (String.IsNullOrWhiteSpace(QuestSearch_name.Text) == false)
             {
-                sql += "name LIKE '%" + QuestSearch_name.Text + "%' AND ";
+                sql += "name LIKE '%" + QuestSearch_name.Text.Trim() + "%' AND ";
             }
             if (String.IsNullOrWhiteSpace(QuestSearch_category.Text) == false)
             {
@@ -271,7 +286,7 @@ FROM QUEST_MASTER WHERE ";
             }
             if (String.IsNullOrWhiteSpace(QuestSearch_category_name.Text) == false)
             {
-                sql += "category_name LIKE '%" + QuestSearch_category_name.Text + "%' AND ";
+                sql += "category_name LIKE '%" + QuestSearch_category_name.Text.Trim() + "%' AND ";
             }
             sql += " 1=1 ORDER BY id DESC";
             QuestDataGrid_BindData(sql);
@@ -301,11 +316,11 @@ FROM QUEST_MASTER WHERE ";
             {
                 if (t.Exception != null)
                 {
-                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    Utility.LogException(t.Exception.InnerException.Message);
                     return;
                 }
                 QuestDataGrid.ItemsSource = t.Result.DefaultView;
-            }, uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
             task.Start();
         }
     }

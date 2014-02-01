@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media;
 
 namespace RTDDataProvider
 {
@@ -338,7 +333,7 @@ namespace RTDDataProvider
         DOWN_SOUL,
         MAX
     }
-    public static class Utility
+    public class UtilityBase
     {
         public static Dictionary<string, string> parseOpentype(string opentype, string opentypeParam)
         {
@@ -709,38 +704,6 @@ namespace RTDDataProvider
             string color = m.Groups[1].Value.Trim(new char[] { '[', ']' });
             //return String.Format("<span style='color:#{0}'>{1}</span>", color, m.Groups[2].Value);
             return m.Groups[2].Value;
-        }
-        public static FlowDocument parseTextToDocument(string text)
-        {
-            var flowDoc = new FlowDocument();
-            //string[] textParas = text.Split(new string[] { "\\n" }, StringSplitOptions.None);
-            text = text.Replace(@"\n", "\n");
-            Paragraph pr = new Paragraph(); //prprpr
-            pr.Margin = new Thickness(0);
-            Regex rSplit = new Regex(@"(\[[a-zA-Z0-9]{6}\])(.*?)(\[-\])");
-            Regex rColor = new Regex(@"(\[[a-zA-Z0-9]{6}\])");
-            var textParts = rSplit.Split(text);
-            var nowFontColor = Brushes.Black;
-            foreach (string textPart in textParts)
-            {
-                Span span = new Span();
-                if (rColor.Match(textPart).Success)
-                {
-                    string color = textPart.Trim(new char[] { '[', ']' });
-                    nowFontColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#" + color));
-                    continue;
-                }
-                if (textPart == "[-]")
-                {
-                    nowFontColor = Brushes.Black;
-                    continue;
-                }
-                span.Inlines.Add(new Run(textPart));
-                span.Foreground = nowFontColor;
-                pr.Inlines.Add(span);
-            }
-            flowDoc.Blocks.Add(pr);
-            return flowDoc;
         }
         public static int RealCalc(int baseAttr, int up, int lv)
         {

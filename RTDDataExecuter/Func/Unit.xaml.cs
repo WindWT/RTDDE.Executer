@@ -2,34 +2,83 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace RTDDataExecuter
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Unit.xaml 的交互逻辑
+    /// </summary>
+    public partial class Unit : UserControl
     {
+        public Unit()
+        {
+            InitializeComponent();
+        }
         private void UnitTab_Initialized(object sender, EventArgs e)
+        {
+            UnitDataGrid_BindData("SELECT id,g_id,name FROM UNIT_MASTER order by g_id");
+            UnitSearch_category.ItemsSource = new Dictionary<string, string>()
+            {
+                {"------",""},
+                {"★","1"},
+                {"★★","2"},
+                {"★★★","3"},
+                {"★★★★","4"},
+                {"★★★★★","5"},
+                {"★×6","6"}
+            };
+            UnitSearch_style.ItemsSource = new Dictionary<string, string>()
+            {
+                {"------",""},
+                {"KNIGHT","1"},
+                {"LANCER","2"},
+                {"ARCHER","3"},
+                {"WIZARD","4"}
+            };
+            var attrDict = new Dictionary<string, string>()
+            {
+                {"------",""},
+                {"NONE","1"},
+                {"FIRE","2"},
+                {"WATER","3"},
+                {"LIGHT","4"},
+                {"DARK","5"}
+            };
+            UnitSearch_attribute.ItemsSource = attrDict;
+            UnitSearch_sub_a1.ItemsSource = attrDict;
+        }
+        private void UnitDataGrid_BindData(string sql)
         {
             Task<DataTable> task = new Task<DataTable>(() =>
             {
                 DB db = new DB();
-                return db.GetData("SELECT id,g_id,name FROM UNIT_MASTER order by g_id");
+                return db.GetData(sql);
             });
             task.ContinueWith(t =>
             {
                 if (t.Exception != null)
                 {
-                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    Utility.LogException(t.Exception.InnerException.Message);
                     return;
                 }
                 UnitDataGrid.ItemsSource = t.Result.DefaultView;
-            }, uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
             task.Start();
         }
+
         private void UnitDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (UnitDataGrid.SelectedItem == null)
@@ -40,7 +89,7 @@ namespace RTDDataExecuter
             string unitid = ((DataRowView)UnitDataGrid.SelectedItem).Row["id"].ToString();
             UnitInfo_id.Text = unitid;
 
-            if (IsDefaultLvMax)
+            if (Settings.IsDefaultLvMax)
             {
                 UnitInfo_lv.Text = "99";
             }
@@ -62,7 +111,7 @@ namespace RTDDataExecuter
                 Regex r = new Regex("[^0-9]");
                 if (r.Match(UnitInfo_lv.Text).Success)
                 {
-                    if (IsDefaultLvMax)
+                    if (Settings.IsDefaultLvMax)
                     {
                         UnitInfo_lv.Text = "99";     //This will trigger itself again
                         return;
@@ -76,7 +125,7 @@ namespace RTDDataExecuter
                 UnitInfo_BindData(UnitInfo_id.Text);
             }
         }
-        private void UnitInfo_g_id_TextChanged(object sender, TextChangedEventArgs e)
+        /*private void UnitInfo_g_id_TextChanged(object sender, TextChangedEventArgs e)
         {
             //防止死循环触发事件
             if (UnitInfo_g_id.IsFocused)
@@ -120,7 +169,7 @@ namespace RTDDataExecuter
                 }, uiTaskScheduler);
                 task.Start();
             }
-        }
+        }*/
 
         private void UnitInfo_BindData(string unitid)
         {
@@ -159,7 +208,7 @@ namespace RTDDataExecuter
             {
                 if (t.Exception != null)
                 {
-                    StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
+                    Utility.LogException(t.Exception.InnerException.Message);
                     return;
                 }
                 if (task.Result == null || task.Result.Rows.Count == 0)
@@ -183,7 +232,7 @@ namespace RTDDataExecuter
 
                 double maxlevel = Convert.ToDouble(unitData["lv_max"]);
                 UnitInfo_lv_max.Text = maxlevel.ToString("0");
-                if (IsEnableLevelLimiter && (thislevel > maxlevel))
+                if (Settings.IsEnableLevelLimiter && (thislevel > maxlevel))
                 {
                     thislevel = maxlevel;
                     UnitInfo_lv.Text = maxlevel.ToString("0");
@@ -231,7 +280,7 @@ namespace RTDDataExecuter
                 activeSkill_BindData(t.Result[1]);
                 panelSkill_BindData(t.Result[2]);
 
-            }, uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
             task.Start();
             taskParse.Start();
         }
@@ -407,6 +456,61 @@ namespace RTDDataExecuter
             }
             return sm;
         }
+
+        private void UnitSearchClear_Click(object sender, RoutedEventArgs e)
+        {
+            UnitSearch_id.Text = string.Empty;
+            UnitSearch_g_id.Text = string.Empty;
+            UnitSearch_name.Text = string.Empty;
+            UnitSearch_category.SelectedIndex = 0;
+            UnitSearch_style.SelectedIndex = 0;
+            UnitSearch_attribute.SelectedIndex = 0;
+            UnitSearch_sub_a1.SelectedIndex = 0;
+            UnitDataGrid_BindData("SELECT id,g_id,name FROM UNIT_MASTER order by g_id");
+        }
+        private void UnitSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UnitDataGrid_BindData(UnitSearch_BuildSQL());
+        }
+        private void UnitSearch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UnitDataGrid_BindData(UnitSearch_BuildSQL());
+        }
+        private string UnitSearch_BuildSQL()
+        {
+            string sql = @"SELECT id,g_id,name FROM UNIT_MASTER WHERE ";
+            if (String.IsNullOrWhiteSpace(UnitSearch_id.Text) == false)
+            {
+                sql += "id=" + UnitSearch_id.Text + " AND ";
+            }
+            if (String.IsNullOrWhiteSpace(UnitSearch_g_id.Text) == false)
+            {
+                sql += "g_id=" + UnitSearch_g_id.Text + " AND ";
+            }
+            if (String.IsNullOrWhiteSpace(UnitSearch_name.Text) == false)
+            {
+                sql += "name LIKE '%" + UnitSearch_name.Text.Trim() + "%' AND ";
+            }
+            if (String.IsNullOrWhiteSpace((string)UnitSearch_category.SelectedValue) == false)
+            {
+                sql += "category=" + UnitSearch_category.SelectedValue.ToString() + " AND ";
+            }
+            if (String.IsNullOrWhiteSpace((string)UnitSearch_style.SelectedValue) == false)
+            {
+                sql += "style=" + UnitSearch_style.SelectedValue.ToString() + " AND ";
+            }
+            if (String.IsNullOrWhiteSpace((string)UnitSearch_attribute.SelectedValue) == false)
+            {
+                sql += "attribute=" + UnitSearch_attribute.SelectedValue.ToString() + " AND ";
+            }
+            if (String.IsNullOrWhiteSpace((string)UnitSearch_sub_a1.SelectedValue) == false)
+            {
+                sql += "sub_a1=" + UnitSearch_sub_a1.SelectedValue.ToString() + " AND ";
+            }
+            sql += " 1=1 ORDER BY g_id";
+            return sql;
+        }
+        #region Magic Numbers
         private static readonly double[] UnitParam_CategoryPer = new double[]
 {
 	0.38999998569488525,
@@ -441,5 +545,6 @@ namespace RTDDataExecuter
 	0.60000002384185791,
 	1.2999999523162842
 };
+        #endregion
     }
 }

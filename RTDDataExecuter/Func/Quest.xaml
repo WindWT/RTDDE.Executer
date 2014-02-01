@@ -1,0 +1,124 @@
+﻿<UserControl x:Class="RTDDataExecuter.Quest"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d">
+    <Grid Name="QuestTab" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="QuestDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
+        <WrapPanel Grid.Column="1" Grid.Row="0">
+            <RadioButton GroupName="QuestType" Content="Event" Width="100" IsChecked="True" Name="QuestTypeRadio_Event" Checked="QuestTypeRadio_Event_Checked"></RadioButton>
+            <RadioButton GroupName="QuestType" Content="Daily" Width="100" Name="QuestTypeRadio_Daily" Checked="QuestTypeRadio_Daily_Checked"></RadioButton>
+            <RadioButton GroupName="QuestType" Content="Main" Width="100" Name="QuestTypeRadio_Main" Checked="QuestTypeRadio_Main_Checked"></RadioButton>
+            <Separator Width="300"/>
+            <Expander Width="300" BorderThickness="0" Name="QuestSearchExpander">
+                <Expander.Header>
+                    <Label Content="Search"></Label>
+                </Expander.Header>
+                <Expander.Content>
+                    <WrapPanel>
+                        <TextBlock Text="id" Width="50"/>
+                        <TextBox Name="QuestSearch_id" Width="50" TextChanged="QuestSearch_TextChanged"></TextBox>
+                        <TextBlock Text="name" Width="50"/>
+                        <TextBox Name="QuestSearch_name" Width="150" TextChanged="QuestSearch_TextChanged"></TextBox>
+                        <TextBlock Text="category" Width="50"/>
+                        <TextBox Name="QuestSearch_category" Width="50" TextChanged="QuestSearch_TextChanged"></TextBox>
+                        <TextBox Name="QuestSearch_category_name" Width="200" TextChanged="QuestSearch_TextChanged"></TextBox>
+                        <Button Name="QuestSearchClear" Width="300" Click="QuestSearchClear_Click">Clear</Button>
+                    </WrapPanel>
+                </Expander.Content>
+            </Expander>
+            <Separator Width="300"/>
+            <TextBlock Text="id" Width="50"/>
+            <TextBox Name="QuestInfo_id" Width="50" IsReadOnly="True"></TextBox>
+            <TextBlock Text="name" Width="50"/>
+            <TextBox Name="QuestInfo_name" Width="150" IsReadOnly="True"></TextBox>
+            <TextBlock Text="pt" Width="50"/>
+            <TextBox Name="QuestInfo_pt" Width="50" IsReadOnly="True"></TextBox>
+            <TextBlock Text="difficulty" Width="50"/>
+            <TextBox Name="QuestInfo_difficulty" Width="50" IsReadOnly="True"></TextBox>
+            <TextBlock Text="stamina" Width="50"/>
+            <TextBox Name="QuestInfo_stamina" Width="50" IsReadOnly="True"></TextBox>
+            <TextBlock Text="money" Width="50"/>
+            <TextBox Name="QuestInfo_reward_money" Width="50" IsReadOnly="True"></TextBox>
+            <TextBlock Text="exp" Width="50"/>
+            <TextBox Name="QuestInfo_reward_exp" Width="50" IsReadOnly="True"></TextBox>
+            <TextBlock Text="init_soul" Width="50"/>
+            <TextBox Name="QuestInfo_init_soul" Width="50" IsReadOnly="True"></TextBox>
+            <TextBlock Text="bgm_f" Width="50"/>
+            <TextBox Name="QuestInfo_bgm_f" Width="100" IsReadOnly="True"></TextBox>
+            <TextBlock Text="bgm_b" Width="50"/>
+            <TextBox Name="QuestInfo_bgm_b" Width="100" IsReadOnly="True"></TextBox>
+            <Separator Width="300"/>
+            <TextBlock Text="category" Width="50"/>
+            <TextBox Name="QuestInfo_category" Width="50" IsReadOnly="True"></TextBox>
+            <TextBox Name="QuestInfo_category_name" Width="200" IsReadOnly="True"></TextBox>
+            <TextBlock Text="text" Width="50"/>
+            <TextBox Name="QuestInfo_text" Width="250" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+        </WrapPanel>
+        <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                <WrapPanel Name="QuestInfo_challenge">
+                    <Separator Width="300"/>
+                    <TextBlock Text="gold" Foreground="Gold" Width="50" />
+                    <RichTextBox Name="QuestInfo_challenge_gold" Width="250" IsReadOnly="True" BorderBrush="Gold"></RichTextBox>
+                    <TextBlock Text="silver" Foreground="Silver" Width="50" />
+                    <RichTextBox Name="QuestInfo_challenge_silver" Width="250" IsReadOnly="True" BorderBrush="Silver"></RichTextBox>
+                    <TextBlock Text="bronze" Foreground="Brown" Width="50" />
+                    <RichTextBox Name="QuestInfo_challenge_bronze" Width="250" IsReadOnly="True" BorderBrush="Brown"></RichTextBox>
+                </WrapPanel>
+                <WrapPanel>
+                    <Separator Width="300"/>
+                    <TextBlock Text="opentype" Width="100"/>
+                    <TextBlock Text="opentypeParam" Width="200"/>
+                    <TextBox Name="QuestInfo_opentype1_name" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype1_value" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype2_name" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype2_value" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype3_name" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype3_value" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype4_name" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype4_value" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype5_name" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype5_value" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype6_name" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype6_value" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_open_sp_event_name" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_open_sp_event_point" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="bonus" Width="50"/>
+                    <TextBox Name="QuestInfo_bonus" Width="50" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_bonus_start" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_bonus_end" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="present" Width="50"/>
+                    <TextBox Name="QuestInfo_present_type" Width="50" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="param" Width="50"/>
+                    <TextBox Name="QuestInfo_present_param" Width="50" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="param1" Width="50"/>
+                    <TextBox Name="QuestInfo_present_param_1" Width="50" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="panel" Width="50"/>
+                    <TextBox Name="QuestInfo_panel_sword" Width="50" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_panel_lance" Width="50" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_panel_archer" Width="50" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_panel_cane" Width="50" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_panel_heart" Width="25" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_panel_sp" Width="25" IsReadOnly="True"></TextBox>
+                </WrapPanel>
+                <WrapPanel Name="QuestInfo_sp_event">
+                    <Separator Width="300"/>
+                    <TextBlock Text="sp_event_id" Width="100"/>
+                    <TextBox Name="QuestInfo_sp_event_id" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="sp_event_name" Width="100"/>
+                    <TextBox Name="QuestInfo_sp_event_name" Width="200" IsReadOnly="True"></TextBox>
+                </WrapPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

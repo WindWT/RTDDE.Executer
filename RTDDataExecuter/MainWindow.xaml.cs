@@ -21,6 +21,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Configuration;
 using System.Windows.Controls.Primitives;
+using System.ComponentModel;
 
 namespace RTDDataExecuter
 {
@@ -32,7 +33,7 @@ namespace RTDDataExecuter
         public MainWindow()
         {
             InitializeComponent();
-            InitSettings();
+            Config.InitSettings();
             new WindowResizer(this,
                 new WindowBorder(BorderPosition.TopLeft, topLeft),
                 new WindowBorder(BorderPosition.Top, top),
@@ -42,8 +43,9 @@ namespace RTDDataExecuter
                 new WindowBorder(BorderPosition.Bottom, bottom),
                 new WindowBorder(BorderPosition.BottomLeft, bottomLeft),
                 new WindowBorder(BorderPosition.Left, left));
+            ChangeTab("Quest");
         }
-        private TaskScheduler uiTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+        public static TaskScheduler uiTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
         private void TabStrip_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -67,7 +69,7 @@ namespace RTDDataExecuter
         {
             ChangeTab(((ToggleButton)sender).Name.Replace("_TabStrip", String.Empty));
         }
-        private void ChangeTab(string name)
+        public void ChangeTab(string name)
         {
             if (MainGrid == null)
             {
@@ -75,16 +77,26 @@ namespace RTDDataExecuter
             }
             foreach (var children in MainGrid.Children)
             {
+                Grid grid;
                 if (children is Grid)
                 {
-                    if (((Grid)children).Name != name + "Tab")
-                    {
-                        ((Grid)children).Visibility = Visibility.Collapsed;
-                    }
-                    else
-                    {
-                        ((Grid)children).Visibility = Visibility.Visible;
-                    }
+                    grid = (Grid)children;
+                }
+                else if (((ContentControl)children).Content is Grid)
+                {
+                    grid = (Grid)((ContentControl)children).Content;
+                }
+                else
+                {
+                    continue;
+                }
+                if (grid.Name != name + "Tab")
+                {
+                    grid.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    grid.Visibility = Visibility.Visible;
                 }
             }
             foreach (var children in TabGrid.Children)
@@ -106,8 +118,6 @@ namespace RTDDataExecuter
             }
         }
 
-        
-
         //异常信息显示5秒之后消失。
         private DispatcherTimer dispatcherTimer = null;
         private void StatusBarExceptionMessage_TextChanged(object sender, TextChangedEventArgs e)
@@ -122,7 +132,7 @@ namespace RTDDataExecuter
                 dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
                 dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
                 EventHandler eh = null;
-                eh = (a,b) =>
+                eh = (a, b) =>
                 {
                     dispatcherTimer.Tick -= eh;
                     dispatcherTimer.Stop();

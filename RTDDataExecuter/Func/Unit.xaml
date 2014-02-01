@@ -1,0 +1,182 @@
+﻿<UserControl x:Class="RTDDataExecuter.Unit"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" >
+    <Grid Name="UnitTab" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Initialized="UnitTab_Initialized">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="UnitDataGrid" AutoGenerateColumns="True" SelectionChanged="UnitDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
+        <WrapPanel Grid.Column="1" Grid.Row="0">
+            <Expander Width="300" BorderThickness="0" Name="UnitSearchExpander" IsExpanded="False">
+                <Expander.Header>
+                    <Label Content="Search"></Label>
+                </Expander.Header>
+                <Expander.Content>
+                    <WrapPanel>
+                        <WrapPanel.Resources>
+                            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ResourceKey=BaseComboBox}">
+                                <EventSetter Event="SelectionChanged" Handler="UnitSearch_SelectionChanged"/>
+                            </Style>
+                        </WrapPanel.Resources>
+                        <TextBlock Text="id" Width="50"/>
+                        <TextBox Name="UnitSearch_id" Width="100" TextChanged="UnitSearch_TextChanged"></TextBox>
+                        <TextBlock Text="g_id" Width="50"/>
+                        <TextBox Name="UnitSearch_g_id" Width="100" TextChanged="UnitSearch_TextChanged"></TextBox>
+                        <TextBlock Text="name" Width="50"/>
+                        <TextBox Name="UnitSearch_name" Width="175" TextChanged="UnitSearch_TextChanged"></TextBox>
+                        <ComboBox Name="UnitSearch_category" Width="75"></ComboBox>
+                        <ComboBox Name="UnitSearch_style" Width="100"></ComboBox>
+                        <ComboBox Name="UnitSearch_attribute" Width="100"></ComboBox>
+                        <ComboBox Name="UnitSearch_sub_a1" Width="100"></ComboBox>
+                        <Button Name="UnitSearchClear" Width="300" Click="UnitSearchClear_Click">Clear</Button>
+                    </WrapPanel>
+                </Expander.Content>
+            </Expander>
+            <Separator Width="300"/>
+            <TextBlock Text="id" Width="50"/>
+            <TextBox Name="UnitInfo_id" Width="100" IsReadOnly="True"></TextBox>
+            <TextBlock Text="g_id" Width="50"/>
+            <TextBox Name="UnitInfo_g_id" Width="100" IsReadOnly="True"></TextBox>
+            <TextBlock Text="name" Width="50"/>
+            <TextBox Name="UnitInfo_name" Width="175" IsReadOnly="True"></TextBox>
+            <TextBox Name="UnitInfo_category" Width="75" IsReadOnly="True"></TextBox>
+            <TextBlock Text="style" Width="50"/>
+            <TextBox Name="UnitInfo_style" Width="100" IsReadOnly="True"></TextBox>
+            <TextBlock Text="kind" Width="50"/>
+            <TextBox Name="UnitInfo_kind" Width="100" IsReadOnly="True"></TextBox>
+            <TextBlock Text="attribute" Width="50"/>
+            <TextBox Name="UnitInfo_attribute" Width="100" IsReadOnly="True"></TextBox>
+            <TextBlock Text="sub_a1" Width="50"/>
+            <TextBox Name="UnitInfo_sub_a1" Width="100" IsReadOnly="True"></TextBox>
+            <TextBlock Text="model" Width="50"/>
+            <TextBox Name="UnitInfo_model" Width="250" IsReadOnly="True"></TextBox>
+            <Separator Width="300"/>
+            <Expander Width="300" BorderThickness="0" Name="UnitStoryExpander" IsExpanded="False">
+                <Expander.Header>
+                    <Label Content="Story"></Label>
+                </Expander.Header>
+                <Expander.Content>
+                    <WrapPanel Name="UnitInfo_Panel_Story">
+                        <RichTextBox Name="UnitInfo_story" IsReadOnly="True" Width="300"></RichTextBox>
+                        <TextBlock Text="ct_text" Width="50"/>
+                        <TextBox Name="UnitInfo_ct_text" Width="250" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="sct_text" Width="50"/>
+                        <TextBox Name="UnitInfo_sct_text" Width="250" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="sct6_text" Width="50"/>
+                        <TextBox Name="UnitInfo_sct6_text" Width="250" IsReadOnly="True"></TextBox>
+                        <TextBlock Text="a_skill_text" Width="50"/>
+                        <TextBox Name="UnitInfo_a_skill_text" Width="250" IsReadOnly="True"></TextBox>
+                    </WrapPanel>
+                </Expander.Content>
+            </Expander>
+        </WrapPanel>
+        <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                <WrapPanel Name="UnitInfo_Panel_General">
+                    <Separator Width="300"/>
+                    <TextBlock Text="lv" Width="50"/>
+                    <TextBox Name="UnitInfo_lv" Width="100" TextChanged="UnitInfo_lv_TextChanged"></TextBox>
+                    <TextBlock Text="lv_max" Width="50"/>
+                    <TextBox Name="UnitInfo_lv_max" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="HP" Width="50"/>
+                    <TextBox Name="UnitInfo_HP" Width="250" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="ATK" Width="50"/>
+                    <TextBox Name="UnitInfo_ATK" Width="250" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="HEAL" Width="50"/>
+                    <TextBox Name="UnitInfo_HEAL" Width="250" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="EXP" Width="50"/>
+                    <TextBox Name="UnitInfo_EXP" Width="250" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="pt" Width="50"/>
+                    <TextBox Name="UnitInfo_pt" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="EXP_max" Width="50"/>
+                    <TextBox Name="UnitInfo_EXP_max" Width="100" IsReadOnly="True"></TextBox>
+                </WrapPanel>
+                <WrapPanel Name="UnitInfo_PartySkill">
+                    <Separator Width="300"/>
+                    <TextBlock Text="PARTY" Width="50"/>
+                    <TextBox Name="partySkill_id" Width="50" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="name" Width="50"/>
+                    <TextBox Name="partySkill_name" Width="150" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="text" Width="50"/>
+                    <RichTextBox Name="partySkill_text" Width="250" IsReadOnly="True"></RichTextBox>
+                    <TextBlock Text="type" Width="50"/>
+                    <TextBox Name="partySkill_type" Width="250" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="attribute" Width="50"/>
+                    <TextBox Name="partySkill_attribute" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="style" Width="50"/>
+                    <TextBox Name="partySkill_style" Width="100" IsReadOnly="True"></TextBox>
+                    <!--<TextBox Name="partySkill_num_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="partySkill_num_01_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="partySkill_num_02_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="partySkill_num_03_text" Width="75" IsReadOnly="True"></TextBox>-->
+                    <TextBox Name="partySkill_num" Width="75" IsReadOnly="True"></TextBox>
+                    <TextBox Name="partySkill_num_01" Width="75" IsReadOnly="True"></TextBox>
+                    <TextBox Name="partySkill_num_02" Width="75" IsReadOnly="True"></TextBox>
+                    <TextBox Name="partySkill_num_03" Width="75" IsReadOnly="True"></TextBox>
+                </WrapPanel>
+                <WrapPanel Name="UnitInfo_ActiveSkill">
+                    <Separator Width="300"/>
+                    <TextBlock Text="ACTIVE" Width="50"/>
+                    <TextBox Name="activeSkill_id" Width="50" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="name" Width="50"/>
+                    <TextBox Name="activeSkill_name" Width="150" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="text" Width="50"/>
+                    <RichTextBox Name="activeSkill_text" Width="250" IsReadOnly="True"></RichTextBox>
+                    <TextBlock Text="phase" Width="50"/>
+                    <TextBox Name="activeSkill_phase" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="soul" Width="50"/>
+                    <TextBox Name="activeSkill_soul" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="type" Width="50"/>
+                    <TextBox Name="activeSkill_type" Width="250" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="attribute" Width="50"/>
+                    <TextBox Name="activeSkill_attribute" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="style" Width="50"/>
+                    <TextBox Name="activeSkill_style" Width="100" IsReadOnly="True"></TextBox>
+                    <!--<TextBox Name="activeSkill_num_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="activeSkill_num_01_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="activeSkill_num_02_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="activeSkill_num_03_text" Width="75" IsReadOnly="True"></TextBox>-->
+                    <TextBox Name="activeSkill_num" Width="75" IsReadOnly="True"></TextBox>
+                    <TextBox Name="activeSkill_num_01" Width="75" IsReadOnly="True"></TextBox>
+                    <TextBox Name="activeSkill_num_02" Width="75" IsReadOnly="True"></TextBox>
+                    <TextBox Name="activeSkill_num_03" Width="75" IsReadOnly="True"></TextBox>
+                </WrapPanel>
+                <WrapPanel Name="UnitInfo_PanelSkill">
+                    <Separator Width="300"/>
+                    <TextBlock Text="PANEL" Width="50"/>
+                    <TextBox Name="panelSkill_id" Width="50" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="name" Width="50"/>
+                    <TextBox Name="panelSkill_name" Width="150" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="text" Width="50"/>
+                    <RichTextBox Name="panelSkill_text" Width="250" IsReadOnly="True"></RichTextBox>
+                    <TextBlock Text="phase" Width="50"/>
+                    <TextBox Name="panelSkill_phase" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="duplication" Width="50"/>
+                    <TextBox Name="panelSkill_duplication" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="type" Width="50"/>
+                    <TextBox Name="panelSkill_type" Width="250" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="attribute" Width="50"/>
+                    <TextBox Name="panelSkill_attribute" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="style" Width="50"/>
+                    <TextBox Name="panelSkill_style" Width="100" IsReadOnly="True"></TextBox>
+                    <!--<TextBox Name="panelSkill_num_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="panelSkill_num_01_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="panelSkill_num_02_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="panelSkill_num_03_text" Width="75" IsReadOnly="True"></TextBox>-->
+                    <TextBox Name="panelSkill_num" Width="75" IsReadOnly="True"></TextBox>
+                    <TextBox Name="panelSkill_num_01" Width="75" IsReadOnly="True"></TextBox>
+                    <TextBox Name="panelSkill_num_02" Width="75" IsReadOnly="True"></TextBox>
+                    <TextBox Name="panelSkill_num_03" Width="75" IsReadOnly="True"></TextBox>
+                </WrapPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
