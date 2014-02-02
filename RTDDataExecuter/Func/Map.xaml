@@ -95,6 +95,7 @@
                             <TextBox Name="MapEnemyInfo_pat" Width="100"></TextBox>
                             <TextBlock Text="param0" Width="50"/>
                             <TextBox Name="MapEnemyInfo_p0" Width="100"></TextBox>
+                            <Separator Width="300"/>
                         </WrapPanel>
                     </ScrollViewer>
                 </Grid>

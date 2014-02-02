@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -26,6 +27,12 @@ namespace RTDDataExecuter
         {
             InitializeComponent();
         }
+        private void ConfigTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            ImportMDBSButton.Content = new Run("Import MDBS");
+            ImportLDBSButton.Content = new Run("Import LDBS");
+            ImportplistButton.Content = new Run("Import plist");
+        }
         private void ImportMDBSButton_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
@@ -33,20 +40,30 @@ namespace RTDDataExecuter
             ofd.Filter = "MDBS File|MDBS.xml";
             if (ofd.ShowDialog() == true)
             {
-                using (StreamReader sr = new StreamReader(ofd.FileName))
+                ImportMDBSButton.Content = new Run("Importing MDBS...");
+                Task task = new Task(() =>
                 {
-                    string xmlMDB = sr.ReadToEnd();
-                    try
+                    using (StreamReader sr = new StreamReader(ofd.FileName))
                     {
+                        string xmlMDB = sr.ReadToEnd();
                         DataSet ds = XMLParser.ParseMDB(xmlMDB);
                         DB db = new DB();
                         db.ImportDataSet(ds, true);
                     }
-                    catch (Exception ex)
+                });
+                task.ContinueWith(t =>
                     {
-                        Utility.LogException(ex.Message);
-                    }
-                }
+                        if (t.Exception != null)
+                        {
+                            Utility.ShowException(t.Exception.InnerException.Message);
+                            ImportMDBSButton.Content = new Run("MDBS Import Failed.");
+                        }
+                        else
+                        {
+                            ImportMDBSButton.Content = new Run("MDBS Successfully Imported.");
+                        }
+                    }, MainWindow.uiTaskScheduler);
+                task.Start();
             }
         }
         private void ImportLDBSButton_Click(object sender, RoutedEventArgs e)
@@ -56,22 +73,32 @@ namespace RTDDataExecuter
             ofd.Filter = "LDBS File|LDBS.xml";
             if (ofd.ShowDialog() == true)
             {
-                using (StreamReader sr = new StreamReader(ofd.FileName))
+                ImportLDBSButton.Content = new Run("Importing LDBS...");
+                Task task = new Task(() =>
                 {
-                    string xmlLDB = sr.ReadToEnd();
-                    try
+                    using (StreamReader sr = new StreamReader(ofd.FileName))
                     {
+                        string xmlLDB = sr.ReadToEnd();
                         DataTable dt = XMLParser.ParseLDB(xmlLDB);
                         DataSet lds = new DataSet("LDB");
                         lds.Tables.Add(dt);
                         DB db = new DB();
                         db.ImportDataSet(lds, false);
                     }
-                    catch (Exception ex)
+                });
+                task.ContinueWith(t =>
+                {
+                    if (t.Exception != null)
                     {
-                        Utility.LogException(ex.Message);
+                        Utility.ShowException(t.Exception.InnerException.Message);
+                        ImportLDBSButton.Content = new Run("LDBS Import Failed.");
                     }
-                }
+                    else
+                    {
+                        ImportLDBSButton.Content = new Run("LDBS Successfully Imported.");
+                    }
+                }, MainWindow.uiTaskScheduler);
+                task.Start();
             }
         }
         private void ImportplistButton_Click(object sender, RoutedEventArgs e)
@@ -81,9 +108,10 @@ namespace RTDDataExecuter
             ofd.Filter = "plist File|*.plist";
             if (ofd.ShowDialog() == true)
             {
-                using (StreamReader sr = new StreamReader(ofd.FileName))
+                ImportplistButton.Content = new Run("Importing plist...");
+                Task task = new Task(() =>
                 {
-                    try
+                    using (StreamReader sr = new StreamReader(ofd.FileName))
                     {
                         DataSet ds = XMLParser.ParsePlistMDB(sr.BaseStream);
                         DB db = new DB();
@@ -96,11 +124,20 @@ namespace RTDDataExecuter
                         lds.Tables.Add(dt);
                         db.ImportDataSet(lds, false);
                     }
-                    catch (Exception ex)
+                });
+                task.ContinueWith(t =>
+                {
+                    if (t.Exception != null)
                     {
-                        Utility.LogException(ex.Message);
+                        Utility.ShowException(t.Exception.InnerException.Message);
+                        ImportplistButton.Content = new Run("plist Import Failed.");
                     }
-                }
+                    else
+                    {
+                        ImportplistButton.Content = new Run("plist Successfully Imported.");
+                    }
+                }, MainWindow.uiTaskScheduler);
+                task.Start();
             }
         }
         public void InitSettings()

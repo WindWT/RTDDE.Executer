@@ -45,7 +45,7 @@ namespace RTDDataExecuter
             {
                 if (t.Exception != null)
                 {
-                    Utility.LogException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
                 MapMonsterGrid.ItemsSource = t.Result.DefaultView;
@@ -91,7 +91,7 @@ namespace RTDDataExecuter
                 ClearMap();
                 if (t.Exception != null)
                 {
-                    Utility.LogException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
                 else
@@ -590,7 +590,7 @@ namespace RTDDataExecuter
             {
                 if (t.Exception != null)
                 {
-                    Utility.LogException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
                 if (t.Result == null || t.Result.Rows.Count == 0)
@@ -767,7 +767,7 @@ namespace RTDDataExecuter
                 }
                 catch (Exception ex)
                 {
-                    Utility.LogException(ex.Message);
+                    Utility.ShowException(ex.Message);
                 }
             }
             else if (File.Exists(iosFileName))
@@ -780,7 +780,7 @@ namespace RTDDataExecuter
                     }
                     catch (Exception ex)
                     {
-                        Utility.LogException(ex.Message);
+                        Utility.ShowException(ex.Message);
                     }
                 }
             }

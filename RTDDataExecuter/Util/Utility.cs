@@ -1,6 +1,7 @@
 ﻿using RTDDataProvider;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
@@ -46,7 +47,7 @@ namespace RTDDataExecuter
             flowDoc.Blocks.Add(pr);
             return flowDoc;
         }
-        public static void LogException(string message)
+        public static void ShowException(string message)
         {
             var w = (MainWindow)Application.Current.MainWindow;
             ((TextBox)w.FindName("StatusBarExceptionMessage")).Text = message;

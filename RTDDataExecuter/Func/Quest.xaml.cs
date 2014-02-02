@@ -85,7 +85,7 @@ bgm_f,bgm_b,
             {
                 if (t.Exception != null)
                 {
-                    Utility.LogException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
                 if (task.Result == null || task.Result.Rows.Count == 0)
@@ -316,7 +316,7 @@ FROM QUEST_MASTER WHERE ";
             {
                 if (t.Exception != null)
                 {
-                    Utility.LogException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
                 QuestDataGrid.ItemsSource = t.Result.DefaultView;

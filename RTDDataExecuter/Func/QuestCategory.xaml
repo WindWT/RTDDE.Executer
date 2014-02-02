@@ -42,6 +42,7 @@
             <TextBox Name="QuestCategoryInfo_zbtn_kind" Width="100" IsReadOnly="True"></TextBox>
             <TextBlock Text="text" Width="50"/>
             <TextBox Name="QuestCategoryInfo_text" Width="250" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+            <Separator Width="300"/>
         </WrapPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
             <StackPanel>

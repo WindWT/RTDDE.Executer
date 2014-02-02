@@ -13,16 +13,96 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="SkillDataGrid" AutoGenerateColumns="True" SelectionChanged="SkillDataGrid_SelectionChanged"  FrozenColumnCount="2" ></DataGrid>
-        <WrapPanel Grid.Column="1" Grid.Row="0">
-            <RadioButton GroupName="SkillType" Content="Party" Width="100" IsChecked="True" Name="SkillTypeRadio_Party" Checked="SkillTypeRadio_Party_Checked"></RadioButton>
-            <RadioButton GroupName="SkillType" Content="Active" Width="100" Name="SkillTypeRadio_Active" Checked="SkillTypeRadio_Active_Checked"></RadioButton>
-            <RadioButton GroupName="SkillType" Content="Panel" Width="100" Name="SkillTypeRadio_Panel" Checked="SkillTypeRadio_Panel_Checked"></RadioButton>
-            <Separator Width="300"/>
-        </WrapPanel>
+        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="SkillDataGrid" AutoGenerateColumns="True" SelectionChanged="SkillDataGrid_SelectionChanged"  FrozenColumnCount="1" ></DataGrid>
+        <StackPanel Grid.Column="1" Grid.Row="0">
+            <WrapPanel >
+                <RadioButton GroupName="SkillType" Content="Party" Width="100" Name="SkillTypeRadio_Party" Checked="SkillTypeRadio_Party_Checked"></RadioButton>
+                <RadioButton GroupName="SkillType" Content="Active" Width="100" Name="SkillTypeRadio_Active" Checked="SkillTypeRadio_Active_Checked"></RadioButton>
+                <RadioButton GroupName="SkillType" Content="Panel" Width="100" Name="SkillTypeRadio_Panel" Checked="SkillTypeRadio_Panel_Checked"></RadioButton>
+                <Separator Width="300"/>
+            </WrapPanel>
+            <WrapPanel Name="SkillInfo_PartySkill">
+                <TextBlock Text="PARTY" Width="50"/>
+                <TextBox Name="partySkill_id" Width="50" IsReadOnly="True"></TextBox>
+                <TextBlock Text="name" Width="50"/>
+                <TextBox Name="partySkill_name" Width="150" IsReadOnly="True"></TextBox>
+                <TextBlock Text="text" Width="50"/>
+                <RichTextBox Name="partySkill_text" Width="250" IsReadOnly="True"></RichTextBox>
+                <TextBlock Text="type" Width="50"/>
+                <TextBox Name="partySkill_type" Width="250" IsReadOnly="True"></TextBox>
+                <TextBlock Text="attribute" Width="50"/>
+                <TextBox Name="partySkill_attribute" Width="100" IsReadOnly="True"></TextBox>
+                <TextBlock Text="style" Width="50"/>
+                <TextBox Name="partySkill_style" Width="100" IsReadOnly="True"></TextBox>
+                <!--<TextBox Name="partySkill_num_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="partySkill_num_01_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="partySkill_num_02_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="partySkill_num_03_text" Width="75" IsReadOnly="True"></TextBox>-->
+                <TextBox Name="partySkill_num" Width="75" IsReadOnly="True"></TextBox>
+                <TextBox Name="partySkill_num_01" Width="75" IsReadOnly="True"></TextBox>
+                <TextBox Name="partySkill_num_02" Width="75" IsReadOnly="True"></TextBox>
+                <TextBox Name="partySkill_num_03" Width="75" IsReadOnly="True"></TextBox>
+                <Separator Width="300"/>
+            </WrapPanel>
+            <WrapPanel Name="SkillInfo_ActiveSkill">
+                <TextBlock Text="ACTIVE" Width="50"/>
+                <TextBox Name="activeSkill_id" Width="50" IsReadOnly="True"></TextBox>
+                <TextBlock Text="name" Width="50"/>
+                <TextBox Name="activeSkill_name" Width="150" IsReadOnly="True"></TextBox>
+                <TextBlock Text="text" Width="50"/>
+                <RichTextBox Name="activeSkill_text" Width="250" IsReadOnly="True"></RichTextBox>
+                <TextBlock Text="phase" Width="50"/>
+                <TextBox Name="activeSkill_phase" Width="100" IsReadOnly="True"></TextBox>
+                <TextBlock Text="soul" Width="50"/>
+                <TextBox Name="activeSkill_soul" Width="100" IsReadOnly="True"></TextBox>
+                <TextBlock Text="type" Width="50"/>
+                <TextBox Name="activeSkill_type" Width="250" IsReadOnly="True"></TextBox>
+                <TextBlock Text="attribute" Width="50"/>
+                <TextBox Name="activeSkill_attribute" Width="100" IsReadOnly="True"></TextBox>
+                <TextBlock Text="style" Width="50"/>
+                <TextBox Name="activeSkill_style" Width="100" IsReadOnly="True"></TextBox>
+                <!--<TextBox Name="activeSkill_num_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="activeSkill_num_01_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="activeSkill_num_02_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="activeSkill_num_03_text" Width="75" IsReadOnly="True"></TextBox>-->
+                <TextBox Name="activeSkill_num" Width="75" IsReadOnly="True"></TextBox>
+                <TextBox Name="activeSkill_num_01" Width="75" IsReadOnly="True"></TextBox>
+                <TextBox Name="activeSkill_num_02" Width="75" IsReadOnly="True"></TextBox>
+                <TextBox Name="activeSkill_num_03" Width="75" IsReadOnly="True"></TextBox>
+                <Separator Width="300"/>
+            </WrapPanel>
+            <WrapPanel Name="SkillInfo_PanelSkill">
+                <TextBlock Text="PANEL" Width="50"/>
+                <TextBox Name="panelSkill_id" Width="50" IsReadOnly="True"></TextBox>
+                <TextBlock Text="name" Width="50"/>
+                <TextBox Name="panelSkill_name" Width="150" IsReadOnly="True"></TextBox>
+                <TextBlock Text="text" Width="50"/>
+                <RichTextBox Name="panelSkill_text" Width="250" IsReadOnly="True"></RichTextBox>
+                <TextBlock Text="phase" Width="50"/>
+                <TextBox Name="panelSkill_phase" Width="100" IsReadOnly="True"></TextBox>
+                <TextBlock Text="duplication" Width="50"/>
+                <TextBox Name="panelSkill_duplication" Width="100" IsReadOnly="True"></TextBox>
+                <TextBlock Text="type" Width="50"/>
+                <TextBox Name="panelSkill_type" Width="250" IsReadOnly="True"></TextBox>
+                <TextBlock Text="attribute" Width="50"/>
+                <TextBox Name="panelSkill_attribute" Width="100" IsReadOnly="True"></TextBox>
+                <TextBlock Text="style" Width="50"/>
+                <TextBox Name="panelSkill_style" Width="100" IsReadOnly="True"></TextBox>
+                <!--<TextBox Name="panelSkill_num_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="panelSkill_num_01_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="panelSkill_num_02_text" Width="75" IsReadOnly="True"></TextBox>
+                                <TextBox Name="panelSkill_num_03_text" Width="75" IsReadOnly="True"></TextBox>-->
+                <TextBox Name="panelSkill_num" Width="75" IsReadOnly="True"></TextBox>
+                <TextBox Name="panelSkill_num_01" Width="75" IsReadOnly="True"></TextBox>
+                <TextBox Name="panelSkill_num_02" Width="75" IsReadOnly="True"></TextBox>
+                <TextBox Name="panelSkill_num_03" Width="75" IsReadOnly="True"></TextBox>
+                <Separator Width="300"/>
+            </WrapPanel>
+        </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel>
-            </StackPanel>
+            <WrapPanel Name="SkillUnitRankInfo">
+
+            </WrapPanel>
         </ScrollViewer>
     </Grid>
 </UserControl>

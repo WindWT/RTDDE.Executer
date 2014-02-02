@@ -63,36 +63,20 @@
             <TextBox Name="QuestInfo_category_name" Width="200" IsReadOnly="True"></TextBox>
             <TextBlock Text="text" Width="50"/>
             <TextBox Name="QuestInfo_text" Width="250" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+            <Separator Width="300"/>
         </WrapPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
             <StackPanel>
                 <WrapPanel Name="QuestInfo_challenge">
-                    <Separator Width="300"/>
                     <TextBlock Text="gold" Foreground="Gold" Width="50" />
                     <RichTextBox Name="QuestInfo_challenge_gold" Width="250" IsReadOnly="True" BorderBrush="Gold"></RichTextBox>
                     <TextBlock Text="silver" Foreground="Silver" Width="50" />
                     <RichTextBox Name="QuestInfo_challenge_silver" Width="250" IsReadOnly="True" BorderBrush="Silver"></RichTextBox>
                     <TextBlock Text="bronze" Foreground="Brown" Width="50" />
                     <RichTextBox Name="QuestInfo_challenge_bronze" Width="250" IsReadOnly="True" BorderBrush="Brown"></RichTextBox>
+                    <Separator Width="300"/>
                 </WrapPanel>
                 <WrapPanel>
-                    <Separator Width="300"/>
-                    <TextBlock Text="opentype" Width="100"/>
-                    <TextBlock Text="opentypeParam" Width="200"/>
-                    <TextBox Name="QuestInfo_opentype1_name" Width="100" IsReadOnly="True"></TextBox>
-                    <TextBox Name="QuestInfo_opentype1_value" Width="200" IsReadOnly="True"></TextBox>
-                    <TextBox Name="QuestInfo_opentype2_name" Width="100" IsReadOnly="True"></TextBox>
-                    <TextBox Name="QuestInfo_opentype2_value" Width="200" IsReadOnly="True"></TextBox>
-                    <TextBox Name="QuestInfo_opentype3_name" Width="100" IsReadOnly="True"></TextBox>
-                    <TextBox Name="QuestInfo_opentype3_value" Width="200" IsReadOnly="True"></TextBox>
-                    <TextBox Name="QuestInfo_opentype4_name" Width="100" IsReadOnly="True"></TextBox>
-                    <TextBox Name="QuestInfo_opentype4_value" Width="200" IsReadOnly="True"></TextBox>
-                    <TextBox Name="QuestInfo_opentype5_name" Width="100" IsReadOnly="True"></TextBox>
-                    <TextBox Name="QuestInfo_opentype5_value" Width="200" IsReadOnly="True"></TextBox>
-                    <TextBox Name="QuestInfo_opentype6_name" Width="100" IsReadOnly="True"></TextBox>
-                    <TextBox Name="QuestInfo_opentype6_value" Width="200" IsReadOnly="True"></TextBox>
-                    <TextBox Name="QuestInfo_open_sp_event_name" Width="100" IsReadOnly="True"></TextBox>
-                    <TextBox Name="QuestInfo_open_sp_event_point" Width="200" IsReadOnly="True"></TextBox>
                     <TextBlock Text="bonus" Width="50"/>
                     <TextBox Name="QuestInfo_bonus" Width="50" IsReadOnly="True"></TextBox>
                     <TextBox Name="QuestInfo_bonus_start" Width="100" IsReadOnly="True"></TextBox>
@@ -110,13 +94,31 @@
                     <TextBox Name="QuestInfo_panel_cane" Width="50" IsReadOnly="True"></TextBox>
                     <TextBox Name="QuestInfo_panel_heart" Width="25" IsReadOnly="True"></TextBox>
                     <TextBox Name="QuestInfo_panel_sp" Width="25" IsReadOnly="True"></TextBox>
+                    <Separator Width="300"/>
+                    <TextBlock Text="opentype" Width="100"/>
+                    <TextBlock Text="opentypeParam" Width="200"/>
+                    <TextBox Name="QuestInfo_opentype1_name" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype1_value" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype2_name" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype2_value" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype3_name" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype3_value" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype4_name" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype4_value" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype5_name" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype5_value" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype6_name" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_opentype6_value" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_open_sp_event_name" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="QuestInfo_open_sp_event_point" Width="200" IsReadOnly="True"></TextBox>
+                    <Separator Width="300"/>
                 </WrapPanel>
                 <WrapPanel Name="QuestInfo_sp_event">
-                    <Separator Width="300"/>
                     <TextBlock Text="sp_event_id" Width="100"/>
                     <TextBox Name="QuestInfo_sp_event_id" Width="200" IsReadOnly="True"></TextBox>
                     <TextBlock Text="sp_event_name" Width="100"/>
                     <TextBox Name="QuestInfo_sp_event_name" Width="200" IsReadOnly="True"></TextBox>
+                    <Separator Width="300"/>
                 </WrapPanel>
             </StackPanel>
         </ScrollViewer>

@@ -56,7 +56,7 @@ namespace RTDDataExecuter
             {
                 if (t.Exception != null)
                 {
-                    Utility.LogException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
                 CommonDataGrid.ItemsSource = t.Result.DefaultView;

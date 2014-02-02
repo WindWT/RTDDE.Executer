@@ -72,7 +72,7 @@ order by point";
             {
                 if (t.Exception != null)
                 {
-                    Utility.LogException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
                 if (t.Result == null || t.Result.Rows.Count == 0)
@@ -83,12 +83,12 @@ order by point";
                 Task.WaitAll(taskQuest, taskReward);
                 if (taskQuest.Exception != null)
                 {
-                    Utility.LogException(taskQuest.Exception.InnerException.Message);
+                    Utility.ShowException(taskQuest.Exception.InnerException.Message);
                     return;
                 }
                 if (taskReward.Exception != null)
                 {
-                    Utility.LogException(taskReward.Exception.InnerException.Message);
+                    Utility.ShowException(taskReward.Exception.InnerException.Message);
                     return;
                 }
 
@@ -109,7 +109,6 @@ order by point";
                 {
                     QuestCategoryInfo_quest.Children.Clear();
                     QuestCategoryInfo_quest.Visibility = Visibility.Visible;
-                    QuestCategoryInfo_quest.Children.Add(new Separator() { Width = 300 });
                     foreach (DataRow drQuest in dtQuest.Rows)
                     {
                         QuestCategoryInfo_quest.Children.Add(new TextBlock()
@@ -123,6 +122,7 @@ order by point";
                             Width = 250
                         });
                     }
+                    QuestCategoryInfo_quest.Children.Add(new Separator() { Width = 300 });
                 }
                 DataTable dtReward = taskReward.Result;
                 if (dtReward == null || dtReward.Rows.Count == 0)
@@ -133,7 +133,6 @@ order by point";
                 {
                     QuestCategoryInfo_reward.Children.Clear();
                     QuestCategoryInfo_reward.Visibility = Visibility.Visible;
-                    QuestCategoryInfo_reward.Children.Add(new Separator() { Width = 300 });
                     foreach (DataRow drReward in dtReward.Rows)
                     {
                         QuestCategoryInfo_reward.Children.Add(new TextBlock()
@@ -157,6 +156,7 @@ order by point";
                             Width = 50
                         });
                     }
+                    QuestCategoryInfo_reward.Children.Add(new Separator() { Width = 300 });
                 }
 
             }, MainWindow.uiTaskScheduler);
@@ -211,7 +211,7 @@ order by point";
             {
                 if (t.Exception != null)
                 {
-                    Utility.LogException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
                 QuestCategoryDataGrid.ItemsSource = t.Result.DefaultView;

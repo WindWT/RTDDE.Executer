@@ -118,7 +118,7 @@ namespace RTDDataExecuter
             }
         }
 
-        //异常信息显示5秒之后消失。
+        //异常信息显示15秒之后消失。
         private DispatcherTimer dispatcherTimer = null;
         private void StatusBarExceptionMessage_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -130,7 +130,7 @@ namespace RTDDataExecuter
             {
                 StatusBarExceptionMessage.Visibility = Visibility.Visible;
                 dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
-                dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
+                dispatcherTimer.Interval = new TimeSpan(0, 0, 15);
                 EventHandler eh = null;
                 eh = (a, b) =>
                 {

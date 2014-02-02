@@ -493,7 +493,7 @@ namespace RTDDataProvider
         {
             return parseRealAttributetype(attributetype).ToString();
         }
-        public static UnitAttribute parseRealAttributetype(int attributetype)
+        private static UnitAttribute parseRealAttributetype(int attributetype)
         {
             switch (attributetype)
             {
@@ -513,9 +513,16 @@ namespace RTDDataProvider
         }
         public static string parseStyletype(int styletype)
         {
-            return parseRealStyletype(styletype).ToString();
+            if (styletype == 0)
+            {
+                return "NONE";
+            }
+            else
+            {
+                return parseRealStyletype(styletype).ToString();
+            }
         }
-        public static Class parseRealStyletype(int styletype)
+        private static Class parseRealStyletype(int styletype)
         {
             switch (styletype)
             {
@@ -535,7 +542,7 @@ namespace RTDDataProvider
         {
             return parseRealUnitKind(kind).ToString(); ;
         }
-        public static AssignID parseRealUnitKind(int kind)
+        private static AssignID parseRealUnitKind(int kind)
         {
             switch (kind)
             {

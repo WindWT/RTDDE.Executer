@@ -71,7 +71,7 @@ namespace RTDDataExecuter
             {
                 if (t.Exception != null)
                 {
-                    Utility.LogException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
                 UnitDataGrid.ItemsSource = t.Result.DefaultView;
@@ -171,7 +171,7 @@ namespace RTDDataExecuter
             }
         }*/
 
-        private void UnitInfo_BindData(string unitid)
+        public void UnitInfo_BindData(string unitid)
         {
             if (string.IsNullOrWhiteSpace(UnitInfo_lv.Text))
             {
@@ -198,9 +198,9 @@ namespace RTDDataExecuter
                 int activeRankSkillId = Convert.ToInt32(unitData["a_skill_id"]);
                 int panelRankSkillId = Convert.ToInt32(unitData["panel_skill_id"]);
 
-                skillList.Add(getSkillFromRankSkill("PARTY_SKILL", partyRankSkillId, (int)thislevel));
-                skillList.Add(getSkillFromRankSkill("ACTIVE_SKILL", activeRankSkillId, (int)thislevel));
-                skillList.Add(getSkillFromRankSkill("PANEL_SKILL", panelRankSkillId, (int)thislevel));
+                skillList.Add(new SkillMaster("PARTY_SKILL", partyRankSkillId, (int)thislevel));
+                skillList.Add(new SkillMaster("ACTIVE_SKILL", activeRankSkillId, (int)thislevel));
+                skillList.Add(new SkillMaster("PANEL_SKILL", panelRankSkillId, (int)thislevel));
                 return skillList;
             }
             );
@@ -208,7 +208,7 @@ namespace RTDDataExecuter
             {
                 if (t.Exception != null)
                 {
-                    Utility.LogException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
                 if (task.Result == null || task.Result.Rows.Count == 0)
@@ -347,114 +347,6 @@ namespace RTDDataExecuter
             panelSkill_num_03.Text = skill.num_03.ToString();
             panelSkill_phase.Text = ((SkillPhase)skill.phase).ToString();
             panelSkill_duplication.Text = skill.duplication == 1 ? "重複可" : skill.duplication == 2 ? "重複不可" : String.Empty;
-        }
-        public class SkillMaster
-        {
-            public int id;
-            public string name;
-            public int type;
-            public int attribute;
-            public int style;
-            public int num;
-            public int num_01;
-            public int num_02;
-            public int num_03;
-            public int phase;
-            public int soul;
-            public int duplication;
-            public string text;
-            public SkillMaster()
-            {
-                id = 0;
-                name = String.Empty;
-                text = String.Empty;
-            }
-        }
-        private SkillMaster getSkillFromRankSkill(string tableName, int rankSkillId, int thislevel = 1)
-        {
-            DB db = new DB();
-            int skillId = 0;
-            SkillMaster sm = new SkillMaster();
-            DataTable rankSkillTable = db.GetData("SELECT * FROM " + tableName + "_RANK_MASTER WHERE id=" + rankSkillId);
-            if (rankSkillTable.Rows.Count == 0)
-            {
-                skillId = 0;
-            }
-            if (thislevel < 10)
-            {
-                skillId = Convert.ToInt32(rankSkillTable.Rows[0]["skill_01_09"]);
-            }
-            else if (thislevel < 20)
-            {
-                skillId = Convert.ToInt32(rankSkillTable.Rows[0]["skill_10_19"]);
-            }
-            else if (thislevel < 30)
-            {
-                skillId = Convert.ToInt32(rankSkillTable.Rows[0]["skill_20_29"]);
-            }
-            else if (thislevel < 40)
-            {
-                skillId = Convert.ToInt32(rankSkillTable.Rows[0]["skill_30_39"]);
-            }
-            else if (thislevel < 50)
-            {
-                skillId = Convert.ToInt32(rankSkillTable.Rows[0]["skill_40_49"]);
-            }
-            else if (thislevel < 60)
-            {
-                skillId = Convert.ToInt32(rankSkillTable.Rows[0]["skill_50_59"]);
-            }
-            else if (thislevel < 70)
-            {
-                skillId = Convert.ToInt32(rankSkillTable.Rows[0]["skill_60_69"]);
-            }
-            else if (thislevel < 80)
-            {
-                skillId = Convert.ToInt32(rankSkillTable.Rows[0]["skill_70_79"]);
-            }
-            else if (thislevel < 90)
-            {
-                skillId = Convert.ToInt32(rankSkillTable.Rows[0]["skill_80_89"]);
-            }
-            else if (thislevel < 100)
-            {
-                skillId = Convert.ToInt32(rankSkillTable.Rows[0]["skill_90_99"]);
-            }
-            else if (thislevel == 100)
-            {
-                skillId = Convert.ToInt32(rankSkillTable.Rows[0]["skill_100"]);
-            }
-            else
-            {
-                skillId = 0;
-            }
-            DataTable skillTable = db.GetData("SELECT * FROM " + tableName + "_MASTER WHERE id=" + skillId);
-            if (skillTable.Rows.Count != 0)
-            {
-                sm.id = Convert.ToInt32(skillTable.Rows[0]["id"]);
-                sm.name = Convert.ToString(skillTable.Rows[0]["name"]);
-                sm.type = Convert.ToInt32(skillTable.Rows[0]["type"]);
-                sm.attribute = Convert.ToInt32(skillTable.Rows[0]["attribute"]);
-                sm.style = Convert.ToInt32(skillTable.Rows[0]["style"]);
-                sm.num = Convert.ToInt32(skillTable.Rows[0]["num"]);
-                sm.num_01 = Convert.ToInt32(skillTable.Rows[0]["num_01"]);
-                sm.num_02 = Convert.ToInt32(skillTable.Rows[0]["num_02"]);
-                sm.num_03 = Convert.ToInt32(skillTable.Rows[0]["num_03"]);
-                sm.text = Convert.ToString(skillTable.Rows[0]["text"]);
-                if (skillTable.Columns.Contains("phase"))
-                {
-                    sm.phase = Convert.ToInt32(skillTable.Rows[0]["phase"]);
-                }
-                if (skillTable.Columns.Contains("soul"))
-                {
-                    sm.soul = Convert.ToInt32(skillTable.Rows[0]["soul"]);
-                }
-                if (skillTable.Columns.Contains("duplication"))
-                {
-                    sm.duplication = Convert.ToInt32(skillTable.Rows[0]["duplication"]);
-                }
-            }
-            return sm;
         }
 
         private void UnitSearchClear_Click(object sender, RoutedEventArgs e)
