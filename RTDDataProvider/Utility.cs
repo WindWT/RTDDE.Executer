@@ -431,6 +431,18 @@ namespace RTDDataProvider
                         result["opentypeParam"] = opentypeParam;
                         break;
                     }
+                case "12":
+                    {
+                        result["opentype"] = "教程通过";
+                        result["opentypeParam"] = opentypeParam;
+                        break;
+                    }
+                case "13":
+                    {
+                        result["opentype"] = "教程未通过";
+                        result["opentypeParam"] = opentypeParam;
+                        break;
+                    }
                 case "14":
                     {
                         result["opentype"] = "队长限定";
