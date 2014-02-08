@@ -21,7 +21,7 @@
                 <GradientStop Color="Transparent" Offset="0.75"/>
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
-
+        
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
             <Setter Property="Padding" Value="0,1,0,1"></Setter>
@@ -34,12 +34,15 @@
             <Setter Property="SelectionUnit" Value="FullRow"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="EnableRowVirtualization" Value="True"/>
+            <Setter Property="VerticalGridLinesBrush" Value="Transparent"></Setter>
+            <Setter Property="HorizontalGridLinesBrush" Value="Transparent"></Setter>
+            <Setter Property="AlternatingRowBackground" Value="{StaticResource DefaultBrush}"></Setter>
         </Style>
         <Style TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
-            <Setter Property="Padding" Value="2"/>
-            <Setter Property="BorderBrush" Value="Black"/>
-            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="Background" Value="{StaticResource PressedBrush}" />
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
         </Style>
         <Style TargetType="WrapPanel">
             <Setter Property="Orientation" Value="Horizontal"/>
@@ -47,9 +50,9 @@
         </Style>
         <Style TargetType="ToggleButton">
             <Setter Property="Height" Value="36"/>
-            <Setter Property="Width" Value="36"/>
+            <Setter Property="Width" Value="Auto"/>
             <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource PressedBrush}" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Padding" Value="10,5,10,5"/>
             <Setter Property="FontSize" Value="18"/>
@@ -68,23 +71,14 @@
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Foreground" Value="{StaticResource DefaultBrush}" />
-                </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Foreground" Value="Black" />
-                    <Setter Property="Background" Value="{StaticResource HighlightBrush}" />
-                    <Setter Property="Width" Value="Auto"/>
                 </Trigger>
                 <Trigger Property="IsChecked" Value="True">
                     <Setter Property="Foreground" Value="Black" />
-                    <Setter Property="Background" Value="{StaticResource PressedBrush}" />
-                    <Setter Property="Width" Value="Auto"/>
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Foreground" Value="Black" />
-                    <Setter Property="Background" Value="{StaticResource PressedBrush}" />
-                    <Setter Property="Width" Value="Auto"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -116,7 +110,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style TargetType="{x:Type Button}" x:Key="CloseButtonStyle">
+        <Style TargetType="{x:Type Button}" x:Key="CloseButton">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Background" Value="Pink" />
             <Setter Property="BorderThickness" Value="0" />

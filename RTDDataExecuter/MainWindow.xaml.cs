@@ -67,7 +67,8 @@ namespace RTDDataExecuter
         }
         private void TabStrip_Checked(object sender, RoutedEventArgs e)
         {
-            ChangeTab(((ToggleButton)sender).Name.Replace("_TabStrip", String.Empty));
+            ToggleButton tb = sender as ToggleButton;
+            ChangeTab(tb.Name.Replace("_TabStrip", String.Empty));
         }
         public void ChangeTab(string name)
         {

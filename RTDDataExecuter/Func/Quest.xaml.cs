@@ -208,7 +208,6 @@ bgm_f,bgm_b,
             string today = DateTime.Today.AddHours(1).ToString("yyyyMMddHH");
             string sql = @"SELECT id,name,stamina,
 (select name from quest_category_master where quest_category_master.id=category) as category,
-(select text from quest_category_master where quest_category_master.id=category) as text,
        ( CASE
                 WHEN open_type_1 = 1 THEN open_param_1 
                 WHEN open_type_2 = 1 THEN open_param_2 
