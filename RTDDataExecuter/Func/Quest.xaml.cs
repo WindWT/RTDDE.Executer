@@ -200,7 +200,7 @@ bgm_f,bgm_b,
        END ) AS [end]
   FROM quest_master
  ORDER BY start DESC,end DESC,id DESC;";
-            QuestDataGrid_BindData(sql);
+            Utility.BindData(QuestDataGrid, sql);
         }
 
         private void QuestTypeRadio_Daily_Checked(object sender, RoutedEventArgs e)
@@ -249,7 +249,7 @@ WHERE DayOfWeek>=0
 AND isDisabled=0
 AND ([end]>" + today + @" OR [end]=0)
 ORDER BY DayOfWeek,id DESC";
-            QuestDataGrid_BindData(sql);
+            Utility.BindData(QuestDataGrid, sql);
         }
 
         private void QuestTypeRadio_Main_Checked(object sender, RoutedEventArgs e)
@@ -259,7 +259,7 @@ ORDER BY DayOfWeek,id DESC";
 FROM QUEST_MASTER
 WHERE category<1000
 ORDER BY id DESC";
-            QuestDataGrid_BindData(sql);
+            Utility.BindData(QuestDataGrid, sql);
         }
 
         private void QuestSearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -288,7 +288,7 @@ FROM QUEST_MASTER WHERE ";
                 sql += "category_name LIKE '%" + QuestSearch_category_name.Text.Trim() + "%' AND ";
             }
             sql += " 1=1 ORDER BY id DESC";
-            QuestDataGrid_BindData(sql);
+            Utility.BindData(QuestDataGrid, sql);
         }
 
         private void QuestSearchClear_Click(object sender, RoutedEventArgs e)
@@ -298,29 +298,6 @@ FROM QUEST_MASTER WHERE ";
             QuestSearch_category.Text = String.Empty;
             QuestSearch_category_name.Text = String.Empty;
             QuestTypeRadio_Event.IsChecked = true;
-        }
-
-        private void QuestDataGrid_BindData(string sql)
-        {
-            QuestDataGrid_BindData(sql, null);
-        }
-        private void QuestDataGrid_BindData(string sql, List<SQLiteParameter> paras)
-        {
-            Task<DataTable> task = new Task<DataTable>(() =>
-            {
-                DB db = new DB();
-                return db.GetData(sql, paras);
-            });
-            task.ContinueWith(t =>
-            {
-                if (t.Exception != null)
-                {
-                    Utility.ShowException(t.Exception.InnerException.Message);
-                    return;
-                }
-                QuestDataGrid.ItemsSource = t.Result.DefaultView;
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
-            task.Start();
         }
     }
 }

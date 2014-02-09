@@ -172,9 +172,9 @@ order by point";
                 string id = ((DataRowView)dgr.Item).Row["id"].ToString();
                 string name = ((DataRowView)dgr.Item).Row["name"].ToString();
                 var w = (MainWindow)Application.Current.MainWindow;
-                ((TextBox)w.Quest.FindName("QuestSearch_category")).Text = id;
-                ((TextBox)w.Quest.FindName("QuestSearch_category_name")).Text = name;
-                ((Expander)w.Quest.FindName("QuestSearchExpander")).IsExpanded = true;
+                w.Quest.QuestSearch_category.Text = id;
+                w.Quest.QuestSearch_category_name.Text = name;
+                w.Quest.QuestSearchExpander.IsExpanded = true;
                 w.ChangeTab("Quest");
             }
         }
@@ -198,25 +198,7 @@ order by point";
         private void QuestCategoryTypeRadio_Checked(int zbtn_kind)
         {
             string sql = string.Format("SELECT id,name,text FROM quest_category_master WHERE zbtn_kind={0} order by id", zbtn_kind.ToString());
-            QuestCategoryDataGrid_BindData(sql);
-        }
-        private void QuestCategoryDataGrid_BindData(string sql)
-        {
-            Task<DataTable> task = new Task<DataTable>(() =>
-            {
-                DB db = new DB();
-                return db.GetData(sql);
-            });
-            task.ContinueWith(t =>
-            {
-                if (t.Exception != null)
-                {
-                    Utility.ShowException(t.Exception.InnerException.Message);
-                    return;
-                }
-                QuestCategoryDataGrid.ItemsSource = t.Result.DefaultView;
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
-            task.Start();
+            Utility.BindData(QuestCategoryDataGrid, sql);
         }
     }
 }

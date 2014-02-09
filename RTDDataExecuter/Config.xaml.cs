@@ -61,6 +61,9 @@ namespace RTDDataExecuter
                         else
                         {
                             ImportMDBSButton.Content = new Run("MDBS Successfully Imported.");
+                            var w = (MainWindow)Application.Current.MainWindow;
+                            w.Unit.UnitSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                            w.Quest.QuestSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                         }
                     }, MainWindow.uiTaskScheduler);
                 task.Start();
@@ -135,6 +138,9 @@ namespace RTDDataExecuter
                     else
                     {
                         ImportplistButton.Content = new Run("plist Successfully Imported.");
+                        var w = (MainWindow)Application.Current.MainWindow;
+                        w.Unit.UnitSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        w.Quest.QuestSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                     }
                 }, MainWindow.uiTaskScheduler);
                 task.Start();

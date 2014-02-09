@@ -29,7 +29,7 @@ namespace RTDDataExecuter
         }
         private void UnitTab_Initialized(object sender, EventArgs e)
         {
-            UnitDataGrid_BindData("SELECT id,g_id,name FROM UNIT_MASTER order by g_id");
+            Utility.BindData(UnitDataGrid, "SELECT id,g_id,name FROM UNIT_MASTER order by g_id");
             UnitSearch_category.ItemsSource = new Dictionary<string, string>()
             {
                 {"------",""},
@@ -59,24 +59,6 @@ namespace RTDDataExecuter
             };
             UnitSearch_attribute.ItemsSource = attrDict;
             UnitSearch_sub_a1.ItemsSource = attrDict;
-        }
-        private void UnitDataGrid_BindData(string sql)
-        {
-            Task<DataTable> task = new Task<DataTable>(() =>
-            {
-                DB db = new DB();
-                return db.GetData(sql);
-            });
-            task.ContinueWith(t =>
-            {
-                if (t.Exception != null)
-                {
-                    Utility.ShowException(t.Exception.InnerException.Message);
-                    return;
-                }
-                UnitDataGrid.ItemsSource = t.Result.DefaultView;
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
-            task.Start();
         }
 
         private void UnitDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -181,7 +163,15 @@ namespace RTDDataExecuter
 
             Task<DataTable> task = new Task<DataTable>(() =>
             {
-                string sql = @"SELECT * FROM unit_master WHERE id={0}";
+                string sql = @"
+Select *,
+(SELECT NAME FROM UNIT_MASTER as ui WHERE uo.rev_unit_id=ui.id) as rev_unit_name,
+(SELECT NAME FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_fire=ui.id) as ultimate_rev_unit_name_fire,
+(SELECT NAME FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_water=ui.id) as ultimate_rev_unit_name_water,
+(SELECT NAME FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_shine=ui.id) as ultimate_rev_unit_name_shine,
+(SELECT NAME FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_dark=ui.id) as ultimate_rev_unit_name_dark
+from unit_master as uo
+WHERE uo.id={0}";
                 DB db = new DB();
                 return db.GetData(String.Format(sql, unitid));
             });
@@ -229,6 +219,27 @@ namespace RTDDataExecuter
                 UnitInfo_sub_a1.Text = Utility.parseAttributetype(Convert.ToByte(unitData["sub_a1"]));
                 UnitInfo_model.Text = unitData["model"].ToString();
                 UnitInfo_kind.Text = Utility.parseUnitKind(Convert.ToInt32(unitData["kind"]));
+
+                UnitInfo_need_pt.Text = unitData["need_pt"].ToString();
+                UnitInfo_bonus_limit_base.Text = unitData["bonus_limit_base"].ToString();
+                UnitInfo_rev_unit_name.Text = unitData["rev_unit_name"].ToString();
+
+                if (Convert.ToInt32(unitData["ultimate_rev_unit_id_fire"]) == 0
+                    && Convert.ToInt32(unitData["ultimate_rev_unit_id_water"]) == 0
+                    && Convert.ToInt32(unitData["ultimate_rev_unit_id_shine"]) == 0
+                    && Convert.ToInt32(unitData["ultimate_rev_unit_id_dark"]) == 0)
+                {
+                    UnitInfo_Panel_ultimate_rev.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    UnitInfo_Panel_ultimate_rev.Visibility = Visibility.Visible;
+                    UnitInfo_max_attribute_exp.Text = unitData["max_attribute_exp"].ToString();
+                    UnitInfo_rev_unit_name_fire.Text = unitData["ultimate_rev_unit_name_fire"].ToString();
+                    UnitInfo_rev_unit_name_water.Text = unitData["ultimate_rev_unit_name_water"].ToString();
+                    UnitInfo_rev_unit_name_shine.Text = unitData["ultimate_rev_unit_name_shine"].ToString();
+                    UnitInfo_rev_unit_name_dark.Text = unitData["ultimate_rev_unit_name_dark"].ToString();
+                }
 
                 double maxlevel = Convert.ToDouble(unitData["lv_max"]);
                 UnitInfo_lv_max.Text = maxlevel.ToString("0");
@@ -358,15 +369,15 @@ namespace RTDDataExecuter
             UnitSearch_style.SelectedIndex = 0;
             UnitSearch_attribute.SelectedIndex = 0;
             UnitSearch_sub_a1.SelectedIndex = 0;
-            UnitDataGrid_BindData("SELECT id,g_id,name FROM UNIT_MASTER order by g_id");
+            Utility.BindData(UnitDataGrid, "SELECT id,g_id,name FROM UNIT_MASTER order by g_id");
         }
         private void UnitSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UnitDataGrid_BindData(UnitSearch_BuildSQL());
+            Utility.BindData(UnitDataGrid, UnitSearch_BuildSQL());
         }
         private void UnitSearch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UnitDataGrid_BindData(UnitSearch_BuildSQL());
+            Utility.BindData(UnitDataGrid, UnitSearch_BuildSQL());
         }
         private string UnitSearch_BuildSQL()
         {

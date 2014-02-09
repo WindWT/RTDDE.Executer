@@ -38,30 +38,13 @@ namespace RTDDataExecuter
         }
         private void CommonSQLComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CommonDataGrid_BindData();
+            string sql = CommonSQLTextBox.Text;
+            Utility.BindData(CommonDataGrid, sql);
         }
         private void CommonRunSQL_Click(object sender, RoutedEventArgs e)
         {
-            CommonDataGrid_BindData();
-        }
-        private void CommonDataGrid_BindData()
-        {
             string sql = CommonSQLTextBox.Text;
-            Task<DataTable> task = new Task<DataTable>(() =>
-            {
-                DB db = new DB();
-                return db.GetData(sql);
-            });
-            task.ContinueWith(t =>
-            {
-                if (t.Exception != null)
-                {
-                    Utility.ShowException(t.Exception.InnerException.Message);
-                    return;
-                }
-                CommonDataGrid.ItemsSource = t.Result.DefaultView;
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
-            task.Start();
+            Utility.BindData(CommonDataGrid, sql);
         }
     }
 }

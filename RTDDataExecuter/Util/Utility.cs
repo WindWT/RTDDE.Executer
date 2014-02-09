@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SQLite;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -50,7 +52,29 @@ namespace RTDDataExecuter
         public static void ShowException(string message)
         {
             var w = (MainWindow)Application.Current.MainWindow;
-            ((TextBox)w.FindName("StatusBarExceptionMessage")).Text = message;
+            w.StatusBarExceptionMessage.Text = message;
+        }
+        public static void BindData(DataGrid dg, string sql)
+        {
+            BindData(dg, sql, null);
+        }
+        public static void BindData(DataGrid dg, string sql, List<SQLiteParameter> paras)
+        {
+            Task<DataTable> task = new Task<DataTable>(() =>
+            {
+                DB db = new DB();
+                return db.GetData(sql, paras);
+            });
+            task.ContinueWith(t =>
+            {
+                if (t.Exception != null)
+                {
+                    Utility.ShowException(t.Exception.InnerException.Message);
+                    return;
+                }
+                dg.ItemsSource = t.Result.DefaultView;
+            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
+            task.Start();
         }
     }
 }

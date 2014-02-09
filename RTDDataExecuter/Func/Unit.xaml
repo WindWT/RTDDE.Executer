@@ -98,6 +98,25 @@
                     <TextBox Name="UnitInfo_pt" Width="100" IsReadOnly="True"></TextBox>
                     <TextBlock Text="EXP_max" Width="50"/>
                     <TextBox Name="UnitInfo_EXP_max" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="need_pt" Width="50"/>
+                    <TextBox Name="UnitInfo_need_pt" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="DX_limit" Width="50"/>
+                    <TextBox Name="UnitInfo_bonus_limit_base" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="rev" Width="50"/>
+                    <TextBox Name="UnitInfo_rev_unit_name" Width="250" IsReadOnly="True"></TextBox>
+                </WrapPanel>
+                <WrapPanel Name="UnitInfo_Panel_ultimate_rev">
+                    <Separator Width="300"/>
+                    <TextBlock Text="ULTIMATE" Width="100"/>
+                    <TextBox Name="UnitInfo_max_attribute_exp" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="rev_unit_fire" Width="100"/>
+                    <TextBox Name="UnitInfo_rev_unit_name_fire" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="rev_unit_water" Width="100"/>
+                    <TextBox Name="UnitInfo_rev_unit_name_water" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="rev_unit_shine" Width="100"/>
+                    <TextBox Name="UnitInfo_rev_unit_name_shine" Width="200" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="rev_unit_dark" Width="100"/>
+                    <TextBox Name="UnitInfo_rev_unit_name_dark" Width="200" IsReadOnly="True"></TextBox>
                 </WrapPanel>
                 <WrapPanel Name="UnitInfo_PartySkill">
                     <Separator Width="300"/>

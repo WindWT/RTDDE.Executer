@@ -361,7 +361,7 @@ namespace RTDDataExecuter
             SkillInfo_ActiveSkill.Visibility = Visibility.Collapsed;
             SkillInfo_PanelSkill.Visibility = Visibility.Collapsed;
             SkillUnitRankInfo.Children.Clear();
-            SkillDataGrid_BindData("select id,type,name from party_skill_master order by type,id");
+            Utility.BindData(SkillDataGrid, "select id,type,name from party_skill_master order by type,id");
         }
         private void SkillTypeRadio_Active_Checked(object sender, RoutedEventArgs e)
         {
@@ -369,7 +369,7 @@ namespace RTDDataExecuter
             SkillInfo_ActiveSkill.Visibility = Visibility.Visible;
             SkillInfo_PanelSkill.Visibility = Visibility.Collapsed;
             SkillUnitRankInfo.Children.Clear();
-            SkillDataGrid_BindData("select id,type,name from active_skill_master order by type,id");
+            Utility.BindData(SkillDataGrid, "select id,type,name from active_skill_master order by type,id");
         }
         private void SkillTypeRadio_Panel_Checked(object sender, RoutedEventArgs e)
         {
@@ -377,26 +377,7 @@ namespace RTDDataExecuter
             SkillInfo_ActiveSkill.Visibility = Visibility.Collapsed;
             SkillInfo_PanelSkill.Visibility = Visibility.Visible;
             SkillUnitRankInfo.Children.Clear();
-            SkillDataGrid_BindData("select id,type,name from panel_skill_master order by type,id");
-        }
-        private void SkillDataGrid_BindData(string sql)
-        {
-            Task<DataTable> task = new Task<DataTable>(() =>
-            {
-                DB db = new DB();
-                return db.GetData(sql);
-            });
-            task.ContinueWith(t =>
-            {
-                if (t.Exception != null)
-                {
-                    Utility.ShowException(t.Exception.InnerException.Message);
-                    //ExceptionMessage.Instance.Message = t.Exception.InnerException.Message;
-                    return;
-                }
-                SkillDataGrid.ItemsSource = t.Result.DefaultView;
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
-            task.Start();
+            Utility.BindData(SkillDataGrid, "select id,type,name from panel_skill_master order by type,id");
         }
     }
 }
