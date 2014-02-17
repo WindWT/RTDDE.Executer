@@ -32,6 +32,8 @@ namespace RTDDataExecuter
             ImportMDBSButton.Content = new Run("Import MDBS");
             ImportLDBSButton.Content = new Run("Import LDBS");
             ImportplistButton.Content = new Run("Import plist");
+            ImportAndroidDirectoryButton.Content = new Run("Import Android Directory(LDBS not included)");
+            ImportiOSDirectoryButton.Content = new Run("Import iOS Directory");
         }
         private void ImportMDBSButton_Click(object sender, RoutedEventArgs e)
         {
@@ -138,6 +140,108 @@ namespace RTDDataExecuter
                     else
                     {
                         ImportplistButton.Content = new Run("plist Successfully Imported.");
+                        var w = (MainWindow)Application.Current.MainWindow;
+                        w.Unit.UnitSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        w.Quest.QuestSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    }
+                }, MainWindow.uiTaskScheduler);
+                task.Start();
+            }
+        }
+        private void ImportAndroidDirectoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.CheckFileExists = false;
+            ofd.ValidateNames = false;
+            ofd.FileName = "Ignore me";
+            ofd.Title = "Browse Folder Then Press Open";
+            if (ofd.ShowDialog() == true)
+            {
+                ImportAndroidDirectoryButton.Content = new Run("Importing MDBS...");
+                string path = System.IO.Path.GetDirectoryName(ofd.FileName);
+                //MessageBox.Show(path);
+                Task task = new Task(() =>
+                {
+                    DataSet ds = new DataSet("MDB");
+                    DB db = new DB();
+                    foreach (string filepath in System.IO.Directory.GetFiles(path))
+                    {
+                        string filename = System.IO.Path.GetFileName(filepath);
+                        if (filename.StartsWith("MDBS") == false)
+                        {
+                            continue;
+                        }
+                        using (StreamReader sr = new StreamReader(filepath))
+                        {
+                            string jsonMDB = sr.ReadToEnd();
+                            string enumName = filename.Substring("MDBS".Length);
+                            DataTable dt = JSON.ParseJSONMDB(jsonMDB, (MASTERDB)Enum.Parse(typeof(MASTERDB), enumName, true));
+                            ds.Tables.Add(dt);
+                        }
+                    }
+                    db.ImportDataSet(ds, true);
+                });
+                task.ContinueWith(t =>
+                {
+                    if (t.Exception != null)
+                    {
+                        Utility.ShowException(t.Exception.InnerException.Message);
+                        ImportAndroidDirectoryButton.Content = new Run("MDBS Import Failed.");
+                    }
+                    else
+                    {
+                        ImportAndroidDirectoryButton.Content = new Run("MDBS Successfully Imported.");
+                        var w = (MainWindow)Application.Current.MainWindow;
+                        w.Unit.UnitSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        w.Quest.QuestSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    }
+                }, MainWindow.uiTaskScheduler);
+                task.Start();
+            }
+        }
+        private void ImportiOSDirectoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.CheckFileExists = false;
+            ofd.ValidateNames = false;
+            ofd.FileName = "Ignore me";
+            ofd.Title = "Browse Folder Then Press Open";
+            if (ofd.ShowDialog() == true)
+            {
+                ImportiOSDirectoryButton.Content = new Run("Importing iOS...");
+                string path = System.IO.Path.GetDirectoryName(ofd.FileName);
+                //MessageBox.Show(path);
+                Task task = new Task(() =>
+                {
+                    DataSet ds = new DataSet("MDB");
+                    DB db = new DB();
+                    foreach (string filepath in System.IO.Directory.GetFiles(path))
+                    {
+                        string filename = System.IO.Path.GetFileName(filepath);
+                        if (filename.StartsWith("MDBS") == false)
+                        {
+                            continue;
+                        }
+                        using (StreamReader sr = new StreamReader(filepath))
+                        {
+                            string jsonMDB = sr.ReadToEnd();
+                            string enumName = filename.Substring("MDBS_".Length) + "_MASTER";   //diff from android
+                            DataTable dt = JSON.ParseJSONMDB(jsonMDB, (MASTERDB)Enum.Parse(typeof(MASTERDB), enumName, true));
+                            ds.Tables.Add(dt);
+                        }
+                    }
+                    db.ImportDataSet(ds, true);
+                });
+                task.ContinueWith(t =>
+                {
+                    if (t.Exception != null)
+                    {
+                        Utility.ShowException(t.Exception.InnerException.Message);
+                        ImportiOSDirectoryButton.Content = new Run("iOS Import Failed.");
+                    }
+                    else
+                    {
+                        ImportiOSDirectoryButton.Content = new Run("iOS Successfully Imported.");
                         var w = (MainWindow)Application.Current.MainWindow;
                         w.Unit.UnitSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                         w.Quest.QuestSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
