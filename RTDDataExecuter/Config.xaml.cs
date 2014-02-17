@@ -29,10 +29,10 @@ namespace RTDDataExecuter
         }
         private void ConfigTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ImportMDBSButton.Content = new Run("Import MDBS");
+            ImportMDBSButton.Content = new Run("Import MDBS(NOT available for 2.4.0.0 or higher)");
             ImportLDBSButton.Content = new Run("Import LDBS");
-            ImportplistButton.Content = new Run("Import plist");
-            ImportAndroidDirectoryButton.Content = new Run("Import Android Directory(LDBS not included)");
+            ImportplistButton.Content = new Run("Import plist(NOT available for 2.4.0.0 or higher)");
+            ImportAndroidDirectoryButton.Content = new Run("Import Android MDBS Directory");
             ImportiOSDirectoryButton.Content = new Run("Import iOS Directory");
         }
         private void ImportMDBSButton_Click(object sender, RoutedEventArgs e)
@@ -48,7 +48,7 @@ namespace RTDDataExecuter
                     using (StreamReader sr = new StreamReader(ofd.FileName))
                     {
                         string xmlMDB = sr.ReadToEnd();
-                        DataSet ds = XMLParser.ParseMDB(xmlMDB);
+                        DataSet ds = FileParser.ParseXmlMDB(xmlMDB);
                         DB db = new DB();
                         db.ImportDataSet(ds, true);
                     }
@@ -84,7 +84,7 @@ namespace RTDDataExecuter
                     using (StreamReader sr = new StreamReader(ofd.FileName))
                     {
                         string xmlLDB = sr.ReadToEnd();
-                        DataTable dt = XMLParser.ParseLDB(xmlLDB);
+                        DataTable dt = FileParser.ParseXmlLDB(xmlLDB);
                         DataSet lds = new DataSet("LDB");
                         lds.Tables.Add(dt);
                         DB db = new DB();
@@ -118,13 +118,13 @@ namespace RTDDataExecuter
                 {
                     using (StreamReader sr = new StreamReader(ofd.FileName))
                     {
-                        DataSet ds = XMLParser.ParsePlistMDB(sr.BaseStream);
+                        DataSet ds = FileParser.ParsePlistMDB(sr.BaseStream);
                         DB db = new DB();
                         db.ImportDataSet(ds, true);
 
                         sr.BaseStream.Position = 0;
 
-                        DataTable dt = XMLParser.ParsePlistLDB(sr.BaseStream);
+                        DataTable dt = FileParser.ParsePlistLDB(sr.BaseStream);
                         DataSet lds = new DataSet("LDB");
                         lds.Tables.Add(dt);
                         db.ImportDataSet(lds, false);
@@ -210,27 +210,38 @@ namespace RTDDataExecuter
             {
                 ImportiOSDirectoryButton.Content = new Run("Importing iOS...");
                 string path = System.IO.Path.GetDirectoryName(ofd.FileName);
-                //MessageBox.Show(path);
+                
                 Task task = new Task(() =>
                 {
-                    DataSet ds = new DataSet("MDB");
+                    DataSet mds = new DataSet("MDB");
+                    DataSet lds = new DataSet("LDB");
                     DB db = new DB();
                     foreach (string filepath in System.IO.Directory.GetFiles(path))
                     {
                         string filename = System.IO.Path.GetFileName(filepath);
-                        if (filename.StartsWith("MDBS") == false)
+                        if (filename.StartsWith("MDBS"))
                         {
-                            continue;
+                            using (StreamReader sr = new StreamReader(filepath))
+                            {
+                                DataTable dt = FileParser.ParsePlistFileMDB(sr.BaseStream);
+                                mds.Tables.Add(dt);
+                            }
                         }
-                        using (StreamReader sr = new StreamReader(filepath))
+                        else if (filename.StartsWith("LDBS"))
                         {
-                            string jsonMDB = sr.ReadToEnd();
-                            string enumName = filename.Substring("MDBS_".Length) + "_MASTER";   //diff from android
-                            DataTable dt = JSON.ParseJSONMDB(jsonMDB, (MASTERDB)Enum.Parse(typeof(MASTERDB), enumName, true));
-                            ds.Tables.Add(dt);
+                            using (StreamReader sr = new StreamReader(filepath))
+                            {
+                                DataTable dt = FileParser.ParsePlistFileLDB(sr.BaseStream);
+                                lds.Tables.Add(dt);
+                            }
                         }
+                        else
+                        {
+                        }
+
                     }
-                    db.ImportDataSet(ds, true);
+                    db.ImportDataSet(mds, true);
+                    db.ImportDataSet(lds, false);
                 });
                 task.ContinueWith(t =>
                 {

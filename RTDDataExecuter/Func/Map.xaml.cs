@@ -763,7 +763,7 @@ namespace RTDDataExecuter
                 }
                 try
                 {
-                    ei = XMLParser.ParseEnemyInfo(levelID, questXml, dropXml);
+                    ei = FileParser.ParseEnemyInfo(levelID, questXml, dropXml);
                 }
                 catch (Exception ex)
                 {
@@ -776,7 +776,7 @@ namespace RTDDataExecuter
                 {
                     try
                     {
-                        ei = XMLParser.ParseEnemyInfo(levelID, sr.BaseStream);
+                        ei = FileParser.ParseEnemyInfo(levelID, sr.BaseStream);
                     }
                     catch (Exception ex)
                     {

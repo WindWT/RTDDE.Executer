@@ -46,7 +46,7 @@ namespace RTDDataExplorer
                 string xmlMDB = sr.ReadToEnd();
                 try
                 {
-                    DataSet ds = XMLParser.ParseMDB(xmlMDB);
+                    DataSet ds = FileParser.ParseXmlMDB(xmlMDB);
                     info.AppendLine("XML解析为DataSet成功。");
                     lblInfo.Text = info.ToString();
                     DB db = new DB(HostingEnvironment.MapPath("/RTD.db"));
@@ -92,7 +92,7 @@ namespace RTDDataExplorer
                 string xmlLDB = sr.ReadToEnd();
                 try
                 {
-                    DataTable dt = XMLParser.ParseLDB(xmlLDB);
+                    DataTable dt = FileParser.ParseXmlLDB(xmlLDB);
                     DataSet lds = new DataSet("LDB");
                     lds.Tables.Add(dt);
                     info.AppendLine("XML解析为DataSet成功。");

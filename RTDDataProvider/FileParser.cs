@@ -10,41 +10,9 @@ using System.IO;
 
 namespace RTDDataProvider
 {
-    /// <summary>
-    /// MDB对应的枚举
-    /// </summary>
-    public enum MASTERDB
+    public static class FileParser
     {
-        USER_RANK_MASTER = 60,
-        UNIT_MASTER = 10,
-        PARTY_SKILL_MASTER,
-        PARTY_SKILL_RANK_MASTER,
-        ACTIVE_SKILL_MASTER,
-        ACTIVE_SKILL_RANK_MASTER,
-        ENEMY_UNIT_MASTER = 20,
-        ENEMY_TABLE_MASTER,
-        ENEMY_DROP_MASTER,  //not exist
-        QUEST_MASTER = 30,
-        QUEST_CATEGORY_MASTER,
-        GACHA_ITEM_MASTER = 40, //not exist
-        GACHA_TABLE_MASTER, //not exist
-        SHOP_PRODUCT_MASTER,    //not exist
-        SHOP_PRODUCT_MASTER_ANDROID,
-        LOGIN_BONUS_MASTER = 51,
-        SEQUENCE_LOGIN_BONUS_MASTER,
-        LEVELDATA_LIST_MASTER = 70, //not exist
-        UNIT_TALK_MASTER = 15,
-        GLOBAL_PARAM_MASTER = 90,
-        QUEST_CHALLENGE_MASTER = 32,
-        QUEST_CHALLENGE_REWARD_MASTER,
-        SP_EVENT_MASTER,
-        PANEL_SKILL_MASTER = 16,
-        PANEL_SKILL_RANK_MASTER,
-        MAX = 22    //not exist
-    }
-    public static class XMLParser
-    {
-        public static DataSet ParseMDB(string xmlMDBString)
+        public static DataSet ParseXmlMDB(string xmlMDBString)
         {
             XmlDocument xmlMDB = new XmlDocument();
             DataSet ds = new DataSet("MDB");
@@ -63,7 +31,7 @@ namespace RTDDataProvider
             }
             return ds;
         }
-        public static DataTable ParseLDB(string xmlLDBString)
+        public static DataTable ParseXmlLDB(string xmlLDBString)
         {
             XmlDocument xmlLDB = new XmlDocument();
             DataTable dt = new DataTable("LEVEL_DATA_MASTER");
@@ -89,6 +57,8 @@ namespace RTDDataProvider
             }
             return dt;
         }
+
+        [ObsoleteAttribute("This function is obsolete in 2.4.0.0, please use ParsePlistFileMDB instead.")]
         public static DataSet ParsePlistMDB(Stream plistFileStream)
         {
             PListRoot plist = PListRoot.Load(plistFileStream);
@@ -110,6 +80,7 @@ namespace RTDDataProvider
             }
             return ds;
         }
+        [ObsoleteAttribute("This function is obsolete in 2.4.0.0, please use ParsePlistFileLDB instead.")]
         public static DataTable ParsePlistLDB(Stream plistFileStream)
         {
             PListRoot plist = PListRoot.Load(plistFileStream);
@@ -135,6 +106,46 @@ namespace RTDDataProvider
                     dtTemp.Rows[0].ItemArray.CopyTo(obj, 0);
                     dt.Rows.Add(obj);
                 }
+            }
+            return dt;
+        }
+
+        public static DataTable ParsePlistFileMDB(Stream plistFileStream)
+        {
+            var reader = new System.Runtime.Serialization.Plists.BinaryPlistReader();
+            var dict = reader.ReadObject(plistFileStream);
+            string MDBenumID = (dict["$objects"] as Object[])[2].ToString().Replace("MDBS", String.Empty); ;
+            string jsonMDB = (dict["$objects"] as Object[])[3].ToString();
+            DataTable dt = JSON.ParseJSONMDB(jsonMDB, (MASTERDB)Enum.Parse(typeof(MASTERDB), MDBenumID, true));
+            return dt;
+        }
+        public static DataTable ParsePlistFileLDB(Stream plistFileStream)
+        {
+            DataTable dt = new DataTable("LEVEL_DATA_MASTER");
+            DataColumn dc = null;
+            foreach (FieldInfo fi in typeof(LevelDataMaster).GetFields())
+            {
+                dc = new DataColumn();
+                dc.ColumnName = fi.Name;
+                dc.DataType = fi.FieldType;
+                dt.Columns.Add(dc);
+            }
+
+            var reader = new System.Runtime.Serialization.Plists.BinaryPlistReader();
+            var dict = reader.ReadObject(plistFileStream);
+
+            List<int> objIndex = new List<int>();
+            foreach (Dictionary<String, UInt64> NSobjects in (((dict["$objects"] as Object[])[1] as IDictionary<object, object>)["NS.objects"] as object[]))
+            {
+                objIndex.Add(Convert.ToInt32(NSobjects["CF$UID"]));
+            }
+            foreach (int i in objIndex)
+            {
+                string jsonLDB = (dict["$objects"] as Object[])[i].ToString();
+                DataTable dtTemp = JSON.ParseJSONLDB(jsonLDB);
+                object[] obj = new object[dtTemp.Columns.Count];
+                dtTemp.Rows[0].ItemArray.CopyTo(obj, 0);
+                dt.Rows.Add(obj);
             }
             return dt;
         }
