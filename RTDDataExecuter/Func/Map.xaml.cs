@@ -1,4 +1,5 @@
 ﻿using RTDDataProvider;
+using RTDDataProvider.MasterData;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -424,7 +425,7 @@ namespace RTDDataExecuter
                     {
                         if (c.drop_unit_id != "0")
                         {
-                            rec.ToolTip = new TextBlock() { Text = Utility.parseUnitName(c.drop_unit_id) + "\n" + "觉醒pt:" + c.add_attribute_exp };
+                            rec.ToolTip = new TextBlock() { Text = Utility.ParseUnitName(c.drop_unit_id) + "\n" + "觉醒pt:" + c.add_attribute_exp };
                         }
                         else
                         {
@@ -602,9 +603,10 @@ namespace RTDDataExecuter
                 MapEnemyInfo_name.Text = dr["name"].ToString();
                 MapEnemyInfo_model.Text = dr["model"].ToString();
                 MapEnemyInfo_texture.Text = dr["texture"].ToString();
-                MapEnemyInfo_type.Text = Utility.parseEnemyType(Convert.ToInt32(dr["type"]));
+                MapEnemyInfo_type.Text = Utility.ParseEnemyType(Convert.ToInt32(dr["type"]));
                 MapEnemyInfo_isDragon.Text = Convert.ToBoolean(dr["flag"]).ToString();
-                MapEnemyInfo_attribute.Text = Utility.parseAttributetype(Convert.ToInt32(dr["attribute"]));
+                MapEnemyInfo_isUnitEnemy.Text = Utility.IsUnitEnemy(Convert.ToInt32(dr["type"])).ToString();
+                MapEnemyInfo_attribute.Text = Utility.ParseAttributetype(Convert.ToInt32(dr["attribute"]));
                 MapEnemyInfo_soul_pt.Text = dr["soul_pt"].ToString();
                 MapEnemyInfo_gold_pt.Text = dr["gold_pt"].ToString();
                 MapEnemyInfo_turn.Text = dr["turn"].ToString();
@@ -620,8 +622,9 @@ namespace RTDDataExecuter
                 MapEnemyInfo_atk.Text = Utility.RealCalc(Convert.ToInt32(dr["attack"]), Convert.ToInt32(dr["up_attack"]), lv).ToString();
                 MapEnemyInfo_def.Text = Utility.RealCalc(Convert.ToInt32(dr["defense"]), Convert.ToInt32(dr["up_defense"]), lv).ToString();
 
-                MapEnemyInfo_pat.Text = Utility.parseAttackPattern(Convert.ToInt32(dr["pat"]));
+                MapEnemyInfo_pat.Text = Utility.ParseAttackPattern(Convert.ToInt32(dr["pat"]));
                 MapEnemyInfo_p0.Text = dr["p0"].ToString();
+                MapEnemyInfo_p1.Text = dr["p1"].ToString();
 
             }, MainWindow.uiTaskScheduler);
             task.Start();

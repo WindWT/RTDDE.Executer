@@ -7,6 +7,7 @@ using System.Data;
 using System.Reflection;
 using PList;
 using System.IO;
+using RTDDataProvider.MasterData;
 
 namespace RTDDataProvider
 {

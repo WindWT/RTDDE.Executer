@@ -105,6 +105,9 @@ namespace RTDDataProvider
         SERIAL_HEAL_UP,
         ATTACK_ENHANCE,
         MOVE_ENHANCE,
+        ATTRIBUTE_DRAIN_AND_KILLER,
+        UNIT_ENEMY_KILLER,
+        SP_PANEL_UP,
         BUFFER
     }
     public enum ActiveSkillType
@@ -149,7 +152,7 @@ namespace RTDDataProvider
         AllPanelAttack,
         DelayDamageAttack,
         HeartPanelAttack,
-        HeartCall,
+        PanelCall,
         DragonBind,
         Change_AttackHeal,
         HealEnhance,
@@ -169,7 +172,11 @@ namespace RTDDataProvider
         DamageAttack,
         CounterAttackUp,
         ExPanelAttack,
-        SoulPunisher
+        AttrAtkAndAtkUp,
+        DefenceUpAndEnhance,
+        DragonEnhance,
+        SoulOfZero,
+        AttackCanon
     }
     public enum PanelSkillType
     {
@@ -194,7 +201,8 @@ namespace RTDDataProvider
         LIMIT_LIFERECOVER_FIX,
         LIFE_UP_LIMIT,
         RANDOM_EFFECT,
-        ENEMY_DAMAGE_AND_DEFENCE_DOWN
+        ENEMY_DAMAGE_AND_DEFENCE_DOWN,
+        HEAL_CANON
     }
     public enum SkillPhase
     {
@@ -282,6 +290,8 @@ namespace RTDDataProvider
         MS03_BD_CHAU,
         MS03_BD_GIGA,
         MS03_BD_RUSA,
+        MS03_SR_TIAMAT,
+        MS01_ORG_GUN,
         MAX
     }
     public enum ENEMY_TYPE
@@ -323,7 +333,9 @@ namespace RTDDataProvider
         SLIME_WING,
         ELEMENT,
         GIANT,
-        JELLY
+        JELLY,
+        GIANT_LOBO,
+        ORG_GUN
     }
     public enum AttackPattern
     {
@@ -331,11 +343,14 @@ namespace RTDDataProvider
         QUICK,
         DELAY,
         DOWN_SOUL,
+        POWUP_BY_LIFE,
+        FIRST_DEADLY,
+        FIRST_CURSE,
         MAX
     }
     public class UtilityBase
     {
-        public static Dictionary<string, string> parseOpentype(string opentype, string opentypeParam)
+        public static Dictionary<string, string> ParseOpentype(string opentype, string opentypeParam)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
             result.Add("opentype", "未知");
@@ -382,13 +397,13 @@ namespace RTDDataProvider
                 case "4":
                     {
                         result["opentype"] = "开始日期";
-                        result["opentypeParam"] = parseRTDDate(opentypeParam);
+                        result["opentypeParam"] = ParseRTDDate(opentypeParam);
                         break;
                     }
                 case "5":
                     {
                         result["opentype"] = "结束日期";
-                        result["opentypeParam"] = parseRTDDate(opentypeParam);
+                        result["opentypeParam"] = ParseRTDDate(opentypeParam);
                         break;
                     }
                 case "6":
@@ -446,7 +461,7 @@ namespace RTDDataProvider
                 case "14":
                     {
                         result["opentype"] = "队长限定";
-                        result["opentypeParam"] = parseUnitName(opentypeParam);
+                        result["opentypeParam"] = ParseUnitName(opentypeParam);
                         break;
                     }
                 default:
@@ -458,7 +473,7 @@ namespace RTDDataProvider
             }
             return result;
         }
-        public static string parsePresenttype(string presenttype)
+        public static string ParsePresenttype(string presenttype)
         {
             switch (presenttype)
             {
@@ -470,7 +485,7 @@ namespace RTDDataProvider
                 default: return string.Empty;
             }
         }
-        public static string parseBonustype(string bonustype)
+        public static string ParseBonustype(string bonustype)
         {
             switch (bonustype)
             {
@@ -501,11 +516,11 @@ namespace RTDDataProvider
                 default: return string.Empty;
             }
         }
-        public static string parseAttributetype(int attributetype)
+        public static string ParseAttributetype(int attributetype)
         {
-            return parseRealAttributetype(attributetype).ToString();
+            return ParseRealAttributetype(attributetype).ToString();
         }
-        private static UnitAttribute parseRealAttributetype(int attributetype)
+        private static UnitAttribute ParseRealAttributetype(int attributetype)
         {
             switch (attributetype)
             {
@@ -523,7 +538,7 @@ namespace RTDDataProvider
                     return UnitAttribute.NONE;
             }
         }
-        public static string parseStyletype(int styletype)
+        public static string ParseStyletype(int styletype)
         {
             if (styletype == 0)
             {
@@ -531,10 +546,10 @@ namespace RTDDataProvider
             }
             else
             {
-                return parseRealStyletype(styletype).ToString();
+                return ParseRealStyletype(styletype).ToString();
             }
         }
-        private static Class parseRealStyletype(int styletype)
+        private static Class ParseRealStyletype(int styletype)
         {
             switch (styletype)
             {
@@ -550,103 +565,94 @@ namespace RTDDataProvider
                     return Class.KNIGHT;
             }
         }
-        public static string parseUnitKind(int kind)
+        public static string ParseUnitKind(int kind)
         {
-            return parseRealUnitKind(kind).ToString(); ;
+            return ParseRealUnitKind(kind).ToString(); ;
         }
-        private static AssignID parseRealUnitKind(int kind)
+        private static AssignID ParseRealUnitKind(int kind)
         {
-            switch (kind)
             {
-                case 1:
-                    return AssignID.SWORD;
-                case 2:
-                    return AssignID.GREATSWORD;
-                case 3:
-                    return AssignID.TWO_SWORD;
-                case 4:
-                    return AssignID.CHAOS_SWD;
-                case 5:
-                    return AssignID.RAPIA;
-                case 6:
-                    return AssignID.ORG_SWORD;
-                case 7:
-                    return AssignID.GRT_FEMALE;
-                case 8:
-                    return AssignID.POK_SWORD;
-                case 9:
-                    return AssignID.WIN_SWORD;
-                default:
-                    switch (kind)
-                    {
-                        case 101:
-                            return AssignID.LANCE;
-                        case 102:
-                            return AssignID.PILEBANKER;
-                        case 103:
-                            return AssignID.TWIN_LANCE;
-                        case 104:
-                            return AssignID.CHAOS_BAN;
-                        case 105:
-                            return AssignID.KUNGFU;
-                        case 106:
-                            return AssignID.POK_LANCE;
-                        case 107:
-                            return AssignID.LACNE_FEMALE;
-                        case 108:
-                            return AssignID.ORG_LAN;
-                        case 109:
-                            return AssignID.WIN_LANCE;
-                        default:
-                            switch (kind)
-                            {
-                                case 201:
-                                    return AssignID.BOW;
-                                case 202:
-                                    return AssignID.GUN;
-                                case 203:
-                                    return AssignID.CANNON;
-                                case 204:
-                                    return AssignID.CHAOS_GUN;
-                                case 205:
-                                    return AssignID.BOW_MALE;
-                                case 206:
-                                    return AssignID.ORG_GUN;
-                                case 207:
-                                    return AssignID.POK_CAN;
-                                case 208:
-                                    return AssignID.WIN_BOW;
-                                case 209:
-                                    return AssignID.GOD_BOW;
-                                default:
-                                    switch (kind)
-                                    {
-                                        case 301:
-                                            return AssignID.STICK;
-                                        case 302:
-                                            return AssignID.ARTIFACT;
-                                        case 303:
-                                            return AssignID.STICK_FEMALE;
-                                        case 304:
-                                            return AssignID.CHAOS_ART;
-                                        case 305:
-                                            return AssignID.POK_STICK;
-                                        case 306:
-                                            return AssignID.ART_FEMALE;
-                                        case 307:
-                                            return AssignID.WIN_STICK;
-                                        case 308:
-                                            return AssignID.ORG_STICK;
-                                        case 309:
-                                            return AssignID.POK_ART;
-                                        default:
-                                            return AssignID.SWORD;
-                                    }
-                            }
-                    }
+                switch (kind)
+                {
+                    case 1:
+                        return AssignID.SWORD;
+                    case 2:
+                        return AssignID.GREATSWORD;
+                    case 3:
+                        return AssignID.TWO_SWORD;
+                    case 4:
+                        return AssignID.CHAOS_SWD;
+                    case 5:
+                        return AssignID.RAPIA;
+                    case 6:
+                        return AssignID.ORG_SWORD;
+                    case 7:
+                        return AssignID.GRT_FEMALE;
+                    case 8:
+                        return AssignID.POK_SWORD;
+                    case 9:
+                        return AssignID.WIN_SWORD;
+                    case 101:
+                        return AssignID.LANCE;
+                    case 102:
+                        return AssignID.PILEBANKER;
+                    case 103:
+                        return AssignID.TWIN_LANCE;
+                    case 104:
+                        return AssignID.CHAOS_BAN;
+                    case 105:
+                        return AssignID.KUNGFU;
+                    case 106:
+                        return AssignID.POK_LANCE;
+                    case 107:
+                        return AssignID.LACNE_FEMALE;
+                    case 108:
+                        return AssignID.ORG_LAN;
+                    case 109:
+                        return AssignID.WIN_LANCE;
+                    case 201:
+                        return AssignID.BOW;
+                    case 202:
+                        return AssignID.GUN;
+                    case 203:
+                        return AssignID.CANNON;
+                    case 204:
+                        return AssignID.CHAOS_GUN;
+                    case 205:
+                        return AssignID.BOW_MALE;
+                    case 206:
+                        return AssignID.ORG_GUN;
+                    case 207:
+                        return AssignID.POK_CAN;
+                    case 208:
+                        return AssignID.WIN_BOW;
+                    case 209:
+                        return AssignID.GOD_BOW;
+                    case 301:
+                        return AssignID.STICK;
+                    case 302:
+                        return AssignID.ARTIFACT;
+                    case 303:
+                        return AssignID.STICK_FEMALE;
+                    case 304:
+                        return AssignID.CHAOS_ART;
+                    case 305:
+                        return AssignID.POK_STICK;
+                    case 306:
+                        return AssignID.ART_FEMALE;
+                    case 307:
+                        return AssignID.WIN_STICK;
+                    case 308:
+                        return AssignID.ORG_STICK;
+                    case 309:
+                        return AssignID.POK_ART;
+                    default:
+                        return AssignID.SWORD;
+                }
+
             }
         }
-        public static string parseQuestKind(string kind)
+        public static string ParseQuestKind(string kind)
         {
             switch (kind)
             {
@@ -658,7 +664,7 @@ namespace RTDDataProvider
                 default: return string.Empty;
             }
         }
-        public static string parseZBTNKind(string kind)
+        public static string ParseZBTNKind(string kind)
         {
             switch (kind)
             {
@@ -669,19 +675,19 @@ namespace RTDDataProvider
                 default: return string.Empty;
             }
         }
-        public static string parseSkillType<T>(T skilltype)
+        public static string ParseSkillType<T>(T skilltype)
         {
             return skilltype.ToString();
         }
-        public static string parseEnemyType(int type)
+        public static string ParseEnemyType(int type)
         {
             return ((ENEMY_TYPE)type).ToString();
         }
-        public static string parseAttackPattern(int type)
+        public static string ParseAttackPattern(int type)
         {
             return ((AttackPattern)type).ToString();
         }
-        public static string parseRTDDate(string rtdDate)
+        public static string ParseRTDDate(string rtdDate)
         {
             if (string.IsNullOrWhiteSpace(rtdDate))
             {
@@ -702,13 +708,13 @@ namespace RTDDataProvider
             DateTime t = new DateTime(year, month, day, hour, 0, 0);
             return t.ToString("yyyy-MM-dd HH:mm");
         }
-        public static string parseUnitName(string unitId)
+        public static string ParseUnitName(string unitId)
         {
             string sql = @"SELECT name FROM unit_master WHERE id={0}";
             DB db = new DB();
             return db.GetString(String.Format(sql, unitId));
         }
-        public static string parseText(string text)
+        public static string ParseText(string text)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -716,9 +722,9 @@ namespace RTDDataProvider
             }
             text = text.Replace(@"\n", "\n");
             Regex r = new Regex(@"(\[[a-zA-Z0-9]{6}\])(.*?)(\[-\])");
-            return r.Replace(text, new MatchEvaluator(parseTextEvaluator));
+            return r.Replace(text, new MatchEvaluator(ParseTextEvaluator));
         }
-        public static string parseTextEvaluator(Match m)
+        public static string ParseTextEvaluator(Match m)
         {
             string color = m.Groups[1].Value.Trim(new char[] { '[', ']' });
             //return String.Format("<span style='color:#{0}'>{1}</span>", color, m.Groups[2].Value);
@@ -728,9 +734,33 @@ namespace RTDDataProvider
         {
             return (int)Math.Round(baseAttr * ((lv - 1) * (up * 0.01) + 1));
         }
-        public static string parseBgmFileName(int no)
+        public static string ParseBgmFileName(int no)
         {
             return "bgm_rtd_" + no.ToString("D2");
+        }
+        public static bool IsUnitEnemy(int type)
+        {
+            switch (type)
+            {
+                case 30:
+                    return true;
+                case 31:
+                    return true;
+                case 33:
+                    return true;
+                case 37:
+                    return true;
+                default:
+                    switch (type - 22)
+                    {
+                        case 0:
+                            return true;
+                        case 2:
+                            return true;
+                        default:
+                            return false;
+                    }
+            }
         }
     }
 }

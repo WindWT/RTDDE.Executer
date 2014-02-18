@@ -72,12 +72,12 @@ bgm_f,bgm_b,
                     return null;
                 }
                 DataRow dr = task.Result.Rows[0];
-                opentypeList.Add(Utility.parseOpentype(dr["open_type_1"].ToString(), dr["open_param_1"].ToString()));
-                opentypeList.Add(Utility.parseOpentype(dr["open_type_2"].ToString(), dr["open_param_2"].ToString()));
-                opentypeList.Add(Utility.parseOpentype(dr["open_type_3"].ToString(), dr["open_param_3"].ToString()));
-                opentypeList.Add(Utility.parseOpentype(dr["open_type_4"].ToString(), dr["open_param_4"].ToString()));
-                opentypeList.Add(Utility.parseOpentype(dr["open_type_5"].ToString(), dr["open_param_5"].ToString()));
-                opentypeList.Add(Utility.parseOpentype(dr["open_type_6"].ToString(), dr["open_param_6"].ToString()));
+                opentypeList.Add(Utility.ParseOpentype(dr["open_type_1"].ToString(), dr["open_param_1"].ToString()));
+                opentypeList.Add(Utility.ParseOpentype(dr["open_type_2"].ToString(), dr["open_param_2"].ToString()));
+                opentypeList.Add(Utility.ParseOpentype(dr["open_type_3"].ToString(), dr["open_param_3"].ToString()));
+                opentypeList.Add(Utility.ParseOpentype(dr["open_type_4"].ToString(), dr["open_param_4"].ToString()));
+                opentypeList.Add(Utility.ParseOpentype(dr["open_type_5"].ToString(), dr["open_param_5"].ToString()));
+                opentypeList.Add(Utility.ParseOpentype(dr["open_type_6"].ToString(), dr["open_param_6"].ToString()));
                 return opentypeList;
             }
             );
@@ -99,12 +99,12 @@ bgm_f,bgm_b,
                 QuestInfo_stamina.Text = dr["stamina"].ToString();
                 QuestInfo_category.Text = dr["category"].ToString();
                 QuestInfo_category_name.Text = dr["category_name"].ToString();
-                QuestInfo_text.Text = Utility.parseText(dr["category_text"].ToString());
+                QuestInfo_text.Text = Utility.ParseText(dr["category_text"].ToString());
                 QuestInfo_reward_money.Text = dr["reward_money"].ToString();
                 QuestInfo_reward_exp.Text = dr["reward_exp"].ToString();
                 QuestInfo_init_soul.Text = dr["soul"].ToString();
-                QuestInfo_bgm_f.Text = Utility.parseBgmFileName(Convert.ToInt32(dr["bgm_f"]));
-                QuestInfo_bgm_b.Text = Utility.parseBgmFileName(Convert.ToInt32(dr["bgm_b"]));
+                QuestInfo_bgm_f.Text = Utility.ParseBgmFileName(Convert.ToInt32(dr["bgm_f"]));
+                QuestInfo_bgm_b.Text = Utility.ParseBgmFileName(Convert.ToInt32(dr["bgm_b"]));
 
                 QuestInfo_opentype1_name.Text = t.Result[0]["opentype"];
                 QuestInfo_opentype1_value.Text = t.Result[0]["opentypeParam"];
@@ -143,9 +143,9 @@ bgm_f,bgm_b,
                     QuestInfo_sp_event_name.Text = dr["sp_event_name"].ToString();
                 }
 
-                QuestInfo_bonus.Text = Utility.parseBonustype(dr["bonus_type"].ToString());
-                QuestInfo_bonus_start.Text = Utility.parseRTDDate(dr["bonus_start"].ToString());
-                QuestInfo_bonus_end.Text = Utility.parseRTDDate(dr["bonus_end"].ToString());
+                QuestInfo_bonus.Text = Utility.ParseBonustype(dr["bonus_type"].ToString());
+                QuestInfo_bonus_start.Text = Utility.ParseRTDDate(dr["bonus_start"].ToString());
+                QuestInfo_bonus_end.Text = Utility.ParseRTDDate(dr["bonus_end"].ToString());
 
                 QuestInfo_panel_sword.Text = dr["panel_sword"].ToString();
                 QuestInfo_panel_lance.Text = dr["panel_lance"].ToString();
@@ -168,7 +168,7 @@ bgm_f,bgm_b,
                     QuestInfo_challenge_bronze.Document = Utility.parseTextToDocument(dr["challenge0"].ToString());
                 }
 
-                QuestInfo_present_type.Text = Utility.parsePresenttype(dr["present_type"].ToString());
+                QuestInfo_present_type.Text = Utility.ParsePresenttype(dr["present_type"].ToString());
                 QuestInfo_present_param.Text = dr["present_param_name"].ToString();
                 QuestInfo_present_param_1.Text = dr["present_param_1"].ToString();
             }, MainWindow.uiTaskScheduler);    //this Task work on ui thread

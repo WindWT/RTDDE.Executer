@@ -50,6 +50,7 @@ namespace RTDDataExecuter
                             name = r["name"].ToString(),
                             type = Convert.ToInt32(r["type"]),
                             attribute = Convert.ToInt32(r["attribute"]),
+                            sub_attr = Convert.ToInt32(r["sub_attr"]),
                             style = Convert.ToInt32(r["style"]),
                             num = Convert.ToInt32(r["num"]),
                             num_01 = Convert.ToInt32(r["num_01"]),
@@ -99,9 +100,10 @@ namespace RTDDataExecuter
                     partySkill_id.Text = sm.id.ToString();
                     partySkill_name.Text = sm.name;
                     partySkill_text.Document = Utility.parseTextToDocument(sm.text);
-                    partySkill_type.Text = Utility.parseSkillType((PassiveSkillType)sm.type);
-                    partySkill_attribute.Text = Utility.parseAttributetype(sm.attribute);
-                    partySkill_style.Text = Utility.parseStyletype(sm.style);
+                    partySkill_type.Text = Utility.ParseSkillType((PassiveSkillType)sm.type);
+                    partySkill_attribute.Text = Utility.ParseAttributetype(sm.attribute);
+                    partySkill_sub_attr.Text = Utility.ParseAttributetype(sm.sub_attr);
+                    partySkill_style.Text = Utility.ParseStyletype(sm.style);
                     partySkill_num.Text = sm.num.ToString();
                     partySkill_num_01.Text = sm.num_01.ToString();
                     partySkill_num_02.Text = sm.num_02.ToString();
@@ -127,6 +129,7 @@ namespace RTDDataExecuter
                             name = r["name"].ToString(),
                             type = Convert.ToInt32(r["type"]),
                             attribute = Convert.ToInt32(r["attribute"]),
+                            sub_attr = Convert.ToInt32(r["sub_attr"]),
                             style = Convert.ToInt32(r["style"]),
                             num = Convert.ToInt32(r["num"]),
                             num_01 = Convert.ToInt32(r["num_01"]),
@@ -134,6 +137,7 @@ namespace RTDDataExecuter
                             num_03 = Convert.ToInt32(r["num_03"]),
                             soul = Convert.ToInt32(r["soul"]),
                             phase = Convert.ToInt32(r["phase"]),
+                            limit_num = Convert.ToInt32(r["limit_num"]),
                             text = r["text"].ToString()
                         };
                     return sm.First<SkillMaster>();
@@ -178,15 +182,17 @@ namespace RTDDataExecuter
                     activeSkill_id.Text = sm.id.ToString();
                     activeSkill_name.Text = sm.name;
                     activeSkill_text.Document = Utility.parseTextToDocument(sm.text);
-                    activeSkill_type.Text = Utility.parseSkillType((ActiveSkillType)sm.type);
-                    activeSkill_attribute.Text = Utility.parseAttributetype(sm.attribute);
-                    activeSkill_style.Text = Utility.parseStyletype(sm.style);
+                    activeSkill_type.Text = Utility.ParseSkillType((ActiveSkillType)sm.type);
+                    activeSkill_attribute.Text = Utility.ParseAttributetype(sm.attribute);
+                    activeSkill_sub_attr.Text = Utility.ParseAttributetype(sm.sub_attr);
+                    activeSkill_style.Text = Utility.ParseStyletype(sm.style);
                     activeSkill_num.Text = sm.num.ToString();
                     activeSkill_num_01.Text = sm.num_01.ToString();
                     activeSkill_num_02.Text = sm.num_02.ToString();
                     activeSkill_num_03.Text = sm.num_03.ToString();
                     activeSkill_soul.Text = sm.soul.ToString();
                     activeSkill_phase.Text = ((SkillPhase)sm.phase).ToString();
+                    activeSkill_limit_num.Text = sm.limit_num.ToString();
 
                     SetSkillUnitRankInfo(tUSR.Result);
 
@@ -259,9 +265,9 @@ namespace RTDDataExecuter
                     panelSkill_id.Text = sm.id.ToString();
                     panelSkill_name.Text = sm.name;
                     panelSkill_text.Document = Utility.parseTextToDocument(sm.text);
-                    panelSkill_type.Text = Utility.parseSkillType((PanelSkillType)sm.type);
-                    panelSkill_attribute.Text = Utility.parseAttributetype(sm.attribute);
-                    panelSkill_style.Text = Utility.parseStyletype(sm.style);
+                    panelSkill_type.Text = Utility.ParseSkillType((PanelSkillType)sm.type);
+                    panelSkill_attribute.Text = Utility.ParseAttributetype(sm.attribute);
+                    panelSkill_style.Text = Utility.ParseStyletype(sm.style);
                     panelSkill_num.Text = sm.num.ToString();
                     panelSkill_num_01.Text = sm.num_01.ToString();
                     panelSkill_num_02.Text = sm.num_02.ToString();

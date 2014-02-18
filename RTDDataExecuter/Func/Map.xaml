@@ -68,10 +68,12 @@
                             <TextBox Name="MapEnemyInfo_drop_id" Width="50" IsReadOnly="True"></TextBox>
                             <TextBlock Text="type" Width="50"/>
                             <TextBox Name="MapEnemyInfo_type" Width="150" IsReadOnly="True"></TextBox>
-                            <TextBlock Text="isDragon" Width="75"/>
-                            <TextBox Name="MapEnemyInfo_isDragon" Width="75" IsReadOnly="True"></TextBox>
-                            <TextBlock Text="attribute" Width="75"/>
-                            <TextBox Name="MapEnemyInfo_attribute" Width="75" IsReadOnly="True"></TextBox>
+                            <TextBlock Text="Dragon" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_isDragon" Width="50" IsReadOnly="True"></TextBox>
+                            <TextBlock Text="Unit" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_isUnitEnemy" Width="50" IsReadOnly="True"></TextBox>
+                            <TextBlock Text="attribute" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_attribute" Width="50" IsReadOnly="True"></TextBox>
                             <TextBlock Text="soul_pt" Width="50"/>
                             <TextBox Name="MapEnemyInfo_soul_pt" Width="50" IsReadOnly="True"></TextBox>
                             <TextBlock Text="gold_pt" Width="50"/>
@@ -92,9 +94,11 @@
                             <TextBlock Text="def" Width="25"/>
                             <TextBox Name="MapEnemyInfo_def" Width="50"></TextBox>
                             <TextBlock Text="pattern" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_pat" Width="100"></TextBox>
+                            <TextBox Name="MapEnemyInfo_pat" Width="250"></TextBox>
                             <TextBlock Text="param0" Width="50"/>
                             <TextBox Name="MapEnemyInfo_p0" Width="100"></TextBox>
+                            <TextBlock Text="param1" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_p1" Width="100"></TextBox>
                             <Separator Width="300"/>
                         </WrapPanel>
                     </ScrollViewer>

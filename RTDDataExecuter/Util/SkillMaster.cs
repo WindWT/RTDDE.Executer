@@ -13,13 +13,15 @@ namespace RTDDataExecuter
         public string name;
         public int type;
         public int attribute;
+        public int sub_attr;
         public int style;
         public int num;
         public int num_01;
         public int num_02;
         public int num_03;
-        public int phase;
         public int soul;
+        public int phase;
+        public int limit_num;
         public int duplication;
         public string text;
         public SkillMaster()
@@ -92,19 +94,27 @@ namespace RTDDataExecuter
                 this.name = Convert.ToString(skillTable.Rows[0]["name"]);
                 this.type = Convert.ToInt32(skillTable.Rows[0]["type"]);
                 this.attribute = Convert.ToInt32(skillTable.Rows[0]["attribute"]);
+                if (skillTable.Columns.Contains("sub_attr"))
+                {
+                    this.sub_attr = Convert.ToInt32(skillTable.Rows[0]["sub_attr"]);
+                }
                 this.style = Convert.ToInt32(skillTable.Rows[0]["style"]);
                 this.num = Convert.ToInt32(skillTable.Rows[0]["num"]);
                 this.num_01 = Convert.ToInt32(skillTable.Rows[0]["num_01"]);
                 this.num_02 = Convert.ToInt32(skillTable.Rows[0]["num_02"]);
                 this.num_03 = Convert.ToInt32(skillTable.Rows[0]["num_03"]);
                 this.text = Convert.ToString(skillTable.Rows[0]["text"]);
+                if (skillTable.Columns.Contains("soul"))
+                {
+                    this.soul = Convert.ToInt32(skillTable.Rows[0]["soul"]);
+                }
                 if (skillTable.Columns.Contains("phase"))
                 {
                     this.phase = Convert.ToInt32(skillTable.Rows[0]["phase"]);
                 }
-                if (skillTable.Columns.Contains("soul"))
+                if (skillTable.Columns.Contains("limit_num"))
                 {
-                    this.soul = Convert.ToInt32(skillTable.Rows[0]["soul"]);
+                    this.limit_num = Convert.ToInt32(skillTable.Rows[0]["limit_num"]);
                 }
                 if (skillTable.Columns.Contains("duplication"))
                 {

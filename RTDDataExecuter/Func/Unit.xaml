@@ -130,8 +130,10 @@
                     <TextBox Name="partySkill_type" Width="250" IsReadOnly="True"></TextBox>
                     <TextBlock Text="attribute" Width="50"/>
                     <TextBox Name="partySkill_attribute" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="sub_attr" Width="50"/>
+                    <TextBox Name="partySkill_sub_attr" Width="100" IsReadOnly="True"></TextBox>
                     <TextBlock Text="style" Width="50"/>
-                    <TextBox Name="partySkill_style" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBox Name="partySkill_style" Width="250" IsReadOnly="True"></TextBox>
                     <!--<TextBox Name="partySkill_num_text" Width="75" IsReadOnly="True"></TextBox>
                                 <TextBox Name="partySkill_num_01_text" Width="75" IsReadOnly="True"></TextBox>
                                 <TextBox Name="partySkill_num_02_text" Width="75" IsReadOnly="True"></TextBox>
@@ -157,6 +159,10 @@
                     <TextBox Name="activeSkill_type" Width="250" IsReadOnly="True"></TextBox>
                     <TextBlock Text="attribute" Width="50"/>
                     <TextBox Name="activeSkill_attribute" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="sub_attr" Width="50"/>
+                    <TextBox Name="activeSkill_sub_attr" Width="100" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="limit_num" Width="50"/>
+                    <TextBox Name="activeSkill_limit_num" Width="100" IsReadOnly="True"></TextBox>
                     <TextBlock Text="style" Width="50"/>
                     <TextBox Name="activeSkill_style" Width="100" IsReadOnly="True"></TextBox>
                     <!--<TextBox Name="activeSkill_num_text" Width="75" IsReadOnly="True"></TextBox>
