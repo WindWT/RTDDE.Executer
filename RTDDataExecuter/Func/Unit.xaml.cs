@@ -184,6 +184,13 @@ WHERE uo.id={0}";
                     return null;
                 }
                 DataRow unitData = task.Result.Rows[0];
+
+                double maxlevel = Convert.ToDouble(unitData["lv_max"]);
+                if (Settings.IsEnableLevelLimiter && (thislevel > maxlevel))
+                {
+                    thislevel = maxlevel;
+                }
+
                 int partyRankSkillId = Convert.ToInt32(unitData["p_skill_id"]);
                 int activeRankSkillId = Convert.ToInt32(unitData["a_skill_id"]);
                 int panelRankSkillId = Convert.ToInt32(unitData["panel_skill_id"]);
@@ -243,11 +250,7 @@ WHERE uo.id={0}";
 
                 double maxlevel = Convert.ToDouble(unitData["lv_max"]);
                 UnitInfo_lv_max.Text = maxlevel.ToString("0");
-                if (Settings.IsEnableLevelLimiter && (thislevel > maxlevel))
-                {
-                    thislevel = maxlevel;
-                    UnitInfo_lv.Text = maxlevel.ToString("0");
-                }
+                UnitInfo_lv.Text = thislevel.ToString("0");
 
                 //calc hp atk heal
                 double y = UnitParam_CategoryPer[Convert.ToInt32(unitData["category"]) - 1];
