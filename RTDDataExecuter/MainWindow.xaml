@@ -36,6 +36,7 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -46,14 +47,15 @@
                 <ToggleButton Grid.Column="2"  Name="QuestCategory_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Category</ToggleButton>
                 <ToggleButton Grid.Column="3"  Name="Unit_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Unit</ToggleButton>
                 <ToggleButton Grid.Column="4"  Name="Skill_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Skill</ToggleButton>
-                <ToggleButton Grid.Column="5"  Name="Common_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Common</ToggleButton>
-                <ContentControl Grid.Column="6" Name="MoveBar"
+                <ToggleButton Grid.Column="5"  Name="Guide_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Guide</ToggleButton>
+                <ToggleButton Grid.Column="6"  Name="Common_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Common</ToggleButton>
+                <ContentControl Grid.Column="7" Name="MoveBar"
                                 MouseDown="MoveBar_MouseDown" MouseDoubleClick="MoveBar_MouseDoubleClick">
                     <Rectangle Fill="Transparent"/>
                 </ContentControl>
-                <ToggleButton Grid.Column="7"  Name="Config_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Config</ToggleButton>
-                <Button Grid.Column="8" Name="MinimizedButton" Width="36" Click="MinimizedButton_Click"></Button>
-                <Button Grid.Column="9" Name="CloseButton" Width="36" Style="{StaticResource CloseButton}" Click="CloseButton_Click"></Button>
+                <ToggleButton Grid.Column="8"  Name="Config_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Config</ToggleButton>
+                <Button Grid.Column="9" Name="MinimizedButton" Width="36" Click="MinimizedButton_Click"></Button>
+                <Button Grid.Column="10" Name="CloseButton" Width="36" Style="{StaticResource CloseButton}" Click="CloseButton_Click"></Button>
             </Grid>
             <Grid DockPanel.Dock="Top" Name="MainGrid">
                 <local:Quest x:Name="Quest"/>
@@ -61,6 +63,7 @@
                 <local:QuestCategory x:Name="QuestCategory"/>
                 <local:Unit x:Name="Unit"/>
                 <local:Skill x:Name="Skill"/>
+                <local:Guide x:Name="Guide" />
                 <local:Common x:Name="Common" />
                 <local:Config x:Name="Config" />
             </Grid>

@@ -39,9 +39,10 @@ namespace RTDDataExecuter
             Task<DataTable> task = new Task<DataTable>(() =>
             {
                 string sql = @"SELECT id,name,pt_num,difficulty,stamina,soul,
-reward_money,reward_exp,reward_soul,category,
+reward_money,reward_exp,reward_soul,category,reward_money_limit,reward_exp_limit,sp_guide_id,
 (select name from quest_category_master where quest_category_master.id=category) as category_name,
 (select text from quest_category_master where quest_category_master.id=category) as category_text,
+(select banner from quest_category_master where quest_category_master.id=category) as category_banner,
 open_type_1,open_param_1,
 open_type_2,open_param_2,
 open_type_3,open_param_3,
@@ -55,7 +56,7 @@ bonus_type,bonus_start,bonus_end,
 present_type,present_param,present_param_1,
 (case when present_type=4 then (select name from unit_master where unit_master.id=quest_master.present_param) else present_param end) as present_param_name ,
 panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
-bgm_f,bgm_b,
+bgm_f,bgm_b,banner,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_0) as challenge0,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_1) as challenge1,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_2) as challenge2
@@ -99,12 +100,19 @@ bgm_f,bgm_b,
                 QuestInfo_stamina.Text = dr["stamina"].ToString();
                 QuestInfo_category.Text = dr["category"].ToString();
                 QuestInfo_category_name.Text = dr["category_name"].ToString();
-                QuestInfo_text.Text = Utility.ParseText(dr["category_text"].ToString());
+                QuestInfo_category_text.Text = Utility.ParseText(dr["category_text"].ToString());
+                QuestInfo_category_banner.Text = Utility.ParseText(dr["category_banner"].ToString());
                 QuestInfo_reward_money.Text = dr["reward_money"].ToString();
                 QuestInfo_reward_exp.Text = dr["reward_exp"].ToString();
-                QuestInfo_init_soul.Text = dr["soul"].ToString();
-                QuestInfo_bgm_f.Text = Utility.ParseBgmFileName(Convert.ToInt32(dr["bgm_f"]));
-                QuestInfo_bgm_b.Text = Utility.ParseBgmFileName(Convert.ToInt32(dr["bgm_b"]));
+                QuestInfo_soul.Text = dr["soul"].ToString();
+                QuestInfo_reward_money_limit.Text = dr["reward_money_limit"].ToString();
+                QuestInfo_reward_exp_limit.Text = dr["reward_exp_limit"].ToString();
+                //QuestInfo_bgm_f.Text = Utility.ParseBgmFileName(Convert.ToInt32(dr["bgm_f"]));
+                //QuestInfo_bgm_b.Text = Utility.ParseBgmFileName(Convert.ToInt32(dr["bgm_b"]));
+                QuestInfo_bgm_f.Text = dr["bgm_f"].ToString();
+                QuestInfo_bgm_b.Text = dr["bgm_b"].ToString();
+                QuestInfo_sp_guide_id.Text = dr["sp_guide_id"].ToString();
+                QuestInfo_banner.Text = Utility.ParseText(dr["banner"].ToString());
 
                 QuestInfo_opentype1_name.Text = t.Result[0]["opentype"];
                 QuestInfo_opentype1_value.Text = t.Result[0]["opentypeParam"];

@@ -52,17 +52,27 @@
             <TextBlock Text="exp" Width="50"/>
             <TextBox Name="QuestInfo_reward_exp" Width="50" IsReadOnly="True"></TextBox>
             <TextBlock Text="init_soul" Width="50"/>
-            <TextBox Name="QuestInfo_init_soul" Width="50" IsReadOnly="True"></TextBox>
+            <TextBox Name="QuestInfo_soul" Width="50" IsReadOnly="True"></TextBox>
+            <TextBlock Text="money_limit" Width="75"/>
+            <TextBox Name="QuestInfo_reward_money_limit" Width="75" IsReadOnly="True"></TextBox>
+            <TextBlock Text="exp_limit" Width="75"/>
+            <TextBox Name="QuestInfo_reward_exp_limit" Width="75" IsReadOnly="True"></TextBox>
             <TextBlock Text="bgm_f" Width="50"/>
-            <TextBox Name="QuestInfo_bgm_f" Width="100" IsReadOnly="True"></TextBox>
+            <TextBox Name="QuestInfo_bgm_f" Width="25" IsReadOnly="True"></TextBox>
             <TextBlock Text="bgm_b" Width="50"/>
-            <TextBox Name="QuestInfo_bgm_b" Width="100" IsReadOnly="True"></TextBox>
+            <TextBox Name="QuestInfo_bgm_b" Width="25" IsReadOnly="True"></TextBox>
+            <TextBlock Text="sp_guide_id" Width="75"/>
+            <TextBox Name="QuestInfo_sp_guide_id" Width="75" IsReadOnly="True"></TextBox>
+            <TextBlock Text="banner" Width="50"/>
+            <TextBox Name="QuestInfo_banner" Width="250" IsReadOnly="True"></TextBox>
             <Separator Width="300"/>
             <TextBlock Text="category" Width="50"/>
             <TextBox Name="QuestInfo_category" Width="50" IsReadOnly="True"></TextBox>
             <TextBox Name="QuestInfo_category_name" Width="200" IsReadOnly="True"></TextBox>
             <TextBlock Text="text" Width="50"/>
-            <TextBox Name="QuestInfo_text" Width="250" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+            <TextBox Name="QuestInfo_category_text" Width="250" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+            <TextBlock Text="banner" Width="50"/>
+            <TextBox Name="QuestInfo_category_banner" Width="250" IsReadOnly="True"></TextBox>
             <Separator Width="300"/>
         </WrapPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">

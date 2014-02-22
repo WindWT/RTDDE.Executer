@@ -110,6 +110,9 @@
     <Compile Include="Config.xaml.cs">
       <DependentUpon>Config.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Func\Guide.xaml.cs">
+      <DependentUpon>Guide.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Func\Map.xaml.cs">
       <DependentUpon>Map.xaml</DependentUpon>
     </Compile>
@@ -135,6 +138,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Config.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Func\Guide.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
