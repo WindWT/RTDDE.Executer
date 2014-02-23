@@ -421,16 +421,22 @@ namespace RTDDataExecuter
                     b.SetValue(Grid.RowProperty, row);
                     b.SetValue(Grid.ColumnProperty, col);
 
+                    StringBuilder sb = new StringBuilder();
                     if (String.IsNullOrWhiteSpace(c.drop_unit_id) == false)
                     {
                         if (c.drop_unit_id != "0")
                         {
-                            rec.ToolTip = new TextBlock() { Text = Utility.ParseUnitName(c.drop_unit_id) + "\n" + "觉醒pt:" + c.add_attribute_exp };
+                            sb.AppendLine("掉落:" + Utility.ParseUnitName(c.drop_unit_id));
                         }
-                        else
-                        {
-                            rec.ToolTip = new TextBlock() { Text = "觉醒pt:" + c.add_attribute_exp };
-                        }
+                        sb.AppendLine("觉醒pt:" + c.add_attribute_exp);
+                    }
+                    if (string.IsNullOrWhiteSpace(c.drop_id) == false)
+                    {
+                        sb.AppendLine("掉落表id:" + c.drop_id);
+                    }
+                    if (string.IsNullOrWhiteSpace(sb.ToString().Trim()) == false)
+                    {
+                        rec.ToolTip = new Run(sb.ToString().Trim());
                     }
                     col++;
                 }
@@ -639,7 +645,10 @@ namespace RTDDataExecuter
                     string enemyNo = c.CellData;
                     DataRow[] foundRow = monsterData.Select("[#] = '" + enemyNo + "'");
                     if (foundRow.Length < 1)
+                    {
                         continue;
+                    }
+                    c.drop_id = foundRow[0]["drop_id"].ToString();
                     string enemyId = foundRow[0]["id"].ToString();
                     switch (enemyId)
                     {

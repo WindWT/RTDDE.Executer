@@ -14,6 +14,7 @@ namespace RTDDataExecuter
         public FontWeight fontWeight { get; set; }
         public string drop_unit_id { get; set; }
         public string add_attribute_exp { get; set; }
+        public string drop_id { get; set; }
         public int x { get; set; }
         public int y { get; set; }
 
@@ -38,6 +39,7 @@ namespace RTDDataExecuter
             this.OverlayColor = overlayColor;
             this.drop_unit_id = string.Empty;
             this.add_attribute_exp = string.Empty;
+            this.drop_id = string.Empty;
         }
         public override string ToString()
         {
