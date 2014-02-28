@@ -39,7 +39,7 @@ namespace RTDDataExecuter
             {
                 skillId = 0;
             }
-            if (thislevel < 10)
+            else if (thislevel < 10)
             {
                 skillId = Convert.ToInt32(rankSkillTable.Rows[0]["skill_01_09"]);
             }
