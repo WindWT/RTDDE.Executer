@@ -85,10 +85,8 @@ namespace RTDDataExecuter
                     {
                         string xmlLDB = sr.ReadToEnd();
                         DataTable dt = FileParser.ParseXmlLDB(xmlLDB);
-                        DataSet lds = new DataSet("LDB");
-                        lds.Tables.Add(dt);
                         DB db = new DB();
-                        db.ImportDataSet(lds, false);
+                        db.ImportDataTable(dt, "level_data_id", false);
                     }
                 });
                 task.ContinueWith(t =>
@@ -125,9 +123,7 @@ namespace RTDDataExecuter
                         sr.BaseStream.Position = 0;
 
                         DataTable dt = FileParser.ParsePlistLDB(sr.BaseStream);
-                        DataSet lds = new DataSet("LDB");
-                        lds.Tables.Add(dt);
-                        db.ImportDataSet(lds, false);
+                        db.ImportDataTable(dt, "level_data_id", false);
                     }
                 });
                 task.ContinueWith(t =>
@@ -162,7 +158,6 @@ namespace RTDDataExecuter
                 //MessageBox.Show(path);
                 Task task = new Task(() =>
                 {
-                    DataSet ds = new DataSet("MDB");
                     DB db = new DB();
                     foreach (string filepath in System.IO.Directory.GetFiles(path))
                     {
@@ -176,10 +171,9 @@ namespace RTDDataExecuter
                             string jsonMDB = sr.ReadToEnd();
                             string enumName = filename.Substring("MDBS".Length);
                             DataTable dt = JSON.ParseJSONMDB(jsonMDB, (MASTERDB)Enum.Parse(typeof(MASTERDB), enumName, true));
-                            ds.Tables.Add(dt);
+                            db.ImportDataTable(dt, true);
                         }
                     }
-                    db.ImportDataSet(ds, true);
                 });
                 task.ContinueWith(t =>
                 {
@@ -210,11 +204,9 @@ namespace RTDDataExecuter
             {
                 ImportiOSDirectoryButton.Content = new Run("Importing iOS...");
                 string path = System.IO.Path.GetDirectoryName(ofd.FileName);
-                
+
                 Task task = new Task(() =>
                 {
-                    DataSet mds = new DataSet("MDB");
-                    DataSet lds = new DataSet("LDB");
                     DB db = new DB();
                     foreach (string filepath in System.IO.Directory.GetFiles(path))
                     {
@@ -224,7 +216,7 @@ namespace RTDDataExecuter
                             using (StreamReader sr = new StreamReader(filepath))
                             {
                                 DataTable dt = FileParser.ParsePlistFileMDB(sr.BaseStream);
-                                mds.Tables.Add(dt);
+                                db.ImportDataTable(dt, true);
                             }
                         }
                         else if (filename.StartsWith("LDBS"))
@@ -232,16 +224,13 @@ namespace RTDDataExecuter
                             using (StreamReader sr = new StreamReader(filepath))
                             {
                                 DataTable dt = FileParser.ParsePlistFileLDB(sr.BaseStream);
-                                lds.Tables.Add(dt);
+                                db.ImportDataTable(dt, "level_data_id", false);
                             }
                         }
                         else
                         {
                         }
-
                     }
-                    db.ImportDataSet(mds, true);
-                    db.ImportDataSet(lds, false);
                 });
                 task.ContinueWith(t =>
                 {

@@ -93,15 +93,13 @@ namespace RTDDataExplorer
                 try
                 {
                     DataTable dt = FileParser.ParseXmlLDB(xmlLDB);
-                    DataSet lds = new DataSet("LDB");
-                    lds.Tables.Add(dt);
                     info.AppendLine("XML解析为DataSet成功。");
                     lblInfo.Text = info.ToString();
 
                     DB ldb = new DB(HostingEnvironment.MapPath("/RTD.db"));
                     info.AppendLine("LDB连接成功。");
-                    ldb.ImportDataSet(lds, isNewDB);
-                    info.AppendLine("DataSet导入到LDB成功。");
+                    ldb.ImportDataTable(dt, "level_data_id", isNewDB);
+                    info.AppendLine("DataTable导入到LDB成功。");
                     sw.Stop();
                     info.AppendLine(sw.Elapsed.ToString());
                     info.AppendLine("导入成功。");
