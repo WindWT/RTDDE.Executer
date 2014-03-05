@@ -115,7 +115,10 @@ namespace RTDDataExecuter
                 }
                 else
                 {
-                    return null;
+                    DataSet ds = new DataSet();
+                    ds.Tables.Add(new DataTable("old"));
+                    ds.Tables.Add(new DataTable("new"));
+                    return ds;
                 }
             });
             taskDataSet.ContinueWith(t =>
@@ -130,9 +133,15 @@ namespace RTDDataExecuter
                     return;
                 }
                 var oldDV = t.Result.Tables["old"].DefaultView;
-                oldDV.Sort = "id";
+                if (t.Result.Tables["old"].Columns.Contains("id"))
+                {
+                    oldDV.Sort = "id";
+                }
                 var newDV = t.Result.Tables["new"].DefaultView;
-                newDV.Sort = "id";
+                if (t.Result.Tables["new"].Columns.Contains("id"))
+                {
+                    newDV.Sort = "id";
+                }
                 OldTableDataGrid.ItemsSource = oldDV;
                 NewTableDataGrid.ItemsSource = newDV;
 
