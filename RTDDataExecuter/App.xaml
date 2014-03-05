@@ -54,7 +54,7 @@
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Foreground" Value="{StaticResource PressedBrush}" />
             <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Padding" Value="10,5,10,5"/>
+            <Setter Property="Padding" Value="10,0,10,0"/>
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="Template">
@@ -153,6 +153,9 @@
             <Setter Property="DisplayMemberPath" Value="Key"/>
             <Setter Property="SelectedValuePath" Value="Value"/>
             <Setter Property="SelectedIndex" Value="0"/>
+        </Style>
+        <Style TargetType="GroupBox">
+            <Setter Property="BorderThickness" Value="0"></Setter>
         </Style>
     </Application.Resources>
 </Application>

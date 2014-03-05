@@ -69,21 +69,44 @@ namespace RTDDataProvider
                 try
                 {
                     SQLiteCommand createTableCmd = new SQLiteCommand(connection);
+                    string tableName = dt.TableName;
+                    string tableNameOld = tableName + "_old";
 
-                    //make a backup for old table, for data compare.
-                    createTableCmd.CommandText = "DROP TABLE IF EXISTS " + dt.TableName + "_old";
-                    createTableCmd.ExecuteNonQuery();
+                    createTableCmd.CommandText = "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='" + tableName + "'";
+                    if (Convert.ToInt32(createTableCmd.ExecuteScalar()) > 0)
+                    {
+                        //make a backup for old table, for data compare.
+                        createTableCmd.CommandText = "DROP TABLE IF EXISTS " + tableNameOld;
+                        createTableCmd.ExecuteNonQuery();
 
-                    createTableCmd.CommandText = "CREATE TABLE " + dt.TableName + "_old" + " AS SELECT * FROM " + dt.TableName;
-                    createTableCmd.ExecuteNonQuery();
+                        createTableCmd.CommandText = "CREATE TABLE IF NOT EXISTS " + tableNameOld + "(";
+                        foreach (DataColumn column in dt.Columns)
+                        {
+                            createTableCmd.CommandText += column.ColumnName;
+                            if (String.Compare(column.ColumnName, pk, StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                createTableCmd.CommandText += " PRIMARY KEY,";
+                            }
+                            else
+                            {
+                                createTableCmd.CommandText += ",";
+                            }
+                        }
+                        createTableCmd.CommandText = createTableCmd.CommandText.TrimEnd(',');
+                        createTableCmd.CommandText += ");";
+                        createTableCmd.ExecuteNonQuery();
+
+                        createTableCmd.CommandText = "INSERT INTO " + tableNameOld + " SELECT * FROM " + tableName;
+                        createTableCmd.ExecuteNonQuery();
+                    }                    
 
                     if (isOverwrite)
                     {
                         //drop old table for clean insert
-                        createTableCmd.CommandText = "DROP TABLE IF EXISTS " + dt.TableName;
+                        createTableCmd.CommandText = "DROP TABLE IF EXISTS " + tableName;
                         createTableCmd.ExecuteNonQuery();
                     }
-                    createTableCmd.CommandText = "CREATE TABLE IF NOT EXISTS " + dt.TableName + "(";
+                    createTableCmd.CommandText = "CREATE TABLE IF NOT EXISTS " + tableName + "(";
                     foreach (DataColumn column in dt.Columns)
                     {
                         createTableCmd.CommandText += column.ColumnName;
@@ -103,7 +126,7 @@ namespace RTDDataProvider
                     foreach (DataRow dr in dt.Rows)
                     {
                         SQLiteCommand upsertRowCmd = new SQLiteCommand(connection);
-                        upsertRowCmd.CommandText = "INSERT OR REPLACE INTO " + dt.TableName + "(";
+                        upsertRowCmd.CommandText = "INSERT OR REPLACE INTO " + tableName + "(";
                         StringBuilder sqlColumnName = new StringBuilder();
                         StringBuilder sqlColumnValue = new StringBuilder();
                         foreach (DataColumn column in dt.Columns)
@@ -180,6 +203,17 @@ namespace RTDDataProvider
 
                 connection.Close();
                 return result;
+            }
+        }
+        public int GetInt(string sql)
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                SQLiteCommand cmd = new SQLiteCommand(sql, connection);
+
+                object o = cmd.ExecuteScalar();
+                return Convert.ToInt32(o);
             }
         }
     }

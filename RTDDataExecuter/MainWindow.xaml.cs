@@ -70,7 +70,7 @@ namespace RTDDataExecuter
             ToggleButton tb = sender as ToggleButton;
             ChangeTab(tb.Name.Replace("_TabStrip", String.Empty));
         }
-        public void ChangeTab(string name)
+        public void ChangeTab(string name, bool hasTab = true)
         {
             if (MainGrid == null)
             {
@@ -100,19 +100,22 @@ namespace RTDDataExecuter
                     grid.Visibility = Visibility.Visible;
                 }
             }
-            foreach (var children in TabGrid.Children)
+            if (hasTab)
             {
-                if (children is ToggleButton)
+                foreach (var children in TabGrid.Children)
                 {
-                    if (((ToggleButton)children).Name != name + "_TabStrip")
+                    if (children is ToggleButton)
                     {
-                        ((ToggleButton)children).IsChecked = false;
-                    }
-                    else
-                    {
-                        if (((ToggleButton)children).IsChecked == false)
+                        if (((ToggleButton)children).Name != name + "_TabStrip")
                         {
-                            ((ToggleButton)children).IsChecked = true;
+                            ((ToggleButton)children).IsChecked = false;
+                        }
+                        else
+                        {
+                            if (((ToggleButton)children).IsChecked == false)
+                            {
+                                ((ToggleButton)children).IsChecked = true;
+                            }
                         }
                     }
                 }
@@ -172,6 +175,11 @@ namespace RTDDataExecuter
         private void MinimizedButton_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = System.Windows.WindowState.Minimized;
+        }
+
+        private void MoveBar_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ChangeTab("Diff", false);
         }
     }
 }

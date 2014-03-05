@@ -39,7 +39,10 @@ namespace RTDDataExecuter
         private void CommonSQLComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string sql = CommonSQLTextBox.Text;
-            Utility.BindData(CommonDataGrid, sql);
+            if (String.IsNullOrWhiteSpace(sql) == false)
+            {
+                Utility.BindData(CommonDataGrid, sql);
+            }
         }
         private void CommonRunSQL_Click(object sender, RoutedEventArgs e)
         {

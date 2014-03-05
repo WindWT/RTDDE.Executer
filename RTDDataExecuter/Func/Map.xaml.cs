@@ -32,8 +32,12 @@ namespace RTDDataExecuter
         private void MapTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var w = (MainWindow)Application.Current.MainWindow;
+            if (w == null)  //designer friendly
+            {
+                return;
+            }
             var QuestInfo_id = (TextBox)w.Quest.FindName("QuestInfo_id");
-            if (!string.IsNullOrWhiteSpace(QuestInfo_id.Text) && ((Grid)sender).IsVisible == true)
+            if (string.IsNullOrWhiteSpace(QuestInfo_id.Text) == false && ((Grid)sender).IsVisible == true)
             {
                 string levelID = QuestInfo_id.Text;
                 InitMap(levelID);

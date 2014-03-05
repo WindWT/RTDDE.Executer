@@ -89,7 +89,7 @@ namespace RTDDataProvider
                     }
                 //case MASTERDB.GACHA_ITEM_MASTER:    //not exist
                 //case MASTERDB.GACHA_TABLE_MASTER:   //not exist
-                case MASTERDB.SHOP_PRODUCT_MASTER:  //not exist   
+                case MASTERDB.SHOP_PRODUCT_MASTER:  //exist in iOS only
                     {
                         ShopProductMaster[] o = JsonConvert.DeserializeObject<ShopProductMaster[]>(jtjson);
                         dt = ConvertToDataTable(o);

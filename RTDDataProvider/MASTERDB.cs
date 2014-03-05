@@ -23,7 +23,7 @@ namespace RTDDataProvider
         QUEST_CATEGORY_MASTER,
         GACHA_ITEM_MASTER = 40, //not exist
         GACHA_TABLE_MASTER, //not exist
-        SHOP_PRODUCT_MASTER,    //not exist
+        SHOP_PRODUCT_MASTER,    //exist in iOS only
         SHOP_PRODUCT_MASTER_ANDROID,
         LOGIN_BONUS_MASTER = 51,
         SEQUENCE_LOGIN_BONUS_MASTER,
@@ -34,7 +34,7 @@ namespace RTDDataProvider
         QUEST_CHALLENGE_REWARD_MASTER,
         SP_EVENT_MASTER,
         PANEL_SKILL_MASTER = 16,
-        PANEL_SKILL_RANK_MASTER,
-        MAX = 22    //not exist
+        PANEL_SKILL_RANK_MASTER
+        //MAX = 22    //not exist
     }
 }

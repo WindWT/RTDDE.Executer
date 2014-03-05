@@ -104,6 +104,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Func\Diff.xaml.cs">
+      <DependentUpon>Diff.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Func\Common.xaml.cs">
       <DependentUpon>Common.xaml</DependentUpon>
     </Compile>
@@ -133,6 +136,10 @@
     <Compile Include="Util\Utility.cs" />
     <Compile Include="Util\WindowBorder.cs" />
     <Compile Include="Util\WindowResizer.cs" />
+    <Page Include="Func\Diff.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Func\Common.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

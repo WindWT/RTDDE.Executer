@@ -76,5 +76,24 @@ namespace RTDDataExecuter
             }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
             task.Start();
         }
+        public static T GetVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            T child = default(T);
+            int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < numVisuals; i++)
+            {
+                DependencyObject v = (DependencyObject)VisualTreeHelper.GetChild(parent, i);
+                child = v as T;
+                if (child == null)
+                {
+                    child = GetVisualChild<T>(v);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return child;
+        }
     }
 }
