@@ -27,6 +27,10 @@ namespace RTDDataExecuter
         {
             InitializeComponent();
         }
+        public void Refresh()
+        {
+            UnitTab_Initialized(null, null);
+        }
         private void UnitTab_Initialized(object sender, EventArgs e)
         {
             Utility.BindData(UnitDataGrid, "SELECT id,g_id,name FROM UNIT_MASTER order by g_id");

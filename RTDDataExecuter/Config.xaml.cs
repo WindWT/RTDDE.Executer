@@ -63,9 +63,7 @@ namespace RTDDataExecuter
                         else
                         {
                             ImportMDBSButton.Content = new Run("MDBS Successfully Imported.");
-                            var w = (MainWindow)Application.Current.MainWindow;
-                            w.Unit.UnitSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                            w.Quest.QuestSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                            RefreshControl();
                         }
                     }, MainWindow.uiTaskScheduler);
                 task.Start();
@@ -136,9 +134,7 @@ namespace RTDDataExecuter
                     else
                     {
                         ImportplistButton.Content = new Run("plist Successfully Imported.");
-                        var w = (MainWindow)Application.Current.MainWindow;
-                        w.Unit.UnitSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                        w.Quest.QuestSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        RefreshControl();
                     }
                 }, MainWindow.uiTaskScheduler);
                 task.Start();
@@ -185,9 +181,7 @@ namespace RTDDataExecuter
                     else
                     {
                         ImportAndroidDirectoryButton.Content = new Run("MDBS Successfully Imported.");
-                        var w = (MainWindow)Application.Current.MainWindow;
-                        w.Unit.UnitSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                        w.Quest.QuestSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        RefreshControl();
                     }
                 }, MainWindow.uiTaskScheduler);
                 task.Start();
@@ -242,13 +236,20 @@ namespace RTDDataExecuter
                     else
                     {
                         ImportiOSDirectoryButton.Content = new Run("iOS Successfully Imported.");
-                        var w = (MainWindow)Application.Current.MainWindow;
-                        w.Unit.UnitSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                        w.Quest.QuestSearchClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        RefreshControl();
                     }
                 }, MainWindow.uiTaskScheduler);
                 task.Start();
             }
+        }
+        private void RefreshControl()
+        {
+            var w = (MainWindow)Application.Current.MainWindow;
+            w.Quest.Refresh();
+            w.QuestCategory.Refresh();
+            w.Unit.Refresh();
+            w.Skill.Refresh();
+            w.Guide.Refresh();
         }
         public void InitSettings()
         {

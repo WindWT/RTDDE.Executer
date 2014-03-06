@@ -26,6 +26,11 @@ namespace RTDDataExecuter
         {
             InitializeComponent();
         }
+        public void Refresh()
+        {
+            QuestCategoryTypeRadio_Normal.IsChecked = false;
+            QuestCategoryTypeRadio_Normal.IsChecked = true;
+        }
         private void QuestCategoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (QuestCategoryDataGrid.SelectedItem == null)

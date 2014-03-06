@@ -27,6 +27,11 @@ namespace RTDDataExecuter
         {
             InitializeComponent();
         }
+        public void Refresh()
+        {
+            QuestTypeRadio_Event.IsChecked = false;
+            QuestTypeRadio_Event.IsChecked = true;
+        }
         private void QuestDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (QuestDataGrid.SelectedItem == null)

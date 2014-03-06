@@ -27,6 +27,11 @@ namespace RTDDataExecuter
             InitializeComponent();
             SkillTypeRadio_Party.IsChecked = true;  //set it here instead of xaml
         }
+        public void Refresh()
+        {
+            SkillTypeRadio_Party.IsChecked = false;
+            SkillTypeRadio_Party.IsChecked = true;
+        }
         private void SkillDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (SkillDataGrid.SelectedItem == null)

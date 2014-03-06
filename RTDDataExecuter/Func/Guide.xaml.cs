@@ -26,11 +26,14 @@ namespace RTDDataExecuter
         {
             InitializeComponent();
         }
+        public void Refresh()
+        {
+            GuideTab_Initialized(null, null);
+        }
         private void GuideTab_Initialized(object sender, EventArgs e)
         {
             Utility.BindData(GuideDataGrid, "SELECT id,icon FROM UNIT_TALK_MASTER order by id");
         }
-
         private void GuideDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (GuideDataGrid.SelectedItem == null)
@@ -73,7 +76,8 @@ namespace RTDDataExecuter
                         };
                         var tbValue = new TextBox()
                         {
-                            Text = guide.Replace("*", "\n")
+                            Text = guide.Replace("*", "\n"),
+                            IsReadOnly = true
                         };
                         grid.Children.Add(tbName);
                         grid.Children.Add(tbValue);

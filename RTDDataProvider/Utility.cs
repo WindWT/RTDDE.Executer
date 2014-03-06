@@ -475,7 +475,7 @@ namespace RTDDataProvider
                         result["opentype"] = "完成关卡";
                         string sql = @"SELECT name FROM quest_master WHERE id={0}";
                         DB db = new DB();
-                        result["opentypeParam"] = db.GetString(String.Format(sql, opentypeParam));
+                        result["opentypeParam"] = opentypeParam + "|" + db.GetString(String.Format(sql, opentypeParam));
                         break;
                     }
                 case "3":   //unknown
@@ -507,7 +507,7 @@ namespace RTDDataProvider
                         result["opentype"] = "完成关卡?";
                         string sql = @"SELECT name FROM quest_master WHERE id={0}";
                         DB db = new DB();
-                        result["opentypeParam"] = db.GetString(String.Format(sql, opentypeParam));
+                        result["opentypeParam"] = opentypeParam + "|" + db.GetString(String.Format(sql, opentypeParam));
                         break;
                     }
                 case "8":
@@ -521,7 +521,7 @@ namespace RTDDataProvider
                         result["opentype"] = "不完成关卡";
                         string sql = @"SELECT name FROM quest_master WHERE id={0}";
                         DB db = new DB();
-                        result["opentypeParam"] = db.GetString(String.Format(sql, opentypeParam));
+                        result["opentypeParam"] = opentypeParam + "|" + db.GetString(String.Format(sql, opentypeParam));
                         break;
                     }
                 case "10":
@@ -551,7 +551,7 @@ namespace RTDDataProvider
                 case "14":
                     {
                         result["opentype"] = "队长限定";
-                        result["opentypeParam"] = ParseUnitName(opentypeParam);
+                        result["opentypeParam"] = opentypeParam + "|" + ParseUnitName(opentypeParam);
                         break;
                     }
                 default:
