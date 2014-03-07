@@ -68,9 +68,8 @@
             <Separator Width="300"/>
             <TextBlock Text="category" Width="50"/>
             <TextBox Name="QuestInfo_category" Width="50" IsReadOnly="True"></TextBox>
-            <TextBox Name="QuestInfo_category_name" Width="200" IsReadOnly="True"></TextBox>
-            <TextBlock Text="text" Width="50"/>
-            <TextBox Name="QuestInfo_category_text" Width="250" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+            <TextBox Name="QuestInfo_category_name" Width="200" IsReadOnly="True" TextAlignment="Right"></TextBox>
+            <TextBox Name="QuestInfo_category_text" Width="300" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" TextAlignment="Right"></TextBox>
             <TextBlock Text="banner" Width="50"/>
             <TextBox Name="QuestInfo_category_banner" Width="250" IsReadOnly="True"></TextBox>
             <Separator Width="300"/>

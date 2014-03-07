@@ -28,8 +28,8 @@
             <Separator Width="300"/>
             <TextBlock Text="id" Width="50"/>
             <TextBox Name="QuestCategoryInfo_id" Width="50" IsReadOnly="True"></TextBox>
-            <TextBlock Text="name" Width="50"/>
-            <TextBox Name="QuestCategoryInfo_name" Width="150" IsReadOnly="True"></TextBox>
+            <TextBox Name="QuestCategoryInfo_name" Width="200" IsReadOnly="True" TextAlignment="Right"></TextBox>
+            <TextBox Name="QuestCategoryInfo_text" Width="300" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" TextAlignment="Right"></TextBox>
             <TextBlock Text="order" Width="50"/>
             <TextBox Name="QuestCategoryInfo_order" Width="25" IsReadOnly="True"></TextBox>
             <TextBlock Text="pt_num" Width="50"/>
@@ -40,8 +40,6 @@
             <TextBox Name="QuestCategoryInfo_kind" Width="100" IsReadOnly="True"></TextBox>
             <TextBlock Text="zbtn_kind" Width="50"/>
             <TextBox Name="QuestCategoryInfo_zbtn_kind" Width="100" IsReadOnly="True"></TextBox>
-            <TextBlock Text="text" Width="50"/>
-            <TextBox Name="QuestCategoryInfo_text" Width="250" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
             <Separator Width="300"/>
         </WrapPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">

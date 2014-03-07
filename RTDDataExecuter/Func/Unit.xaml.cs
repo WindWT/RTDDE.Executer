@@ -63,6 +63,18 @@ namespace RTDDataExecuter
             };
             UnitSearch_attribute.ItemsSource = attrDict;
             UnitSearch_sub_a1.ItemsSource = attrDict;
+            var kindDict = new Dictionary<string, string>()
+            {
+                {"------",""},
+            };
+            foreach (AssignID kind in Enum.GetValues(typeof(AssignID)))
+            {
+                if (kind.ToString().StartsWith("MS0") == false)
+                {
+                    kindDict.Add(kind.ToString(), Utility.ParseAssignID(kind).ToString());
+                }
+            }
+            UnitSearch_kind.ItemsSource = kindDict;
         }
 
         private void UnitDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -407,6 +419,10 @@ WHERE uo.id={0}";
             if (String.IsNullOrWhiteSpace((string)UnitSearch_category.SelectedValue) == false)
             {
                 sql += "category=" + UnitSearch_category.SelectedValue.ToString() + " AND ";
+            }
+            if (String.IsNullOrWhiteSpace((string)UnitSearch_kind.SelectedValue) == false)
+            {
+                sql += "kind=" + UnitSearch_kind.SelectedValue.ToString() + " AND ";
             }
             if (String.IsNullOrWhiteSpace((string)UnitSearch_style.SelectedValue) == false)
             {

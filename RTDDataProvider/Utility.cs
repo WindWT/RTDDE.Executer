@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace RTDDataProvider
@@ -551,7 +553,11 @@ namespace RTDDataProvider
                 case "14":
                     {
                         result["opentype"] = "队长限定";
-                        result["opentypeParam"] = opentypeParam + "|" + ParseUnitName(opentypeParam);
+                        //result["opentypeParam"] = opentypeParam + "|" + ParseUnitName(opentypeParam);
+                        StringBuilder sb = new StringBuilder();
+                        sb.AppendLine("UnitGroup|" + opentypeParam);
+                        sb.Append(ParseUnitGroupName(opentypeParam));
+                        result["opentypeParam"] = sb.ToString();
                         break;
                     }
                 default:
@@ -742,6 +748,86 @@ namespace RTDDataProvider
 
             }
         }
+        public static int ParseAssignID(AssignID category)
+        {
+            switch (category)
+            {
+                case AssignID.SWORD:
+                    return 1;
+                case AssignID.GREATSWORD:
+                    return 2;
+                case AssignID.LANCE:
+                    return 101;
+                case AssignID.PILEBANKER:
+                    return 102;
+                case AssignID.BOW:
+                    return 201;
+                case AssignID.GUN:
+                    return 202;
+                case AssignID.STICK:
+                    return 301;
+                case AssignID.ARTIFACT:
+                    return 302;
+                case AssignID.STICK_FEMALE:
+                    return 303;
+                case AssignID.TWO_SWORD:
+                    return 3;
+                case AssignID.TWIN_LANCE:
+                    return 103;
+                case AssignID.CANNON:
+                    return 203;
+                case AssignID.CHAOS_SWD:
+                    return 4;
+                case AssignID.CHAOS_GUN:
+                    return 204;
+                case AssignID.CHAOS_BAN:
+                    return 104;
+                case AssignID.CHAOS_ART:
+                    return 304;
+                case AssignID.BOW_MALE:
+                    return 205;
+                case AssignID.KUNGFU:
+                    return 105;
+                case AssignID.POK_LANCE:
+                    return 106;
+                case AssignID.POK_STICK:
+                    return 305;
+                case AssignID.LACNE_FEMALE:
+                    return 107;
+                case AssignID.RAPIA:
+                    return 5;
+                case AssignID.ORG_SWORD:
+                    return 6;
+                case AssignID.ORG_GUN:
+                    return 206;
+                case AssignID.GRT_FEMALE:
+                    return 7;
+                case AssignID.ART_FEMALE:
+                    return 306;
+                case AssignID.POK_SWORD:
+                    return 8;
+                case AssignID.POK_CAN:
+                    return 207;
+                case AssignID.ORG_LAN:
+                    return 108;
+                case AssignID.WIN_SWORD:
+                    return 9;
+                case AssignID.WIN_LANCE:
+                    return 109;
+                case AssignID.WIN_BOW:
+                    return 208;
+                case AssignID.WIN_STICK:
+                    return 307;
+                case AssignID.GOD_BOW:
+                    return 209;
+                case AssignID.ORG_STICK:
+                    return 308;
+                case AssignID.POK_ART:
+                    return 309;
+                default:
+                    return 1;
+            }
+        }
         public static string ParseQuestKind(string kind)
         {
             switch (kind)
@@ -807,6 +893,19 @@ namespace RTDDataProvider
             string sql = @"SELECT name FROM unit_master WHERE id={0}";
             DB db = new DB();
             return db.GetString(String.Format(sql, unitId));
+        }
+        public static string ParseUnitGroupName(string unitUiId)
+        {
+            string sql = @"SELECT id,name FROM unit_master WHERE ui_id={0}";
+            DB db = new DB();
+            DataTable dt = db.GetData(String.Format(sql, unitUiId));
+            StringBuilder sb = new StringBuilder();
+            foreach (DataRow dr in dt.Rows)
+            {
+                sb.AppendFormat("{0}|{1}", dr["id"].ToString(), dr["name"].ToString());
+                sb.AppendLine();
+            }
+            return sb.ToString().Trim();
         }
         public static string ParseText(string text)
         {

@@ -33,9 +33,10 @@
                         <TextBlock Text="name" Width="50"/>
                         <TextBox Name="UnitSearch_name" Width="175" TextChanged="UnitSearch_TextChanged"></TextBox>
                         <ComboBox Name="UnitSearch_category" Width="75"></ComboBox>
-                        <ComboBox Name="UnitSearch_style" Width="100"></ComboBox>
-                        <ComboBox Name="UnitSearch_attribute" Width="100"></ComboBox>
-                        <ComboBox Name="UnitSearch_sub_a1" Width="100"></ComboBox>
+                        <ComboBox Name="UnitSearch_style" Width="75"></ComboBox>
+                        <ComboBox Name="UnitSearch_kind" Width="75"></ComboBox>
+                        <ComboBox Name="UnitSearch_attribute" Width="75"></ComboBox>
+                        <ComboBox Name="UnitSearch_sub_a1" Width="75"></ComboBox>
                         <Button Name="UnitSearchClear" Width="300" Click="UnitSearchClear_Click">Clear</Button>
                     </WrapPanel>
                 </Expander.Content>
