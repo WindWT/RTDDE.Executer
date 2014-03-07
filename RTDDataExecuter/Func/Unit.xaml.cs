@@ -230,6 +230,8 @@ WHERE uo.id={0}";
                 }
                 DataRow unitData = task.Result.Rows[0];
                 UnitInfo_g_id.Text = unitData["g_id"].ToString();
+                UnitInfo_ui_id.Text = unitData["ui_id"].ToString();
+                UnitInfo_flag_no.Text = unitData["flag_no"].ToString();
                 UnitInfo_name.Text = unitData["name"].ToString();
                 string rare = string.Empty;
                 for (int i = 0; i < Convert.ToInt32(unitData["category"]); i++)
@@ -245,6 +247,7 @@ WHERE uo.id={0}";
 
                 UnitInfo_need_pt.Text = unitData["need_pt"].ToString();
                 UnitInfo_bonus_limit_base.Text = unitData["bonus_limit_base"].ToString();
+                UnitInfo_rev_unit_id.Text = unitData["rev_unit_id"].ToString();
                 UnitInfo_rev_unit_name.Text = unitData["rev_unit_name"].ToString();
 
                 if (Convert.ToInt32(unitData["ultimate_rev_unit_id_fire"]) == 0

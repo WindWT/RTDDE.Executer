@@ -46,6 +46,10 @@
             <TextBox Name="UnitInfo_id" Width="100" IsReadOnly="True"></TextBox>
             <TextBlock Text="g_id" Width="50"/>
             <TextBox Name="UnitInfo_g_id" Width="100" IsReadOnly="True"></TextBox>
+            <TextBlock Text="ui_id" Width="50"/>
+            <TextBox Name="UnitInfo_ui_id" Width="100" IsReadOnly="True"></TextBox>
+            <TextBlock Text="flag_no" Width="50"/>
+            <TextBox Name="UnitInfo_flag_no" Width="100" IsReadOnly="True"></TextBox>            
             <TextBlock Text="name" Width="50"/>
             <TextBox Name="UnitInfo_name" Width="175" IsReadOnly="True"></TextBox>
             <TextBox Name="UnitInfo_category" Width="75" IsReadOnly="True"></TextBox>
@@ -104,7 +108,8 @@
                     <TextBlock Text="DX_limit" Width="50"/>
                     <TextBox Name="UnitInfo_bonus_limit_base" Width="100" IsReadOnly="True"></TextBox>
                     <TextBlock Text="rev" Width="50"/>
-                    <TextBox Name="UnitInfo_rev_unit_name" Width="250" IsReadOnly="True"></TextBox>
+                    <TextBox Name="UnitInfo_rev_unit_id" Width="50" IsReadOnly="True"></TextBox>
+                    <TextBox Name="UnitInfo_rev_unit_name" Width="200" IsReadOnly="True"></TextBox>
                 </WrapPanel>
                 <WrapPanel Name="UnitInfo_Panel_ultimate_rev">
                     <Separator Width="300"/>
@@ -123,8 +128,7 @@
                     <Separator Width="300"/>
                     <TextBlock Text="PARTY" Width="50"/>
                     <TextBox Name="partySkill_id" Width="50" IsReadOnly="True"></TextBox>
-                    <TextBlock Text="name" Width="50"/>
-                    <TextBox Name="partySkill_name" Width="150" IsReadOnly="True"></TextBox>
+                    <TextBox Name="partySkill_name" Width="200" IsReadOnly="True"></TextBox>
                     <TextBlock Text="text" Width="50"/>
                     <RichTextBox Name="partySkill_text" Width="250" IsReadOnly="True"></RichTextBox>
                     <TextBlock Text="type" Width="50"/>
@@ -148,8 +152,7 @@
                     <Separator Width="300"/>
                     <TextBlock Text="ACTIVE" Width="50"/>
                     <TextBox Name="activeSkill_id" Width="50" IsReadOnly="True"></TextBox>
-                    <TextBlock Text="name" Width="50"/>
-                    <TextBox Name="activeSkill_name" Width="150" IsReadOnly="True"></TextBox>
+                    <TextBox Name="activeSkill_name" Width="200" IsReadOnly="True"></TextBox>
                     <TextBlock Text="text" Width="50"/>
                     <RichTextBox Name="activeSkill_text" Width="250" IsReadOnly="True"></RichTextBox>
                     <TextBlock Text="phase" Width="50"/>
@@ -179,8 +182,7 @@
                     <Separator Width="300"/>
                     <TextBlock Text="PANEL" Width="50"/>
                     <TextBox Name="panelSkill_id" Width="50" IsReadOnly="True"></TextBox>
-                    <TextBlock Text="name" Width="50"/>
-                    <TextBox Name="panelSkill_name" Width="150" IsReadOnly="True"></TextBox>
+                    <TextBox Name="panelSkill_name" Width="200" IsReadOnly="True"></TextBox>
                     <TextBlock Text="text" Width="50"/>
                     <RichTextBox Name="panelSkill_text" Width="250" IsReadOnly="True"></RichTextBox>
                     <TextBlock Text="phase" Width="50"/>
