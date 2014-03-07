@@ -302,7 +302,10 @@ WHERE uo.id={0}";
                 int set_pt = Convert.ToInt32(unitData["set_pt"]);
                 UnitInfo_pt.Text = ((int)((float)(thislevel - 1) * Math.Pow((float)set_pt, 0.5f) + (float)set_pt)).ToString("0");
                 //story
-                UnitInfo_story.Document = Utility.parseTextToDocument(unitData["story"].ToString());
+                var storyDoc=Utility.parseTextToDocument(unitData["story"].ToString());
+                storyDoc.TextAlignment=TextAlignment.Center;
+                UnitInfo_story.Padding = new Thickness(8, 0, 8, 0);
+                UnitInfo_story.Document = storyDoc;
                 //cutin
                 UnitInfo_ct_text.Text = unitData["ct_text"].ToString();
                 UnitInfo_sct_text.Text = unitData["sct_text"].ToString();
