@@ -32,7 +32,7 @@ namespace RTDDataExecuter
         }
         private void GuideTab_Initialized(object sender, EventArgs e)
         {
-            Utility.BindData(GuideDataGrid, "SELECT id,icon FROM UNIT_TALK_MASTER order by id");
+            Utility.BindData(GuideDataGrid, "SELECT id,icon,i0,i1,i2,i3 FROM UNIT_TALK_MASTER order by id");
         }
         private void GuideDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -63,7 +63,7 @@ namespace RTDDataExecuter
                 GuideTalk.Children.Clear();
                 for (int i = 0; i < 128; i++)
                 {
-                    string guide = guideData[i + 2].ToString();  //remove id&icon
+                    string guide = guideData[i + 6].ToString();  //remove id&5 icon
                     if (!string.IsNullOrWhiteSpace(guide))
                     {
                         Grid grid = new Grid();

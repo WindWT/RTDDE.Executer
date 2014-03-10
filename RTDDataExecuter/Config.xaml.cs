@@ -30,10 +30,11 @@ namespace RTDDataExecuter
         private void ConfigTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             ImportMDBSButton.Content = new Run("Import MDBS(NOT available for 2.4.0.0 or higher)");
-            ImportLDBSButton.Content = new Run("Import LDBS");
+            ImportLDBSButton.Content = new Run("Import LDBS(NOT available for 2.5.0.0 or higher)");
             ImportplistButton.Content = new Run("Import plist(NOT available for 2.4.0.0 or higher)");
             ImportAndroidDirectoryButton.Content = new Run("Import Android MDBS Directory");
             ImportiOSDirectoryButton.Content = new Run("Import iOS Directory");
+            ImportGAMEButton.Content = new Run("Import GAME(MAP Data)");
         }
         private void ImportMDBSButton_Click(object sender, RoutedEventArgs e)
         {
@@ -97,6 +98,41 @@ namespace RTDDataExecuter
                     else
                     {
                         ImportLDBSButton.Content = new Run("LDBS Successfully Imported.");
+                    }
+                }, MainWindow.uiTaskScheduler);
+                task.Start();
+            }
+        }
+        private void ImportGAMEButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.DefaultExt = ".xml";
+            ofd.Filter = "GAME File|GAME.xml";
+            if (ofd.ShowDialog() == true)
+            {
+                ImportGAMEButton.Content = new Run("Importing MAP Data...");
+                Task task = new Task(() =>
+                {
+                    using (StreamReader sr = new StreamReader(ofd.FileName))
+                    {
+                        string xml = sr.ReadToEnd();
+                        DataTable dt = FileParser.ParseXmlLDB(xml);
+                        DB db = new DB();
+                        db.ImportDataTable(dt, "level_data_id", false);
+                        db.ImportDataSet(FileParser.ParseXmlGAME(xml), false);
+                    }
+                });
+                task.ContinueWith(t =>
+                {
+                    if (t.Exception != null)
+                    {
+                        Utility.ShowException(t.Exception.InnerException.Message);
+                        ImportGAMEButton.Content = new Run("MAP Data Import Failed.");
+                    }
+                    else
+                    {
+                        ImportGAMEButton.Content = new Run("MAP Data Successfully Imported.");
+                        RefreshControl();
                     }
                 }, MainWindow.uiTaskScheduler);
                 task.Start();

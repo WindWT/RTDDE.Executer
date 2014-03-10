@@ -16,5 +16,7 @@ namespace RTDDataProvider.MasterData
         public int height;
         public string map_data;
         public string hash;
+        //public EnemyTableMaster enemy_table_master;
+        //public UnitTalkMaster unit_talk_master;
     }
 }

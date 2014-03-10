@@ -8,66 +8,785 @@ namespace RTDDataProvider.MasterData
     [Serializable]
     public class QuestMaster
     {
-        public int id;
-        public string name;
-        public int division;
-        public int category;
-        public int map;
-        public int stamina;
-        public int soul;
-        public int kind;
-        public int zbtn_kind;
-        public int pt_num;
-        public int kpi_class;
-        public int flag_no;
-        public int display_order;
-        public int difficulty;
-        public int distance;
-        public int sp_event_id;
-        public int open_type_1;
-        public int open_param_1;
-        public int open_type_2;
-        public int open_param_2;
-        public int open_type_3;
-        public int open_param_3;
-        public int open_type_4;
-        public int open_param_4;
-        public int open_type_5;
-        public int open_param_5;
-        public int open_type_6;
-        public int open_param_6;
-        public int open_sp_event_id;
-        public int open_sp_event_point;
-        public uint bonus_start;
-        public uint bonus_end;
-        public int bonus_type;
-        public int panel_sword;
-        public int panel_lance;
-        public int panel_archer;
-        public int panel_cane;
-        public int panel_heart;
-        public int panel_sp;
-        public int reward_money;
-        public int reward_exp;
-        public int reward_soul;
-        public int reward_money_limit;
-        public int reward_exp_limit;
-        public int enemy_table_id;
-        public int enemy_table_hash;
-        public string text;
-        public int present_type;
-        public int present_param;
-        public int present_param_1;
-        public int challenge_id_0;
-        public int challenge_id_1;
-        public int challenge_id_2;
-        public int tflg_cmd_0;
-        public int tflg_idx_0;
-        public int tflg_cmd_1;
-        public int tflg_idx_1;
-        public int sp_guide_id;
-        public string banner;
-        public int bgm_f;
-        public int bgm_b;
+        public int i;
+        public string n;
+        public int d;
+        public int c;
+        public int m;
+        public int s;
+        public int so;
+        public int k;
+        public int z;
+        public int p;
+        public int kp;
+        public int f;
+        public int dio;
+        public int df;
+        public int ds;
+        public int sp;
+        public int o1;
+        public int op1;
+        public int o2;
+        public int op2;
+        public int o3;
+        public int op3;
+        public int o4;
+        public int op4;
+        public int o5;
+        public int op5;
+        public int o6;
+        public int op6;
+        public int oi;
+        public int op;
+        public uint b;
+        public uint be;
+        public int bt;
+        public int ps;
+        public int pl;
+        public int pa;
+        public int pc;
+        public int ph;
+        public int psp;
+        public int r;
+        public int re;
+        public int rs;
+        public int rm;
+        public int rl;
+        public int ei;
+        public string t;
+        public int pt;
+        public int pp;
+        public int pp1;
+        public int c0;
+        public int c1;
+        public int c2;
+        public int t0;
+        public int ti0;
+        public int t1;
+        public int ti1;
+        public int si;
+        public string ba;
+        public int bf;
+        public int bb;
+
+        public int id
+        {
+            get
+            {
+                return this.i;
+            }
+            set
+            {
+                this.i = value;
+            }
+        }
+
+        public string name
+        {
+            get
+            {
+                return this.n;
+            }
+            set
+            {
+                this.n = value;
+            }
+        }
+
+        public int division
+        {
+            get
+            {
+                return this.d;
+            }
+            set
+            {
+                this.d = value;
+            }
+        }
+
+        public int category
+        {
+            get
+            {
+                return this.c;
+            }
+            set
+            {
+                this.c = value;
+            }
+        }
+
+        public int map
+        {
+            get
+            {
+                return this.m;
+            }
+            set
+            {
+                this.m = value;
+            }
+        }
+
+        public int stamina
+        {
+            get
+            {
+                return this.s;
+            }
+            set
+            {
+                this.s = value;
+            }
+        }
+
+        public int soul
+        {
+            get
+            {
+                return this.so;
+            }
+            set
+            {
+                this.so = value;
+            }
+        }
+
+        public int kind
+        {
+            get
+            {
+                return this.k;
+            }
+            set
+            {
+                this.k = value;
+            }
+        }
+
+        public int zbtn_kind
+        {
+            get
+            {
+                return this.z;
+            }
+            set
+            {
+                this.z = value;
+            }
+        }
+
+        public int pt_num
+        {
+            get
+            {
+                return this.p;
+            }
+            set
+            {
+                this.p = value;
+            }
+        }
+
+        public int kpi_class
+        {
+            get
+            {
+                return this.kp;
+            }
+            set
+            {
+                this.kp = value;
+            }
+        }
+
+        public int flag_no
+        {
+            get
+            {
+                return this.f;
+            }
+            set
+            {
+                this.f = value;
+            }
+        }
+
+        public int display_order
+        {
+            get
+            {
+                return this.dio;
+            }
+            set
+            {
+                this.dio = value;
+            }
+        }
+
+        public int difficulty
+        {
+            get
+            {
+                return this.df;
+            }
+            set
+            {
+                this.df = value;
+            }
+        }
+
+        public int distance
+        {
+            get
+            {
+                return this.ds;
+            }
+            set
+            {
+                this.ds = value;
+            }
+        }
+
+        public int sp_event_id
+        {
+            get
+            {
+                return this.sp;
+            }
+            set
+            {
+                this.sp = value;
+            }
+        }
+
+        public int open_type_1
+        {
+            get
+            {
+                return this.o1;
+            }
+            set
+            {
+                this.o1 = value;
+            }
+        }
+
+        public int open_param_1
+        {
+            get
+            {
+                return this.op1;
+            }
+            set
+            {
+                this.op1 = value;
+            }
+        }
+
+        public int open_type_2
+        {
+            get
+            {
+                return this.o2;
+            }
+            set
+            {
+                this.o2 = value;
+            }
+        }
+
+        public int open_param_2
+        {
+            get
+            {
+                return this.op2;
+            }
+            set
+            {
+                this.op2 = value;
+            }
+        }
+
+        public int open_type_3
+        {
+            get
+            {
+                return this.o3;
+            }
+            set
+            {
+                this.o3 = value;
+            }
+        }
+
+        public int open_param_3
+        {
+            get
+            {
+                return this.op3;
+            }
+            set
+            {
+                this.op3 = value;
+            }
+        }
+
+        public int open_type_4
+        {
+            get
+            {
+                return this.o4;
+            }
+            set
+            {
+                this.o4 = value;
+            }
+        }
+
+        public int open_param_4
+        {
+            get
+            {
+                return this.op4;
+            }
+            set
+            {
+                this.op4 = value;
+            }
+        }
+
+        public int open_type_5
+        {
+            get
+            {
+                return this.o5;
+            }
+            set
+            {
+                this.o5 = value;
+            }
+        }
+
+        public int open_param_5
+        {
+            get
+            {
+                return this.op5;
+            }
+            set
+            {
+                this.op5 = value;
+            }
+        }
+
+        public int open_type_6
+        {
+            get
+            {
+                return this.o6;
+            }
+            set
+            {
+                this.o6 = value;
+            }
+        }
+
+        public int open_param_6
+        {
+            get
+            {
+                return this.op6;
+            }
+            set
+            {
+                this.op6 = value;
+            }
+        }
+
+        public int open_sp_event_id
+        {
+            get
+            {
+                return this.oi;
+            }
+            set
+            {
+                this.oi = value;
+            }
+        }
+
+        public int open_sp_event_point
+        {
+            get
+            {
+                return this.op;
+            }
+            set
+            {
+                this.op = value;
+            }
+        }
+
+        public uint bonus_start
+        {
+            get
+            {
+                return this.b;
+            }
+            set
+            {
+                this.b = value;
+            }
+        }
+
+        public uint bonus_end
+        {
+            get
+            {
+                return this.be;
+            }
+            set
+            {
+                this.be = value;
+            }
+        }
+
+        public int bonus_type
+        {
+            get
+            {
+                return this.bt;
+            }
+            set
+            {
+                this.bt = value;
+            }
+        }
+
+        public int panel_sword
+        {
+            get
+            {
+                return this.ps;
+            }
+            set
+            {
+                this.ps = value;
+            }
+        }
+
+        public int panel_lance
+        {
+            get
+            {
+                return this.pl;
+            }
+            set
+            {
+                this.pl = value;
+            }
+        }
+
+        public int panel_archer
+        {
+            get
+            {
+                return this.pa;
+            }
+            set
+            {
+                this.pa = value;
+            }
+        }
+
+        public int panel_cane
+        {
+            get
+            {
+                return this.pc;
+            }
+            set
+            {
+                this.pc = value;
+            }
+        }
+
+        public int panel_heart
+        {
+            get
+            {
+                return this.ph;
+            }
+            set
+            {
+                this.ph = value;
+            }
+        }
+
+        public int panel_sp
+        {
+            get
+            {
+                return this.psp;
+            }
+            set
+            {
+                this.psp = value;
+            }
+        }
+
+        public int reward_money
+        {
+            get
+            {
+                return this.r;
+            }
+            set
+            {
+                this.r = value;
+            }
+        }
+
+        public int reward_exp
+        {
+            get
+            {
+                return this.re;
+            }
+            set
+            {
+                this.re = value;
+            }
+        }
+
+        public int reward_soul
+        {
+            get
+            {
+                return this.rs;
+            }
+            set
+            {
+                this.rs = value;
+            }
+        }
+
+        public int reward_money_limit
+        {
+            get
+            {
+                return this.rm;
+            }
+            set
+            {
+                this.rm = value;
+            }
+        }
+
+        public int reward_exp_limit
+        {
+            get
+            {
+                return this.rl;
+            }
+            set
+            {
+                this.rl = value;
+            }
+        }
+
+        public int enemy_table_id
+        {
+            get
+            {
+                return this.ei;
+            }
+            set
+            {
+                this.ei = value;
+            }
+        }
+
+        public string text
+        {
+            get
+            {
+                return this.t;
+            }
+            set
+            {
+                this.t = value;
+            }
+        }
+
+        public int present_type
+        {
+            get
+            {
+                return this.pt;
+            }
+            set
+            {
+                this.pt = value;
+            }
+        }
+
+        public int present_param
+        {
+            get
+            {
+                return this.pp;
+            }
+            set
+            {
+                this.pp = value;
+            }
+        }
+
+        public int present_param_1
+        {
+            get
+            {
+                return this.pp1;
+            }
+            set
+            {
+                this.pp1 = value;
+            }
+        }
+
+        public int challenge_id_0
+        {
+            get
+            {
+                return this.c0;
+            }
+            set
+            {
+                this.c0 = value;
+            }
+        }
+
+        public int challenge_id_1
+        {
+            get
+            {
+                return this.c1;
+            }
+            set
+            {
+                this.c1 = value;
+            }
+        }
+
+        public int challenge_id_2
+        {
+            get
+            {
+                return this.c2;
+            }
+            set
+            {
+                this.c2 = value;
+            }
+        }
+
+        public int tflg_cmd_0
+        {
+            get
+            {
+                return this.t0;
+            }
+            set
+            {
+                this.t0 = value;
+            }
+        }
+
+        public int tflg_idx_0
+        {
+            get
+            {
+                return this.ti0;
+            }
+            set
+            {
+                this.ti0 = value;
+            }
+        }
+
+        public int tflg_cmd_1
+        {
+            get
+            {
+                return this.t1;
+            }
+            set
+            {
+                this.t1 = value;
+            }
+        }
+
+        public int tflg_idx_1
+        {
+            get
+            {
+                return this.ti1;
+            }
+            set
+            {
+                this.ti1 = value;
+            }
+        }
+
+        public int sp_guide_id
+        {
+            get
+            {
+                return this.si;
+            }
+            set
+            {
+                this.si = value;
+            }
+        }
+
+        public string banner
+        {
+            get
+            {
+                return this.ba;
+            }
+            set
+            {
+                this.ba = value;
+            }
+        }
+
+        public int bgm_f
+        {
+            get
+            {
+                return this.bf;
+            }
+            set
+            {
+                this.bf = value;
+            }
+        }
+
+        public int bgm_b
+        {
+            get
+            {
+                return this.bb;
+            }
+            set
+            {
+                this.bb = value;
+            }
+        }
     }
 }

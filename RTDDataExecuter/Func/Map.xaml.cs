@@ -62,7 +62,7 @@ namespace RTDDataExecuter
                 DataTable dt = db.GetData("SELECT a.*,b.distance FROM level_data_master a left join quest_master b on a.level_data_id=b.id WHERE a.level_data_id=" + levelID);
                 if (dt.Rows.Count == 0)
                 {
-                    throw new Exception("数据库取数失败。");
+                    throw new Exception("NO MAP DATA.");
                 }
                 DataRow levelData = dt.Rows[0];
                 if (Settings.IsShowDropInfo == false)
@@ -493,7 +493,8 @@ namespace RTDDataExecuter
             DataTable enemyTableData = db.GetData("SELECT * FROM enemy_table_master WHERE id=" + enemy_table_id);
             if (enemyTableData.Rows.Count == 0)
             {
-                throw new Exception("数据不存在。");
+                //throw new Exception("NO ENEMY TABLE DATA.");
+                return monsterData;
             }
             for (int i = 1; i <= 18; i++)
             {

@@ -47,7 +47,7 @@ namespace RTDDataProvider
             xmlLDB.LoadXml(xmlLDBString);
             foreach (XmlNode xmlNode in xmlLDB.GetElementsByTagName("string"))
             {
-                if (xmlNode.Attributes["name"] != null)
+                if (xmlNode.Attributes["name"] != null && xmlNode.Attributes["name"].Value.StartsWith("LDBS"))
                 {
                     string jsonLDB = xmlNode.InnerText;
                     DataTable dtTemp = JSON.ParseJSONLDB(jsonLDB);
@@ -57,6 +57,23 @@ namespace RTDDataProvider
                 }
             }
             return dt;
+        }
+        public static DataSet ParseXmlGAME(string xmlGAMEString)
+        {
+            XmlDocument xmlGAME = new XmlDocument();
+            DataSet ds = new DataSet("MDB");
+
+            xmlGAME.LoadXml(xmlGAMEString);
+            foreach (XmlNode xmlNode in xmlGAME.GetElementsByTagName("string"))
+            {
+                if (xmlNode.Attributes["name"] != null && xmlNode.Attributes["name"].Value.StartsWith("LDBS"))
+                {
+                    string jsonGAME = xmlNode.InnerText;
+                    ds.Tables.Add(JSON.ParseJSONGAME(jsonGAME, MASTERDB.ENEMY_TABLE_MASTER));
+                    ds.Tables.Add(JSON.ParseJSONGAME(jsonGAME, MASTERDB.UNIT_TALK_MASTER));
+                }
+            }
+            return ds;
         }
 
         [ObsoleteAttribute("This function is obsolete in 2.4.0.0, please use ParsePlistFileMDB instead.")]

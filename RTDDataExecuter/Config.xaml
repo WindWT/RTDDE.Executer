@@ -16,7 +16,8 @@
                     <StackPanel>
                         <Button Name="ImportMDBSButton" Click="ImportMDBSButton_Click">MDBS</Button>
                         <Button Name="ImportLDBSButton" Click="ImportLDBSButton_Click">LDBS</Button>
-                        <Button Grid.Row="3" Grid.Column="0" Name="ImportAndroidDirectoryButton" Click="ImportAndroidDirectoryButton_Click">Android Directory</Button>
+                        <Button Name="ImportAndroidDirectoryButton" Click="ImportAndroidDirectoryButton_Click">Android Directory</Button>
+                        <Button Name="ImportGAMEButton" Click="ImportGAMEButton_Click">GAME</Button>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Grid.Column="1" Header="iOS">

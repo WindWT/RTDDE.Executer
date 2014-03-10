@@ -26,185 +26,189 @@ namespace RTDDataProvider
     public enum PassiveSkillType
     {
         MAX_LIFE_GRADEUP = 1,
-        ATTACK_GRADEUP,
-        RECOVER_GRADEUP,
-        INITIAL_SOUL_GRADEUP,
-        DAMAGE_GRADEDOWN,
-        SOUL_GRADEUP,
-        ACTIVESKILL_GRADEUP,
-        TURNSPEED_GRADEUP,
-        DRAGON_KILLER,
-        DEATH_KILLER,
-        LUCK_GRADEUP,
-        RECOVER_PANELL_GRADEUP,
-        SUPERCRITICAL_GRADEUP,
-        SUPER_DEFFENCE,
-        SUPER_ATTACK,
-        CHAIN_GRADEUP,
-        ATTRIBUTE_PANEL_GRADEUP,
-        ATTRIBUTE_KILLER,
-        MOVE_LIFE_RECOVER,
-        GET_TREASURE_SOUL,
-        LIFE_ATTRIBUTE_UP,
-        LIFE_ATTRIBITE_DRAIN,
-        COUNTER,
-        DOUBLE_ATTACK,
-        SOUL_STEP,
-        DRACOTTER,
-        GRAVITY_ATTACK,
-        SKILL_ZERO,
-        SOUL_HUNT,
-        HEALING_AND_ASSULT,
-        ASSULT_AND_LIFE,
-        LIFE_AND_HEALING,
-        DOUBLE_KILLER,
-        MASTER_OF_PANEL,
-        QUICK_BLAST,
-        ARCANE_CROW,
-        SERIAL_KILLER,
-        LIFE_GUARD,
-        GUARDIAN_HEAL,
-        LIFE_DOUBLE_COUNTER,
-        SOUL_DOUBLE_COUNTER,
-        ATTRIBUTE_SOUL_DRAIN,
-        MIND_RECOVER_UP,
-        MIND_ASSULT_UP,
-        MIND_LIFE_UP,
-        MIND_SOUL_UP,
-        SkillAbsorb,
-        GodReflect,
-        Dragon_Slayer,
-        CHASE_SOUL_GET,
-        LIFE_SOULFREE,
-        MINIMUM_POWER,
-        MIN_SOUL_POWER,
-        COLOR_ASSULT,
-        LEADER_COPY,
-        PANEL_HEALER,
-        LINK_PANEL_DELAY,
-        WEAK_ATTACK_DELAY,
-        DELAY_CHASE_ATTACK,
-        DELAY_HEAL_LIFE,
-        ATTRIBUTEUP_SOUL_GET,
-        TRIPLE_SUPPORT,
-        CHASE_SUPPORT,
-        LINK_PANEL_HEAL,
-        MOB_KILLER,
-        SERIAL_LIFE_UP,
-        DIFFER_CLASS_ATTACK,
-        ELEMENT_POWER,
-        AKIBA_RECOVER,
-        AKIBA_ASSULT,
-        AKIBA_LIFEUP,
-        AKIBA_SOULUP,
-        FUSION_BLAST,
-        CLASS_SUPPORT,
-        GET_TREASURE_ENHANCE,
-        DROP_MONEYUP,
-        TURN_ENHANCE,
-        DAMAGE_ENHANCE,
-        DAMAGE_DRAIN,
-        SERIAL_HEAL_UP,
-        ATTACK_ENHANCE,
-        MOVE_ENHANCE,
-        ATTRIBUTE_DRAIN_AND_KILLER,
-        UNIT_ENEMY_KILLER,
-        SP_PANEL_UP,
-        BUFFER
+        ATTACK_GRADEUP = 2,
+        RECOVER_GRADEUP = 3,
+        INITIAL_SOUL_GRADEUP = 4,
+        DAMAGE_GRADEDOWN = 5,
+        SOUL_GRADEUP = 6,
+        ACTIVESKILL_GRADEUP = 7,
+        TURNSPEED_GRADEUP = 8,
+        DRAGON_KILLER = 9,
+        DEATH_KILLER = 10,
+        LUCK_GRADEUP = 11,
+        RECOVER_PANELL_GRADEUP = 12,
+        SUPERCRITICAL_GRADEUP = 13,
+        SUPER_DEFFENCE = 14,
+        SUPER_ATTACK = 15,
+        CHAIN_GRADEUP = 16,
+        ATTRIBUTE_PANEL_GRADEUP = 17,
+        ATTRIBUTE_KILLER = 18,
+        MOVE_LIFE_RECOVER = 19,
+        GET_TREASURE_SOUL = 20,
+        LIFE_ATTRIBUTE_UP = 21,
+        LIFE_ATTRIBITE_DRAIN = 22,
+        COUNTER = 23,
+        DOUBLE_ATTACK = 24,
+        SOUL_STEP = 25,
+        DRACOTTER = 26,
+        GRAVITY_ATTACK = 27,
+        SKILL_ZERO = 28,
+        SOUL_HUNT = 29,
+        HEALING_AND_ASSULT = 30,
+        ASSULT_AND_LIFE = 31,
+        LIFE_AND_HEALING = 32,
+        DOUBLE_KILLER = 33,
+        MASTER_OF_PANEL = 34,
+        QUICK_BLAST = 35,
+        ARCANE_CROW = 36,
+        SERIAL_KILLER = 37,
+        LIFE_GUARD = 38,
+        GUARDIAN_HEAL = 39,
+        LIFE_DOUBLE_COUNTER = 40,
+        SOUL_DOUBLE_COUNTER = 41,
+        ATTRIBUTE_SOUL_DRAIN = 42,
+        MIND_RECOVER_UP = 43,
+        MIND_ASSULT_UP = 44,
+        MIND_LIFE_UP = 45,
+        MIND_SOUL_UP = 46,
+        SkillAbsorb = 47,
+        GodReflect = 48,
+        Dragon_Slayer = 49,
+        CHASE_SOUL_GET = 50,
+        LIFE_SOULFREE = 51,
+        MINIMUM_POWER = 52,
+        MIN_SOUL_POWER = 53,
+        COLOR_ASSULT = 54,
+        LEADER_COPY = 55,
+        PANEL_HEALER = 56,
+        LINK_PANEL_DELAY = 57,
+        WEAK_ATTACK_DELAY = 58,
+        DELAY_CHASE_ATTACK = 59,
+        DELAY_HEAL_LIFE = 60,
+        ATTRIBUTEUP_SOUL_GET = 61,
+        TRIPLE_SUPPORT = 62,
+        CHASE_SUPPORT = 63,
+        LINK_PANEL_HEAL = 64,
+        MOB_KILLER = 65,
+        SERIAL_LIFE_UP = 66,
+        DIFFER_CLASS_ATTACK = 67,
+        ELEMENT_POWER = 68,
+        AKIBA_RECOVER = 69,
+        AKIBA_ASSULT = 70,
+        AKIBA_LIFEUP = 71,
+        AKIBA_SOULUP = 72,
+        FUSION_BLAST = 73,
+        CLASS_SUPPORT = 74,
+        GET_TREASURE_ENHANCE = 75,
+        DROP_MONEYUP = 76,
+        TURN_ENHANCE = 77,
+        DAMAGE_ENHANCE = 78,
+        DAMAGE_DRAIN = 79,
+        SERIAL_HEAL_UP = 80,
+        ATTACK_ENHANCE = 81,
+        MOVE_ENHANCE = 82,
+        ATTRIBUTE_DRAIN_AND_KILLER = 83,
+        UNIT_ENEMY_KILLER = 84,
+        SP_PANEL_UP = 85,
+        PANEL_CHAIN_ENHANCE = 86,
+        SOUL_STEP_AND_SOUL_GET = 87,
+        BUFFER = 88,
     }
     public enum ActiveSkillType
     {
         HealLife1 = 1,
-        HealLife2,
-        DirectAttack1,
-        DirectAttack2,
-        PanelChange,
-        AttributePanelUp,
-        DefenceUp,
-        DefenceDown,
-        Gravity,
-        AnlimitedPanel,
-        Astral,
-        Acute,
-        Enhance,
-        Arcane,
-        Delirium,
-        AttributeAttack,
-        Destruct,
-        Escape,
-        SuperDefenceUp,
-        AttributeStock,
-        DeliriumHeven,
-        MultiAttack,
-        SoulFree,
-        EnemyScan,
-        TimeStop,
-        GravityAttack,
-        PanelCopy,
-        PerfectDefence,
-        Curse,
-        StrongStyle,
-        MindOfZero,
-        HealCanon,
-        DragonInjection,
-        Resurrection,
-        GodBurst,
-        ColorEnhance,
-        InfiniteAttack,
-        AllPanelAttack,
-        DelayDamageAttack,
-        HeartPanelAttack,
-        PanelCall,
-        DragonBind,
-        Change_AttackHeal,
-        HealEnhance,
-        HealAndAttackUp,
-        HealAndDefenceUp,
-        AstralHeal,
-        FinishBurst,
-        TreasureHunt,
-        AttributeChange,
-        DelayDamageGravity,
-        FullHealAndGetSoul,
-        MultiBurst,
-        ExpansionDestruct,
-        JumpAttack,
-        MoneyAttack,
-        LimitEnhance,
-        DamageAttack,
-        CounterAttackUp,
-        ExPanelAttack,
-        AttrAtkAndAtkUp,
-        DefenceUpAndEnhance,
-        DragonEnhance,
-        SoulOfZero,
-        AttackCanon
+        HealLife2 = 2,
+        DirectAttack1 = 3,
+        DirectAttack2 = 4,
+        PanelChange = 5,
+        AttributePanelUp = 6,
+        DefenceUp = 7,
+        DefenceDown = 8,
+        Gravity = 9,
+        AnlimitedPanel = 10,
+        Astral = 11,
+        Acute = 12,
+        Enhance = 13,
+        Arcane = 14,
+        Delirium = 15,
+        AttributeAttack = 16,
+        Destruct = 17,
+        Escape = 18,
+        SuperDefenceUp = 19,
+        AttributeStock = 20,
+        DeliriumHeven = 21,
+        MultiAttack = 22,
+        SoulFree = 23,
+        EnemyScan = 24,
+        TimeStop = 25,
+        GravityAttack = 26,
+        PanelCopy = 27,
+        PerfectDefence = 28,
+        Curse = 29,
+        StrongStyle = 30,
+        MindOfZero = 31,
+        HealCanon = 32,
+        DragonInjection = 33,
+        Resurrection = 34,
+        GodBurst = 35,
+        ColorEnhance = 36,
+        InfiniteAttack = 37,
+        AllPanelAttack = 38,
+        DelayDamageAttack = 39,
+        ClassPanelAttack = 40,
+        PanelCall = 41,
+        DragonBind = 42,
+        Change_AttackHeal = 43,
+        HealEnhance = 44,
+        HealAndAttackUp = 45,
+        HealAndDefenceUp = 46,
+        AstralHeal = 47,
+        FinishBurst = 48,
+        TreasureHunt = 49,
+        AttributeChange = 50,
+        DelayDamageGravity = 51,
+        FullHealAndGetSoul = 52,
+        MultiBurst = 53,
+        ExpansionDestruct = 54,
+        JumpAttack = 55,
+        MoneyAttack = 56,
+        LimitEnhance = 57,
+        DamageAttack = 58,
+        CounterAttackUp = 59,
+        ExPanelAttack = 60,
+        AttrAtkAndAtkUp = 61,
+        DefenceUpAndEnhance = 62,
+        DragonEnhance = 63,
+        SoulOfZero = 64,
+        AttackCanon = 65,
+        EnemyScanDefDown = 66,
     }
     public enum PanelSkillType
     {
         LIFERECOVER_CALC = 1,
-        LIFERECOVER_FIX,
-        SOULGET,
-        CHASE_ATTACK,
-        ENEMY_DEFENCE_DOWN,
-        ENEMY_DAMAGE,
-        LIFE_AND_SOUL,
-        ATTACK_UP,
-        GRAVITY,
-        SHUFFLE,
-        ATTRIBUTE_ADD,
-        SOULGET_2,
-        CURSE,
-        ARCANE,
-        LIMIT_ENHANCE,
-        LIMIT_SUPERATTACK,
-        MOVESOUL_OR_BATTLELIFE,
-        BATTLE_EVASION,
-        LIMIT_LIFERECOVER_FIX,
-        LIFE_UP_LIMIT,
-        RANDOM_EFFECT,
-        ENEMY_DAMAGE_AND_DEFENCE_DOWN,
-        HEAL_CANON
+        LIFERECOVER_FIX = 2,
+        SOULGET = 3,
+        CHASE_ATTACK = 4,
+        ENEMY_DEFENCE_DOWN = 5,
+        ENEMY_DAMAGE = 6,
+        LIFE_AND_SOUL = 7,
+        ATTACK_UP = 8,
+        GRAVITY = 9,
+        SHUFFLE = 10,
+        ATTRIBUTE_ADD = 11,
+        SOULGET_2 = 12,
+        CURSE = 13,
+        ARCANE = 14,
+        LIMIT_ENHANCE = 15,
+        LIMIT_SUPERATTACK = 16,
+        MOVESOUL_OR_BATTLELIFE = 17,
+        BATTLE_EVASION = 18,
+        LIMIT_LIFERECOVER_FIX = 19,
+        LIFE_UP_LIMIT = 20,
+        RANDOM_EFFECT = 21,
+        ENEMY_DAMAGE_AND_DEFENCE_DOWN = 22,
+        HEAL_CANON = 23,
+        DEFENCE_PREPARATIONS = 24,
     }
     public enum SkillPhase
     {
@@ -294,50 +298,50 @@ namespace RTDDataProvider
         MS03_BD_RUSA,
         MS03_SR_TIAMAT,
         MS01_ORG_GUN,
-        MAX
+        MAX,
     }
     public enum ENEMY_TYPE
     {
         SLIME = 1,
-        SQUIRREL,
-        WOLF,
-        DRAGON_EGG,
-        BEAR,
-        SCORPION,
-        DRAGON1,
-        BOAR,
-        DRAGON2,
-        DRAGON3,
-        DRAGON4,
-        DRAGON5,
-        DEATH,
-        SILVER_SLIME,
-        GOLD_SLIME,
-        TREASURE,
+        SQUIRREL = 2,
+        WOLF = 3,
+        DRAGON_EGG = 4,
+        BEAR = 5,
+        SCORPION = 6,
+        DRAGON1 = 7,
+        BOAR = 8,
+        DRAGON2 = 9,
+        DRAGON3 = 10,
+        DRAGON4 = 11,
+        DRAGON5 = 12,
+        DEATH = 13,
+        SILVER_SLIME = 14,
+        GOLD_SLIME = 15,
+        TREASURE = 16,
         STAIRS = 20,
-        MOVING_PANEL,
-        UNIT_ENEMY_GHOST,
-        TEMP_0,
-        UNIT_ENEMY_HUMAN,
-        FISH,
-        SHARK,
-        OCTOPUS,
-        DRAGON_HIGH_NECK,
-        WALL,
-        UNIT_ENEMY_POKKULU,
-        UNIT_ENEMY_ORG,
-        FLIGHT,
-        UNIT_ENEMY_ONLY_ORG,
-        HUGE_DRAGON_HEAD,
-        HUGE_DRAGON_TAIL,
-        HUGE_DRAGON_WING,
-        CHARACTER_WING,
-        SLIME_WING,
-        ELEMENT,
-        GIANT,
-        JELLY,
-        GIANT_LOBO,
-        ORG_GUN
+        MOVING_PANEL = 21,
+        UNIT_ENEMY_GHOST = 22,
+        TEMP_0 = 23,
+        UNIT_ENEMY_HUMAN = 24,
+        FISH = 25,
+        SHARK = 26,
+        OCTOPUS = 27,
+        DRAGON_HIGH_NECK = 28,
+        WALL = 29,
+        UNIT_ENEMY_POKKULU = 30,
+        UNIT_ENEMY_ORG = 31,
+        FLIGHT = 32,
+        UNIT_ENEMY_ONLY_ORG = 33,
+        HUGE_DRAGON_HEAD = 34,
+        HUGE_DRAGON_TAIL = 35,
+        HUGE_DRAGON_WING = 36,
+        CHARACTER_WING = 37,
+        SLIME_WING = 38,
+        ELEMENT = 39,
+        GIANT = 40,
+        JELLY = 41,
+        GIANT_LOBO = 42,
+        ORG_GUN = 43,
     }
     public enum AttackPattern
     {
@@ -348,7 +352,9 @@ namespace RTDDataProvider
         POWUP_BY_LIFE,
         FIRST_DEADLY,
         FIRST_CURSE,
-        MAX
+        GUARD_COMBO,
+        PATTERN8,
+        MAX,
     }
     public enum Message_Name
     {
@@ -438,7 +444,8 @@ namespace RTDDataProvider
         EnemyLogic_PowupByLife,
         EnemyLogic_Deadly,
         EnemyLogic_Curse,
-        ALL
+        EnemyLogic_GuardCombo,
+        ALL,
     }
     public class UtilityBase
     {
@@ -667,85 +674,82 @@ namespace RTDDataProvider
         }
         private static AssignID ParseRealUnitKind(int kind)
         {
+            switch (kind)
             {
-                switch (kind)
-                {
-                    case 1:
-                        return AssignID.SWORD;
-                    case 2:
-                        return AssignID.GREATSWORD;
-                    case 3:
-                        return AssignID.TWO_SWORD;
-                    case 4:
-                        return AssignID.CHAOS_SWD;
-                    case 5:
-                        return AssignID.RAPIA;
-                    case 6:
-                        return AssignID.ORG_SWORD;
-                    case 7:
-                        return AssignID.GRT_FEMALE;
-                    case 8:
-                        return AssignID.POK_SWORD;
-                    case 9:
-                        return AssignID.WIN_SWORD;
-                    case 101:
-                        return AssignID.LANCE;
-                    case 102:
-                        return AssignID.PILEBANKER;
-                    case 103:
-                        return AssignID.TWIN_LANCE;
-                    case 104:
-                        return AssignID.CHAOS_BAN;
-                    case 105:
-                        return AssignID.KUNGFU;
-                    case 106:
-                        return AssignID.POK_LANCE;
-                    case 107:
-                        return AssignID.LACNE_FEMALE;
-                    case 108:
-                        return AssignID.ORG_LAN;
-                    case 109:
-                        return AssignID.WIN_LANCE;
-                    case 201:
-                        return AssignID.BOW;
-                    case 202:
-                        return AssignID.GUN;
-                    case 203:
-                        return AssignID.CANNON;
-                    case 204:
-                        return AssignID.CHAOS_GUN;
-                    case 205:
-                        return AssignID.BOW_MALE;
-                    case 206:
-                        return AssignID.ORG_GUN;
-                    case 207:
-                        return AssignID.POK_CAN;
-                    case 208:
-                        return AssignID.WIN_BOW;
-                    case 209:
-                        return AssignID.GOD_BOW;
-                    case 301:
-                        return AssignID.STICK;
-                    case 302:
-                        return AssignID.ARTIFACT;
-                    case 303:
-                        return AssignID.STICK_FEMALE;
-                    case 304:
-                        return AssignID.CHAOS_ART;
-                    case 305:
-                        return AssignID.POK_STICK;
-                    case 306:
-                        return AssignID.ART_FEMALE;
-                    case 307:
-                        return AssignID.WIN_STICK;
-                    case 308:
-                        return AssignID.ORG_STICK;
-                    case 309:
-                        return AssignID.POK_ART;
-                    default:
-                        return AssignID.SWORD;
-                }
-
+                case 1:
+                    return AssignID.SWORD;
+                case 2:
+                    return AssignID.GREATSWORD;
+                case 3:
+                    return AssignID.TWO_SWORD;
+                case 4:
+                    return AssignID.CHAOS_SWD;
+                case 5:
+                    return AssignID.RAPIA;
+                case 6:
+                    return AssignID.ORG_SWORD;
+                case 7:
+                    return AssignID.GRT_FEMALE;
+                case 8:
+                    return AssignID.POK_SWORD;
+                case 9:
+                    return AssignID.WIN_SWORD;
+                case 101:
+                    return AssignID.LANCE;
+                case 102:
+                    return AssignID.PILEBANKER;
+                case 103:
+                    return AssignID.TWIN_LANCE;
+                case 104:
+                    return AssignID.CHAOS_BAN;
+                case 105:
+                    return AssignID.KUNGFU;
+                case 106:
+                    return AssignID.POK_LANCE;
+                case 107:
+                    return AssignID.LACNE_FEMALE;
+                case 108:
+                    return AssignID.ORG_LAN;
+                case 109:
+                    return AssignID.WIN_LANCE;
+                case 201:
+                    return AssignID.BOW;
+                case 202:
+                    return AssignID.GUN;
+                case 203:
+                    return AssignID.CANNON;
+                case 204:
+                    return AssignID.CHAOS_GUN;
+                case 205:
+                    return AssignID.BOW_MALE;
+                case 206:
+                    return AssignID.ORG_GUN;
+                case 207:
+                    return AssignID.POK_CAN;
+                case 208:
+                    return AssignID.WIN_BOW;
+                case 209:
+                    return AssignID.GOD_BOW;
+                case 301:
+                    return AssignID.STICK;
+                case 302:
+                    return AssignID.ARTIFACT;
+                case 303:
+                    return AssignID.STICK_FEMALE;
+                case 304:
+                    return AssignID.CHAOS_ART;
+                case 305:
+                    return AssignID.POK_STICK;
+                case 306:
+                    return AssignID.ART_FEMALE;
+                case 307:
+                    return AssignID.WIN_STICK;
+                case 308:
+                    return AssignID.ORG_STICK;
+                case 309:
+                    return AssignID.POK_ART;
+                default:
+                    return AssignID.SWORD;
             }
         }
         public static int ParseAssignID(AssignID category)

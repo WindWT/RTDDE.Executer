@@ -180,6 +180,36 @@ namespace RTDDataProvider
             dt.PrimaryKey = new DataColumn[] { dt.Columns["level_data_id"] };
             return dt;
         }
+        public static DataTable ParseJSONGAME(string json, MASTERDB MDBType)
+        {
+            JObject jo = JObject.Parse(json);
+            DataTable dt = new DataTable();
+            switch (MDBType)
+            {
+                case MASTERDB.ENEMY_TABLE_MASTER:
+                    {
+                        JToken jt = jo["enemy_table_master"];
+                        string jtjson = JsonConvert.SerializeObject(jt);
+                        EnemyTableMaster[] o = new EnemyTableMaster[1];
+                        o[0] = JsonConvert.DeserializeObject<EnemyTableMaster>(jtjson);
+                        dt = ConvertToDataTable(o);
+                        break;
+                    }
+                case MASTERDB.UNIT_TALK_MASTER:
+                    {
+                        JToken jt = jo["unit_talk_master"];
+                        string jtjson = JsonConvert.SerializeObject(jt);
+                        UnitTalkMaster[] o = new UnitTalkMaster[1];
+                        o[0] = JsonConvert.DeserializeObject<UnitTalkMaster>(jtjson);
+                        dt = ConvertToDataTable(o);
+                        break;
+                    }
+                default: break;
+            }
+            dt.TableName = MDBType.ToString();
+            dt.PrimaryKey = new DataColumn[] { dt.Columns["id"] };
+            return dt;
+        }
         public static List<EnemyInfo> ParseEnemyInfo(string questId, string quest, string enemyInfo)
         {
             List<EnemyInfo> ei = new List<EnemyInfo>();
@@ -201,11 +231,33 @@ namespace RTDDataProvider
         private static DataTable ConvertToDataTable(Object[] array)
         {
             FieldInfo[] fields = array.GetType().GetElementType().GetFields();
-            DataTable dt = CreateDataTable(fields);
+            PropertyInfo[] properties = array.GetType().GetElementType().GetProperties();
+
+            bool isProperty = (properties.Length > 0);
+
+            DataTable dt = null;
+            if (isProperty)
+            {
+                dt = CreateDataTable(properties);
+            }
+            else
+            {
+                dt = CreateDataTable(fields);
+            }
+
             if (array.Length != 0)
             {
                 foreach (object o in array)
-                    FillData(fields, dt, o);
+                {
+                    if (isProperty)
+                    {
+                        FillData(properties, dt, o);
+                    }
+                    else
+                    {
+                        FillData(fields, dt, o);
+                    }
+                }
             }
             return dt;
         }
@@ -224,12 +276,36 @@ namespace RTDDataProvider
             return dt;
         }
 
+        private static DataTable CreateDataTable(PropertyInfo[] properties)
+        {
+            DataTable dt = new DataTable();
+            DataColumn dc = null;
+            foreach (PropertyInfo pi in properties)
+            {
+                dc = new DataColumn();
+                dc.ColumnName = pi.Name;
+                dc.DataType = pi.PropertyType;
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
         private static void FillData(FieldInfo[] fields, DataTable dt, Object o)
         {
             DataRow dr = dt.NewRow();
             foreach (FieldInfo fi in fields)
             {
                 dr[fi.Name] = fi.GetValue(o);
+            }
+            dt.Rows.Add(dr);
+        }
+
+        private static void FillData(PropertyInfo[] properties, DataTable dt, Object o)
+        {
+            DataRow dr = dt.NewRow();
+            foreach (PropertyInfo pi in properties)
+            {
+                dr[pi.Name] = pi.GetValue(o, null);
             }
             dt.Rows.Add(dr);
         }

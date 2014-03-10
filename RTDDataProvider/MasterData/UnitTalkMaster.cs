@@ -10,6 +10,10 @@ namespace RTDDataProvider.MasterData
     {
         public int id;
         public string icon;
+        public string i0;
+        public string i1;
+        public string i2;
+        public string i3;
         public string message_00;
         public string message_01;
         public string message_02;
