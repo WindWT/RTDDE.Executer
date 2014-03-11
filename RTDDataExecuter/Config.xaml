@@ -17,13 +17,14 @@
                         <Button Name="ImportMDBSButton" Click="ImportMDBSButton_Click">MDBS</Button>
                         <Button Name="ImportLDBSButton" Click="ImportLDBSButton_Click">LDBS</Button>
                         <Button Name="ImportAndroidDirectoryButton" Click="ImportAndroidDirectoryButton_Click">Android Directory</Button>
-                        <Button Name="ImportGAMEButton" Click="ImportGAMEButton_Click">GAME</Button>
+                        <Button Name="ImportAndroidGAMEButton" Click="ImportAndroidGAMEButton_Click">Android GAME</Button>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Grid.Column="1" Header="iOS">
                     <StackPanel>
                         <Button Grid.Row="1" Grid.Column="1" Name="ImportplistButton" Click="ImportplistButton_Click">plist</Button>
                         <Button Grid.Row="2" Grid.Column="1" Name="ImportiOSDirectoryButton" Click="ImportiOSDirectoryButton_Click">iOS Directory</Button>
+                        <Button Name="ImportiOSGAMEButton" Click="ImportiOSGAMEButton_Click">iOS GAME</Button>
                     </StackPanel>
                 </GroupBox>
             </Grid>

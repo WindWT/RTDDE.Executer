@@ -33,9 +33,11 @@ namespace RTDDataExecuter
             ImportLDBSButton.Content = new Run("Import LDBS(NOT available for 2.5.0.0 or higher)");
             ImportplistButton.Content = new Run("Import plist(NOT available for 2.4.0.0 or higher)");
             ImportAndroidDirectoryButton.Content = new Run("Import Android MDBS Directory");
-            ImportiOSDirectoryButton.Content = new Run("Import iOS Directory");
-            ImportGAMEButton.Content = new Run("Import GAME(MAP Data)");
+            ImportiOSDirectoryButton.Content = new Run("Import iOS MDBS Directory");
+            ImportAndroidGAMEButton.Content = new Run("Import GAME(MAP Data)");
+            ImportiOSGAMEButton.Content = new Run("Import GAME(MAP Data)");
         }
+        #region Android
         private void ImportMDBSButton_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
@@ -103,79 +105,6 @@ namespace RTDDataExecuter
                 task.Start();
             }
         }
-        private void ImportGAMEButton_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            ofd.DefaultExt = ".xml";
-            ofd.Filter = "GAME File|GAME.xml";
-            if (ofd.ShowDialog() == true)
-            {
-                ImportGAMEButton.Content = new Run("Importing MAP Data...");
-                Task task = new Task(() =>
-                {
-                    using (StreamReader sr = new StreamReader(ofd.FileName))
-                    {
-                        string xml = sr.ReadToEnd();
-                        DataTable dt = FileParser.ParseXmlLDB(xml);
-                        DB db = new DB();
-                        db.ImportDataTable(dt, "level_data_id", false);
-                        db.ImportDataSet(FileParser.ParseXmlGAME(xml), false);
-                    }
-                });
-                task.ContinueWith(t =>
-                {
-                    if (t.Exception != null)
-                    {
-                        Utility.ShowException(t.Exception.InnerException.Message);
-                        ImportGAMEButton.Content = new Run("MAP Data Import Failed.");
-                    }
-                    else
-                    {
-                        ImportGAMEButton.Content = new Run("MAP Data Successfully Imported.");
-                        RefreshControl();
-                    }
-                }, MainWindow.uiTaskScheduler);
-                task.Start();
-            }
-        }
-        private void ImportplistButton_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            ofd.DefaultExt = ".plist";
-            ofd.Filter = "plist File|*.plist";
-            if (ofd.ShowDialog() == true)
-            {
-                ImportplistButton.Content = new Run("Importing plist...");
-                Task task = new Task(() =>
-                {
-                    using (StreamReader sr = new StreamReader(ofd.FileName))
-                    {
-                        DataSet ds = FileParser.ParsePlistMDB(sr.BaseStream);
-                        DB db = new DB();
-                        db.ImportDataSet(ds, true);
-
-                        sr.BaseStream.Position = 0;
-
-                        DataTable dt = FileParser.ParsePlistLDB(sr.BaseStream);
-                        db.ImportDataTable(dt, "level_data_id", false);
-                    }
-                });
-                task.ContinueWith(t =>
-                {
-                    if (t.Exception != null)
-                    {
-                        Utility.ShowException(t.Exception.InnerException.Message);
-                        ImportplistButton.Content = new Run("plist Import Failed.");
-                    }
-                    else
-                    {
-                        ImportplistButton.Content = new Run("plist Successfully Imported.");
-                        RefreshControl();
-                    }
-                }, MainWindow.uiTaskScheduler);
-                task.Start();
-            }
-        }
         private void ImportAndroidDirectoryButton_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
@@ -217,6 +146,82 @@ namespace RTDDataExecuter
                     else
                     {
                         ImportAndroidDirectoryButton.Content = new Run("MDBS Successfully Imported.");
+                        RefreshControl();
+                    }
+                }, MainWindow.uiTaskScheduler);
+                task.Start();
+            }
+        }
+        private void ImportAndroidGAMEButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.DefaultExt = ".xml";
+            ofd.Filter = "GAME File|GAME.xml";
+            if (ofd.ShowDialog() == true)
+            {
+                ImportAndroidGAMEButton.Content = new Run("Importing MAP Data...");
+                Task task = new Task(() =>
+                {
+                    using (StreamReader sr = new StreamReader(ofd.FileName))
+                    {
+                        string xml = sr.ReadToEnd();
+                        DataTable dt = FileParser.ParseXmlLDB(xml);
+                        DB db = new DB();
+                        db.ImportDataTable(dt, "level_data_id", false);
+                        db.ImportDataSet(FileParser.ParseXmlGAME(xml), false);
+                    }
+                });
+                task.ContinueWith(t =>
+                {
+                    if (t.Exception != null)
+                    {
+                        Utility.ShowException(t.Exception.InnerException.Message);
+                        ImportAndroidGAMEButton.Content = new Run("MAP Data Import Failed.");
+                    }
+                    else
+                    {
+                        ImportAndroidGAMEButton.Content = new Run("MAP Data Successfully Imported.");
+                        RefreshControl();
+                    }
+                }, MainWindow.uiTaskScheduler);
+                task.Start();
+            }
+        }
+        #endregion
+
+        #region iOS
+        private void ImportplistButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.DefaultExt = ".plist";
+            ofd.Filter = "plist File|*.plist";
+            if (ofd.ShowDialog() == true)
+            {
+                ImportplistButton.Content = new Run("Importing plist...");
+                Task task = new Task(() =>
+                {
+                    using (StreamReader sr = new StreamReader(ofd.FileName))
+                    {
+                        DataSet ds = FileParser.ParsePlistMDB(sr.BaseStream);
+                        DB db = new DB();
+                        db.ImportDataSet(ds, true);
+
+                        sr.BaseStream.Position = 0;
+
+                        DataTable dt = FileParser.ParsePlistLDB(sr.BaseStream);
+                        db.ImportDataTable(dt, "level_data_id", false);
+                    }
+                });
+                task.ContinueWith(t =>
+                {
+                    if (t.Exception != null)
+                    {
+                        Utility.ShowException(t.Exception.InnerException.Message);
+                        ImportplistButton.Content = new Run("plist Import Failed.");
+                    }
+                    else
+                    {
+                        ImportplistButton.Content = new Run("plist Successfully Imported.");
                         RefreshControl();
                     }
                 }, MainWindow.uiTaskScheduler);
@@ -278,6 +283,44 @@ namespace RTDDataExecuter
                 task.Start();
             }
         }
+        private void ImportiOSGAMEButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.Filter = "GAME File|GAME";
+            if (ofd.ShowDialog() == true)
+            {
+                ImportiOSGAMEButton.Content = new Run("Importing MAP Data...");
+                Task task = new Task(() =>
+                {
+                    DB db = new DB();
+                    using (StreamReader sr = new StreamReader(ofd.FileName))
+                    {
+                        DataTable dt = FileParser.ParsePlistFileLDB(sr.BaseStream);
+                        db.ImportDataTable(dt, "level_data_id", false);
+                    }
+                    using (StreamReader sr = new StreamReader(ofd.FileName))
+                    {
+                        db.ImportDataSet(FileParser.ParsePlistFileGAME(sr.BaseStream), false);
+                    }
+                });
+                task.ContinueWith(t =>
+                {
+                    if (t.Exception != null)
+                    {
+                        Utility.ShowException(t.Exception.InnerException.Message);
+                        ImportiOSGAMEButton.Content = new Run("MAP Data Import Failed.");
+                    }
+                    else
+                    {
+                        ImportiOSGAMEButton.Content = new Run("MAP Data Successfully Imported.");
+                        RefreshControl();
+                    }
+                }, MainWindow.uiTaskScheduler);
+                task.Start();
+            }
+        }
+        #endregion
+
         private void RefreshControl()
         {
             var w = (MainWindow)Application.Current.MainWindow;
