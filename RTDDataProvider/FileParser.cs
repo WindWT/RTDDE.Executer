@@ -63,6 +63,23 @@ namespace RTDDataProvider
         {
             XmlDocument xmlGAME = new XmlDocument();
             DataSet ds = new DataSet("MDB");
+            DataTable dtETM = new DataTable("ENEMY_TABLE_MASTER");
+            DataTable dtUTM = new DataTable("UNIT_TALK_MASTER");
+            DataColumn dc = null;
+            foreach (FieldInfo fi in typeof(EnemyTableMaster).GetFields())
+            {
+                dc = new DataColumn();
+                dc.ColumnName = fi.Name;
+                dc.DataType = fi.FieldType;
+                dtETM.Columns.Add(dc);
+            }
+            foreach (FieldInfo fi in typeof(UnitTalkMaster).GetFields())
+            {
+                dc = new DataColumn();
+                dc.ColumnName = fi.Name;
+                dc.DataType = fi.FieldType;
+                dtUTM.Columns.Add(dc);
+            }
 
             xmlGAME.LoadXml(xmlGAMEString);
             foreach (XmlNode xmlNode in xmlGAME.GetElementsByTagName("string"))
@@ -70,10 +87,20 @@ namespace RTDDataProvider
                 if (xmlNode.Attributes["name"] != null && xmlNode.Attributes["name"].Value.StartsWith("LDBS"))
                 {
                     string json = xmlNode.InnerText;
-                    ds.Tables.Add(JSON.ParseJSONGAME(json, MASTERDB.ENEMY_TABLE_MASTER));
-                    ds.Tables.Add(JSON.ParseJSONGAME(json, MASTERDB.UNIT_TALK_MASTER));
+
+                    DataTable dtTemp = JSON.ParseJSONGAME(json, MASTERDB.ENEMY_TABLE_MASTER);
+                    object[] obj = new object[dtTemp.Columns.Count];
+                    dtTemp.Rows[0].ItemArray.CopyTo(obj, 0);
+                    dtETM.Rows.Add(obj);
+
+                    dtTemp = JSON.ParseJSONGAME(json, MASTERDB.UNIT_TALK_MASTER);
+                    obj = new object[dtTemp.Columns.Count];
+                    dtTemp.Rows[0].ItemArray.CopyTo(obj, 0);
+                    dtUTM.Rows.Add(obj);
                 }
             }
+            ds.Tables.Add(dtETM);
+            ds.Tables.Add(dtUTM);
             return ds;
         }
         public static List<EnemyInfo> ParseEnemyInfo(string questId, string xmlQuestString, string xmlEnemyInfoString)
@@ -207,6 +234,23 @@ namespace RTDDataProvider
         public static DataSet ParsePlistFileGAME(Stream plistFileStream)
         {
             DataSet ds = new DataSet("MDB");
+            DataTable dtETM = new DataTable("ENEMY_TABLE_MASTER");
+            DataTable dtUTM = new DataTable("UNIT_TALK_MASTER");
+            DataColumn dc = null;
+            foreach (FieldInfo fi in typeof(EnemyTableMaster).GetFields())
+            {
+                dc = new DataColumn();
+                dc.ColumnName = fi.Name;
+                dc.DataType = fi.FieldType;
+                dtETM.Columns.Add(dc);
+            }
+            foreach (FieldInfo fi in typeof(UnitTalkMaster).GetFields())
+            {
+                dc = new DataColumn();
+                dc.ColumnName = fi.Name;
+                dc.DataType = fi.FieldType;
+                dtUTM.Columns.Add(dc);
+            }
 
             var reader = new System.Runtime.Serialization.Plists.BinaryPlistReader();
             var dict = reader.ReadObject(plistFileStream);
@@ -223,10 +267,20 @@ namespace RTDDataProvider
                 if ((dict["$objects"] as Object[])[o.Key].ToString().StartsWith("LDBS"))
                 {
                     string json = (dict["$objects"] as Object[])[o.Value].ToString();
-                    ds.Tables.Add(JSON.ParseJSONGAME(json, MASTERDB.ENEMY_TABLE_MASTER));
-                    ds.Tables.Add(JSON.ParseJSONGAME(json, MASTERDB.UNIT_TALK_MASTER));
+
+                    DataTable dtTemp = JSON.ParseJSONGAME(json, MASTERDB.ENEMY_TABLE_MASTER);
+                    object[] obj = new object[dtTemp.Columns.Count];
+                    dtTemp.Rows[0].ItemArray.CopyTo(obj, 0);
+                    dtETM.Rows.Add(obj);
+
+                    dtTemp = JSON.ParseJSONGAME(json, MASTERDB.UNIT_TALK_MASTER);
+                    obj = new object[dtTemp.Columns.Count];
+                    dtTemp.Rows[0].ItemArray.CopyTo(obj, 0);
+                    dtUTM.Rows.Add(obj);
                 }
             }
+            ds.Tables.Add(dtETM);
+            ds.Tables.Add(dtUTM);
             return ds;
         }
         public static List<EnemyInfo> ParseEnemyInfo(string questId, Stream plistFileStream)

@@ -88,7 +88,7 @@
                 <WrapPanel Name="UnitInfo_Panel_General">
                     <Separator Width="300"/>
                     <TextBlock Text="lv" Width="50"/>
-                    <TextBox Name="UnitInfo_lv" Width="100" TextChanged="UnitInfo_lv_TextChanged"></TextBox>
+                    <TextBox Name="UnitInfo_lv" Width="100" LostFocus="UnitInfo_lv_LostFocus"></TextBox>
                     <TextBlock Text="lv_max" Width="50"/>
                     <TextBox Name="UnitInfo_lv_max" Width="100" IsReadOnly="True"></TextBox>
                     <TextBlock Text="HP" Width="50"/>
