@@ -32,10 +32,11 @@ namespace RTDDataExecuter
             ImportMDBSButton.Content = new Run("Import MDBS(NOT available for 2.4.0.0 or higher)");
             ImportLDBSButton.Content = new Run("Import LDBS(NOT available for 2.5.0.0 or higher)");
             ImportplistButton.Content = new Run("Import plist(NOT available for 2.4.0.0 or higher)");
-            ImportAndroidDirectoryButton.Content = new Run("Import Android MDBS Directory");
-            ImportiOSDirectoryButton.Content = new Run("Import iOS MDBS Directory");
+            ImportAndroidDirectoryButton.Content = new Run("Import Android MDBS Directory(NOT available for 2.6.0.0 or higher)");
+            ImportiOSDirectoryButton.Content = new Run("Import iOS MDBS Directory(NOT available for 2.6.0.0 or higher)");
             ImportAndroidGAMEButton.Content = new Run("Import GAME(MAP Data)");
             ImportiOSGAMEButton.Content = new Run("Import GAME(MAP Data)");
+            ImportMsgPackButton.Content = new Run("Import MDBS MsgPack");
         }
         #region Android
         private void ImportMDBSButton_Click(object sender, RoutedEventArgs e)
@@ -313,6 +314,54 @@ namespace RTDDataExecuter
                     else
                     {
                         ImportiOSGAMEButton.Content = new Run("MAP Data Successfully Imported.");
+                        RefreshControl();
+                    }
+                }, MainWindow.uiTaskScheduler);
+                task.Start();
+            }
+        }
+        #endregion
+
+        #region General
+        private void ImportMsgPackButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.CheckFileExists = false;
+            ofd.ValidateNames = false;
+            ofd.FileName = "Ignore me";
+            ofd.Title = "Browse Folder Then Press Open";
+            if (ofd.ShowDialog() == true)
+            {
+                ImportMsgPackButton.Content = new Run("Importing MDBS MsgPack...");
+                string path = System.IO.Path.GetDirectoryName(ofd.FileName);
+                Task task = new Task(() =>
+                {
+                    DB db = new DB();
+                    foreach (string filepath in System.IO.Directory.GetFiles(path))
+                    {
+                        string filename = System.IO.Path.GetFileName(filepath);
+                        if (filename.EndsWith("_Msg.bytes") == false)
+                        {
+                            continue;
+                        }
+                        using (StreamReader sr = new StreamReader(filepath))
+                        {
+                            string enumName = filename.Replace("_Msg.bytes", string.Empty);
+                            DataTable dt = MsgBytes.ParseMDB(sr.BaseStream, (MASTERDB)Enum.Parse(typeof(MASTERDB), enumName, true));
+                            db.ImportDataTable(dt, true);
+                        }
+                    }
+                });
+                task.ContinueWith(t =>
+                {
+                    if (t.Exception != null)
+                    {
+                        Utility.ShowException(t.Exception.InnerException.Message);
+                        ImportMsgPackButton.Content = new Run("MDBS MsgPack Import Failed.");
+                    }
+                    else
+                    {
+                        ImportMsgPackButton.Content = new Run("MDBS MsgPack Successfully Imported.");
                         RefreshControl();
                     }
                 }, MainWindow.uiTaskScheduler);

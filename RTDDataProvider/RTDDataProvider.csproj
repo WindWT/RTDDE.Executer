@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MsgPack">
+      <HintPath>..\packages\MsgPack.Cli.0.4.3\lib\net40-client\MsgPack.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -51,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Convert.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="JSON.cs" />
     <Compile Include="MasterData\EnemyInfo.cs" />
@@ -78,6 +82,7 @@
     <Compile Include="MasterData\UserRankMaster.cs" />
     <Compile Include="MASTERDB.cs" />
     <Compile Include="MasterData\PanelSkillRankMaster.cs" />
+    <Compile Include="MsgPack.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="FileParser.cs" />

@@ -24,67 +24,67 @@ namespace RTDDataProvider
                 case MASTERDB.USER_RANK_MASTER:
                     {
                         UserRankMaster[] o = JsonConvert.DeserializeObject<UserRankMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.UNIT_MASTER:
                     {
                         UnitMaster[] o = JsonConvert.DeserializeObject<UnitMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.PARTY_SKILL_MASTER:
                     {
                         PartySkillMaster[] o = JsonConvert.DeserializeObject<PartySkillMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.PARTY_SKILL_RANK_MASTER:
                     {
                         PartySkillRankMaster[] o = JsonConvert.DeserializeObject<PartySkillRankMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.ACTIVE_SKILL_MASTER:
                     {
                         ActiveSkillMaster[] o = JsonConvert.DeserializeObject<ActiveSkillMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.ACTIVE_SKILL_RANK_MASTER:
                     {
                         ActiveSkillRankMaster[] o = JsonConvert.DeserializeObject<ActiveSkillRankMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.ENEMY_UNIT_MASTER:
                     {
                         EnemyUnitMaster[] o = JsonConvert.DeserializeObject<EnemyUnitMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.ENEMY_TABLE_MASTER:
                     {
                         EnemyTableMaster[] o = JsonConvert.DeserializeObject<EnemyTableMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.ENEMY_DROP_MASTER:    //not exist
                     {
                         EnemyDropMaster[] o = JsonConvert.DeserializeObject<EnemyDropMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.QUEST_MASTER:
                     {
                         QuestMaster[] o = JsonConvert.DeserializeObject<QuestMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.QUEST_CATEGORY_MASTER:
                     {
                         QuestCategoryMaster[] o = JsonConvert.DeserializeObject<QuestCategoryMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 //case MASTERDB.GACHA_ITEM_MASTER:    //not exist
@@ -92,73 +92,73 @@ namespace RTDDataProvider
                 case MASTERDB.SHOP_PRODUCT_MASTER:  //exist in iOS only
                     {
                         ShopProductMaster[] o = JsonConvert.DeserializeObject<ShopProductMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.SHOP_PRODUCT_MASTER_ANDROID:
                     {
                         ShopProductMaster[] o = JsonConvert.DeserializeObject<ShopProductMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.LOGIN_BONUS_MASTER:
                     {
                         LoginBonusMaster[] o = JsonConvert.DeserializeObject<LoginBonusMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.SEQUENCE_LOGIN_BONUS_MASTER:
                     {
                         SequenceLoginBonusMaster[] o = JsonConvert.DeserializeObject<SequenceLoginBonusMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.LEVELDATA_LIST_MASTER:  //not exist
                     {
                         LevelDataListMaster[] o = JsonConvert.DeserializeObject<LevelDataListMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.UNIT_TALK_MASTER:
                     {
                         UnitTalkMaster[] o = JsonConvert.DeserializeObject<UnitTalkMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.GLOBAL_PARAM_MASTER:
                     {
                         GlobalParamsMaster[] o = JsonConvert.DeserializeObject<GlobalParamsMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.QUEST_CHALLENGE_MASTER:
                     {
                         QuestChallengeMaster[] o = JsonConvert.DeserializeObject<QuestChallengeMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.QUEST_CHALLENGE_REWARD_MASTER:
                     {
                         QuestChallengeRewardMaster[] o = JsonConvert.DeserializeObject<QuestChallengeRewardMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.SP_EVENT_MASTER:
                     {
                         SpEventMaster[] o = JsonConvert.DeserializeObject<SpEventMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.PANEL_SKILL_MASTER:
                     {
                         PanelSkillMaster[] o = JsonConvert.DeserializeObject<PanelSkillMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.PANEL_SKILL_RANK_MASTER:
                     {
                         PanelSkillRankMaster[] o = JsonConvert.DeserializeObject<PanelSkillRankMaster[]>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 //case MASTERDB.MAX   //not exist
@@ -176,7 +176,7 @@ namespace RTDDataProvider
             LevelDataMaster ldm = JsonConvert.DeserializeObject<LevelDataMaster>(json);
             LevelDataMaster[] o = new LevelDataMaster[1];
             o[0] = ldm;
-            DataTable dt = ConvertToDataTable(o);
+            DataTable dt = ObjectConvert.ToDataTable(o);
             dt.PrimaryKey = new DataColumn[] { dt.Columns["level_data_id"] };
             return dt;
         }
@@ -192,7 +192,7 @@ namespace RTDDataProvider
                         string jtjson = JsonConvert.SerializeObject(jt);
                         EnemyTableMaster[] o = new EnemyTableMaster[1];
                         o[0] = JsonConvert.DeserializeObject<EnemyTableMaster>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 case MASTERDB.UNIT_TALK_MASTER:
@@ -201,7 +201,7 @@ namespace RTDDataProvider
                         string jtjson = JsonConvert.SerializeObject(jt);
                         UnitTalkMaster[] o = new UnitTalkMaster[1];
                         o[0] = JsonConvert.DeserializeObject<UnitTalkMaster>(jtjson);
-                        dt = ConvertToDataTable(o);
+                        dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
                 default: break;
@@ -227,89 +227,5 @@ namespace RTDDataProvider
             }
             return ei;
         }
-        #region Converting ObjectArray to Datatable
-        private static DataTable ConvertToDataTable(Object[] array)
-        {
-            FieldInfo[] fields = array.GetType().GetElementType().GetFields();
-            PropertyInfo[] properties = array.GetType().GetElementType().GetProperties();
-
-            bool isProperty = (properties.Length > 0);
-
-            DataTable dt = null;
-            if (isProperty)
-            {
-                dt = CreateDataTable(properties);
-            }
-            else
-            {
-                dt = CreateDataTable(fields);
-            }
-
-            if (array.Length != 0)
-            {
-                foreach (object o in array)
-                {
-                    if (isProperty)
-                    {
-                        FillData(properties, dt, o);
-                    }
-                    else
-                    {
-                        FillData(fields, dt, o);
-                    }
-                }
-            }
-            return dt;
-        }
-
-        private static DataTable CreateDataTable(FieldInfo[] fields)
-        {
-            DataTable dt = new DataTable();
-            DataColumn dc = null;
-            foreach (FieldInfo fi in fields)
-            {
-                dc = new DataColumn();
-                dc.ColumnName = fi.Name;
-                dc.DataType = fi.FieldType;
-                dt.Columns.Add(dc);
-            }
-            return dt;
-        }
-
-        private static DataTable CreateDataTable(PropertyInfo[] properties)
-        {
-            DataTable dt = new DataTable();
-            DataColumn dc = null;
-            foreach (PropertyInfo pi in properties)
-            {
-                dc = new DataColumn();
-                dc.ColumnName = pi.Name;
-                dc.DataType = pi.PropertyType;
-                dt.Columns.Add(dc);
-            }
-            return dt;
-        }
-
-        private static void FillData(FieldInfo[] fields, DataTable dt, Object o)
-        {
-            DataRow dr = dt.NewRow();
-            foreach (FieldInfo fi in fields)
-            {
-                dr[fi.Name] = fi.GetValue(o);
-            }
-            dt.Rows.Add(dr);
-        }
-
-        private static void FillData(PropertyInfo[] properties, DataTable dt, Object o)
-        {
-            DataRow dr = dt.NewRow();
-            foreach (PropertyInfo pi in properties)
-            {
-                dr[pi.Name] = pi.GetValue(o, null);
-            }
-            dt.Rows.Add(dr);
-        }
-
-        #endregion
     }
 }

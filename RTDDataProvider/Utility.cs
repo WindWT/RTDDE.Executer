@@ -112,7 +112,8 @@ namespace RTDDataProvider
         SP_PANEL_UP = 85,
         PANEL_CHAIN_ENHANCE = 86,
         SOUL_STEP_AND_SOUL_GET = 87,
-        BUFFER = 88,
+        REFLECTION = 88,
+        BUFFER = 89,
     }
     public enum ActiveSkillType
     {
@@ -209,6 +210,7 @@ namespace RTDDataProvider
         ENEMY_DAMAGE_AND_DEFENCE_DOWN = 22,
         HEAL_CANON = 23,
         DEFENCE_PREPARATIONS = 24,
+        LIMIT_ATTACKUP_COLOR = 25,
     }
     public enum SkillPhase
     {
@@ -298,6 +300,7 @@ namespace RTDDataProvider
         MS03_BD_RUSA,
         MS03_SR_TIAMAT,
         MS01_ORG_GUN,
+        MS03FLY_02,
         MAX,
     }
     public enum ENEMY_TYPE
@@ -353,7 +356,7 @@ namespace RTDDataProvider
         FIRST_DEADLY,
         FIRST_CURSE,
         GUARD_COMBO,
-        PATTERN8,
+        INVISIBLE,
         MAX,
     }
     public enum Message_Name
@@ -445,6 +448,7 @@ namespace RTDDataProvider
         EnemyLogic_Deadly,
         EnemyLogic_Curse,
         EnemyLogic_GuardCombo,
+        EnemyLogic_Invisible,
         ALL,
     }
     public class UtilityBase

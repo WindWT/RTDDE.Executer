@@ -12,7 +12,16 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <GroupBox Grid.Column="0" Header="Android">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Header="General">
+                    <StackPanel>
+                        <Button Name="ImportMsgPackButton" Click="ImportMsgPackButton_Click">MsgPack</Button>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Grid.Column="0" Grid.Row="1" Header="Android">
                     <StackPanel>
                         <Button Name="ImportMDBSButton" Click="ImportMDBSButton_Click">MDBS</Button>
                         <Button Name="ImportLDBSButton" Click="ImportLDBSButton_Click">LDBS</Button>
@@ -20,7 +29,7 @@
                         <Button Name="ImportAndroidGAMEButton" Click="ImportAndroidGAMEButton_Click">Android GAME</Button>
                     </StackPanel>
                 </GroupBox>
-                <GroupBox Grid.Column="1" Header="iOS">
+                <GroupBox Grid.Column="1" Grid.Row="1" Header="iOS">
                     <StackPanel>
                         <Button Grid.Row="1" Grid.Column="1" Name="ImportplistButton" Click="ImportplistButton_Click">plist</Button>
                         <Button Grid.Row="2" Grid.Column="1" Name="ImportiOSDirectoryButton" Click="ImportiOSDirectoryButton_Click">iOS Directory</Button>

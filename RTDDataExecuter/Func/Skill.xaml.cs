@@ -81,7 +81,8 @@ namespace RTDDataExecuter
         (CASE WHEN skill_90_99={0} THEN 1 ELSE 0 END) as s9099,
         (CASE WHEN skill_100={0} THEN 1 ELSE 0 END) as s100
         From Unit_master as um
-        LEFT JOIN Party_skill_rank_master AS psrm on um.p_skill_id=psrm.id", id));
+        LEFT JOIN Party_skill_rank_master AS psrm on um.p_skill_id=psrm.id
+        ORDER BY um.g_id", id));
                 });
                 taskSkillUnitRank.ContinueWith(tUSR =>
                 {
@@ -163,7 +164,8 @@ namespace RTDDataExecuter
         (CASE WHEN skill_90_99={0} THEN 1 ELSE 0 END) as s9099,
         (CASE WHEN skill_100={0} THEN 1 ELSE 0 END) as s100
         From Unit_master as um
-        LEFT JOIN Active_skill_rank_master AS asrm on um.a_skill_id=asrm.id", id));
+        LEFT JOIN Active_skill_rank_master AS asrm on um.a_skill_id=asrm.id
+        ORDER BY um.g_id", id));
                 });
                 taskSkillUnitRank.ContinueWith(tUSR =>
                 {
@@ -245,8 +247,9 @@ namespace RTDDataExecuter
         (CASE WHEN skill_80_89={0} THEN 1 ELSE 0 END) as s8089,
         (CASE WHEN skill_90_99={0} THEN 1 ELSE 0 END) as s9099,
         (CASE WHEN skill_100={0} THEN 1 ELSE 0 END) as s100
-        From Unit_master as um
-        LEFT JOIN Panel_skill_rank_master AS psrm on um.panel_skill_id=psrm.id", id));
+        FROM Unit_master as um
+        LEFT JOIN Panel_skill_rank_master AS psrm on um.panel_skill_id=psrm.id
+        ORDER BY um.g_id", id));
                 });
                 taskSkillUnitRank.ContinueWith(tUSR =>
                 {

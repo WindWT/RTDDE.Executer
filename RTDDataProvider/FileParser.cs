@@ -307,7 +307,5 @@ namespace RTDDataProvider
             return JSON.ParseEnemyInfo(questId, jsonQuest, jsonEnemyInfo);
         }
         #endregion
-
-
     }
 }
