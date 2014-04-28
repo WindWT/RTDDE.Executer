@@ -68,6 +68,8 @@ namespace RTDDataProvider.MasterData
         public string ba;
         public int bf;
         public int bb;
+        public int hi;
+        public int hl;
 
         public int id
         {
@@ -80,7 +82,6 @@ namespace RTDDataProvider.MasterData
                 this.i = value;
             }
         }
-
         public string name
         {
             get
@@ -92,7 +93,6 @@ namespace RTDDataProvider.MasterData
                 this.n = value;
             }
         }
-
         public int division
         {
             get
@@ -104,7 +104,6 @@ namespace RTDDataProvider.MasterData
                 this.d = value;
             }
         }
-
         public int category
         {
             get
@@ -116,7 +115,6 @@ namespace RTDDataProvider.MasterData
                 this.c = value;
             }
         }
-
         public int map
         {
             get
@@ -128,7 +126,6 @@ namespace RTDDataProvider.MasterData
                 this.m = value;
             }
         }
-
         public int stamina
         {
             get
@@ -140,7 +137,6 @@ namespace RTDDataProvider.MasterData
                 this.s = value;
             }
         }
-
         public int soul
         {
             get
@@ -152,7 +148,6 @@ namespace RTDDataProvider.MasterData
                 this.so = value;
             }
         }
-
         public int kind
         {
             get
@@ -164,7 +159,6 @@ namespace RTDDataProvider.MasterData
                 this.k = value;
             }
         }
-
         public int zbtn_kind
         {
             get
@@ -176,7 +170,6 @@ namespace RTDDataProvider.MasterData
                 this.z = value;
             }
         }
-
         public int pt_num
         {
             get
@@ -188,7 +181,6 @@ namespace RTDDataProvider.MasterData
                 this.p = value;
             }
         }
-
         public int kpi_class
         {
             get
@@ -200,7 +192,6 @@ namespace RTDDataProvider.MasterData
                 this.kp = value;
             }
         }
-
         public int flag_no
         {
             get
@@ -212,7 +203,6 @@ namespace RTDDataProvider.MasterData
                 this.f = value;
             }
         }
-
         public int display_order
         {
             get
@@ -224,7 +214,6 @@ namespace RTDDataProvider.MasterData
                 this.dio = value;
             }
         }
-
         public int difficulty
         {
             get
@@ -236,7 +225,6 @@ namespace RTDDataProvider.MasterData
                 this.df = value;
             }
         }
-
         public int distance
         {
             get
@@ -248,7 +236,6 @@ namespace RTDDataProvider.MasterData
                 this.ds = value;
             }
         }
-
         public int sp_event_id
         {
             get
@@ -260,7 +247,6 @@ namespace RTDDataProvider.MasterData
                 this.sp = value;
             }
         }
-
         public int open_type_1
         {
             get
@@ -272,7 +258,6 @@ namespace RTDDataProvider.MasterData
                 this.o1 = value;
             }
         }
-
         public int open_param_1
         {
             get
@@ -284,7 +269,6 @@ namespace RTDDataProvider.MasterData
                 this.op1 = value;
             }
         }
-
         public int open_type_2
         {
             get
@@ -296,7 +280,6 @@ namespace RTDDataProvider.MasterData
                 this.o2 = value;
             }
         }
-
         public int open_param_2
         {
             get
@@ -308,7 +291,6 @@ namespace RTDDataProvider.MasterData
                 this.op2 = value;
             }
         }
-
         public int open_type_3
         {
             get
@@ -320,7 +302,6 @@ namespace RTDDataProvider.MasterData
                 this.o3 = value;
             }
         }
-
         public int open_param_3
         {
             get
@@ -332,7 +313,6 @@ namespace RTDDataProvider.MasterData
                 this.op3 = value;
             }
         }
-
         public int open_type_4
         {
             get
@@ -344,7 +324,6 @@ namespace RTDDataProvider.MasterData
                 this.o4 = value;
             }
         }
-
         public int open_param_4
         {
             get
@@ -356,7 +335,6 @@ namespace RTDDataProvider.MasterData
                 this.op4 = value;
             }
         }
-
         public int open_type_5
         {
             get
@@ -368,7 +346,6 @@ namespace RTDDataProvider.MasterData
                 this.o5 = value;
             }
         }
-
         public int open_param_5
         {
             get
@@ -380,7 +357,6 @@ namespace RTDDataProvider.MasterData
                 this.op5 = value;
             }
         }
-
         public int open_type_6
         {
             get
@@ -392,7 +368,6 @@ namespace RTDDataProvider.MasterData
                 this.o6 = value;
             }
         }
-
         public int open_param_6
         {
             get
@@ -404,7 +379,6 @@ namespace RTDDataProvider.MasterData
                 this.op6 = value;
             }
         }
-
         public int open_sp_event_id
         {
             get
@@ -416,7 +390,6 @@ namespace RTDDataProvider.MasterData
                 this.oi = value;
             }
         }
-
         public int open_sp_event_point
         {
             get
@@ -428,7 +401,6 @@ namespace RTDDataProvider.MasterData
                 this.op = value;
             }
         }
-
         public uint bonus_start
         {
             get
@@ -440,7 +412,6 @@ namespace RTDDataProvider.MasterData
                 this.b = value;
             }
         }
-
         public uint bonus_end
         {
             get
@@ -452,7 +423,6 @@ namespace RTDDataProvider.MasterData
                 this.be = value;
             }
         }
-
         public int bonus_type
         {
             get
@@ -464,7 +434,6 @@ namespace RTDDataProvider.MasterData
                 this.bt = value;
             }
         }
-
         public int panel_sword
         {
             get
@@ -476,7 +445,6 @@ namespace RTDDataProvider.MasterData
                 this.ps = value;
             }
         }
-
         public int panel_lance
         {
             get
@@ -488,7 +456,6 @@ namespace RTDDataProvider.MasterData
                 this.pl = value;
             }
         }
-
         public int panel_archer
         {
             get
@@ -500,7 +467,6 @@ namespace RTDDataProvider.MasterData
                 this.pa = value;
             }
         }
-
         public int panel_cane
         {
             get
@@ -512,7 +478,6 @@ namespace RTDDataProvider.MasterData
                 this.pc = value;
             }
         }
-
         public int panel_heart
         {
             get
@@ -524,7 +489,6 @@ namespace RTDDataProvider.MasterData
                 this.ph = value;
             }
         }
-
         public int panel_sp
         {
             get
@@ -536,7 +500,6 @@ namespace RTDDataProvider.MasterData
                 this.psp = value;
             }
         }
-
         public int reward_money
         {
             get
@@ -548,7 +511,6 @@ namespace RTDDataProvider.MasterData
                 this.r = value;
             }
         }
-
         public int reward_exp
         {
             get
@@ -560,7 +522,6 @@ namespace RTDDataProvider.MasterData
                 this.re = value;
             }
         }
-
         public int reward_soul
         {
             get
@@ -572,7 +533,6 @@ namespace RTDDataProvider.MasterData
                 this.rs = value;
             }
         }
-
         public int reward_money_limit
         {
             get
@@ -584,7 +544,6 @@ namespace RTDDataProvider.MasterData
                 this.rm = value;
             }
         }
-
         public int reward_exp_limit
         {
             get
@@ -596,7 +555,6 @@ namespace RTDDataProvider.MasterData
                 this.rl = value;
             }
         }
-
         public int enemy_table_id
         {
             get
@@ -608,7 +566,6 @@ namespace RTDDataProvider.MasterData
                 this.ei = value;
             }
         }
-
         public string text
         {
             get
@@ -620,7 +577,6 @@ namespace RTDDataProvider.MasterData
                 this.t = value;
             }
         }
-
         public int present_type
         {
             get
@@ -632,7 +588,6 @@ namespace RTDDataProvider.MasterData
                 this.pt = value;
             }
         }
-
         public int present_param
         {
             get
@@ -644,7 +599,6 @@ namespace RTDDataProvider.MasterData
                 this.pp = value;
             }
         }
-
         public int present_param_1
         {
             get
@@ -656,7 +610,6 @@ namespace RTDDataProvider.MasterData
                 this.pp1 = value;
             }
         }
-
         public int challenge_id_0
         {
             get
@@ -668,7 +621,6 @@ namespace RTDDataProvider.MasterData
                 this.c0 = value;
             }
         }
-
         public int challenge_id_1
         {
             get
@@ -680,7 +632,6 @@ namespace RTDDataProvider.MasterData
                 this.c1 = value;
             }
         }
-
         public int challenge_id_2
         {
             get
@@ -692,7 +643,6 @@ namespace RTDDataProvider.MasterData
                 this.c2 = value;
             }
         }
-
         public int tflg_cmd_0
         {
             get
@@ -704,7 +654,6 @@ namespace RTDDataProvider.MasterData
                 this.t0 = value;
             }
         }
-
         public int tflg_idx_0
         {
             get
@@ -716,7 +665,6 @@ namespace RTDDataProvider.MasterData
                 this.ti0 = value;
             }
         }
-
         public int tflg_cmd_1
         {
             get
@@ -728,7 +676,6 @@ namespace RTDDataProvider.MasterData
                 this.t1 = value;
             }
         }
-
         public int tflg_idx_1
         {
             get
@@ -740,7 +687,6 @@ namespace RTDDataProvider.MasterData
                 this.ti1 = value;
             }
         }
-
         public int sp_guide_id
         {
             get
@@ -752,7 +698,6 @@ namespace RTDDataProvider.MasterData
                 this.si = value;
             }
         }
-
         public string banner
         {
             get
@@ -764,7 +709,6 @@ namespace RTDDataProvider.MasterData
                 this.ba = value;
             }
         }
-
         public int bgm_f
         {
             get
@@ -776,7 +720,6 @@ namespace RTDDataProvider.MasterData
                 this.bf = value;
             }
         }
-
         public int bgm_b
         {
             get
@@ -786,6 +729,28 @@ namespace RTDDataProvider.MasterData
             set
             {
                 this.bb = value;
+            }
+        }
+        public int h_id
+        {
+            get
+            {
+                return this.hi;
+            }
+            set
+            {
+                this.hi = value;
+            }
+        }
+        public int h_lv
+        {
+            get
+            {
+                return this.hl;
+            }
+            set
+            {
+                this.hl = value;
             }
         }
     }

@@ -61,7 +61,7 @@ bonus_type,bonus_start,bonus_end,
 present_type,present_param,present_param_1,
 (case when present_type=4 then (select name from unit_master where unit_master.id=quest_master.present_param) else present_param end) as present_param_name ,
 panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
-bgm_f,bgm_b,banner,
+bgm_f,bgm_b,banner,h_id,h_lv,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_0) as challenge0,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_1) as challenge1,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_2) as challenge2
@@ -118,6 +118,10 @@ bgm_f,bgm_b,banner,
                 QuestInfo_bgm_b.Text = dr["bgm_b"].ToString();
                 QuestInfo_sp_guide_id.Text = dr["sp_guide_id"].ToString();
                 QuestInfo_banner.Text = Utility.ParseText(dr["banner"].ToString());
+
+                QuestInfo_h_id.Text = dr["h_id"].ToString();
+                QuestInfo_h_name.Text = Utility.ParseUnitName(dr["h_id"].ToString());
+                QuestInfo_h_lv.Text = dr["h_lv"].ToString();
 
                 QuestInfo_opentype1_name.Text = t.Result[0]["opentype"];
                 QuestInfo_opentype1_value.Text = t.Result[0]["opentypeParam"];

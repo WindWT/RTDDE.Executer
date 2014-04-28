@@ -113,7 +113,8 @@ namespace RTDDataProvider
         PANEL_CHAIN_ENHANCE = 86,
         SOUL_STEP_AND_SOUL_GET = 87,
         REFLECTION = 88,
-        BUFFER = 89,
+        PANEL_MIX_DAMAGE = 89,
+        BUFFER = 90,
     }
     public enum ActiveSkillType
     {
@@ -256,6 +257,8 @@ namespace RTDDataProvider
         GOD_BOW,
         ORG_STICK,
         POK_ART,
+        RVS_GUN,
+        RVS_ART,
         PLAYER_END,
         MS01SLA,
         MS01SQU,
@@ -301,6 +304,7 @@ namespace RTDDataProvider
         MS03_SR_TIAMAT,
         MS01_ORG_GUN,
         MS03FLY_02,
+        MS01RVS,
         MAX,
     }
     public enum ENEMY_TYPE
@@ -345,6 +349,8 @@ namespace RTDDataProvider
         JELLY = 41,
         GIANT_LOBO = 42,
         ORG_GUN = 43,
+        DRAGON4_EX = 44,
+        ANIMAL_LEG = 45,
     }
     public enum AttackPattern
     {
@@ -357,6 +363,7 @@ namespace RTDDataProvider
         FIRST_CURSE,
         GUARD_COMBO,
         INVISIBLE,
+        REFLECT,
         MAX,
     }
     public enum Message_Name
@@ -449,6 +456,7 @@ namespace RTDDataProvider
         EnemyLogic_Curse,
         EnemyLogic_GuardCombo,
         EnemyLogic_Invisible,
+        EnemyLogic_Reflect,
         ALL,
     }
     public class UtilityBase
@@ -734,6 +742,8 @@ namespace RTDDataProvider
                     return AssignID.WIN_BOW;
                 case 209:
                     return AssignID.GOD_BOW;
+                case 210:
+                    return AssignID.RVS_GUN;
                 case 301:
                     return AssignID.STICK;
                 case 302:
@@ -752,6 +762,8 @@ namespace RTDDataProvider
                     return AssignID.ORG_STICK;
                 case 309:
                     return AssignID.POK_ART;
+                case 310:
+                    return AssignID.RVS_ART;
                 default:
                     return AssignID.SWORD;
             }
@@ -832,6 +844,10 @@ namespace RTDDataProvider
                     return 308;
                 case AssignID.POK_ART:
                     return 309;
+                case AssignID.RVS_GUN:
+                    return 210;
+                case AssignID.RVS_ART:
+                    return 310;
                 default:
                     return 1;
             }

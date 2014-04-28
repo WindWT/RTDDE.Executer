@@ -63,6 +63,11 @@
             <TextBox Name="QuestInfo_bgm_b" Width="25" IsReadOnly="True"></TextBox>
             <TextBlock Text="sp_guide_id" Width="75"/>
             <TextBox Name="QuestInfo_sp_guide_id" Width="75" IsReadOnly="True"></TextBox>
+            <TextBlock Text="helper" Width="50"/>
+            <TextBox Name="QuestInfo_h_id" Width="50" IsReadOnly="True"></TextBox>
+            <TextBox Name="QuestInfo_h_name" Width="150" IsReadOnly="True"></TextBox>
+            <TextBlock Text="lv" Width="25"/>
+            <TextBox Name="QuestInfo_h_lv" Width="25" IsReadOnly="True"></TextBox>
             <TextBlock Text="banner" Width="50"/>
             <TextBox Name="QuestInfo_banner" Width="250" IsReadOnly="True"></TextBox>
             <Separator Width="300"/>
