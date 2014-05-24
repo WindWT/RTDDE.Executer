@@ -114,7 +114,10 @@ namespace RTDDataProvider
         SOUL_STEP_AND_SOUL_GET = 87,
         REFLECTION = 88,
         PANEL_MIX_DAMAGE = 89,
-        BUFFER = 90,
+        ATTACK_ENHANCE_BY_UNITCLASS = 90,
+        LIFE_UP_BY_UNITCLASS = 91,
+        ATTACK_ENHANCE_BY_MAXLIFE = 92,
+        BUFFER = 93,
     }
     public enum ActiveSkillType
     {
@@ -184,6 +187,7 @@ namespace RTDDataProvider
         SoulOfZero = 64,
         AttackCanon = 65,
         EnemyScanDefDown = 66,
+        ElementBind = 67,
     }
     public enum PanelSkillType
     {
@@ -212,6 +216,7 @@ namespace RTDDataProvider
         HEAL_CANON = 23,
         DEFENCE_PREPARATIONS = 24,
         LIMIT_ATTACKUP_COLOR = 25,
+        IGNORE_DEFENCE = 26,
     }
     public enum SkillPhase
     {
@@ -259,6 +264,8 @@ namespace RTDDataProvider
         POK_ART,
         RVS_GUN,
         RVS_ART,
+        RVS_SWD,
+        RVS_BAN,
         PLAYER_END,
         MS01SLA,
         MS01SQU,
@@ -706,6 +713,8 @@ namespace RTDDataProvider
                     return AssignID.POK_SWORD;
                 case 9:
                     return AssignID.WIN_SWORD;
+                case 10:
+                    return AssignID.RVS_SWD;
                 case 101:
                     return AssignID.LANCE;
                 case 102:
@@ -724,6 +733,8 @@ namespace RTDDataProvider
                     return AssignID.ORG_LAN;
                 case 109:
                     return AssignID.WIN_LANCE;
+                case 110:
+                    return AssignID.RVS_BAN;
                 case 201:
                     return AssignID.BOW;
                 case 202:
@@ -848,6 +859,10 @@ namespace RTDDataProvider
                     return 210;
                 case AssignID.RVS_ART:
                     return 310;
+                case AssignID.RVS_SWD:
+                    return 10;
+                case AssignID.RVS_BAN:
+                    return 110;
                 default:
                     return 1;
             }
@@ -975,7 +990,7 @@ namespace RTDDataProvider
                         case 2:
                             return true;
                         default:
-                            return false;
+                            return type == 45;
                     }
             }
         }
