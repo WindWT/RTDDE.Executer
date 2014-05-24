@@ -925,7 +925,7 @@ namespace RTDDataProvider
             i /= 100;
             int year = i % 10000;
             DateTime t = new DateTime(year, month, day, hour, 0, 0);
-            return t.ToString("yyyy-MM-dd HH:mm");
+            return t.ToString("yyyy-MM-dd HH:mm ddd");
         }
         public static string ParseUnitName(string unitId)
         {
