@@ -188,7 +188,7 @@ WHERE uo.id={0}";
                 DB db = new DB();
                 return db.GetData(String.Format(sql, unitid));
             });
-            Task<List<SkillMaster>> taskParse = new Task<List<SkillMaster>>(() =>
+            Task<List<SkillMaster>> taskSkill = new Task<List<SkillMaster>>(() =>
             {
                 List<SkillMaster> skillList = new List<SkillMaster>();
                 Task.WaitAll(task);
@@ -212,9 +212,16 @@ WHERE uo.id={0}";
                 skillList.Add(new SkillMaster("ACTIVE_SKILL", activeRankSkillId, (int)thislevel));
                 skillList.Add(new SkillMaster("PANEL_SKILL", panelRankSkillId, (int)thislevel));
                 return skillList;
-            }
-            );
-            taskParse.ContinueWith(t =>
+            });
+            Task<DataTable> taskAccessory = new Task<DataTable>(() =>
+            {
+                string sql = @"
+SELECT * FROM accessory_master
+WHERE id={0}";
+                DB db = new DB();
+                return db.GetData(String.Format(sql, unitid));
+            });
+            taskSkill.ContinueWith(t =>
             {
                 if (t.Exception != null)
                 {
@@ -240,7 +247,7 @@ WHERE uo.id={0}";
                 UnitInfo_attribute.Text = Utility.ParseAttributetype(Convert.ToByte(unitData["attribute"]));
                 UnitInfo_sub_a1.Text = Utility.ParseAttributetype(Convert.ToByte(unitData["sub_a1"]));
                 UnitInfo_model.Text = unitData["model"].ToString();
-                UnitInfo_kind.Text = Utility.ParseUnitKind(Convert.ToInt32(unitData["kind"]));
+                UnitInfo_kind.Text = Utility.ParseUnitKind(Convert.ToInt32(unitData["kind"])).ToString();
 
                 UnitInfo_need_pt.Text = unitData["need_pt"].ToString();
                 UnitInfo_bonus_limit_base.Text = unitData["bonus_limit_base"].ToString();
@@ -312,10 +319,41 @@ WHERE uo.id={0}";
                 partySkill_BindData(t.Result[0]);
                 activeSkill_BindData(t.Result[1]);
                 panelSkill_BindData(t.Result[2]);
+                if (UnitInfo_PartySkill.Visibility == Visibility.Collapsed && UnitInfo_ActiveSkill.Visibility == Visibility.Collapsed && UnitInfo_PanelSkill.Visibility == Visibility.Collapsed)
+                {
+                    UnitSkillExpander.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    UnitSkillExpander.Visibility = Visibility.Visible;
+                }
+                //Accessory
+                Task.WaitAll(taskAccessory);
+                if (taskAccessory.Result == null || taskAccessory.Result.Rows.Count == 0)
+                {
+                    UnitAccessoryExpander.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    UnitAccessoryExpander.Visibility = Visibility.Visible;
+                    DataRow unitAccessory = taskAccessory.Result.Rows[0];
+                    accessory_type.Text = unitAccessory["type"].ToString();
+                    accessory_name.Text = unitAccessory["name"].ToString();
+                    accessory_detail.Document = Utility.parseTextToDocument(unitAccessory["detail"].ToString());
+                    accessory_num_01.Text = unitAccessory["num_01"].ToString();
+                    accessory_num_02.Text = unitAccessory["num_02"].ToString();
+                    accessory_num_03.Text = unitAccessory["num_03"].ToString();
+                    accessory_num_04.Text = unitAccessory["num_04"].ToString();
+                    accessory_conv_money.Text=unitAccessory["conv_money"].ToString();
+                    accessory_style.Text = Utility.ParseStyletype(Convert.ToInt32(unitAccessory["style"]));
+                    accessory_attribute.Text = Utility.ParseAttributetype(Convert.ToByte(unitAccessory["attribute"]));
+                    accessory_su_a1.Text = Utility.ParseAttributetype(Convert.ToByte(unitAccessory["su_a1"]));
+                }
 
             }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
             task.Start();
-            taskParse.Start();
+            taskSkill.Start();
+            taskAccessory.Start();
         }
         private void partySkill_BindData(SkillMaster skill)
         {

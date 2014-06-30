@@ -57,6 +57,7 @@
     <Compile Include="Convert.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="JSON.cs" />
+    <Compile Include="MasterData\AccessoryMaster.cs" />
     <Compile Include="MasterData\EnemyInfo.cs" />
     <Compile Include="MasterData\LevelDataMaster.cs" />
     <Compile Include="MasterData\LoginBonusMaster.cs" />

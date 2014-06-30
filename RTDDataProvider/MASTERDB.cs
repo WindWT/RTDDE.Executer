@@ -18,7 +18,8 @@ namespace RTDDataProvider
         UNIT_TALK_MASTER = 15,  //not exist
         PANEL_SKILL_MASTER = 16,
         PANEL_SKILL_RANK_MASTER = 17,
-        //MAX = 18,   //not exist
+        ACCESSORY_MASTER = 18,
+        //MAX = 19,   //not exist
         ENEMY_UNIT_MASTER = 20,
         ENEMY_TABLE_MASTER,  //not exist
         ENEMY_DROP_MASTER = 22,  //not exist

@@ -161,6 +161,12 @@ namespace RTDDataProvider
                         dt = ObjectConvert.ToDataTable(o);
                         break;
                     }
+                case MASTERDB.ACCESSORY_MASTER:
+                    {
+                        AccessoryMaster[] o = JsonConvert.DeserializeObject<AccessoryMaster[]>(jtjson);
+                        dt = ObjectConvert.ToDataTable(o);
+                        break;
+                    }
                 //case MASTERDB.MAX   //not exist
                 default:
                     {

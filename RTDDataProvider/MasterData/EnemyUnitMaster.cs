@@ -17,7 +17,7 @@ namespace RTDDataProvider.MasterData
         public int shadow;
         public int chara_kind;
         public int chara_symbol;
-        public int chara_g_id;
+        public int chara_flag_no;
         public int type;
         public int attribute;
         public int up;

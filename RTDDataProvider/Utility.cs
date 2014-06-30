@@ -117,7 +117,10 @@ namespace RTDDataProvider
         ATTACK_ENHANCE_BY_UNITCLASS = 90,
         LIFE_UP_BY_UNITCLASS = 91,
         ATTACK_ENHANCE_BY_MAXLIFE = 92,
-        BUFFER = 93,
+        WEAK_ATTACK_DAMAGE_UP = 93,
+        DAMAGE_UP_BY_LIFE_RATIO = 94,
+        DAMAGE_USE_PANELS = 95,
+        BUFFER = 96,
     }
     public enum ActiveSkillType
     {
@@ -217,6 +220,8 @@ namespace RTDDataProvider
         DEFENCE_PREPARATIONS = 24,
         LIMIT_ATTACKUP_COLOR = 25,
         IGNORE_DEFENCE = 26,
+        UNLIMITED_WEAPON = 27,
+        DAMAGE_AND_UNLIMITED = 28,
     }
     public enum SkillPhase
     {
@@ -466,6 +471,18 @@ namespace RTDDataProvider
         EnemyLogic_Reflect,
         ALL,
     }
+    public struct EnemyEffectAssign
+    {
+        public short m_EffectIndex;
+        public string m_MainAtkEffectName;
+        public string m_SubAtkEffectName;
+        public EnemyEffectAssign(short id, string mainName, string subName)
+        {
+            this.m_EffectIndex = id;
+            this.m_MainAtkEffectName = mainName;
+            this.m_SubAtkEffectName = subName;
+        }
+    }
     public class UtilityBase
     {
         public static Dictionary<string, string> ParseOpentype(string opentype, string opentypeParam)
@@ -604,7 +621,7 @@ namespace RTDDataProvider
                 case "2": return "FP";
                 case "3": return "STONE";
                 case "4": return "UNIT";
-                default: return string.Empty;
+                default: return "未知" + presenttype.ToString();
             }
         }
         public static string ParseBonustype(string bonustype)
@@ -635,7 +652,7 @@ namespace RTDDataProvider
                     {
                         return "双倍掉落";
                     }
-                default: return string.Empty;
+                default: return "未知" + bonustype.ToString();
             }
         }
         public static string ParseAttributetype(int attributetype)
@@ -687,185 +704,71 @@ namespace RTDDataProvider
                     return Class.KNIGHT;
             }
         }
-        public static string ParseUnitKind(int kind)
+        #region AssignID
+
+        public static readonly EnemyEffectAssign[] m_EffectList = new EnemyEffectAssign[]	{
+		new EnemyEffectAssign(1, "ef_atk_blade_01", null),
+		new EnemyEffectAssign(2, "ef_atk_blade_02", null),
+		new EnemyEffectAssign(101, "ef_atk_spear_01", null),
+		new EnemyEffectAssign(102, "ef_atk_spear_02", null),
+		new EnemyEffectAssign(201, "ef_atk_arrow_01", null),
+		new EnemyEffectAssign(202, "ef_atk_arrow_02", null),
+		new EnemyEffectAssign(301, "ef_atk_magic_01", null),
+		new EnemyEffectAssign(302, "ef_atk_magic_03", null),
+		new EnemyEffectAssign(303, "ef_atk_magic_04", null),
+		new EnemyEffectAssign(3, "ef_atk_blade_03", null),
+		new EnemyEffectAssign(103, "ef_atk_spear_03", null),
+		new EnemyEffectAssign(203, "ef_atk_arrow_03", null),
+		new EnemyEffectAssign(4, "ef_atk_blade_01", null),
+		new EnemyEffectAssign(204, "ef_atk_arrow_02", null),
+		new EnemyEffectAssign(104, "ef_atk_spear_02", null),
+		new EnemyEffectAssign(304, "ef_atk_magic_03", null),
+		new EnemyEffectAssign(205, "ef_atk_arrow_01", null),
+		new EnemyEffectAssign(105, "ef_atk_spear_04", null),
+		new EnemyEffectAssign(106, "ef_atk_spear_05", null),
+		new EnemyEffectAssign(305, "ef_atk_magic_01", null),
+		new EnemyEffectAssign(107, "ef_atk_spear_06", null),
+		new EnemyEffectAssign(5, "ef_atk_blade_04", null),
+		new EnemyEffectAssign(6, "ef_atk_blade_02", null),
+		new EnemyEffectAssign(206, "ef_atk_arrow_04", null),
+		new EnemyEffectAssign(7, "ef_atk_blade_02", null),
+		new EnemyEffectAssign(306, "ef_atk_magic_03", null),
+		new EnemyEffectAssign(8, "ef_atk_blade_05", null),
+		new EnemyEffectAssign(207, "ef_atk_arrow_03", null),
+		new EnemyEffectAssign(108, "ef_atk_spear_06", null),
+		new EnemyEffectAssign(9, "ef_atk_blade_06", null),
+		new EnemyEffectAssign(109, "ef_atk_spear_07", null),
+		new EnemyEffectAssign(208, "ef_atk_arrow_05", null),
+		new EnemyEffectAssign(307, "ef_atk_magic_05", null),
+		new EnemyEffectAssign(209, "ef_btl_beam_01", null),
+		new EnemyEffectAssign(308, "ef_atk_magic_04", null),
+		new EnemyEffectAssign(309, "ef_atk_magic_03", null),
+		new EnemyEffectAssign(210, "ef_atk_arrow_05", null),
+		new EnemyEffectAssign(310, "ef_atk_magic_03", null),
+		new EnemyEffectAssign(10, "ef_atk_blade_07", null),
+		new EnemyEffectAssign(110, "ef_atk_spear_08", null)
+	};
+        #endregion
+        public static AssignID ParseUnitKind(int kind)
         {
-            return ParseRealUnitKind(kind).ToString(); ;
-        }
-        private static AssignID ParseRealUnitKind(int kind)
-        {
-            switch (kind)
+            AssignID assignId = AssignID.SWORD;
+            int length = m_EffectList.Length;
+            for (int index = 0; index < length; ++index)
             {
-                case 1:
-                    return AssignID.SWORD;
-                case 2:
-                    return AssignID.GREATSWORD;
-                case 3:
-                    return AssignID.TWO_SWORD;
-                case 4:
-                    return AssignID.CHAOS_SWD;
-                case 5:
-                    return AssignID.RAPIA;
-                case 6:
-                    return AssignID.ORG_SWORD;
-                case 7:
-                    return AssignID.GRT_FEMALE;
-                case 8:
-                    return AssignID.POK_SWORD;
-                case 9:
-                    return AssignID.WIN_SWORD;
-                case 10:
-                    return AssignID.RVS_SWD;
-                case 101:
-                    return AssignID.LANCE;
-                case 102:
-                    return AssignID.PILEBANKER;
-                case 103:
-                    return AssignID.TWIN_LANCE;
-                case 104:
-                    return AssignID.CHAOS_BAN;
-                case 105:
-                    return AssignID.KUNGFU;
-                case 106:
-                    return AssignID.POK_LANCE;
-                case 107:
-                    return AssignID.LACNE_FEMALE;
-                case 108:
-                    return AssignID.ORG_LAN;
-                case 109:
-                    return AssignID.WIN_LANCE;
-                case 110:
-                    return AssignID.RVS_BAN;
-                case 201:
-                    return AssignID.BOW;
-                case 202:
-                    return AssignID.GUN;
-                case 203:
-                    return AssignID.CANNON;
-                case 204:
-                    return AssignID.CHAOS_GUN;
-                case 205:
-                    return AssignID.BOW_MALE;
-                case 206:
-                    return AssignID.ORG_GUN;
-                case 207:
-                    return AssignID.POK_CAN;
-                case 208:
-                    return AssignID.WIN_BOW;
-                case 209:
-                    return AssignID.GOD_BOW;
-                case 210:
-                    return AssignID.RVS_GUN;
-                case 301:
-                    return AssignID.STICK;
-                case 302:
-                    return AssignID.ARTIFACT;
-                case 303:
-                    return AssignID.STICK_FEMALE;
-                case 304:
-                    return AssignID.CHAOS_ART;
-                case 305:
-                    return AssignID.POK_STICK;
-                case 306:
-                    return AssignID.ART_FEMALE;
-                case 307:
-                    return AssignID.WIN_STICK;
-                case 308:
-                    return AssignID.ORG_STICK;
-                case 309:
-                    return AssignID.POK_ART;
-                case 310:
-                    return AssignID.RVS_ART;
-                default:
-                    return AssignID.SWORD;
+                EnemyEffectAssign enemyEffectAssign = m_EffectList[index];
+                if (kind == (int)enemyEffectAssign.m_EffectIndex)
+                    assignId = (AssignID)index;
             }
+            return assignId;
         }
         public static int ParseAssignID(AssignID category)
         {
-            switch (category)
-            {
-                case AssignID.SWORD:
-                    return 1;
-                case AssignID.GREATSWORD:
-                    return 2;
-                case AssignID.LANCE:
-                    return 101;
-                case AssignID.PILEBANKER:
-                    return 102;
-                case AssignID.BOW:
-                    return 201;
-                case AssignID.GUN:
-                    return 202;
-                case AssignID.STICK:
-                    return 301;
-                case AssignID.ARTIFACT:
-                    return 302;
-                case AssignID.STICK_FEMALE:
-                    return 303;
-                case AssignID.TWO_SWORD:
-                    return 3;
-                case AssignID.TWIN_LANCE:
-                    return 103;
-                case AssignID.CANNON:
-                    return 203;
-                case AssignID.CHAOS_SWD:
-                    return 4;
-                case AssignID.CHAOS_GUN:
-                    return 204;
-                case AssignID.CHAOS_BAN:
-                    return 104;
-                case AssignID.CHAOS_ART:
-                    return 304;
-                case AssignID.BOW_MALE:
-                    return 205;
-                case AssignID.KUNGFU:
-                    return 105;
-                case AssignID.POK_LANCE:
-                    return 106;
-                case AssignID.POK_STICK:
-                    return 305;
-                case AssignID.LACNE_FEMALE:
-                    return 107;
-                case AssignID.RAPIA:
-                    return 5;
-                case AssignID.ORG_SWORD:
-                    return 6;
-                case AssignID.ORG_GUN:
-                    return 206;
-                case AssignID.GRT_FEMALE:
-                    return 7;
-                case AssignID.ART_FEMALE:
-                    return 306;
-                case AssignID.POK_SWORD:
-                    return 8;
-                case AssignID.POK_CAN:
-                    return 207;
-                case AssignID.ORG_LAN:
-                    return 108;
-                case AssignID.WIN_SWORD:
-                    return 9;
-                case AssignID.WIN_LANCE:
-                    return 109;
-                case AssignID.WIN_BOW:
-                    return 208;
-                case AssignID.WIN_STICK:
-                    return 307;
-                case AssignID.GOD_BOW:
-                    return 209;
-                case AssignID.ORG_STICK:
-                    return 308;
-                case AssignID.POK_ART:
-                    return 309;
-                case AssignID.RVS_GUN:
-                    return 210;
-                case AssignID.RVS_ART:
-                    return 310;
-                case AssignID.RVS_SWD:
-                    return 10;
-                case AssignID.RVS_BAN:
-                    return 110;
-                default:
-                    return 1;
-            }
+            int num = 1;
+            int index = (int)category;
+            int length = m_EffectList.Length;
+            if (index >= 0 && index < length)
+                num = (int)m_EffectList[index].m_EffectIndex;
+            return num;
         }
         public static string ParseQuestKind(string kind)
         {
@@ -970,9 +873,9 @@ namespace RTDDataProvider
         {
             return "bgm_rtd_" + no.ToString("D2");
         }
-        public static bool IsUnitEnemy(int type)
+        public static bool IsUnitEnemy(int num)
         {
-            switch (type)
+            switch (num)
             {
                 case 30:
                     return true;
@@ -983,14 +886,14 @@ namespace RTDDataProvider
                 case 37:
                     return true;
                 default:
-                    switch (type - 22)
+                    switch (num - 22)
                     {
                         case 0:
                             return true;
                         case 2:
                             return true;
                         default:
-                            return type == 45;
+                            return num == 45;
                     }
             }
         }
