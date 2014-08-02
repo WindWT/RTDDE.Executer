@@ -21,7 +21,7 @@ namespace RTDDataExecuter
         {
             var flowDoc = new FlowDocument();
             //string[] textParas = text.Split(new string[] { "\\n" }, StringSplitOptions.None);
-            text = text.Replace(@"\n", "\n");
+            text = text.Replace("\n", @"\n");   //fix split issue
             Paragraph pr = new Paragraph(); //prprpr
             pr.Margin = new Thickness(0);
             Regex rSplit = new Regex(@"(\[[a-zA-Z0-9]{6}\])(.*?)(\[-\])");
@@ -42,7 +42,7 @@ namespace RTDDataExecuter
                     nowFontColor = Brushes.Black;
                     continue;
                 }
-                span.Inlines.Add(new Run(textPart));
+                span.Inlines.Add(new Run(textPart.Replace(@"\n", "\n")));
                 span.Foreground = nowFontColor;
                 pr.Inlines.Add(span);
             }

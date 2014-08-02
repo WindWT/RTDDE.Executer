@@ -308,7 +308,7 @@ WHERE id={0}";
                 //story
                 var storyDoc = Utility.parseTextToDocument(unitData["story"].ToString());
                 storyDoc.TextAlignment = TextAlignment.Center;
-                UnitInfo_story.Padding = new Thickness(8, 0, 8, 0);
+                UnitInfo_story.Padding = new Thickness(7, 0, 7, 0);
                 UnitInfo_story.Document = storyDoc;
                 //cutin
                 UnitInfo_ct_text.Text = unitData["ct_text"].ToString();
