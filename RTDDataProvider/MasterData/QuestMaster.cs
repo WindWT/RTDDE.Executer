@@ -8,6 +8,7 @@ namespace RTDDataProvider.MasterData
     [Serializable]
     public class QuestMaster
     {
+        public const int OPEN_CONDITIONS_MAX = 8;
         public int i;
         public string n;
         public int d;
@@ -24,18 +25,32 @@ namespace RTDDataProvider.MasterData
         public int df;
         public int ds;
         public int sp;
+        public int od;
+        public int cd;
         public int o1;
         public int op1;
+        public int og1;
         public int o2;
         public int op2;
+        public int og2;
         public int o3;
         public int op3;
+        public int og3;
         public int o4;
         public int op4;
+        public int og4;
         public int o5;
         public int op5;
+        public int og5;
         public int o6;
         public int op6;
+        public int og6;
+        public int o7;
+        public int op7;
+        public int og7;
+        public int o8;
+        public int op8;
+        public int og8;
         public int oi;
         public int op;
         public uint b;
@@ -263,6 +278,30 @@ namespace RTDDataProvider.MasterData
             }
         }
 
+        public int open_date
+        {
+            get
+            {
+                return this.od;
+            }
+            set
+            {
+                this.od = value;
+            }
+        }
+
+        public int close_date
+        {
+            get
+            {
+                return this.cd;
+            }
+            set
+            {
+                this.cd = value;
+            }
+        }
+
         public int open_type_1
         {
             get
@@ -284,6 +323,18 @@ namespace RTDDataProvider.MasterData
             set
             {
                 this.op1 = value;
+            }
+        }
+
+        public int open_group_1
+        {
+            get
+            {
+                return this.og1;
+            }
+            set
+            {
+                this.og1 = value;
             }
         }
 
@@ -311,6 +362,18 @@ namespace RTDDataProvider.MasterData
             }
         }
 
+        public int open_group_2
+        {
+            get
+            {
+                return this.og2;
+            }
+            set
+            {
+                this.og2 = value;
+            }
+        }
+
         public int open_type_3
         {
             get
@@ -332,6 +395,18 @@ namespace RTDDataProvider.MasterData
             set
             {
                 this.op3 = value;
+            }
+        }
+
+        public int open_group_3
+        {
+            get
+            {
+                return this.og3;
+            }
+            set
+            {
+                this.og3 = value;
             }
         }
 
@@ -359,6 +434,18 @@ namespace RTDDataProvider.MasterData
             }
         }
 
+        public int open_group_4
+        {
+            get
+            {
+                return this.og4;
+            }
+            set
+            {
+                this.og4 = value;
+            }
+        }
+
         public int open_type_5
         {
             get
@@ -383,6 +470,18 @@ namespace RTDDataProvider.MasterData
             }
         }
 
+        public int open_group_5
+        {
+            get
+            {
+                return this.og5;
+            }
+            set
+            {
+                this.og5 = value;
+            }
+        }
+
         public int open_type_6
         {
             get
@@ -404,6 +503,90 @@ namespace RTDDataProvider.MasterData
             set
             {
                 this.op6 = value;
+            }
+        }
+
+        public int open_group_6
+        {
+            get
+            {
+                return this.og6;
+            }
+            set
+            {
+                this.og6 = value;
+            }
+        }
+
+        public int open_type_7
+        {
+            get
+            {
+                return this.o7;
+            }
+            set
+            {
+                this.o7 = value;
+            }
+        }
+
+        public int open_param_7
+        {
+            get
+            {
+                return this.op7;
+            }
+            set
+            {
+                this.op7 = value;
+            }
+        }
+
+        public int open_group_7
+        {
+            get
+            {
+                return this.og7;
+            }
+            set
+            {
+                this.og7 = value;
+            }
+        }
+
+        public int open_type_8
+        {
+            get
+            {
+                return this.o8;
+            }
+            set
+            {
+                this.o8 = value;
+            }
+        }
+
+        public int open_param_8
+        {
+            get
+            {
+                return this.op8;
+            }
+            set
+            {
+                this.op8 = value;
+            }
+        }
+
+        public int open_group_8
+        {
+            get
+            {
+                return this.og8;
+            }
+            set
+            {
+                this.og8 = value;
             }
         }
 

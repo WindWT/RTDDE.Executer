@@ -120,7 +120,9 @@ namespace RTDDataProvider
         WEAK_ATTACK_DAMAGE_UP = 93,
         DAMAGE_UP_BY_LIFE_RATIO = 94,
         DAMAGE_USE_PANELS = 95,
-        BUFFER = 96,
+        RETANTION_PANEL_DAMAGE_SCALE = 96,
+        PLAYER_AND_ENEMY_DAMAGE_UP = 97,
+        BUFFER = 98,
     }
     public enum ActiveSkillType
     {
@@ -191,6 +193,7 @@ namespace RTDDataProvider
         AttackCanon = 65,
         EnemyScanDefDown = 66,
         ElementBind = 67,
+        AttributeNextAtkUp = 68,
     }
     public enum PanelSkillType
     {
@@ -222,6 +225,7 @@ namespace RTDDataProvider
         IGNORE_DEFENCE = 26,
         UNLIMITED_WEAPON = 27,
         DAMAGE_AND_UNLIMITED = 28,
+        ONE_SOULGET_TWO_LIFEFULLHEAL = 29,
     }
     public enum SkillPhase
     {
@@ -271,6 +275,9 @@ namespace RTDDataProvider
         RVS_ART,
         RVS_SWD,
         RVS_BAN,
+        ORG_FNG,
+        POK_THR,
+        RVS_LBO,
         PLAYER_END,
         MS01SLA,
         MS01SQU,
@@ -483,130 +490,143 @@ namespace RTDDataProvider
             this.m_SubAtkEffectName = subName;
         }
     }
+    public class OpenType
+    {
+        public string Type { get; set; }
+        public string Param { get; set; }
+        public OpenType()
+        {
+            Type = "未知";
+            Param = string.Empty;
+        }
+        public OpenType(string type, string param)
+        {
+            Type = type;
+            Param = param;
+        }
+    }
     public class UtilityBase
     {
-        public static Dictionary<string, string> ParseOpentype(string opentype, string opentypeParam)
+        public static OpenType ParseOpentype(string type, string param)
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
-            result.Add("opentype", "未知");
-            result.Add("opentypeParam", "未知");
-            switch (opentype)
+            OpenType result = new OpenType();
+            switch (type)
             {
                 case "0":
                     {
-                        result["opentype"] = "无";
-                        result["opentypeParam"] = string.Empty;
+                        result.Type = string.Empty;
+                        result.Param = string.Empty;
                         break;
                     }
                 case "1":
                     {
-                        result["opentype"] = "每周";
-                        switch (opentypeParam)
+                        result.Type = "每周";
+                        switch (param)
                         {
-                            case "0": result["opentypeParam"] = "日"; break;
-                            case "1": result["opentypeParam"] = "一"; break;
-                            case "2": result["opentypeParam"] = "二"; break;
-                            case "3": result["opentypeParam"] = "三"; break;
-                            case "4": result["opentypeParam"] = "四"; break;
-                            case "5": result["opentypeParam"] = "五"; break;
-                            case "6": result["opentypeParam"] = "六"; break;
-                            case "7": result["opentypeParam"] = "日一二三四五六"; break;
+                            case "0": result.Param = "日"; break;
+                            case "1": result.Param = "一"; break;
+                            case "2": result.Param = "二"; break;
+                            case "3": result.Param = "三"; break;
+                            case "4": result.Param = "四"; break;
+                            case "5": result.Param = "五"; break;
+                            case "6": result.Param = "六"; break;
+                            case "7": result.Param = "日一二三四五六"; break;
                             default: break;
                         }
                         break;
                     }
                 case "2":
                     {
-                        result["opentype"] = "完成关卡";
+                        result.Type = "完成关卡";
                         string sql = @"SELECT name FROM quest_master WHERE id={0}";
                         DB db = new DB();
-                        result["opentypeParam"] = opentypeParam + "|" + db.GetString(String.Format(sql, opentypeParam));
+                        result.Param = param + "|" + db.GetString(String.Format(sql, param));
                         break;
                     }
-                case "3":   //unknown
+                case "3":   //not used
                     {
-                        result["opentype"] += "3";
-                        result["opentypeParam"] += opentypeParam;
+                        result.Type += "3";
+                        result.Param += param;
                         break;
                     }
                 case "4":
                     {
-                        result["opentype"] = "开始日期";
-                        result["opentypeParam"] = ParseRTDDate(opentypeParam);
+                        result.Type = "开始日期";
+                        result.Param = ParseRTDDate(param);
                         break;
                     }
                 case "5":
                     {
-                        result["opentype"] = "结束日期";
-                        result["opentypeParam"] = ParseRTDDate(opentypeParam);
+                        result.Type = "结束日期";
+                        result.Param = ParseRTDDate(param);
                         break;
                     }
                 case "6":
                     {
-                        result["opentype"] = "是否关闭";
-                        result["opentypeParam"] = opentypeParam;
+                        result.Type = "是否关闭";
+                        result.Param = param;
                         break;
                     }
                 case "7":
                     {
-                        result["opentype"] = "完成关卡?";
+                        result.Type = "完成关卡";
                         string sql = @"SELECT name FROM quest_master WHERE id={0}";
                         DB db = new DB();
-                        result["opentypeParam"] = opentypeParam + "|" + db.GetString(String.Format(sql, opentypeParam));
+                        result.Param = param + "|" + db.GetString(String.Format(sql, param));
                         break;
                     }
                 case "8":
                     {
-                        result["opentype"] = "SubQuestOnly";
-                        result["opentypeParam"] = opentypeParam;
+                        result.Type = "支线任务";
+                        result.Param = param;
                         break;
                     }
                 case "9":
                     {
-                        result["opentype"] = "不完成关卡";
+                        result.Type = "不完成关卡";
                         string sql = @"SELECT name FROM quest_master WHERE id={0}";
                         DB db = new DB();
-                        result["opentypeParam"] = opentypeParam + "|" + db.GetString(String.Format(sql, opentypeParam));
+                        result.Param = param + "|" + db.GetString(String.Format(sql, param));
                         break;
                     }
                 case "10":
                     {
-                        result["opentype"] = "自身等级大于等于";
-                        result["opentypeParam"] = opentypeParam;
+                        result.Type = "自身等级大于等于";
+                        result.Param = param;
                         break;
                     }
                 case "11":
                     {
-                        result["opentype"] = "自身等级小于等于";
-                        result["opentypeParam"] = opentypeParam;
+                        result.Type = "自身等级小于等于";
+                        result.Param = param;
                         break;
                     }
                 case "12":
                     {
-                        result["opentype"] = "教程通过";
-                        result["opentypeParam"] = opentypeParam;
+                        result.Type = "教程通过";
+                        result.Param = param;
                         break;
                     }
                 case "13":
                     {
-                        result["opentype"] = "教程未通过";
-                        result["opentypeParam"] = opentypeParam;
+                        result.Type = "教程未通过";
+                        result.Param = param;
                         break;
                     }
                 case "14":
                     {
-                        result["opentype"] = "队长限定";
-                        //result["opentypeParam"] = opentypeParam + "|" + ParseUnitName(opentypeParam);
+                        result.Type = "队长限定";
+                        //result.OpentypeParam = opentypeParam + "|" + ParseUnitName(opentypeParam);
                         StringBuilder sb = new StringBuilder();
-                        sb.AppendLine("UnitGroup|" + opentypeParam);
-                        sb.Append(ParseUnitGroupName(opentypeParam));
-                        result["opentypeParam"] = sb.ToString();
+                        sb.AppendLine("角色组|" + param);
+                        sb.Append(ParseUnitGroupName(param));
+                        result.Param = sb.ToString();
                         break;
                     }
                 default:
                     {
-                        result["opentype"] += opentype;
-                        result["opentypeParam"] += opentypeParam;
+                        result.Type += type;
+                        result.Param += param;
                         break;
                     }
             }
@@ -707,46 +727,49 @@ namespace RTDDataProvider
         #region AssignID
 
         public static readonly EnemyEffectAssign[] m_EffectList = new EnemyEffectAssign[]	{
-		new EnemyEffectAssign(1, "ef_atk_blade_01", null),
-		new EnemyEffectAssign(2, "ef_atk_blade_02", null),
-		new EnemyEffectAssign(101, "ef_atk_spear_01", null),
-		new EnemyEffectAssign(102, "ef_atk_spear_02", null),
-		new EnemyEffectAssign(201, "ef_atk_arrow_01", null),
-		new EnemyEffectAssign(202, "ef_atk_arrow_02", null),
-		new EnemyEffectAssign(301, "ef_atk_magic_01", null),
-		new EnemyEffectAssign(302, "ef_atk_magic_03", null),
-		new EnemyEffectAssign(303, "ef_atk_magic_04", null),
-		new EnemyEffectAssign(3, "ef_atk_blade_03", null),
-		new EnemyEffectAssign(103, "ef_atk_spear_03", null),
-		new EnemyEffectAssign(203, "ef_atk_arrow_03", null),
-		new EnemyEffectAssign(4, "ef_atk_blade_01", null),
-		new EnemyEffectAssign(204, "ef_atk_arrow_02", null),
-		new EnemyEffectAssign(104, "ef_atk_spear_02", null),
-		new EnemyEffectAssign(304, "ef_atk_magic_03", null),
-		new EnemyEffectAssign(205, "ef_atk_arrow_01", null),
-		new EnemyEffectAssign(105, "ef_atk_spear_04", null),
-		new EnemyEffectAssign(106, "ef_atk_spear_05", null),
-		new EnemyEffectAssign(305, "ef_atk_magic_01", null),
-		new EnemyEffectAssign(107, "ef_atk_spear_06", null),
-		new EnemyEffectAssign(5, "ef_atk_blade_04", null),
-		new EnemyEffectAssign(6, "ef_atk_blade_02", null),
-		new EnemyEffectAssign(206, "ef_atk_arrow_04", null),
-		new EnemyEffectAssign(7, "ef_atk_blade_02", null),
-		new EnemyEffectAssign(306, "ef_atk_magic_03", null),
-		new EnemyEffectAssign(8, "ef_atk_blade_05", null),
-		new EnemyEffectAssign(207, "ef_atk_arrow_03", null),
-		new EnemyEffectAssign(108, "ef_atk_spear_06", null),
-		new EnemyEffectAssign(9, "ef_atk_blade_06", null),
-		new EnemyEffectAssign(109, "ef_atk_spear_07", null),
-		new EnemyEffectAssign(208, "ef_atk_arrow_05", null),
-		new EnemyEffectAssign(307, "ef_atk_magic_05", null),
-		new EnemyEffectAssign(209, "ef_btl_beam_01", null),
-		new EnemyEffectAssign(308, "ef_atk_magic_04", null),
-		new EnemyEffectAssign(309, "ef_atk_magic_03", null),
-		new EnemyEffectAssign(210, "ef_atk_arrow_05", null),
-		new EnemyEffectAssign(310, "ef_atk_magic_03", null),
-		new EnemyEffectAssign(10, "ef_atk_blade_07", null),
-		new EnemyEffectAssign(110, "ef_atk_spear_08", null)
+		new EnemyEffectAssign(0, "ef_damage", null),
+		new EnemyEffectAssign(1, "ef_damage", null),
+		new EnemyEffectAssign(2, "ef_damage", "ef_fire_01"),
+		new EnemyEffectAssign(3, "ef_tentacle_01", null),
+		new EnemyEffectAssign(4, "ef_beam_01", null),
+		new EnemyEffectAssign(5, "ef_atk_arrow_01_ms", null),
+		new EnemyEffectAssign(6, "ef_atk_arrow_02_ms", null),
+		new EnemyEffectAssign(7, "ef_atk_arrow_03_ms", null),
+		new EnemyEffectAssign(8, "ef_atk_arrow_04_ms", null),
+		new EnemyEffectAssign(9, "ef_atk_blade_01_ms", null),
+		new EnemyEffectAssign(10, "ef_atk_blade_02_ms", null),
+		new EnemyEffectAssign(11, "ef_atk_blade_03_ms", null),
+		new EnemyEffectAssign(12, "ef_atk_blade_04_ms", null),
+		new EnemyEffectAssign(13, "ef_atk_blade_05_ms", null),
+		new EnemyEffectAssign(14, "ef_atk_magic_01_ms", null),
+		new EnemyEffectAssign(15, "ef_atk_magic_03_ms", null),
+		new EnemyEffectAssign(16, "ef_atk_magic_04_ms", null),
+		new EnemyEffectAssign(17, "ef_atk_spear_01_ms", null),
+		new EnemyEffectAssign(18, "ef_atk_spear_02_ms", null),
+		new EnemyEffectAssign(19, "ef_atk_spear_03_ms", null),
+		new EnemyEffectAssign(20, "ef_atk_spear_04_ms", null),
+		new EnemyEffectAssign(21, "ef_atk_spear_05_ms", null),
+		new EnemyEffectAssign(22, "ef_atk_spear_06_ms", null),
+		new EnemyEffectAssign(23, "ef_wall_01", null),
+		new EnemyEffectAssign(24, "ef_btl_thunder_01", null),
+		new EnemyEffectAssign(25, "ef_btl_hurricane_01", null),
+		new EnemyEffectAssign(26, "ef_btl_meteo_01", null),
+		new EnemyEffectAssign(27, "ef_atk_arrow_05_ms", null),
+		new EnemyEffectAssign(28, "ef_atk_blade_06_ms", null),
+		new EnemyEffectAssign(29, "ef_atk_spear_07_ms", null),
+		new EnemyEffectAssign(30, "ef_atk_arrow_06_ms", null),
+		new EnemyEffectAssign(31, "ef_atk_magic_05_ms", null),
+		new EnemyEffectAssign(32, null, "ef_btl_impact_01"),
+		new EnemyEffectAssign(33, null, "ef_btl_breath_dark"),
+		new EnemyEffectAssign(34, null, "ef_btl_blizzard"),
+		new EnemyEffectAssign(35, "ef_fire_02", null),
+		new EnemyEffectAssign(36, null, "ef_beam_02"),
+		new EnemyEffectAssign(37, null, "ef_btl_sparkle"),
+		new EnemyEffectAssign(38, "ef_btl_meteo_02", null),
+		new EnemyEffectAssign(39, "ef_atk_blade_07_ms", null),
+		new EnemyEffectAssign(40, "ef_atk_spear_08_ms", null),
+		new EnemyEffectAssign(41, "ef_atk_blade_08_ms", null),
+		new EnemyEffectAssign(42, "ef_atk_arrow_07_ms", null)
 	};
         #endregion
         public static AssignID ParseUnitKind(int kind)

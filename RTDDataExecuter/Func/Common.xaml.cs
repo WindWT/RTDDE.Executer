@@ -53,6 +53,7 @@ FROM LOGIN_BONUS_MASTER order by day"}
         {
             string sql = CommonSQLTextBox.Text;
             Utility.BindData(CommonDataGrid, sql);
+            Utility.ShowException("SQL Executed.");
         }
     }
 }

@@ -43,25 +43,13 @@ namespace RTDDataExecuter
             QuestInfo_id.Text = eqInfo_id;
             Task<DataTable> task = new Task<DataTable>(() =>
             {
-                string sql = @"SELECT id,name,pt_num,difficulty,stamina,soul,
-reward_money,reward_exp,reward_soul,category,reward_money_limit,reward_exp_limit,sp_guide_id,
+                string sql = @"SELECT *,
 (select name from quest_category_master where quest_category_master.id=category) as category_name,
 (select text from quest_category_master where quest_category_master.id=category) as category_text,
 (select banner from quest_category_master where quest_category_master.id=category) as category_banner,
-open_type_1,open_param_1,
-open_type_2,open_param_2,
-open_type_3,open_param_3,
-open_type_4,open_param_4,
-open_type_5,open_param_5,
-open_type_6,open_param_6,
 (SELECT target_name FROM SP_EVENT_MASTER where SP_EVENT_MASTER.sp_event_id=quest_master.sp_event_id) as sp_event_name,
-sp_event_id,
 (SELECT target_name FROM SP_EVENT_MASTER where SP_EVENT_MASTER.sp_event_id=quest_master.open_sp_event_id) as open_sp_event_name,open_sp_event_point,
-bonus_type,bonus_start,bonus_end,
-present_type,present_param,present_param_1,
 (case when present_type=4 then (select name from unit_master where unit_master.id=quest_master.present_param) else present_param end) as present_param_name ,
-panel_sword,panel_lance,panel_archer,panel_cane,panel_heart,panel_sp,
-bgm_f,bgm_b,banner,h_id,h_lv,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_0) as challenge0,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_1) as challenge1,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_2) as challenge2
@@ -69,9 +57,9 @@ bgm_f,bgm_b,banner,h_id,h_lv,
                 DB db = new DB();
                 return db.GetData(String.Format(sql, eqInfo_id));
             });
-            Task<List<Dictionary<string, string>>> taskParse = new Task<List<Dictionary<string, string>>>(() =>
+            Task<List<OpenType>> taskParse = new Task<List<OpenType>>(() =>
             {
-                List<Dictionary<string, string>> opentypeList = new List<Dictionary<string, string>>();
+                List<OpenType> opentypeList = new List<OpenType>();
                 Task.WaitAll(task);
                 if (task.Result == null || task.Result.Rows.Count == 0)
                 {
@@ -84,6 +72,10 @@ bgm_f,bgm_b,banner,h_id,h_lv,
                 opentypeList.Add(Utility.ParseOpentype(dr["open_type_4"].ToString(), dr["open_param_4"].ToString()));
                 opentypeList.Add(Utility.ParseOpentype(dr["open_type_5"].ToString(), dr["open_param_5"].ToString()));
                 opentypeList.Add(Utility.ParseOpentype(dr["open_type_6"].ToString(), dr["open_param_6"].ToString()));
+                opentypeList.Add(Utility.ParseOpentype(dr["open_type_7"].ToString(), dr["open_param_7"].ToString()));
+                opentypeList.Add(Utility.ParseOpentype(dr["open_type_8"].ToString(), dr["open_param_8"].ToString()));
+                opentypeList.Add(new OpenType(dr["open_sp_event_name"].ToString(), dr["open_sp_event_point"].ToString()));
+                opentypeList.RemoveAll(o => string.IsNullOrEmpty(o.Type));
                 return opentypeList;
             }
             );
@@ -123,29 +115,24 @@ bgm_f,bgm_b,banner,h_id,h_lv,
                 QuestInfo_h_name.Text = Utility.ParseUnitName(dr["h_id"].ToString());
                 QuestInfo_h_lv.Text = dr["h_lv"].ToString();
 
-                QuestInfo_opentype1_name.Text = t.Result[0]["opentype"];
-                QuestInfo_opentype1_value.Text = t.Result[0]["opentypeParam"];
-                QuestInfo_opentype2_name.Text = t.Result[1]["opentype"];
-                QuestInfo_opentype2_value.Text = t.Result[1]["opentypeParam"];
-                QuestInfo_opentype3_name.Text = t.Result[2]["opentype"];
-                QuestInfo_opentype3_value.Text = t.Result[2]["opentypeParam"];
-                QuestInfo_opentype4_name.Text = t.Result[3]["opentype"];
-                QuestInfo_opentype4_value.Text = t.Result[3]["opentypeParam"];
-                QuestInfo_opentype5_name.Text = t.Result[4]["opentype"];
-                QuestInfo_opentype5_value.Text = t.Result[4]["opentypeParam"];
-                QuestInfo_opentype6_name.Text = t.Result[5]["opentype"];
-                QuestInfo_opentype6_value.Text = t.Result[5]["opentypeParam"];
-                if (string.IsNullOrWhiteSpace(dr["open_sp_event_name"].ToString()))
+                QuestInfo_open_date.Text = Utility.ParseRTDDate(dr["open_date"].ToString());
+                QuestInfo_close_date.Text = Utility.ParseRTDDate(dr["close_date"].ToString());
+
+                QuestInfo_opentype.Children.Clear();
+                foreach (OpenType type in t.Result)
                 {
-                    QuestInfo_open_sp_event_name.Visibility = Visibility.Collapsed;
-                    QuestInfo_open_sp_event_point.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    QuestInfo_open_sp_event_name.Visibility = Visibility.Visible;
-                    QuestInfo_open_sp_event_point.Visibility = Visibility.Visible;
-                    QuestInfo_open_sp_event_name.Text = dr["open_sp_event_name"].ToString();
-                    QuestInfo_open_sp_event_point.Text = dr["open_sp_event_point"].ToString();
+                    QuestInfo_opentype.Children.Add(new TextBox()
+                    {
+                        Text = type.Type,
+                        Width = 75,
+                        IsReadOnly = true
+                    });
+                    QuestInfo_opentype.Children.Add(new TextBox()
+                    {
+                        Text = type.Param,
+                        Width = 225,
+                        IsReadOnly = true
+                    });
                 }
 
                 if (string.IsNullOrWhiteSpace(dr["sp_event_id"].ToString())
