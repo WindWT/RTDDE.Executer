@@ -110,7 +110,7 @@
     <Compile Include="Func\Common.xaml.cs">
       <DependentUpon>Common.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Config.xaml.cs">
+    <Compile Include="Func\Config.xaml.cs">
       <DependentUpon>Config.xaml</DependentUpon>
     </Compile>
     <Compile Include="Func\Guide.xaml.cs">
@@ -124,6 +124,9 @@
     </Compile>
     <Compile Include="Func\QuestCategory.xaml.cs">
       <DependentUpon>QuestCategory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Func\Accessory.xaml.cs">
+      <DependentUpon>Accessory.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\Settings.cs" />
     <Compile Include="Func\Skill.xaml.cs">
@@ -144,7 +147,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Config.xaml">
+    <Page Include="Func\Config.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -167,6 +170,10 @@
     <Page Include="Func\Skill.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Func\Accessory.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

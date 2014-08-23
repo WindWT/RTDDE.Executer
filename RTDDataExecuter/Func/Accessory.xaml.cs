@@ -20,9 +20,9 @@ namespace RTDDataExecuter
     /// <summary>
     /// Skill1.xaml 的交互逻辑
     /// </summary>
-    public partial class Skill : UserControl
+    public partial class Accessory : UserControl
     {
-        public Skill()
+        public Accessory()
         {
             InitializeComponent();
             SkillTypeRadio_Party.IsChecked = true;  //set it here instead of xaml

@@ -54,7 +54,7 @@
                 <ToggleButton Grid.Column="3"  Name="Unit_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Unit</ToggleButton>
                 <ToggleButton Grid.Column="4"  Name="Skill_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Skill</ToggleButton>
                 <ToggleButton Grid.Column="5"  Name="Guide_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Guide</ToggleButton>
-                <ToggleButton Grid.Column="6"  Name="Common_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Common</ToggleButton>                
+                <ToggleButton Grid.Column="6"  Name="Accessory_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Accessory</ToggleButton>
                 <ToggleButton Grid.Column="8"  Name="Config_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Config</ToggleButton>
                 <Button Grid.Column="9" Name="MinimizedButton" Width="36" Click="MinimizedButton_Click"></Button>
                 <Button Grid.Column="10" Name="CloseButton" Width="36" Style="{StaticResource CloseButton}" Click="CloseButton_Click"></Button>
@@ -66,7 +66,7 @@
                 <local:Unit x:Name="Unit"/>
                 <local:Skill x:Name="Skill"/>
                 <local:Guide x:Name="Guide" />
-                <local:Common x:Name="Common" />
+                <local:Accessory x:Name="Accessory" />
                 <local:Config x:Name="Config" />
                 <local:Diff x:Name="Diff" />
             </Grid>
