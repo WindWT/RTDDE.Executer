@@ -167,9 +167,9 @@ namespace RTDDataExecuter
                 else
                 {
                     QuestInfo_challenge.Visibility = Visibility.Visible;
-                    QuestInfo_challenge_gold.Document = Utility.parseTextToDocument(dr["challenge2"].ToString());
-                    QuestInfo_challenge_silver.Document = Utility.parseTextToDocument(dr["challenge1"].ToString());
-                    QuestInfo_challenge_bronze.Document = Utility.parseTextToDocument(dr["challenge0"].ToString());
+                    QuestInfo_challenge_gold.Document = Utility.ParseTextToDocument(dr["challenge2"].ToString());
+                    QuestInfo_challenge_silver.Document = Utility.ParseTextToDocument(dr["challenge1"].ToString());
+                    QuestInfo_challenge_bronze.Document = Utility.ParseTextToDocument(dr["challenge0"].ToString());
                 }
 
                 QuestInfo_present_type.Text = Utility.ParsePresenttype(dr["present_type"].ToString());

@@ -17,7 +17,7 @@ namespace RTDDataExecuter
 {
     public sealed class Utility : UtilityBase
     {
-        public static FlowDocument parseTextToDocument(string text)
+        public static FlowDocument ParseTextToDocument(string text)
         {
             var flowDoc = new FlowDocument();
             //string[] textParas = text.Split(new string[] { "\\n" }, StringSplitOptions.None);

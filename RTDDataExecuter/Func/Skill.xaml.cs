@@ -116,7 +116,7 @@ namespace RTDDataExecuter
 
                     partySkill_id.Text = sm.id.ToString();
                     partySkill_name.Text = sm.name;
-                    partySkill_text.Document = Utility.parseTextToDocument(sm.text);
+                    partySkill_text.Document = Utility.ParseTextToDocument(sm.text);
                     partySkill_type.Text = Utility.ParseSkillType((PassiveSkillType)sm.type);
                     partySkill_attribute.Text = Utility.ParseAttributetype(sm.attribute);
                     partySkill_sub_attr.Text = Utility.ParseAttributetype(sm.sub_attr);
@@ -199,7 +199,7 @@ namespace RTDDataExecuter
 
                     activeSkill_id.Text = sm.id.ToString();
                     activeSkill_name.Text = sm.name;
-                    activeSkill_text.Document = Utility.parseTextToDocument(sm.text);
+                    activeSkill_text.Document = Utility.ParseTextToDocument(sm.text);
                     activeSkill_type.Text = Utility.ParseSkillType((ActiveSkillType)sm.type);
                     activeSkill_attribute.Text = Utility.ParseAttributetype(sm.attribute);
                     activeSkill_sub_attr.Text = Utility.ParseAttributetype(sm.sub_attr);
@@ -283,7 +283,7 @@ namespace RTDDataExecuter
 
                     panelSkill_id.Text = sm.id.ToString();
                     panelSkill_name.Text = sm.name;
-                    panelSkill_text.Document = Utility.parseTextToDocument(sm.text);
+                    panelSkill_text.Document = Utility.ParseTextToDocument(sm.text);
                     panelSkill_type.Text = Utility.ParseSkillType((PanelSkillType)sm.type);
                     panelSkill_attribute.Text = Utility.ParseAttributetype(sm.attribute);
                     panelSkill_style.Text = Utility.ParseStyletype(sm.style);

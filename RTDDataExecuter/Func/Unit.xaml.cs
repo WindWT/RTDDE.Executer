@@ -306,7 +306,7 @@ WHERE id={0}";
                 int set_pt = Convert.ToInt32(unitData["set_pt"]);
                 UnitInfo_pt.Text = ((int)((float)(thislevel - 1) * Math.Pow((float)set_pt, 0.5f) + (float)set_pt)).ToString("0");
                 //story
-                var storyDoc = Utility.parseTextToDocument(unitData["story"].ToString());
+                var storyDoc = Utility.ParseTextToDocument(unitData["story"].ToString());
                 storyDoc.TextAlignment = TextAlignment.Center;
                 UnitInfo_story.Padding = new Thickness(7, 0, 7, 0);
                 UnitInfo_story.Document = storyDoc;
@@ -337,14 +337,15 @@ WHERE id={0}";
                 {
                     UnitAccessoryExpander.Visibility = Visibility.Visible;
                     DataRow unitAccessory = taskAccessory.Result.Rows[0];
-                    accessory_type.Text = unitAccessory["type"].ToString();
+                    accessory_id.Text = unitAccessory["id"].ToString();
                     accessory_name.Text = unitAccessory["name"].ToString();
-                    accessory_detail.Document = Utility.parseTextToDocument(unitAccessory["detail"].ToString());
+                    accessory_type.Text = Utility.ParseAccessoryType(Convert.ToInt32(unitAccessory["type"]));
+                    accessory_detail.Document = Utility.ParseTextToDocument(unitAccessory["detail"].ToString());
                     accessory_num_01.Text = unitAccessory["num_01"].ToString();
                     accessory_num_02.Text = unitAccessory["num_02"].ToString();
                     accessory_num_03.Text = unitAccessory["num_03"].ToString();
                     accessory_num_04.Text = unitAccessory["num_04"].ToString();
-                    accessory_conv_money.Text=unitAccessory["conv_money"].ToString();
+                    accessory_conv_money.Text = unitAccessory["conv_money"].ToString();
                     accessory_style.Text = Utility.ParseStyletype(Convert.ToInt32(unitAccessory["style"]));
                     accessory_attribute.Text = Utility.ParseAttributetype(Convert.ToByte(unitAccessory["attribute"]));
                     accessory_su_a1.Text = Utility.ParseAttributetype(Convert.ToByte(unitAccessory["su_a1"]));
@@ -366,7 +367,7 @@ WHERE id={0}";
 
             partySkill_id.Text = skill.id.ToString();
             partySkill_name.Text = skill.name;
-            partySkill_text.Document = Utility.parseTextToDocument(skill.text);
+            partySkill_text.Document = Utility.ParseTextToDocument(skill.text);
             partySkill_attribute.Text = Utility.ParseAttributetype(skill.attribute);
             partySkill_sub_attr.Text = Utility.ParseAttributetype(skill.sub_attr);
             partySkill_style.Text = Utility.ParseStyletype(skill.style);
@@ -387,7 +388,7 @@ WHERE id={0}";
 
             activeSkill_id.Text = skill.id.ToString();
             activeSkill_name.Text = skill.name;
-            activeSkill_text.Document = Utility.parseTextToDocument(skill.text);
+            activeSkill_text.Document = Utility.ParseTextToDocument(skill.text);
             activeSkill_attribute.Text = Utility.ParseAttributetype(skill.attribute);
             activeSkill_sub_attr.Text = Utility.ParseAttributetype(skill.sub_attr);
             activeSkill_style.Text = Utility.ParseStyletype(skill.style);
@@ -411,7 +412,7 @@ WHERE id={0}";
 
             panelSkill_id.Text = skill.id.ToString();
             panelSkill_name.Text = skill.name;
-            panelSkill_text.Document = Utility.parseTextToDocument(skill.text);
+            panelSkill_text.Document = Utility.ParseTextToDocument(skill.text);
             panelSkill_attribute.Text = Utility.ParseAttributetype(skill.attribute);
             panelSkill_style.Text = Utility.ParseStyletype(skill.style);
             panelSkill_type.Text = Utility.ParseSkillType((PanelSkillType)skill.type);

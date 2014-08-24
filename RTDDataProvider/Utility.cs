@@ -227,6 +227,34 @@ namespace RTDDataProvider
         DAMAGE_AND_UNLIMITED = 28,
         ONE_SOULGET_TWO_LIFEFULLHEAL = 29,
     }
+    public enum AccessoryType
+    {
+        NONE,
+        BASE_PARAM_FIXED,
+        BASE_PARAM_RATE,
+        ELEMENT_DRAGON_ENHANCE,
+        SUPER_ATTACK_GRADEUP,
+        CUTIN_GRADEUP,
+        CHAIN_SUPPORT,
+        WEAKNESS_ATTACK,
+        ELEMENTAL_ATTACK,
+        SUPER_DEFENCE,
+        FIRST_ATTACK,
+        ATTACK_ENEMY_DELAY,
+        ATTACK_LIFE_RECOVER,
+        ATTACK_POWER_RISE,
+        COUNTERRATE_ATTACKUP,
+        ATTRIBUTE_CORRECTION_STARTUP,
+        TREASURE_SOUL,
+        ATTACK_ENHANCE_STEPS,
+        ATTACK_ENHANCE_KNOCKDOWN,
+        MOB_KILLER,
+        ELE_DRA_ENH_PARAM_FIXED,
+        CHAIN_SUPPORT_ELE_ENH_PARAM,
+        WEAKNESS_ATTACK_ELE_ENH_PARAM,
+        COUNTERRATEUP_ELE_ENH_PARAM,
+        MAX,
+    }
     public enum SkillPhase
     {
         MOVE = 1,
@@ -677,7 +705,14 @@ namespace RTDDataProvider
         }
         public static string ParseAttributetype(int attributetype)
         {
-            return ParseRealAttributetype(attributetype).ToString();
+            if (attributetype <= 5)
+            {
+                return ParseRealAttributetype(attributetype).ToString();
+            }
+            else
+            {
+                return attributetype.ToString();
+            }
         }
         private static UnitAttribute ParseRealAttributetype(int attributetype)
         {
@@ -816,9 +851,13 @@ namespace RTDDataProvider
                 default: return string.Empty;
             }
         }
-        public static string ParseSkillType<T>(T skilltype)
+        public static string ParseSkillType<T>(T skillType)
         {
-            return skilltype.ToString();
+            return skillType.ToString();
+        }
+        public static string ParseAccessoryType(int type)
+        {
+            return ((AccessoryType)type).ToString();
         }
         public static string ParseEnemyType(int type)
         {

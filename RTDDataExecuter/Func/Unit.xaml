@@ -222,8 +222,10 @@
                         <WrapPanel Name="UnitInfo_Accessory">
                             <Separator Width="300"/>
                             <TextBlock Text="name" Width="50"/>
+                            <TextBox Name="accessory_id" Width="50" IsReadOnly="True"></TextBox>
                             <TextBox Name="accessory_name" Width="200" IsReadOnly="True"></TextBox>
-                            <TextBox Name="accessory_type" Width="50" IsReadOnly="True"></TextBox>
+                            <TextBlock Text="type" Width="50"/>
+                            <TextBox Name="accessory_type" Width="250" IsReadOnly="True"></TextBox>
                             <TextBlock Text="detail" Width="50"/>
                             <RichTextBox Name="accessory_detail" Width="250" IsReadOnly="True"></RichTextBox>
                             <TextBox Name="accessory_num_01" Width="75" IsReadOnly="True"></TextBox>
