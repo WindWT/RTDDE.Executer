@@ -85,6 +85,7 @@ namespace RTDDataProvider.MasterData
         public int bb;
         public int hi;
         public int hl;
+        public int eci;
 
         public int id
         {
@@ -995,6 +996,18 @@ namespace RTDDataProvider.MasterData
             set
             {
                 this.hl = value;
+            }
+        }
+
+        public int event_cutin_id
+        {
+            get
+            {
+                return this.eci;
+            }
+            set
+            {
+                this.eci = value;
             }
         }
     }
