@@ -48,8 +48,7 @@
                 <TextBox Name="partySkill_id" Width="50" IsReadOnly="True"></TextBox>
                 <TextBlock Text="name" Width="50"/>
                 <TextBox Name="partySkill_name" Width="150" IsReadOnly="True"></TextBox>
-                <TextBlock Text="text" Width="50"/>
-                <RichTextBox Name="partySkill_text" Width="250" IsReadOnly="True"></RichTextBox>
+                <RichTextBox Name="partySkill_text" Width="300" IsReadOnly="True"></RichTextBox>
                 <TextBlock Text="type" Width="50"/>
                 <TextBox Name="partySkill_type" Width="250" IsReadOnly="True"></TextBox>
                 <TextBlock Text="attribute" Width="50"/>
@@ -73,8 +72,7 @@
                 <TextBox Name="activeSkill_id" Width="50" IsReadOnly="True"></TextBox>
                 <TextBlock Text="name" Width="50"/>
                 <TextBox Name="activeSkill_name" Width="150" IsReadOnly="True"></TextBox>
-                <TextBlock Text="text" Width="50"/>
-                <RichTextBox Name="activeSkill_text" Width="250" IsReadOnly="True"></RichTextBox>
+                <RichTextBox Name="activeSkill_text" Width="300" IsReadOnly="True"></RichTextBox>
                 <TextBlock Text="phase" Width="50"/>
                 <TextBox Name="activeSkill_phase" Width="100" IsReadOnly="True"></TextBox>
                 <TextBlock Text="soul" Width="50"/>
@@ -104,8 +102,7 @@
                 <TextBox Name="panelSkill_id" Width="50" IsReadOnly="True"></TextBox>
                 <TextBlock Text="name" Width="50"/>
                 <TextBox Name="panelSkill_name" Width="150" IsReadOnly="True"></TextBox>
-                <TextBlock Text="text" Width="50"/>
-                <RichTextBox Name="panelSkill_text" Width="250" IsReadOnly="True"></RichTextBox>
+                <RichTextBox Name="panelSkill_text" Width="300" IsReadOnly="True"></RichTextBox>
                 <TextBlock Text="phase" Width="50"/>
                 <TextBox Name="panelSkill_phase" Width="100" IsReadOnly="True"></TextBox>
                 <TextBlock Text="duplication" Width="50"/>

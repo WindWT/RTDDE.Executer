@@ -532,22 +532,25 @@ namespace RTDDataProvider
     {
         public string Type { get; set; }
         public string Param { get; set; }
+        public int Group { get; set; }
         public OpenType()
         {
             Type = "未知";
             Param = string.Empty;
         }
-        public OpenType(string type, string param)
+        public OpenType(string type, string param, int group)
         {
             Type = type;
             Param = param;
+            Group = group;
         }
     }
     public class UtilityBase
     {
-        public static OpenType ParseOpentype(string type, string param)
+        public static OpenType ParseOpentype(string type, string param, int group)
         {
             OpenType result = new OpenType();
+            result.Group = group;
             switch (type)
             {
                 case "0":

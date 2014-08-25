@@ -66,15 +66,14 @@ namespace RTDDataExecuter
                     return null;
                 }
                 DataRow dr = task.Result.Rows[0];
-                opentypeList.Add(Utility.ParseOpentype(dr["open_type_1"].ToString(), dr["open_param_1"].ToString()));
-                opentypeList.Add(Utility.ParseOpentype(dr["open_type_2"].ToString(), dr["open_param_2"].ToString()));
-                opentypeList.Add(Utility.ParseOpentype(dr["open_type_3"].ToString(), dr["open_param_3"].ToString()));
-                opentypeList.Add(Utility.ParseOpentype(dr["open_type_4"].ToString(), dr["open_param_4"].ToString()));
-                opentypeList.Add(Utility.ParseOpentype(dr["open_type_5"].ToString(), dr["open_param_5"].ToString()));
-                opentypeList.Add(Utility.ParseOpentype(dr["open_type_6"].ToString(), dr["open_param_6"].ToString()));
-                opentypeList.Add(Utility.ParseOpentype(dr["open_type_7"].ToString(), dr["open_param_7"].ToString()));
-                opentypeList.Add(Utility.ParseOpentype(dr["open_type_8"].ToString(), dr["open_param_8"].ToString()));
-                opentypeList.Add(new OpenType(dr["open_sp_event_name"].ToString(), dr["open_sp_event_point"].ToString()));
+                for (int i = 1; i <= 8; i++)
+                {
+                    string opentype = "open_type_" + i.ToString();
+                    string openparam = "open_param_" + i.ToString();
+                    string opengroup = "open_group_" + i.ToString();
+                    opentypeList.Add(Utility.ParseOpentype(dr[opentype].ToString(), dr[openparam].ToString(), Convert.ToInt32(dr[opengroup])));
+                }
+                opentypeList.Add(new OpenType(dr["open_sp_event_name"].ToString(), dr["open_sp_event_point"].ToString(), 0));
                 opentypeList.RemoveAll(o => string.IsNullOrEmpty(o.Type));
                 return opentypeList;
             }
@@ -109,6 +108,8 @@ namespace RTDDataExecuter
                 QuestInfo_bgm_f.Text = dr["bgm_f"].ToString();
                 QuestInfo_bgm_b.Text = dr["bgm_b"].ToString();
                 QuestInfo_sp_guide_id.Text = dr["sp_guide_id"].ToString();
+                QuestInfo_event_cutin_id.Text = dr["event_cutin_id"].ToString();
+
                 QuestInfo_banner.Text = Utility.ParseText(dr["banner"].ToString());
 
                 QuestInfo_h_id.Text = dr["h_id"].ToString();
@@ -124,13 +125,19 @@ namespace RTDDataExecuter
                     QuestInfo_opentype.Children.Add(new TextBox()
                     {
                         Text = type.Type,
-                        Width = 75,
+                        Width = 60,
                         IsReadOnly = true
                     });
                     QuestInfo_opentype.Children.Add(new TextBox()
                     {
                         Text = type.Param,
-                        Width = 225,
+                        Width = 200,
+                        IsReadOnly = true
+                    });
+                    QuestInfo_opentype.Children.Add(new TextBox()
+                    {
+                        Text = type.Group.ToString(),
+                        Width = 40,
                         IsReadOnly = true
                     });
                 }

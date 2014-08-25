@@ -53,14 +53,16 @@
             <TextBox Name="QuestInfo_reward_exp" Width="50" IsReadOnly="True"></TextBox>
             <TextBlock Text="init_soul" Width="50"/>
             <TextBox Name="QuestInfo_soul" Width="50" IsReadOnly="True"></TextBox>
+            <TextBlock Text="bgm_f" Width="50"/>
+            <TextBox Name="QuestInfo_bgm_f" Width="100" IsReadOnly="True"></TextBox>
+            <TextBlock Text="bgm_b" Width="50"/>
+            <TextBox Name="QuestInfo_bgm_b" Width="100" IsReadOnly="True"></TextBox>
             <TextBlock Text="money_limit" Width="75"/>
             <TextBox Name="QuestInfo_reward_money_limit" Width="75" IsReadOnly="True"></TextBox>
             <TextBlock Text="exp_limit" Width="75"/>
             <TextBox Name="QuestInfo_reward_exp_limit" Width="75" IsReadOnly="True"></TextBox>
-            <TextBlock Text="bgm_f" Width="50"/>
-            <TextBox Name="QuestInfo_bgm_f" Width="25" IsReadOnly="True"></TextBox>
-            <TextBlock Text="bgm_b" Width="50"/>
-            <TextBox Name="QuestInfo_bgm_b" Width="25" IsReadOnly="True"></TextBox>
+            <TextBlock Text="event_cutin_id" Width="75"/>
+            <TextBox Name="QuestInfo_event_cutin_id" Width="75" IsReadOnly="True"></TextBox>
             <TextBlock Text="sp_guide_id" Width="75"/>
             <TextBox Name="QuestInfo_sp_guide_id" Width="75" IsReadOnly="True"></TextBox>
             <TextBlock Text="helper" Width="50"/>
@@ -113,9 +115,9 @@
                     <TextBox Name="QuestInfo_panel_heart" Width="25" IsReadOnly="True"></TextBox>
                     <TextBox Name="QuestInfo_panel_sp" Width="25" IsReadOnly="True"></TextBox>
                     <Separator Width="300"/>
-                    <TextBlock Text="opentype" Width="75"/>
-                    <TextBlock Text="param" Width="175"/>
-                    <TextBlock Text="group" Width="50"/>
+                    <TextBlock Text="opentype" Width="60"/>
+                    <TextBlock Text="param" Width="200"/>
+                    <TextBlock Text="group" Width="40"/>
                     <WrapPanel Name="QuestInfo_opentype"></WrapPanel>
                     <Separator Width="300"/>
                 </WrapPanel>

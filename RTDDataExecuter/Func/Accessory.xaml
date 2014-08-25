@@ -45,8 +45,7 @@
                 <TextBlock Text="unit" Width="50"/>
                 <TextBox Name="Accessory_unit_g_id" Width="50" IsReadOnly="True"></TextBox>
                 <TextBox Name="Accessory_unit_name" Width="200" IsReadOnly="True"></TextBox>
-                <TextBlock Text="detail" Width="50"/>
-                <RichTextBox Name="Accessory_detail" Width="250" IsReadOnly="True"></RichTextBox>
+                <RichTextBox Name="Accessory_detail" Width="300" IsReadOnly="True"></RichTextBox>
                 <TextBlock Text="type" Width="50"/>
                 <TextBox Name="Accessory_type" Width="250" IsReadOnly="True"></TextBox>
                 <TextBlock Text="conv_money" Width="50"/>
