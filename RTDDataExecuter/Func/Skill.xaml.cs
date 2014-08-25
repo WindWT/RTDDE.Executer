@@ -387,6 +387,15 @@ namespace RTDDataExecuter
             SkillInfo_PanelSkill.Visibility = Visibility.Collapsed;
             SkillUnitRankInfo.Children.Clear();
             Utility.BindData(SkillDataGrid, "select id,type,name from party_skill_master order by type,id");
+            var typeDict = new Dictionary<string, string>()
+            {
+                {"------",""},
+            };
+            foreach (PassiveSkillType type in Enum.GetValues(typeof(PassiveSkillType)))
+            {
+                typeDict.Add(type.ToString(), ((int)type).ToString());
+            }
+            SkillSearch_type.ItemsSource = typeDict;
         }
         private void SkillTypeRadio_Active_Checked(object sender, RoutedEventArgs e)
         {
@@ -395,6 +404,15 @@ namespace RTDDataExecuter
             SkillInfo_PanelSkill.Visibility = Visibility.Collapsed;
             SkillUnitRankInfo.Children.Clear();
             Utility.BindData(SkillDataGrid, "select id,type,name from active_skill_master order by type,id");
+            var typeDict = new Dictionary<string, string>()
+            {
+                {"------",""},
+            };
+            foreach (ActiveSkillType type in Enum.GetValues(typeof(ActiveSkillType)))
+            {
+                typeDict.Add(type.ToString(), ((int)type).ToString());
+            }
+            SkillSearch_type.ItemsSource = typeDict;
         }
         private void SkillTypeRadio_Panel_Checked(object sender, RoutedEventArgs e)
         {
@@ -403,6 +421,15 @@ namespace RTDDataExecuter
             SkillInfo_PanelSkill.Visibility = Visibility.Visible;
             SkillUnitRankInfo.Children.Clear();
             Utility.BindData(SkillDataGrid, "select id,type,name from panel_skill_master order by type,id");
+            var typeDict = new Dictionary<string, string>()
+            {
+                {"------",""},
+            };
+            foreach (PanelSkillType type in Enum.GetValues(typeof(PanelSkillType)))
+            {
+                typeDict.Add(type.ToString(), ((int)type).ToString());
+            }
+            SkillSearch_type.ItemsSource = typeDict;
         }
         private string GetSkillTableByRadioChecked()
         {
@@ -445,9 +472,9 @@ namespace RTDDataExecuter
             {
                 sql += "name LIKE '%" + SkillSearch_name.Text.Trim() + "%' AND ";
             }
-            if (String.IsNullOrWhiteSpace(SkillSearch_type.Text) == false)
+            if (String.IsNullOrWhiteSpace((string)SkillSearch_type.SelectedValue) == false)
             {
-                sql += "type=" + SkillSearch_type.Text.Trim() + " AND ";
+                sql += "type=" + SkillSearch_type.SelectedValue.ToString() + " AND ";
             }
             if (String.IsNullOrWhiteSpace((string)SkillSearch_attribute.SelectedValue) == false)
             {

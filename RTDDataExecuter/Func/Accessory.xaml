@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="AccessoryDataGrid" AutoGenerateColumns="True" SelectionChanged="AccessoryDataGrid_SelectionChanged"  FrozenColumnCount="1" ></DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="0">
-            <Expander Width="300" BorderThickness="0" Name="AccessorySearchExpander" IsExpanded="True">
+            <Expander Width="300" BorderThickness="0" Name="AccessorySearchExpander" IsExpanded="False">
                 <Expander.Header>
                     <Label Content="Search"></Label>
                 </Expander.Header>

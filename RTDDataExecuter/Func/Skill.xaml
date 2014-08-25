@@ -35,7 +35,7 @@
                         <TextBlock Text="name" Width="50"/>
                         <TextBox Name="SkillSearch_name" Width="250" TextChanged="SkillSearch_TextChanged"></TextBox>
                         <TextBlock Text="type" Width="50"/>
-                        <TextBox Name="SkillSearch_type" Width="100" TextChanged="SkillSearch_TextChanged"></TextBox>
+                        <ComboBox Name="SkillSearch_type" Width="100"></ComboBox>
                         <TextBlock Text="attribute" Width="50"/>
                         <ComboBox Name="SkillSearch_attribute" Width="100"></ComboBox>
                         <!--<ComboBox Name="SkillSearch_sub_attr" Width="75"></ComboBox>-->
