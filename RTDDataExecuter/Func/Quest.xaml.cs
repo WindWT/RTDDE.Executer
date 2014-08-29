@@ -192,21 +192,27 @@ namespace RTDDataExecuter
             string sql = @"SELECT id,name,stamina,
 (select name from quest_category_master where quest_category_master.id=category) as category,
        ( CASE
+                WHEN open_date<>0 THEN open_date
                 WHEN open_type_1 = 4 THEN open_param_1 
                 WHEN open_type_2 = 4 THEN open_param_2 
                 WHEN open_type_3 = 4 THEN open_param_3 
                 WHEN open_type_4 = 4 THEN open_param_4 
                 WHEN open_type_5 = 4 THEN open_param_5 
                 WHEN open_type_6 = 4 THEN open_param_6 
+                WHEN open_type_7 = 4 THEN open_param_7
+                WHEN open_type_8 = 4 THEN open_param_8
                 ELSE 0 
        END ) AS start,
        ( CASE
+                WHEN close_date<>0 THEN close_date
                 WHEN open_type_1 = 5 THEN open_param_1 
                 WHEN open_type_2 = 5 THEN open_param_2 
                 WHEN open_type_3 = 5 THEN open_param_3 
                 WHEN open_type_4 = 5 THEN open_param_4 
                 WHEN open_type_5 = 5 THEN open_param_5 
                 WHEN open_type_6 = 5 THEN open_param_6 
+                WHEN open_type_7 = 5 THEN open_param_7
+                WHEN open_type_8 = 5 THEN open_param_8
                 ELSE 0 
        END ) AS [end]
   FROM quest_master
@@ -226,24 +232,32 @@ namespace RTDDataExecuter
                 WHEN open_type_4 = 1 THEN open_param_4 
                 WHEN open_type_5 = 1 THEN open_param_5 
                 WHEN open_type_6 = 1 THEN open_param_6 
+                WHEN open_type_7 = 1 THEN open_param_7
+                WHEN open_type_8 = 1 THEN open_param_8
                 ELSE -1
        END ) AS DayOfWeek,
        ( CASE
+                WHEN open_date<>0 THEN open_date
                 WHEN open_type_1 = 4 THEN open_param_1 
                 WHEN open_type_2 = 4 THEN open_param_2 
                 WHEN open_type_3 = 4 THEN open_param_3 
                 WHEN open_type_4 = 4 THEN open_param_4 
                 WHEN open_type_5 = 4 THEN open_param_5 
                 WHEN open_type_6 = 4 THEN open_param_6 
+                WHEN open_type_7 = 4 THEN open_param_7
+                WHEN open_type_8 = 4 THEN open_param_8
                 ELSE 0 
        END ) AS start,
        ( CASE
+                WHEN close_date<>0 THEN close_date
                 WHEN open_type_1 = 5 THEN open_param_1 
                 WHEN open_type_2 = 5 THEN open_param_2 
                 WHEN open_type_3 = 5 THEN open_param_3 
                 WHEN open_type_4 = 5 THEN open_param_4 
                 WHEN open_type_5 = 5 THEN open_param_5 
                 WHEN open_type_6 = 5 THEN open_param_6 
+                WHEN open_type_7 = 5 THEN open_param_7
+                WHEN open_type_8 = 5 THEN open_param_8
                 ELSE 0 
        END ) AS [end],
        ( CASE
@@ -253,6 +267,8 @@ namespace RTDDataExecuter
                 WHEN open_type_4 = 6 THEN open_param_4 
                 WHEN open_type_5 = 6 THEN open_param_5 
                 WHEN open_type_6 = 6 THEN open_param_6 
+                WHEN open_type_7 = 6 THEN open_param_7
+                WHEN open_type_8 = 6 THEN open_param_8
                 ELSE 0 
        END ) AS isDisabled
 FROM QUEST_MASTER

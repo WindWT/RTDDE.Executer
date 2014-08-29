@@ -103,9 +103,7 @@
                     <TextBox Name="QuestInfo_bonus_end" Width="100" IsReadOnly="True"></TextBox>
                     <TextBlock Text="present" Width="50"/>
                     <TextBox Name="QuestInfo_present_type" Width="50" IsReadOnly="True"></TextBox>
-                    <TextBlock Text="param" Width="50"/>
-                    <TextBox Name="QuestInfo_present_param" Width="50" IsReadOnly="True"></TextBox>
-                    <TextBlock Text="param1" Width="50"/>
+                    <TextBox Name="QuestInfo_present_param" Width="150" IsReadOnly="True"></TextBox>
                     <TextBox Name="QuestInfo_present_param_1" Width="50" IsReadOnly="True"></TextBox>
                     <TextBlock Text="panel" Width="50"/>
                     <TextBox Name="QuestInfo_panel_sword" Width="50" IsReadOnly="True"></TextBox>
