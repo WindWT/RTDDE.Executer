@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Convert.cs" />
+    <Compile Include="DAL.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="JSON.cs" />
     <Compile Include="MasterData\AccessoryMaster.cs" />
