@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using RTDDataProvider;
 
 namespace RTDDataProvider.MasterData
 {
     [Serializable]
     public class LevelDataMaster
     {
+        [DAL(PrimaryKey = true)]
         public int level_data_id;
         public int format;
         public int start_x;

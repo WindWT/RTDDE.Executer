@@ -167,7 +167,28 @@ namespace RTDDataProvider
 
         public static void FromList<T>(List<T> obj) where T : class,new()
         {
-            throw new NotImplementedException();
+            FieldInfo[] fields = typeof(T).GetFields();
+            PropertyInfo[] properties = typeof(T).GetProperties();
+
+            bool isFieldOnly = (properties.Length == 0);
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                using (SQLiteTransaction trans = connection.BeginTransaction())
+                {
+                }                
+            }
+        }
+
+        public static void DropTable(string tableName)
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                SQLiteCommand command = new SQLiteCommand(String.Format("DROP TABLE IF EXISTS {0}",tableName), connection);
+                command.ExecuteNonQuery();
+            }
         }
 
         private static string[] GetColumnNames(SQLiteDataReader reader)
@@ -180,5 +201,9 @@ namespace RTDDataProvider
             }
             return names;
         }
+    }
+    public class DALAttribute : Attribute
+    {
+        public bool PrimaryKey { get; set; }
     }
 }
