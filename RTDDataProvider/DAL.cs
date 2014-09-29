@@ -9,18 +9,13 @@ using System.Reflection;
 namespace RTDDataProvider
 {
     public static class DAL
-    {
-        private static string connectionString = string.Empty;
+    {        
         private static readonly string DB_LOCAL_FILEPATH = "RTD.db";
+        private static readonly string connectionString = "Data Source=" + DB_LOCAL_FILEPATH;
 
         static DAL()
-            : this(DB_LOCAL_FILEPATH)
         {
-        }
-        static DAL(string dbPath)
-        {
-            connectionString = "Data Source=" + dbPath;
-            if (!System.IO.File.Exists(dbPath))
+            if (!System.IO.File.Exists(DB_LOCAL_FILEPATH))
             {
                 //如果文件不存在，则创建数据库
                 using (SQLiteConnection connection = new SQLiteConnection(connectionString))

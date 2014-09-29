@@ -92,10 +92,7 @@ namespace RTDDataProvider
             return JSON.ParseEnemyInfo(questId, jsonQuest, jsonEnemyInfo);
         }
         #endregion
-
-        #region iOS
-
-
+        
         #region Android_notworking
         public static DataSet ParseXmlMDB(string xmlMDBString)
         {
