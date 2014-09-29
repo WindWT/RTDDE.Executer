@@ -147,7 +147,7 @@ namespace RTDDataProvider
                         upsertRowCmd.CommandText = upsertRowCmd.CommandText.TrimEnd(',');
                         upsertRowCmd.CommandText += ");";
                         upsertRowCmd.ExecuteNonQuery();
-                        System.Diagnostics.Debug.WriteLine(upsertRowCmd.CommandText);
+                        //System.Diagnostics.Debug.WriteLine(upsertRowCmd.CommandText);
                     }
                     trans.Commit();
                 }
