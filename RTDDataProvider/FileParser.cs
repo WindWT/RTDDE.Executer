@@ -94,7 +94,7 @@ namespace RTDDataProvider
         #endregion
 
         #region iOS
-
+        #endregion
 
         #region Android_notworking
         public static DataSet ParseXmlMDB(string xmlMDBString)

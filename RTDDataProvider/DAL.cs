@@ -10,17 +10,12 @@ namespace RTDDataProvider
 {
     public static class DAL
     {
-        private static string connectionString = string.Empty;
         private static readonly string DB_LOCAL_FILEPATH = "RTD.db";
+        private static readonly string connectionString = "Data Source=" + DB_LOCAL_FILEPATH;
 
         static DAL()
-            : this(DB_LOCAL_FILEPATH)
         {
-        }
-        static DAL(string dbPath)
-        {
-            connectionString = "Data Source=" + dbPath;
-            if (!System.IO.File.Exists(dbPath))
+            if (!System.IO.File.Exists(DB_LOCAL_FILEPATH))
             {
                 //如果文件不存在，则创建数据库
                 using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -165,18 +160,67 @@ namespace RTDDataProvider
             throw new NotImplementedException();
         }
 
-        public static void FromList<T>(List<T> obj) where T : class,new()
+        public static void FromList<T>(List<T> list) where T : class,new()
         {
             FieldInfo[] fields = typeof(T).GetFields();
             PropertyInfo[] properties = typeof(T).GetProperties();
 
             bool isFieldOnly = (properties.Length == 0);
+            string tableName = Utility.Type2Enum(typeof(T)).ToString();
+            string[] columnNames = GetColumnNames(typeof(T));
+            string pkName = GetColumnPKName(typeof(T));
 
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
                 using (SQLiteTransaction trans = connection.BeginTransaction())
                 {
+                    SQLiteCommand createTableCmd = new SQLiteCommand(connection);
+                    createTableCmd.CommandText = "CREATE TABLE IF NOT EXISTS " + tableName + "(";
+
+                    foreach (string name in columnNames)
+                    {
+                        createTableCmd.CommandText += name;
+                        if (String.Compare(name, pkName, StringComparison.OrdinalIgnoreCase) == 0)
+                        {
+                            createTableCmd.CommandText += " PRIMARY KEY,";
+                        }
+                        else
+                        {
+                            createTableCmd.CommandText += ",";
+                        }
+                    }
+                    createTableCmd.CommandText = createTableCmd.CommandText.TrimEnd(',');
+                    createTableCmd.CommandText += ");";
+                    createTableCmd.ExecuteNonQuery();
+
+                    foreach (T obj in list)
+                    {
+                        SQLiteCommand upsertRowCmd = new SQLiteCommand(connection);
+                        upsertRowCmd.CommandText = "INSERT OR REPLACE INTO " + tableName + "(";
+                        StringBuilder sqlColumnName = new StringBuilder();
+                        StringBuilder sqlColumnValue = new StringBuilder();
+                        foreach (string name in columnNames)
+                        {
+                            string columnName = name;
+                            object columnValue = isFieldOnly ? fields.First(o => o.Name == name).GetValue(obj) : properties.First(o => o.Name == name).GetValue(obj, null);
+                            sqlColumnName.Append(columnName);
+                            sqlColumnName.Append(",");
+                            sqlColumnValue.Append("@" + columnName);
+                            sqlColumnValue.Append(",");
+                            SQLiteParameter param = new SQLiteParameter(columnName, columnValue);
+                            upsertRowCmd.Parameters.Add(param);
+                        }
+                        upsertRowCmd.CommandText += sqlColumnName.ToString();
+                        upsertRowCmd.CommandText = upsertRowCmd.CommandText.TrimEnd(',');
+                        upsertRowCmd.CommandText += ") VALUES (";
+                        upsertRowCmd.CommandText += sqlColumnValue.ToString();
+                        upsertRowCmd.CommandText = upsertRowCmd.CommandText.TrimEnd(',');
+                        upsertRowCmd.CommandText += ");";
+                        upsertRowCmd.ExecuteNonQuery();
+                        //System.Diagnostics.Debug.WriteLine(upsertRowCmd.CommandText);
+                    }
+                    //trans.Commit();
                 }                
             }
         }
@@ -191,6 +235,11 @@ namespace RTDDataProvider
             }
         }
 
+        /// <summary>
+        /// 从数据库中获取表列名
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         private static string[] GetColumnNames(SQLiteDataReader reader)
         {
             int count = reader.FieldCount;
@@ -200,6 +249,86 @@ namespace RTDDataProvider
                 names[i] = reader.GetName(i);
             }
             return names;
+        }
+
+        /// <summary>
+        /// 从实体中获取表列名
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <param name="properties"></param>
+        /// <returns></returns>
+        private static string[] GetColumnNames(Type type)
+        {
+            FieldInfo[] fields = type.GetFields();
+            PropertyInfo[] properties = type.GetProperties();
+
+            bool isFieldOnly = (properties.Length == 0);
+
+            List<string> names = new List<string>();
+            if (isFieldOnly)
+            {
+                foreach (FieldInfo field in fields)
+                {
+                    names.Add(field.Name);
+                }
+            }
+            else
+            {
+                foreach (PropertyInfo property in properties)
+                {
+                    names.Add(property.Name);
+                }
+            }
+            return names.ToArray();
+        }
+
+        /// <summary>
+        /// 从实体中获取表主键列名
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <param name="properties"></param>
+        /// <returns></returns>
+        private static string GetColumnPKName(Type type)
+        {
+            FieldInfo[] fields = type.GetFields();
+            PropertyInfo[] properties = type.GetProperties();
+
+            bool isFieldOnly = (properties.Length == 0);
+
+            string name = string.Empty;
+            if (isFieldOnly)
+            {
+                foreach (FieldInfo field in fields)
+                {
+                    object[] attrs = field.GetCustomAttributes(typeof(DALAttribute), true);
+                    if (attrs.Length > 0)
+                    {
+                        DALAttribute attr = attrs[0] as DALAttribute;
+                        if (attr != null && attr.PrimaryKey == true)
+                        {
+                            name = field.Name;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (PropertyInfo property in properties)
+                {
+                    object[] attrs = property.GetCustomAttributes(typeof(DALAttribute), true);
+                    if (attrs.Length > 0)
+                    {
+                        DALAttribute attr = attrs[0] as DALAttribute;
+                        if (attr != null && attr.PrimaryKey == true)
+                        {
+                            name = property.Name;
+                            break;
+                        }
+                    }
+                }
+            }
+            return name;
         }
     }
     public class DALAttribute : Attribute

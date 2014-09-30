@@ -51,7 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Convert.cs" />
     <Compile Include="DAL.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="JSON.cs" />
@@ -79,6 +78,7 @@
     <Compile Include="MasterData\UnitMaster.cs" />
     <Compile Include="MasterData\UnitTalkMaster.cs" />
     <Compile Include="MasterData\UserRankMaster.cs" />
+    <Compile Include="MasterData\ShopProductMasterAndroid.cs" />
     <Compile Include="MASTERDB.cs" />
     <Compile Include="MasterData\PanelSkillRankMaster.cs" />
     <Compile Include="MsgPack.cs" />
