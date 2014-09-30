@@ -546,7 +546,7 @@ namespace RTDDataProvider
             Group = group;
         }
     }
-    public static class Utility
+    public class Utility
     {
         public static OpenType ParseOpentype(string type, string param, int group)
         {

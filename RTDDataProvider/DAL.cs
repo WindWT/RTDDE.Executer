@@ -157,7 +157,65 @@ namespace RTDDataProvider
 
         public static void FromSingle<T>(T obj) where T : class,new()
         {
-            throw new NotImplementedException();
+            FieldInfo[] fields = typeof(T).GetFields();
+            PropertyInfo[] properties = typeof(T).GetProperties();
+
+            bool isFieldOnly = (properties.Length == 0);
+            string tableName = Utility.Type2Enum(typeof(T)).ToString();
+            string[] columnNames = GetColumnNames(typeof(T));
+            string pkName = GetColumnPKName(typeof(T));
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                using (SQLiteTransaction trans = connection.BeginTransaction())
+                {
+                    SQLiteCommand createTableCmd = new SQLiteCommand(connection);
+                    createTableCmd.CommandText = "CREATE TABLE IF NOT EXISTS " + tableName + "(";
+
+                    foreach (string name in columnNames)
+                    {
+                        createTableCmd.CommandText += name;
+                        if (String.Compare(name, pkName, StringComparison.OrdinalIgnoreCase) == 0)
+                        {
+                            createTableCmd.CommandText += " PRIMARY KEY,";
+                        }
+                        else
+                        {
+                            createTableCmd.CommandText += ",";
+                        }
+                    }
+                    createTableCmd.CommandText = createTableCmd.CommandText.TrimEnd(',');
+                    createTableCmd.CommandText += ");";
+                    createTableCmd.ExecuteNonQuery();
+                    
+                    SQLiteCommand upsertRowCmd = new SQLiteCommand(connection);
+                    upsertRowCmd.CommandText = "INSERT OR REPLACE INTO " + tableName + "(";
+                    StringBuilder sqlColumnName = new StringBuilder();
+                    StringBuilder sqlColumnValue = new StringBuilder();
+                    foreach (string name in columnNames)
+                    {
+                        string columnName = name;
+                        object columnValue = isFieldOnly ? fields.First(o => o.Name == name).GetValue(obj) : properties.First(o => o.Name == name).GetValue(obj, null);
+                        sqlColumnName.Append(columnName);
+                        sqlColumnName.Append(",");
+                        sqlColumnValue.Append("@" + columnName);
+                        sqlColumnValue.Append(",");
+                        SQLiteParameter param = new SQLiteParameter(columnName, columnValue);
+                        upsertRowCmd.Parameters.Add(param);
+                    }
+                    upsertRowCmd.CommandText += sqlColumnName.ToString();
+                    upsertRowCmd.CommandText = upsertRowCmd.CommandText.TrimEnd(',');
+                    upsertRowCmd.CommandText += ") VALUES (";
+                    upsertRowCmd.CommandText += sqlColumnValue.ToString();
+                    upsertRowCmd.CommandText = upsertRowCmd.CommandText.TrimEnd(',');
+                    upsertRowCmd.CommandText += ");";
+                    upsertRowCmd.ExecuteNonQuery();
+                    //System.Diagnostics.Debug.WriteLine(upsertRowCmd.CommandText);
+
+                    trans.Commit();
+                }
+            }
         }
 
         public static void FromList<T>(List<T> list) where T : class,new()
@@ -220,8 +278,8 @@ namespace RTDDataProvider
                         upsertRowCmd.ExecuteNonQuery();
                         //System.Diagnostics.Debug.WriteLine(upsertRowCmd.CommandText);
                     }
-                    //trans.Commit();
-                }                
+                    trans.Commit();
+                }
             }
         }
 
@@ -230,7 +288,7 @@ namespace RTDDataProvider
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
-                SQLiteCommand command = new SQLiteCommand(String.Format("DROP TABLE IF EXISTS {0}",tableName), connection);
+                SQLiteCommand command = new SQLiteCommand(String.Format("DROP TABLE IF EXISTS {0}", tableName), connection);
                 command.ExecuteNonQuery();
             }
         }
@@ -295,7 +353,7 @@ namespace RTDDataProvider
 
             bool isFieldOnly = (properties.Length == 0);
 
-            string name = string.Empty;
+            string name = "id";
             if (isFieldOnly)
             {
                 foreach (FieldInfo field in fields)

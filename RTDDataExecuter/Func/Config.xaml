@@ -23,16 +23,11 @@
                 </GroupBox>
                 <GroupBox Grid.Column="0" Grid.Row="1" Header="Android">
                     <StackPanel>
-                        <Button Name="ImportMDBSButton" Click="ImportMDBSButton_Click" Visibility="Collapsed">MDBS</Button>
-                        <Button Name="ImportLDBSButton" Click="ImportLDBSButton_Click" Visibility="Collapsed">LDBS</Button>
-                        <Button Name="ImportAndroidDirectoryButton" Click="ImportAndroidDirectoryButton_Click" Visibility="Collapsed">Android Directory</Button>
                         <Button Name="ImportAndroidGAMEButton" Click="ImportAndroidGAMEButton_Click">Android GAME</Button>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Grid.Column="1" Grid.Row="1" Header="iOS">
                     <StackPanel>
-                        <Button Name="ImportplistButton" Click="ImportplistButton_Click" Visibility="Collapsed">plist</Button>
-                        <Button Name="ImportiOSDirectoryButton" Click="ImportiOSDirectoryButton_Click" Visibility="Collapsed">iOS Directory</Button>
                         <Button Name="ImportiOSGAMEButton" Click="ImportiOSGAMEButton_Click">iOS GAME</Button>
                     </StackPanel>
                 </GroupBox>

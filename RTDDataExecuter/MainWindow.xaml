@@ -60,15 +60,15 @@
                 <Button Grid.Column="10" Name="CloseButton" Width="36" Style="{StaticResource CloseButton}" Click="CloseButton_Click"></Button>
             </Grid>
             <Grid DockPanel.Dock="Top" Name="MainGrid">
-                <local:Quest x:Name="Quest"/>
+                <!--<local:Quest x:Name="Quest"/>
                 <local:Map x:Name="Map"/>
                 <local:QuestCategory x:Name="QuestCategory"/>
                 <local:Unit x:Name="Unit"/>
                 <local:Skill x:Name="Skill"/>
                 <local:Accessory x:Name="Accessory" />
-                <local:Guide x:Name="Guide" />
+                <local:Guide x:Name="Guide" />-->
                 <local:Config x:Name="Config" />
-                <local:Diff x:Name="Diff" />
+                <!--<local:Diff x:Name="Diff" />-->
             </Grid>
         </DockPanel>
         <Rectangle Name="topLeft" Fill="Transparent" Grid.Column="0" Grid.Row="0" />

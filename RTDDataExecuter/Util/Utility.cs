@@ -15,7 +15,7 @@ using System.Windows.Media;
 
 namespace RTDDataExecuter
 {
-    public sealed static class Utility : Utility
+    public sealed class Utility : RTDDataProvider.Utility
     {
         public static FlowDocument ParseTextToDocument(string text)
         {

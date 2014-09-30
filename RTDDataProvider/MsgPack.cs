@@ -12,18 +12,10 @@ namespace RTDDataProvider
 {
     public static class MsgBytes
     {
-        /// <summary>
-        /// Direct Convert MsgPack to DataTable
-        /// </summary>
-        /// <param name="MsgPackStream"></param>
-        /// <param name="MDBType"></param>
-        /// <returns></returns>
-        public static DataTable ParseMDB(Stream MsgPackStream, MASTERDB MDBType)
+        public static string ToJson(Stream MsgPackStream)
         {
-            DataTable dt = new DataTable();
             var msg = MessagePackSerializer.Create<MessagePackObject>();
-            string json = msg.Unpack(MsgPackStream).ToString();
-            return JSON.ParseJSONMDB(json, MDBType);
+            return msg.Unpack(MsgPackStream).ToString();
         }
     }
 }

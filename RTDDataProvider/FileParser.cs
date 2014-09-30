@@ -93,55 +93,52 @@ namespace RTDDataProvider
         }
         #endregion
 
-        #region iOS
-        #endregion
-
         #region Android_notworking
-        public static DataSet ParseXmlMDB(string xmlMDBString)
-        {
-            XmlDocument xmlMDB = new XmlDocument();
-            DataSet ds = new DataSet("MDB");
+        //public static DataSet ParseXmlMDB(string xmlMDBString)
+        //{
+        //    XmlDocument xmlMDB = new XmlDocument();
+        //    DataSet ds = new DataSet("MDB");
 
-            xmlMDB.LoadXml(xmlMDBString);
-            foreach (XmlNode xmlNode in xmlMDB.GetElementsByTagName("string"))
-            {
-                if (xmlNode.Attributes["name"] != null)
-                {
-                    string MDBID = xmlNode.Attributes["name"].Value;
-                    string MDBenumID = MDBID.Replace("MDBS", String.Empty);
-                    string jsonMDB = xmlNode.InnerText;
-                    DataTable dt = JSON.ParseJSONMDB(jsonMDB, (MASTERDB)Enum.Parse(typeof(MASTERDB), MDBenumID, true));
-                    ds.Tables.Add(dt);
-                }
-            }
-            return ds;
-        }
-        public static DataTable ParseXmlLDB(string xmlLDBString)
-        {
-            XmlDocument xmlLDB = new XmlDocument();
-            DataTable dt = new DataTable("LEVEL_DATA_MASTER");
-            DataColumn dc = null;
-            foreach (FieldInfo fi in typeof(LevelDataMaster).GetFields())
-            {
-                dc = new DataColumn();
-                dc.ColumnName = fi.Name;
-                dc.DataType = fi.FieldType;
-                dt.Columns.Add(dc);
-            }
-            xmlLDB.LoadXml(xmlLDBString);
-            foreach (XmlNode xmlNode in xmlLDB.GetElementsByTagName("string"))
-            {
-                if (xmlNode.Attributes["name"] != null && xmlNode.Attributes["name"].Value.StartsWith("LDBS"))
-                {
-                    string jsonLDB = xmlNode.InnerText;
-                    DataTable dtTemp = JSON.ParseJSONLDB(jsonLDB);
-                    object[] obj = new object[dtTemp.Columns.Count];
-                    dtTemp.Rows[0].ItemArray.CopyTo(obj, 0);
-                    dt.Rows.Add(obj);
-                }
-            }
-            return dt;
-        }
+        //    xmlMDB.LoadXml(xmlMDBString);
+        //    foreach (XmlNode xmlNode in xmlMDB.GetElementsByTagName("string"))
+        //    {
+        //        if (xmlNode.Attributes["name"] != null)
+        //        {
+        //            string MDBID = xmlNode.Attributes["name"].Value;
+        //            string MDBenumID = MDBID.Replace("MDBS", String.Empty);
+        //            string jsonMDB = xmlNode.InnerText;
+        //            DataTable dt = JSON.ParseJSONMDB(jsonMDB, (MASTERDB)Enum.Parse(typeof(MASTERDB), MDBenumID, true));
+        //            ds.Tables.Add(dt);
+        //        }
+        //    }
+        //    return ds;
+        //}
+        //public static DataTable ParseXmlLDB(string xmlLDBString)
+        //{
+        //    XmlDocument xmlLDB = new XmlDocument();
+        //    DataTable dt = new DataTable("LEVEL_DATA_MASTER");
+        //    DataColumn dc = null;
+        //    foreach (FieldInfo fi in typeof(LevelDataMaster).GetFields())
+        //    {
+        //        dc = new DataColumn();
+        //        dc.ColumnName = fi.Name;
+        //        dc.DataType = fi.FieldType;
+        //        dt.Columns.Add(dc);
+        //    }
+        //    xmlLDB.LoadXml(xmlLDBString);
+        //    foreach (XmlNode xmlNode in xmlLDB.GetElementsByTagName("string"))
+        //    {
+        //        if (xmlNode.Attributes["name"] != null && xmlNode.Attributes["name"].Value.StartsWith("LDBS"))
+        //        {
+        //            string jsonLDB = xmlNode.InnerText;
+        //            DataTable dtTemp = JSON.ParseJSONLDB(jsonLDB);
+        //            object[] obj = new object[dtTemp.Columns.Count];
+        //            dtTemp.Rows[0].ItemArray.CopyTo(obj, 0);
+        //            dt.Rows.Add(obj);
+        //        }
+        //    }
+        //    return dt;
+        //}
         #endregion
 
         #region iOS_notworking
