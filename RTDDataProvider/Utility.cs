@@ -581,8 +581,7 @@ namespace RTDDataProvider
                     {
                         result.Type = "完成关卡";
                         string sql = @"SELECT name FROM quest_master WHERE id={0}";
-                        DB db = new DB();
-                        result.Param = param + "|" + db.GetString(String.Format(sql, param));
+                        result.Param = param + "|" + DAL.Get<string>(String.Format(sql, param));
                         break;
                     }
                 case "3":   //not used
@@ -613,8 +612,7 @@ namespace RTDDataProvider
                     {
                         result.Type = "完成关卡";
                         string sql = @"SELECT name FROM quest_master WHERE id={0}";
-                        DB db = new DB();
-                        result.Param = param + "|" + db.GetString(String.Format(sql, param));
+                        result.Param = param + "|" + DAL.Get<string>(String.Format(sql, param));
                         break;
                     }
                 case "8":
@@ -627,8 +625,7 @@ namespace RTDDataProvider
                     {
                         result.Type = "不完成关卡";
                         string sql = @"SELECT name FROM quest_master WHERE id={0}";
-                        DB db = new DB();
-                        result.Param = param + "|" + db.GetString(String.Format(sql, param));
+                        result.Param = param + "|" + DAL.Get<string>(String.Format(sql, param));
                         break;
                     }
                 case "10":
@@ -910,14 +907,12 @@ namespace RTDDataProvider
         public static string ParseUnitName(string unitId)
         {
             string sql = @"SELECT name FROM unit_master WHERE id={0}";
-            DB db = new DB();
-            return db.GetString(String.Format(sql, unitId));
+            return DAL.Get<string>(String.Format(sql, unitId));
         }
         public static string ParseUnitGroupName(string unitUiId)
         {
             string sql = @"SELECT id,name FROM unit_master WHERE ui_id={0}";
-            DB db = new DB();
-            DataTable dt = db.GetData(String.Format(sql, unitUiId));
+            DataTable dt = DAL.GetDataTable(String.Format(sql, unitUiId));
             StringBuilder sb = new StringBuilder();
             foreach (DataRow dr in dt.Rows)
             {

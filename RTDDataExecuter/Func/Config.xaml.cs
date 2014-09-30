@@ -178,11 +178,11 @@ namespace RTDDataExecuter
         private void RefreshControl()
         {
             var w = (MainWindow)Application.Current.MainWindow;
-            //w.Quest.Refresh();
-            //w.QuestCategory.Refresh();
-            //w.Unit.Refresh();
-            //w.Skill.Refresh();
-            //w.Guide.Refresh();
+            w.Quest.Refresh();
+            w.QuestCategory.Refresh();
+            w.Unit.Refresh();
+            w.Skill.Refresh();
+            w.Guide.Refresh();
         }
         public void InitSettings()
         {

@@ -65,8 +65,7 @@ namespace RTDDataExecuter
 
             Task<DataTable> task = new Task<DataTable>(() =>
                 {
-                    DB db = new DB();
-                    return db.GetData(string.Format("select Accessory_master.*,unit_master.g_id,unit_master.name AS unitname from Accessory_master LEFT JOIN unit_master ON Accessory_master.id=unit_master.id where Accessory_master.id={0}", id));
+                    return DAL.GetDataTable(string.Format("select Accessory_master.*,unit_master.g_id,unit_master.name AS unitname from Accessory_master LEFT JOIN unit_master ON Accessory_master.id=unit_master.id where Accessory_master.id={0}", id));
                 });
             task.ContinueWith(t =>
             {

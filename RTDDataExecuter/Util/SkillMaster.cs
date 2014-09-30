@@ -32,9 +32,8 @@ namespace RTDDataExecuter
         }
         public SkillMaster(string tableName, int rankSkillId, int thislevel = 1)
         {
-            DB db = new DB();
             int skillId = 0;
-            DataTable rankSkillTable = db.GetData("SELECT * FROM " + tableName + "_RANK_MASTER WHERE id=" + rankSkillId);
+            DataTable rankSkillTable = DAL.GetDataTable("SELECT * FROM " + tableName + "_RANK_MASTER WHERE id=" + rankSkillId);
             if (rankSkillTable.Rows.Count == 0)
             {
                 skillId = 0;
@@ -87,7 +86,7 @@ namespace RTDDataExecuter
             {
                 skillId = 0;
             }
-            DataTable skillTable = db.GetData("SELECT * FROM " + tableName + "_MASTER WHERE id=" + skillId);
+            DataTable skillTable = DAL.GetDataTable("SELECT * FROM " + tableName + "_MASTER WHERE id=" + skillId);
             if (skillTable.Rows.Count != 0)
             {
                 this.id = Convert.ToInt32(skillTable.Rows[0]["id"]);

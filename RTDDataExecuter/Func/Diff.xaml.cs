@@ -49,8 +49,7 @@ namespace RTDDataExecuter
 
             Task<int> task = new Task<int>(() =>
             {
-                DB db = new DB();
-                return db.GetInt("SELECT count(*) FROM sqlite_master WHERE type='table' AND name IN ('" + tableName + "','" + tableNameOld + "')");
+                return DAL.Get<int>("SELECT count(*) FROM sqlite_master WHERE type='table' AND name IN ('" + tableName + "','" + tableNameOld + "')");
             });
             Task<DataSet> taskDataSet = new Task<DataSet>(() =>
             {
@@ -62,9 +61,8 @@ namespace RTDDataExecuter
                 }
                 if (task.Result == 2)   //both table exists
                 {
-                    DB db = new DB();
-                    DataTable oldTable = db.GetData("SELECT * FROM " + tableNameOld);
-                    DataTable newTable = db.GetData("SELECT * FROM " + tableName);
+                    DataTable oldTable = DAL.GetDataTable("SELECT * FROM " + tableNameOld);
+                    DataTable newTable = DAL.GetDataTable("SELECT * FROM " + tableName);
                     DataTable oldDiffTable, newDiffTable;
                     var oldDiff = oldTable.AsEnumerable().Except(newTable.AsEnumerable(), DataRowComparer.Default);
                     var newDiff = newTable.AsEnumerable().Except(oldTable.AsEnumerable(), DataRowComparer.Default);

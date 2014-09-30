@@ -62,8 +62,7 @@ namespace RTDDataExecuter
         {
             Task<DataTable> task = new Task<DataTable>(() =>
             {
-                DB db = new DB();
-                return db.GetData(sql, paras);
+                return DAL.GetDataTable(sql, paras);
             });
             task.ContinueWith(t =>
             {

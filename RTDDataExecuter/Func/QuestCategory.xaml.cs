@@ -43,8 +43,7 @@ namespace RTDDataExecuter
             Task<DataTable> task = new Task<DataTable>(() =>
             {
                 string sql = "SELECT * FROM quest_category_master WHERE id={0}";
-                DB db = new DB();
-                return db.GetData(String.Format(sql, qcInfo_id));
+                return DAL.GetDataTable(String.Format(sql, qcInfo_id));
             });
             Task<DataTable> taskQuest = new Task<DataTable>(() =>
             {
@@ -54,8 +53,7 @@ namespace RTDDataExecuter
                 }
                 DataRow dr = task.Result.Rows[0];
                 string sql = "SELECT * FROM quest_master WHERE category={0} order by display_order DESC";
-                DB db = new DB();
-                return db.GetData(String.Format(sql, qcInfo_id));
+                return DAL.GetDataTable(String.Format(sql, qcInfo_id));
             });
             Task<DataTable> taskReward = new Task<DataTable>(() =>
             {
@@ -70,8 +68,7 @@ then (select name from unit_master where unit_master.id=quest_challenge_reward_m
 else present_param_0 end) as present_param_name 
 from quest_challenge_reward_master WHERE category={0}
 order by point";
-                DB db = new DB();
-                return db.GetData(String.Format(sql, qcInfo_id));
+                return DAL.GetDataTable(String.Format(sql, qcInfo_id));
             });
             task.ContinueWith(t =>
             {

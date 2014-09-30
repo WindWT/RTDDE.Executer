@@ -56,30 +56,11 @@ namespace RTDDataExecuter
             {
                 Task<SkillMaster> task = new Task<SkillMaster>(() =>
                 {
-                    DB db = new DB();
-                    DataTable dt = db.GetData(string.Format("select * from party_skill_master where id={0}", id));
-                    var sm =
-                        from r in dt.AsEnumerable()
-                        select new SkillMaster
-                        {
-                            id = Convert.ToInt32(r["id"]),
-                            name = r["name"].ToString(),
-                            type = Convert.ToInt32(r["type"]),
-                            attribute = Convert.ToInt32(r["attribute"]),
-                            sub_attr = Convert.ToInt32(r["sub_attr"]),
-                            style = Convert.ToInt32(r["style"]),
-                            num = Convert.ToInt32(r["num"]),
-                            num_01 = Convert.ToInt32(r["num_01"]),
-                            num_02 = Convert.ToInt32(r["num_02"]),
-                            num_03 = Convert.ToInt32(r["num_03"]),
-                            text = r["text"].ToString()
-                        };
-                    return sm.First<SkillMaster>();
+                    return DAL.ToSingle<SkillMaster>(string.Format("select * from party_skill_master where id={0}", id));
                 });
                 Task<DataTable> taskSkillUnitRank = new Task<DataTable>(() =>
                 {
-                    DB db = new DB();
-                    return db.GetData(string.Format(@"Select um.id,um.g_id,um.name,
+                    return DAL.GetDataTable(string.Format(@"Select um.id,um.g_id,um.name,
         (CASE WHEN skill_01_09={0} THEN 1 ELSE 0 END) as s0109,
         (CASE WHEN skill_10_19={0} THEN 1 ELSE 0 END) as s1019,
         (CASE WHEN skill_20_29={0} THEN 1 ELSE 0 END) as s2029,
@@ -136,33 +117,11 @@ namespace RTDDataExecuter
             {
                 Task<SkillMaster> task = new Task<SkillMaster>(() =>
                 {
-                    DB db = new DB();
-                    DataTable dt = db.GetData(string.Format("select * from active_skill_master where id={0}", id));
-                    var sm =
-                        from r in dt.AsEnumerable()
-                        select new SkillMaster
-                        {
-                            id = Convert.ToInt32(r["id"]),
-                            name = r["name"].ToString(),
-                            type = Convert.ToInt32(r["type"]),
-                            attribute = Convert.ToInt32(r["attribute"]),
-                            sub_attr = Convert.ToInt32(r["sub_attr"]),
-                            style = Convert.ToInt32(r["style"]),
-                            num = Convert.ToInt32(r["num"]),
-                            num_01 = Convert.ToInt32(r["num_01"]),
-                            num_02 = Convert.ToInt32(r["num_02"]),
-                            num_03 = Convert.ToInt32(r["num_03"]),
-                            soul = Convert.ToInt32(r["soul"]),
-                            phase = Convert.ToInt32(r["phase"]),
-                            limit_num = Convert.ToInt32(r["limit_num"]),
-                            text = r["text"].ToString()
-                        };
-                    return sm.First<SkillMaster>();
+                    return DAL.ToSingle<SkillMaster>(string.Format("select * from active_skill_master where id={0}", id));
                 });
                 Task<DataTable> taskSkillUnitRank = new Task<DataTable>(() =>
                 {
-                    DB db = new DB();
-                    return db.GetData(string.Format(@"Select um.id,um.g_id,um.name,
+                    return DAL.GetDataTable(string.Format(@"Select um.id,um.g_id,um.name,
         (CASE WHEN skill_01_09={0} THEN 1 ELSE 0 END) as s0109,
         (CASE WHEN skill_10_19={0} THEN 1 ELSE 0 END) as s1019,
         (CASE WHEN skill_20_29={0} THEN 1 ELSE 0 END) as s2029,
@@ -222,31 +181,11 @@ namespace RTDDataExecuter
             {
                 Task<SkillMaster> task = new Task<SkillMaster>(() =>
                 {
-                    DB db = new DB();
-                    DataTable dt = db.GetData(string.Format("select * from panel_skill_master where id={0}", id));
-                    var sm =
-                        from r in dt.AsEnumerable()
-                        select new SkillMaster
-                        {
-                            id = Convert.ToInt32(r["id"]),
-                            name = r["name"].ToString(),
-                            type = Convert.ToInt32(r["type"]),
-                            attribute = Convert.ToInt32(r["attribute"]),
-                            style = Convert.ToInt32(r["style"]),
-                            num = Convert.ToInt32(r["num"]),
-                            num_01 = Convert.ToInt32(r["num_01"]),
-                            num_02 = Convert.ToInt32(r["num_02"]),
-                            num_03 = Convert.ToInt32(r["num_03"]),
-                            phase = Convert.ToInt32(r["phase"]),
-                            duplication = Convert.ToInt32(r["duplication"]),
-                            text = r["text"].ToString()
-                        };
-                    return sm.First<SkillMaster>();
+                    return DAL.ToSingle<SkillMaster>(string.Format("select * from panel_skill_master where id={0}", id));
                 });
                 Task<DataTable> taskSkillUnitRank = new Task<DataTable>(() =>
                 {
-                    DB db = new DB();
-                    return db.GetData(string.Format(@"Select um.id,um.g_id,um.name,
+                    return DAL.GetDataTable(string.Format(@"Select um.id,um.g_id,um.name,
         (CASE WHEN skill_01_09={0} THEN 1 ELSE 0 END) as s0109,
         (CASE WHEN skill_10_19={0} THEN 1 ELSE 0 END) as s1019,
         (CASE WHEN skill_20_29={0} THEN 1 ELSE 0 END) as s2029,

@@ -34,24 +34,24 @@ namespace RTDDataProvider
         }
 
         /// <summary>
-        /// 执行SQL获取值类型数据
+        /// 执行SQL获取单条数据
         /// </summary>
-        /// <typeparam name="T">值类型</typeparam>
+        /// <typeparam name="T">数据类型</typeparam>
         /// <param name="sql">SQL语句</param>
         /// <returns></returns>
-        public static T Get<T>(string sql) where T : struct
+        public static T Get<T>(string sql)
         {
             return Get<T>(sql, null);
         }
 
         /// <summary>
-        /// 执行SQL获取值类型数据
+        /// 执行SQL获取单条数据
         /// </summary>
-        /// <typeparam name="T">值类型</typeparam>
+        /// <typeparam name="T">数据类型</typeparam>
         /// <param name="sql">SQL语句</param>
         /// <param name="paras">SQL参数List</param>
         /// <returns></returns>
-        public static T Get<T>(string sql, List<SQLiteParameter> paras) where T : struct
+        public static T Get<T>(string sql, List<SQLiteParameter> paras)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -70,6 +70,32 @@ namespace RTDDataProvider
             }
         }
 
+        [Obsolete()]
+        public static DataTable GetDataTable(string sql)
+        {
+            return GetDataTable(sql, null);
+        }
+        [Obsolete()]
+        public static DataTable GetDataTable(string sql, List<SQLiteParameter> paras)
+        {
+            DataTable dt = new DataTable();
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                SQLiteCommand cmd = new SQLiteCommand(sql, connection);
+                if (paras != null)
+                {
+                    foreach (var para in paras)
+                    {
+                        cmd.Parameters.Add(para);
+                    }
+                }
+
+                dt.Load(cmd.ExecuteReader());
+            }
+            return dt;
+        }
+
         /// <summary>
         /// 执行SQL获取引用类型数据
         /// </summary>
@@ -82,7 +108,7 @@ namespace RTDDataProvider
             PropertyInfo[] properties = typeof(T).GetProperties();
 
             bool isFieldOnly = (properties.Length == 0);
-            T result = default(T);
+            T result = new T();
 
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -108,6 +134,10 @@ namespace RTDDataProvider
                                 property.SetValue(result, Convert.ChangeType(value, property.PropertyType), null);
                             }
                         }
+                    }
+                    else
+                    {
+                        result = null;
                     }
                 }
             }
@@ -188,7 +218,7 @@ namespace RTDDataProvider
                     createTableCmd.CommandText = createTableCmd.CommandText.TrimEnd(',');
                     createTableCmd.CommandText += ");";
                     createTableCmd.ExecuteNonQuery();
-                    
+
                     SQLiteCommand upsertRowCmd = new SQLiteCommand(connection);
                     upsertRowCmd.CommandText = "INSERT OR REPLACE INTO " + tableName + "(";
                     StringBuilder sqlColumnName = new StringBuilder();

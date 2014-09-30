@@ -1,4 +1,5 @@
 ﻿using RTDDataProvider;
+using RTDDataProvider.MasterData;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -185,8 +186,7 @@ Select *,
 (SELECT NAME FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_dark=ui.id) as ultimate_rev_unit_name_dark
 from unit_master as uo
 WHERE uo.id={0}";
-                DB db = new DB();
-                return db.GetData(String.Format(sql, unitid));
+                return DAL.GetDataTable(String.Format(sql, unitid));
             });
             Task<List<SkillMaster>> taskSkill = new Task<List<SkillMaster>>(() =>
             {
@@ -213,13 +213,10 @@ WHERE uo.id={0}";
                 skillList.Add(new SkillMaster("PANEL_SKILL", panelRankSkillId, (int)thislevel));
                 return skillList;
             });
-            Task<DataTable> taskAccessory = new Task<DataTable>(() =>
+            Task<AccessoryMaster> taskAccessory = new Task<AccessoryMaster>(() =>
             {
-                string sql = @"
-SELECT * FROM accessory_master
-WHERE id={0}";
-                DB db = new DB();
-                return db.GetData(String.Format(sql, unitid));
+                string sql = @"SELECT * FROM accessory_master WHERE id={0}";
+                return DAL.ToSingle<AccessoryMaster>(String.Format(sql, unitid));
             });
             taskSkill.ContinueWith(t =>
             {
@@ -329,26 +326,26 @@ WHERE id={0}";
                 }
                 //Accessory
                 Task.WaitAll(taskAccessory);
-                if (taskAccessory.Result == null || taskAccessory.Result.Rows.Count == 0)
+                if (taskAccessory.Result == null)
                 {
                     UnitAccessoryExpander.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
                     UnitAccessoryExpander.Visibility = Visibility.Visible;
-                    DataRow unitAccessory = taskAccessory.Result.Rows[0];
-                    accessory_id.Text = unitAccessory["id"].ToString();
-                    accessory_name.Text = unitAccessory["name"].ToString();
-                    accessory_type.Text = Utility.ParseAccessoryType(Convert.ToInt32(unitAccessory["type"]));
-                    accessory_detail.Document = Utility.ParseTextToDocument(unitAccessory["detail"].ToString());
-                    accessory_num_01.Text = unitAccessory["num_01"].ToString();
-                    accessory_num_02.Text = unitAccessory["num_02"].ToString();
-                    accessory_num_03.Text = unitAccessory["num_03"].ToString();
-                    accessory_num_04.Text = unitAccessory["num_04"].ToString();
-                    accessory_conv_money.Text = unitAccessory["conv_money"].ToString();
-                    accessory_style.Text = Utility.ParseStyletype(Convert.ToInt32(unitAccessory["style"]));
-                    accessory_attribute.Text = Utility.ParseAttributetype(Convert.ToByte(unitAccessory["attribute"]));
-                    accessory_su_a1.Text = Utility.ParseAttributetype(Convert.ToByte(unitAccessory["su_a1"]));
+                    AccessoryMaster acce = taskAccessory.Result;
+                    accessory_id.Text = acce.id.ToString();
+                    accessory_name.Text = acce.name;
+                    accessory_type.Text = Utility.ParseAccessoryType(acce.type);
+                    accessory_detail.Document = Utility.ParseTextToDocument(acce.detail);
+                    accessory_num_01.Text = acce.num_01.ToString();
+                    accessory_num_02.Text = acce.num_02.ToString();
+                    accessory_num_03.Text = acce.num_03.ToString();
+                    accessory_num_04.Text = acce.num_04.ToString();
+                    accessory_conv_money.Text = acce.conv_money.ToString();
+                    accessory_style.Text = Utility.ParseStyletype(acce.style);
+                    accessory_attribute.Text = Utility.ParseAttributetype(acce.attribute);
+                    accessory_su_a1.Text = Utility.ParseAttributetype(acce.su_a1);
                 }
 
             }, MainWindow.uiTaskScheduler);    //this Task work on ui thread

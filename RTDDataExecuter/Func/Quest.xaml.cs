@@ -54,8 +54,7 @@ namespace RTDDataExecuter
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_1) as challenge1,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_2) as challenge2
   FROM quest_master WHERE id={0}";
-                DB db = new DB();
-                return db.GetData(String.Format(sql, eqInfo_id));
+                return DAL.GetDataTable(String.Format(sql, eqInfo_id));
             });
             Task<List<OpenType>> taskParse = new Task<List<OpenType>>(() =>
             {

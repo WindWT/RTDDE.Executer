@@ -58,8 +58,7 @@ namespace RTDDataExecuter
 
             Task<MapTable> task = new Task<MapTable>(() =>
             {
-                DB db = new DB();
-                DataTable dt = db.GetData("SELECT a.*,b.distance FROM level_data_master a left join quest_master b on a.level_data_id=b.id WHERE a.level_data_id=" + levelID);
+                DataTable dt = DAL.GetDataTable("SELECT a.*,b.distance FROM level_data_master a left join quest_master b on a.level_data_id=b.id WHERE a.level_data_id=" + levelID);
                 if (dt.Rows.Count == 0)
                 {
                     throw new Exception("NO MAP DATA.");
@@ -474,7 +473,6 @@ namespace RTDDataExecuter
         private DataTable GetMonsterData(object param)
         {
             string levelID = param.ToString();
-            DB db = new DB();
 
             DataTable monsterData = new DataTable();
             monsterData.Columns.Add("#", typeof(string));
@@ -484,13 +482,13 @@ namespace RTDDataExecuter
             monsterData.Columns.Add("rate", typeof(int));
             monsterData.Columns.Add("drop_id", typeof(int));
 
-            DataTable questData = db.GetData("SELECT * FROM quest_master WHERE id=" + levelID);
+            DataTable questData = DAL.GetDataTable("SELECT * FROM quest_master WHERE id=" + levelID);
             if (questData.Rows.Count == 0)
             {
                 return monsterData;
             }
             string enemy_table_id = questData.Rows[0]["enemy_table_id"].ToString();
-            DataTable enemyTableData = db.GetData("SELECT * FROM enemy_table_master WHERE id=" + enemy_table_id);
+            DataTable enemyTableData = DAL.GetDataTable("SELECT * FROM enemy_table_master WHERE id=" + enemy_table_id);
             if (enemyTableData.Rows.Count == 0)
             {
                 //throw new Exception("NO ENEMY TABLE DATA.");
@@ -592,11 +590,10 @@ namespace RTDDataExecuter
                 return;
             }
             string enemyId = MapEnemyInfo_id.Text;
-            Task<DataTable> task = new Task<DataTable>(() =>
+            Task<EnemyUnitMaster> task = new Task<EnemyUnitMaster>(() =>
             {
                 string sql = "SELECT * FROM enemy_unit_master WHERE id={0}";
-                DB db = new DB();
-                return db.GetData(String.Format(sql, enemyId));
+                return DAL.ToSingle<EnemyUnitMaster>(String.Format(sql, enemyId));
             });
             task.ContinueWith(t =>
             {
@@ -605,22 +602,22 @@ namespace RTDDataExecuter
                     Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
-                if (t.Result == null || t.Result.Rows.Count == 0)
+                if (t.Result == null )
                 {
                     return;
                 }
-                DataRow dr = t.Result.Rows[0];
+                EnemyUnitMaster eum = t.Result;
 
-                MapEnemyInfo_name.Text = dr["name"].ToString();
-                MapEnemyInfo_model.Text = dr["model"].ToString();
-                MapEnemyInfo_texture.Text = dr["texture"].ToString();
-                MapEnemyInfo_type.Text = Utility.ParseEnemyType(Convert.ToInt32(dr["type"]));
-                MapEnemyInfo_isDragon.Text = Convert.ToBoolean(dr["flag"]).ToString();
-                MapEnemyInfo_isUnitEnemy.Text = Utility.IsUnitEnemy(Convert.ToInt32(dr["type"])).ToString();
-                MapEnemyInfo_attribute.Text = Utility.ParseAttributetype(Convert.ToInt32(dr["attribute"]));
-                MapEnemyInfo_soul_pt.Text = dr["soul_pt"].ToString();
-                MapEnemyInfo_gold_pt.Text = dr["gold_pt"].ToString();
-                MapEnemyInfo_turn.Text = dr["turn"].ToString();
+                MapEnemyInfo_name.Text = eum.name;
+                MapEnemyInfo_model.Text = eum.model;
+                MapEnemyInfo_texture.Text = eum.texture;
+                MapEnemyInfo_type.Text = Utility.ParseEnemyType(eum.type);
+                MapEnemyInfo_isDragon.Text = Convert.ToBoolean(eum.flag).ToString();
+                MapEnemyInfo_isUnitEnemy.Text = Utility.IsUnitEnemy(eum.type).ToString();
+                MapEnemyInfo_attribute.Text = Utility.ParseAttributetype(eum.attribute);
+                MapEnemyInfo_soul_pt.Text = eum.soul_pt.ToString();
+                MapEnemyInfo_gold_pt.Text = eum.gold_pt.ToString();
+                MapEnemyInfo_turn.Text = eum.turn.ToString();
 
                 int lv = Convert.ToInt32(MapEnemyInfo_lv.Text);
                 int lv_max = Convert.ToInt32(MapEnemyInfo_lv_max.Text);
@@ -629,13 +626,13 @@ namespace RTDDataExecuter
                     lv = lv_max;
                     MapEnemyInfo_lv.Text = lv.ToString("0");
                 }
-                MapEnemyInfo_life.Text = Utility.RealCalc(Convert.ToInt32(dr["life"]), Convert.ToInt32(dr["up_life"]), lv).ToString();
-                MapEnemyInfo_atk.Text = Utility.RealCalc(Convert.ToInt32(dr["attack"]), Convert.ToInt32(dr["up_attack"]), lv).ToString();
-                MapEnemyInfo_def.Text = Utility.RealCalc(Convert.ToInt32(dr["defense"]), Convert.ToInt32(dr["up_defense"]), lv).ToString();
+                MapEnemyInfo_life.Text = Utility.RealCalc(eum.life, eum.up_life, lv).ToString();
+                MapEnemyInfo_atk.Text = Utility.RealCalc(eum.attack,eum.up_attack, lv).ToString();
+                MapEnemyInfo_def.Text = Utility.RealCalc(eum.defense,eum.up_defense, lv).ToString();
 
-                MapEnemyInfo_pat.Text = Utility.ParseAttackPattern(Convert.ToInt32(dr["pat"]));
-                MapEnemyInfo_p0.Text = dr["p0"].ToString();
-                MapEnemyInfo_p1.Text = dr["p1"].ToString();
+                MapEnemyInfo_pat.Text = Utility.ParseAttackPattern(eum.pat);
+                MapEnemyInfo_p0.Text = eum.p0.ToString();
+                MapEnemyInfo_p1.Text = eum.p1.ToString();
 
             }, MainWindow.uiTaskScheduler);
             task.Start();
@@ -780,7 +777,7 @@ namespace RTDDataExecuter
                 }
                 try
                 {
-                    ei = FileParser.ParseEnemyInfo(levelID, questXml, dropXml);
+                    //ei = FileParser.ParseEnemyInfo(levelID, questXml, dropXml);
                 }
                 catch (Exception ex)
                 {
@@ -793,7 +790,7 @@ namespace RTDDataExecuter
                 {
                     try
                     {
-                        ei = FileParser.ParseEnemyInfo(levelID, sr.BaseStream);
+                        //ei = FileParser.ParseEnemyInfo(levelID, sr.BaseStream);
                     }
                     catch (Exception ex)
                     {

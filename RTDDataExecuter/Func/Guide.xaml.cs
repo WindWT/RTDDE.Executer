@@ -45,8 +45,7 @@ namespace RTDDataExecuter
             Task<DataTable> task = new Task<DataTable>(() =>
             {
                 string sql = @"SELECT * FROM unit_talk_master WHERE id={0}";
-                DB db = new DB();
-                return db.GetData(String.Format(sql, sp_guide_id));
+                return DAL.GetDataTable(String.Format(sql, sp_guide_id));
             });
             task.ContinueWith(t =>
             {
