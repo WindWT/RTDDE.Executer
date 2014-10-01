@@ -840,27 +840,27 @@ namespace RTDDataProvider
                 num = (int)m_EffectList[index].m_EffectIndex;
             return num;
         }
-        public static string ParseQuestKind(string kind)
+        public static string ParseQuestKind(int kind)
         {
             switch (kind)
             {
-                case "0": return "NORMAL";
-                case "1000": return "EVENT";
-                case "1010": return "RUINS";
-                case "1011": return "CAVE";
-                case "1020": return "SP_EVENT";
-                default: return string.Empty;
+                case 0: return "NORMAL";
+                case 1000: return "EVENT";
+                case 1010: return "RUINS";
+                case 1011: return "CAVE";
+                case 1020: return "SP_EVENT";
+                default: return "UNKNOWN_" + kind.ToString();
             }
         }
-        public static string ParseZBTNKind(string kind)
+        public static string ParseZBTNKind(int kind)
         {
             switch (kind)
             {
-                case "0": return "NORMAL";
-                case "1": return "EVENT";
-                case "2": return "LARGE_EVENT";
-                case "3": return "SPECIAL";
-                default: return string.Empty;
+                case 0: return "NORMAL";
+                case 1: return "EVENT";
+                case 2: return "LARGE_EVENT";
+                case 3: return "SPECIAL";
+                default: return "UNKNOWN_" + kind.ToString();
             }
         }
         public static string ParseSkillType<T>(T skillType)

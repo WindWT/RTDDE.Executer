@@ -1,4 +1,5 @@
 ﻿using RTDDataProvider;
+using RTDDataProvider.MasterData;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -40,28 +41,18 @@ namespace RTDDataExecuter
             }
             string qcInfo_id = ((DataRowView)QuestCategoryDataGrid.SelectedItem).Row["id"].ToString();
             QuestCategoryInfo_id.Text = qcInfo_id;
-            Task<DataTable> task = new Task<DataTable>(() =>
+            Task<QuestCategoryMaster> task = new Task<QuestCategoryMaster>(() =>
             {
                 string sql = "SELECT * FROM quest_category_master WHERE id={0}";
-                return DAL.GetDataTable(String.Format(sql, qcInfo_id));
+                return DAL.ToSingle<QuestCategoryMaster>(String.Format(sql, qcInfo_id));
             });
-            Task<DataTable> taskQuest = new Task<DataTable>(() =>
+            Task<List<QuestMaster>> taskQuest = new Task<List<QuestMaster>>(() =>
             {
-                if (task.Result == null || task.Result.Rows.Count == 0)
-                {
-                    return null;
-                }
-                DataRow dr = task.Result.Rows[0];
                 string sql = "SELECT * FROM quest_master WHERE category={0} order by display_order DESC";
-                return DAL.GetDataTable(String.Format(sql, qcInfo_id));
+                return DAL.ToList<QuestMaster>(String.Format(sql, qcInfo_id));
             });
             Task<DataTable> taskReward = new Task<DataTable>(() =>
             {
-                if (task.Result == null || task.Result.Rows.Count == 0)
-                {
-                    return null;
-                }
-                DataRow dr = task.Result.Rows[0];
                 string sql = @"select *,
 (case when present_type=4 
 then (select name from unit_master where unit_master.id=quest_challenge_reward_master.present_param_0) 
@@ -77,11 +68,11 @@ order by point";
                     Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
-                if (t.Result == null || t.Result.Rows.Count == 0)
+                if (t.Result == null)
                 {
                     return;
                 }
-                DataRow dr = t.Result.Rows[0];
+                QuestCategoryMaster qcm = t.Result;
                 Task.WaitAll(taskQuest, taskReward);
                 if (taskQuest.Exception != null)
                 {
@@ -94,16 +85,16 @@ order by point";
                     return;
                 }
 
-                QuestCategoryInfo_name.Text = dr["name"].ToString();
-                QuestCategoryInfo_order.Text = dr["display_order"].ToString();
-                QuestCategoryInfo_icon.Text = dr["icon"].ToString();
-                QuestCategoryInfo_kind.Text = Utility.ParseQuestKind(dr["kind"].ToString());
-                QuestCategoryInfo_zbtn_kind.Text = Utility.ParseZBTNKind(dr["zbtn_kind"].ToString());
-                QuestCategoryInfo_pt_num.Text = dr["pt_num"].ToString();
-                QuestCategoryInfo_text.Text = Utility.ParseText(dr["text"].ToString());
+                QuestCategoryInfo_name.Text = qcm.name;
+                QuestCategoryInfo_order.Text = qcm.display_order.ToString();
+                QuestCategoryInfo_icon.Text = qcm.icon;
+                QuestCategoryInfo_kind.Text = Utility.ParseQuestKind(qcm.kind);
+                QuestCategoryInfo_zbtn_kind.Text = Utility.ParseZBTNKind(qcm.kind);
+                QuestCategoryInfo_pt_num.Text = qcm.pt_num.ToString();
+                QuestCategoryInfo_text.Text = Utility.ParseText(qcm.text);
 
-                DataTable dtQuest = taskQuest.Result;
-                if (dtQuest == null || dtQuest.Rows.Count == 0)
+                List<QuestMaster> listQM = taskQuest.Result;
+                if (listQM == null||listQM.Count==0 )
                 {
                     QuestCategoryInfo_quest.Visibility = Visibility.Collapsed;
                 }
@@ -111,16 +102,16 @@ order by point";
                 {
                     QuestCategoryInfo_quest.Children.Clear();
                     QuestCategoryInfo_quest.Visibility = Visibility.Visible;
-                    foreach (DataRow drQuest in dtQuest.Rows)
+                    foreach (QuestMaster qm in listQM)
                     {
                         QuestCategoryInfo_quest.Children.Add(new TextBlock()
                         {
-                            Text = drQuest["id"].ToString(),
+                            Text = qm.id.ToString(),
                             Width = 50
                         });
                         QuestCategoryInfo_quest.Children.Add(new TextBox()
                         {
-                            Text = drQuest["name"].ToString(),
+                            Text = qm.name,
                             Width = 250
                         });
                     }
