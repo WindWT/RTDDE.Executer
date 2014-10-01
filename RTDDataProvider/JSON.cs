@@ -30,14 +30,20 @@ namespace RTDDataProvider
             return JsonConvert.DeserializeObject<T>(json);
         }
 
-        public static Dictionary<Type, string> GetJSONFromGAME(string json)
+        public class JsonGAME
         {
-            Dictionary<Type, string> dict = new Dictionary<Type, string>();
-            dict.Add(typeof(LevelDataMaster), json);
+            public string LDM { get; set; }
+            public string ETM { get; set; }
+            public string UTM { get; set; }
+        }
+        public static JsonGAME GetJsonFromGAME(string json)
+        {
+            JsonGAME game = new JsonGAME();
+            game.LDM = json;
             JObject jo = JObject.Parse(json);
-            dict.Add(typeof(EnemyTableMaster), JsonConvert.SerializeObject(jo["enemy_table_master"]));
-            dict.Add(typeof(UnitTalkMaster), JsonConvert.SerializeObject(jo["unit_talk_master"]));
-            return dict;
+            game.ETM = JsonConvert.SerializeObject(jo["enemy_table_master"]);
+            game.UTM = JsonConvert.SerializeObject(jo["unit_talk_master"]);
+            return game;
         }
         public static List<EnemyInfo> ParseEnemyInfo(string questId, string quest, string enemyInfo)
         {

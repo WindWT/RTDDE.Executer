@@ -52,17 +52,10 @@ namespace RTDDataExecuter
                         if (xmlNode.Attributes["name"] != null && xmlNode.Attributes["name"].Value.StartsWith("LDBS"))
                         {
                             string jsonGAME = xmlNode.InnerText;
-                            foreach (KeyValuePair<Type, string> kv in JSON.GetJSONFromGAME(jsonGAME))
-                            {
-                                Type type = kv.Key;
-                                string json = kv.Value;
-                                //Generate Method
-                                MethodInfo methodToList = typeof(JSON).GetMethod("ToSingle").MakeGenericMethod(type);
-                                MethodInfo methodToDB = typeof(DAL).GetMethod("FromSingle").MakeGenericMethod(type);
-                                //Invoke
-                                var data = methodToList.Invoke(null, new object[] { json });
-                                methodToDB.Invoke(null, new object[] { data });
-                            }
+                            var game = JSON.GetJsonFromGAME(jsonGAME);
+                            DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.UnitTalkMaster>(game.UTM));
+                            DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.LevelDataMaster>(game.LDM));
+                            DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.EnemyTableMaster>(game.ETM));
                         }
                     }
 
