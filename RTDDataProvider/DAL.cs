@@ -5,6 +5,7 @@ using System.Data;
 using System.Text;
 using System.Data.SQLite;
 using System.Reflection;
+using RTDDataProvider.MasterData;
 
 namespace RTDDataProvider
 {
@@ -191,7 +192,7 @@ namespace RTDDataProvider
             PropertyInfo[] properties = typeof(T).GetProperties();
 
             bool isFieldOnly = (properties.Length == 0);
-            string tableName = Utility.Type2Enum(typeof(T)).ToString();
+            string tableName = typeof(T).Name == typeof(LevelDataMaster).Name ? "LEVEL_DATA_MASTER" : Utility.Type2Enum(typeof(T)).ToString();
             string[] columnNames = GetColumnNames(typeof(T));
             string pkName = GetColumnPKName(typeof(T));
 
@@ -254,7 +255,7 @@ namespace RTDDataProvider
             PropertyInfo[] properties = typeof(T).GetProperties();
 
             bool isFieldOnly = (properties.Length == 0);
-            string tableName = Utility.Type2Enum(typeof(T)).ToString();
+            string tableName = typeof(T).Name == typeof(LevelDataMaster).Name ? "LEVEL_DATA_MASTER" : Utility.Type2Enum(typeof(T)).ToString();
             string[] columnNames = GetColumnNames(typeof(T));
             string pkName = GetColumnPKName(typeof(T));
 

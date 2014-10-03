@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Data;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 using RTDDataProvider.MasterData;
+using System.Collections.Generic;
+using System.IO;
 
 namespace RTDDataProvider
 {
@@ -28,39 +23,6 @@ namespace RTDDataProvider
         public static T ToSingle<T>(string json)
         {
             return JsonConvert.DeserializeObject<T>(json);
-        }
-
-        public class JsonGAME
-        {
-            public string LDM { get; set; }
-            public string ETM { get; set; }
-            public string UTM { get; set; }
-        }
-        public static JsonGAME GetJsonFromGAME(string json)
-        {
-            JsonGAME game = new JsonGAME();
-            game.LDM = json;
-            JObject jo = JObject.Parse(json);
-            game.ETM = JsonConvert.SerializeObject(jo["enemy_table_master"]);
-            game.UTM = JsonConvert.SerializeObject(jo["unit_talk_master"]);
-            return game;
-        }
-        public static List<EnemyInfo> ParseEnemyInfo(string questId, string quest, string enemyInfo)
-        {
-            List<EnemyInfo> ei = new List<EnemyInfo>();
-            if (String.IsNullOrWhiteSpace(quest))   //iOS workaround
-            {
-                ei = JsonConvert.DeserializeObject<List<EnemyInfo>>(enemyInfo);
-            }
-            else
-            {
-                string currentQuestId = JObject.Parse(quest)["m_QuestID"].ToString();
-                if (questId == currentQuestId)
-                {
-                    ei = JsonConvert.DeserializeObject<List<EnemyInfo>>(enemyInfo);
-                }
-            }
-            return ei;
         }
     }
 }

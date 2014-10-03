@@ -86,7 +86,7 @@ namespace RTDDataExecuter
                     Convert.ToInt32(levelData["start_y"]),
                     Convert.ToInt32(levelData["distance"]),
                     repeat
-                    ), initMonsterTask.Result), GetEnenyInfo(levelID));
+                    ), initMonsterTask.Result), MapData.GetEnemyInfo(levelID));
                 }
             }
             );
@@ -482,13 +482,12 @@ namespace RTDDataExecuter
             monsterData.Columns.Add("rate", typeof(int));
             monsterData.Columns.Add("drop_id", typeof(int));
 
-            DataTable questData = DAL.GetDataTable("SELECT * FROM quest_master WHERE id=" + levelID);
-            if (questData.Rows.Count == 0)
+            QuestMaster qm = DAL.ToSingle<QuestMaster>("SELECT * FROM quest_master WHERE id=" + levelID);
+            if (qm == null)
             {
                 return monsterData;
             }
-            string enemy_table_id = questData.Rows[0]["enemy_table_id"].ToString();
-            DataTable enemyTableData = DAL.GetDataTable("SELECT * FROM enemy_table_master WHERE id=" + enemy_table_id);
+            DataTable enemyTableData = DAL.GetDataTable("SELECT * FROM enemy_table_master WHERE id=" + qm.enemy_table_id.ToString());
             if (enemyTableData.Rows.Count == 0)
             {
                 //throw new Exception("NO ENEMY TABLE DATA.");
@@ -602,7 +601,7 @@ namespace RTDDataExecuter
                     Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
-                if (t.Result == null )
+                if (t.Result == null)
                 {
                     return;
                 }
@@ -627,8 +626,8 @@ namespace RTDDataExecuter
                     MapEnemyInfo_lv.Text = lv.ToString("0");
                 }
                 MapEnemyInfo_life.Text = Utility.RealCalc(eum.life, eum.up_life, lv).ToString();
-                MapEnemyInfo_atk.Text = Utility.RealCalc(eum.attack,eum.up_attack, lv).ToString();
-                MapEnemyInfo_def.Text = Utility.RealCalc(eum.defense,eum.up_defense, lv).ToString();
+                MapEnemyInfo_atk.Text = Utility.RealCalc(eum.attack, eum.up_attack, lv).ToString();
+                MapEnemyInfo_def.Text = Utility.RealCalc(eum.defense, eum.up_defense, lv).ToString();
 
                 MapEnemyInfo_pat.Text = Utility.ParseAttackPattern(eum.pat);
                 MapEnemyInfo_p0.Text = eum.p0.ToString();
@@ -756,49 +755,6 @@ namespace RTDDataExecuter
             lastCell.drop_unit_id = bossInfo.drop_unit_id.ToString();
             lastCell.add_attribute_exp = bossInfo.add_attribute_exp.ToString();
             return map;
-        }
-
-        private List<EnemyInfo> GetEnenyInfo(string levelID)
-        {
-            List<EnemyInfo> ei = new List<EnemyInfo>();
-            string questFileName = "GAME.xml";
-            string dropFileName = "com.prime31.UnityPlayerNativeActivity.xml";
-            string iosFileName = "jp.co.acquire.RTD.plist";
-            if (File.Exists(questFileName) && File.Exists(dropFileName))
-            {
-                string questXml = string.Empty, dropXml = string.Empty;
-                using (StreamReader sr = new StreamReader(questFileName))
-                {
-                    questXml = sr.ReadToEnd();
-                }
-                using (StreamReader sr = new StreamReader(dropFileName))
-                {
-                    dropXml = sr.ReadToEnd();
-                }
-                try
-                {
-                    //ei = FileParser.ParseEnemyInfo(levelID, questXml, dropXml);
-                }
-                catch (Exception ex)
-                {
-                    Utility.ShowException(ex.Message);
-                }
-            }
-            else if (File.Exists(iosFileName))
-            {
-                using (StreamReader sr = new StreamReader(iosFileName))
-                {
-                    try
-                    {
-                        //ei = FileParser.ParseEnemyInfo(levelID, sr.BaseStream);
-                    }
-                    catch (Exception ex)
-                    {
-                        Utility.ShowException(ex.Message);
-                    }
-                }
-            }
-            return ei;
         }
     }
 }

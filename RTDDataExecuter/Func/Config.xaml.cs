@@ -40,19 +40,21 @@ namespace RTDDataExecuter
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
             ofd.DefaultExt = ".xml";
             ofd.Filter = "GAME File|GAME.xml";
-            if (ofd.ShowDialog() == true)
+            //if (ofd.ShowDialog() == true)
+            if(true)
             {
                 ImportAndroidGAMEButton.Content = new Run("Importing MAP Data...");
                 Task task = new Task(() =>
                 {
                     XmlDocument xmlGame = new XmlDocument();
-                    xmlGame.Load(ofd.FileName);
+                    //xmlGame.Load(ofd.FileName);
+                    xmlGame.Load(@"D:\work\RTD\Deploy\GAME.xml");
                     foreach (XmlNode xmlNode in xmlGame.GetElementsByTagName("string"))
                     {
                         if (xmlNode.Attributes["name"] != null && xmlNode.Attributes["name"].Value.StartsWith("LDBS"))
                         {
                             string jsonGAME = xmlNode.InnerText;
-                            var game = JSON.GetJsonFromGAME(jsonGAME);
+                            var game = new MapData(jsonGAME);
                             DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.UnitTalkMaster>(game.UTM));
                             DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.LevelDataMaster>(game.LDM));
                             DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.EnemyTableMaster>(game.ETM));
@@ -85,16 +87,18 @@ namespace RTDDataExecuter
                 ImportiOSGAMEButton.Content = new Run("Importing MAP Data...");
                 Task task = new Task(() =>
                 {
-                    //DB db = new DB();
                     //using (StreamReader sr = new StreamReader(ofd.FileName))
                     //{
                     //    DataTable dt = FileParser.ParsePlistFileLDB(sr.BaseStream);
                     //    db.ImportDataTable(dt, "level_data_id", false);
                     //}
-                    //using (StreamReader sr = new StreamReader(ofd.FileName))
-                    //{
-                    //    db.ImportDataSet(FileParser.ParsePlistFileGAME(sr.BaseStream), false);
-                    //}
+                    using (StreamReader sr = new StreamReader(ofd.FileName))
+                    {
+                        var game = new MapData(sr.BaseStream);
+                        DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.UnitTalkMaster>(game.UTM));
+                        DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.LevelDataMaster>(game.LDM));
+                        DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.EnemyTableMaster>(game.ETM));                        
+                    }
                 });
                 task.ContinueWith(t =>
                 {
