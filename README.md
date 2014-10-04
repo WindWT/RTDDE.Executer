@@ -1,14 +1,6 @@
 RTDDataExplorer
 ===============
 
-RoDora Data Explorer
+Road to Dragons(AKA RoDora or RTD) Data Explorer
 
-TODO
-===============
-DAL Rewrite
-
-Search
-
-Config file
-
-CommonViewer Enhance
+Requires .NET 4.0
