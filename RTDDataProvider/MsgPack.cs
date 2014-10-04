@@ -14,7 +14,7 @@ namespace RTDDataProvider
     {
         public static string ToJson(Stream MsgPackStream)
         {
-            var msg = MessagePackSerializer.Create<MessagePackObject>();
+            var msg = MessagePackSerializer.Get<MessagePackObject>();
             return msg.Unpack(MsgPackStream).ToString();
         }
     }
