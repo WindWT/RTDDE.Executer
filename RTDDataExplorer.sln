@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTDDataProvider", "RTDDataP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTDDataExecuter", "RTDDataExecuter\RTDDataExecuter.csproj", "{9E98526B-9892-4327-BD64-3000BD9AEC57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTDMVCExplorer", "RTDMVCExplorer\RTDMVCExplorer.csproj", "{D285CCDE-33FF-4314-818B-D539DAA4D3BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9E98526B-9892-4327-BD64-3000BD9AEC57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E98526B-9892-4327-BD64-3000BD9AEC57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E98526B-9892-4327-BD64-3000BD9AEC57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D285CCDE-33FF-4314-818B-D539DAA4D3BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D285CCDE-33FF-4314-818B-D539DAA4D3BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D285CCDE-33FF-4314-818B-D539DAA4D3BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D285CCDE-33FF-4314-818B-D539DAA4D3BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

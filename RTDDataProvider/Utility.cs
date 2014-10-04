@@ -548,6 +548,18 @@ namespace RTDDataProvider
     }
     public class Utility
     {
+        private static bool useLocalTime = false;
+        public static bool UseLocalTime
+        {
+            get
+            {
+                return useLocalTime;
+            }
+            set
+            {
+                useLocalTime = value;
+            }
+        }
         public static OpenType ParseOpentype(string type, string param, int group)
         {
             OpenType result = new OpenType();
@@ -885,6 +897,10 @@ namespace RTDDataProvider
         }
         public static string ParseRTDDate(string rtdDate)
         {
+            return ParseRTDDate(rtdDate, false);
+        }
+        public static string ParseRTDDate(string rtdDate, bool isUTCDate)
+        {
             if (string.IsNullOrWhiteSpace(rtdDate))
             {
                 return string.Empty;
@@ -901,7 +917,15 @@ namespace RTDDataProvider
             int month = i % 100;
             i /= 100;
             int year = i % 10000;
-            DateTime t = new DateTime(year, month, day, hour, 0, 0);
+            DateTime t = new DateTime(year, month, day, hour, 0, 0, isUTCDate ? DateTimeKind.Utc : DateTimeKind.Unspecified);
+            TimeZoneInfo jpZone = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
+            if (isUTCDate) {
+                t = UseLocalTime ? t.ToLocalTime() : TimeZoneInfo.ConvertTime(t, jpZone);
+            }
+            else
+            {
+                t = UseLocalTime ? TimeZoneInfo.ConvertTime(t, jpZone, TimeZoneInfo.Local) : t;
+            }
             return t.ToString("yyyy-MM-dd HH:mm ddd");
         }
         public static string ParseUnitName(string unitId)

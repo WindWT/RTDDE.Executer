@@ -33,7 +33,6 @@ namespace RTDDataExecuter
         public MainWindow()
         {
             InitializeComponent();
-            Config.InitSettings();
             new WindowResizer(this,
                 new WindowBorder(BorderPosition.TopLeft, topLeft),
                 new WindowBorder(BorderPosition.Top, top),

@@ -115,8 +115,8 @@ namespace RTDDataExecuter
                 QuestInfo_h_name.Text = Utility.ParseUnitName(dr["h_id"].ToString());
                 QuestInfo_h_lv.Text = dr["h_lv"].ToString();
 
-                QuestInfo_open_date.Text = Utility.ParseRTDDate(dr["open_date"].ToString());
-                QuestInfo_close_date.Text = Utility.ParseRTDDate(dr["close_date"].ToString());
+                QuestInfo_open_date.Text = Utility.ParseRTDDate(dr["open_date"].ToString(), true);
+                QuestInfo_close_date.Text = Utility.ParseRTDDate(dr["close_date"].ToString(), true);
 
                 QuestInfo_opentype.Children.Clear();
                 foreach (OpenType type in t.Result)

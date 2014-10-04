@@ -32,12 +32,14 @@
                     </StackPanel>
                 </GroupBox>
             </Grid>
-            <GroupBox  DockPanel.Dock="Top" Header="Settings">
+            <GroupBox DockPanel.Dock="Top" Header="Settings">
                 <StackPanel>
-                    <CheckBox Name="IsShowDropInfoCheckBox" Checked="IsShowDropInfoCheckBox_Checked" Unchecked="IsShowDropInfoCheckBox_Unchecked">Show drop info and exp info(may NOT working on iOS)</CheckBox>
-                    <CheckBox Name="IsShowBoxInfoCheckBox"  Checked="IsShowBoxInfoCheckBox_Checked" Unchecked="IsShowBoxInfoCheckBox_Unchecked" >Check to show box type</CheckBox>
-                    <CheckBox Name="IsEnableLevelLimiterCheckBox"  Checked="IsEnableLevelLimiterCheckBox_Checked" Unchecked="IsEnableLevelLimiterCheckBox_Unchecked" >Check to enable level limiter</CheckBox>
-                    <CheckBox Name="IsDefaultLvMaxCheckBox"  Checked="IsDefaultLvMaxCheckBox_Checked"  Unchecked="IsDefaultLvMaxCheckBox_Unchecked" >Check to set lv to max by default</CheckBox>
+                    <CheckBox Name="IsShowDropInfoCheckBox" >Show drop &amp; exp info(may NOT working on iOS)</CheckBox>
+                    <CheckBox Name="IsShowBoxInfoCheckBox"   >Show box info</CheckBox>
+                    <CheckBox Name="IsEnableLevelLimiterCheckBox"  >Enable level limiter</CheckBox>
+                    <CheckBox Name="IsDefaultLvMaxCheckBox"  >Set LV to max by default</CheckBox>
+                    <CheckBox Name="IsUseLocalTimeCheckBox"  >Show local time instead of GMT+9</CheckBox>
+                    <Button Name="SaveSettingsButton" Click="SaveSettingsButton_Click">Save Settings</Button>
                 </StackPanel>
             </GroupBox>
             <local:Common x:Name="Common" />

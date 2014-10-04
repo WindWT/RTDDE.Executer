@@ -1,87 +1,71 @@
-﻿using RTDDataProvider;
+﻿using IniParser;
+using IniParser.Model;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using System.Configuration;
-using System.ComponentModel;
-using System.Linq.Expressions;
 
 namespace RTDDataExecuter
 {
     public static class Settings
     {
-        private static bool isShowDropInfo = Properties.Settings.Default.IsShowDropInfo;
-        public static bool IsShowDropInfo
+        public static bool IsShowDropInfo { get; set; }
+        public static bool IsShowBoxInfo { get; set; }
+        public static bool IsEnableLevelLimiter { get; set; }
+        public static bool IsDefaultLvMax { get; set; }
+        public static bool IsUseLocalTime
         {
             get
             {
-                return isShowDropInfo;
+                return isUseLocalTime;
             }
             set
             {
-                isShowDropInfo = value;
-                Properties.Settings.Default.IsShowDropInfo = value;
-                Properties.Settings.Default.Save();
+                isUseLocalTime = value;
+                Utility.UseLocalTime = isUseLocalTime;
             }
         }
-        private static bool isShowBoxInfo = Properties.Settings.Default.IsShowBoxInfo;
-        public static bool IsShowBoxInfo
+        private static bool isUseLocalTime = false;
+        private static IniData data = new IniData();
+        public static readonly string CONFIG_FILENAME = "config.ini";
+        static Settings()
         {
-            get
+            if (File.Exists(CONFIG_FILENAME) == false)
             {
-                return isShowBoxInfo;
+                data = initConfigFile();
             }
-            set
+            else
             {
-                isShowBoxInfo = value;
-                Properties.Settings.Default.IsShowBoxInfo = value;
-                Properties.Settings.Default.Save();
+                FileIniDataParser parser = new FileIniDataParser();
+                data = parser.ReadFile(CONFIG_FILENAME);
             }
+            IsShowDropInfo = Convert.ToBoolean(data["Common"]["IsShowDropInfo"]);
+            IsShowBoxInfo = Convert.ToBoolean(data["Common"]["IsShowBoxInfo"]);
+            IsEnableLevelLimiter = Convert.ToBoolean(data["Common"]["IsEnableLevelLimiter"]);
+            IsDefaultLvMax = Convert.ToBoolean(data["Common"]["IsDefaultLvMax"]);
+            IsUseLocalTime = Convert.ToBoolean(data["Common"]["IsUseLocalTime"]);
         }
-        private static bool isEnableLevelLimiter = Properties.Settings.Default.IsEnableLevelLimiter;
-        public static bool IsEnableLevelLimiter
+        public static void Save()
         {
-            get
-            {
-                return isEnableLevelLimiter;
-            }
-            set
-            {
-                isEnableLevelLimiter = value;
-                Properties.Settings.Default.IsEnableLevelLimiter = value;
-                Properties.Settings.Default.Save();
-            }
+            data["Common"]["IsShowDropInfo"] = IsShowDropInfo.ToString();
+            data["Common"]["IsShowBoxInfo"] = IsShowBoxInfo.ToString();
+            data["Common"]["IsEnableLevelLimiter"] = IsEnableLevelLimiter.ToString();
+            data["Common"]["IsDefaultLvMax"] = IsDefaultLvMax.ToString();
+            data["Common"]["IsUseLocalTime"] = IsUseLocalTime.ToString();
+            FileIniDataParser parser = new FileIniDataParser();
+            parser.WriteFile(CONFIG_FILENAME, data);
         }
-        private static bool isDefaultLvMax = Properties.Settings.Default.IsDefaultLvMax;
-        public static bool IsDefaultLvMax
+        private static IniData initConfigFile()
         {
-            get
-            {
-                return isDefaultLvMax;
-            }
-            set
-            {
-                isDefaultLvMax = value;
-                Properties.Settings.Default.IsDefaultLvMax = value;
-                Properties.Settings.Default.Save();
-            }
+            IniData initData = new IniData();
+            initData.Sections.AddSection("Common");
+            initData["Common"].AddKey("IsShowDropInfo", "false");
+            initData["Common"].AddKey("IsShowBoxInfo", "true");
+            initData["Common"].AddKey("IsEnableLevelLimiter", "true");
+            initData["Common"].AddKey("IsDefaultLvMax", "true");
+            initData["Common"].AddKey("IsUseLocalTime", "false");
+            FileIniDataParser parser = new FileIniDataParser();
+            parser.WriteFile(CONFIG_FILENAME, initData);
+            return initData;
         }
     }
 }

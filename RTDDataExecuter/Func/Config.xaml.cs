@@ -28,27 +28,27 @@ namespace RTDDataExecuter
         public Config()
         {
             InitializeComponent();
+            InitSettings();
         }
         private void ConfigTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             ImportAndroidGAMEButton.Content = new Run("Import GAME(MAP Data)");
             ImportiOSGAMEButton.Content = new Run("Import GAME(MAP Data)");
             ImportMsgPackButton.Content = new Run("Import MDBS MsgPack");
+            SaveSettingsButton.Content = new Run("Save Settings");
         }
         private void ImportAndroidGAMEButton_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
             ofd.DefaultExt = ".xml";
             ofd.Filter = "GAME File|GAME.xml";
-            //if (ofd.ShowDialog() == true)
-            if(true)
+            if (ofd.ShowDialog() == true)
             {
                 ImportAndroidGAMEButton.Content = new Run("Importing MAP Data...");
                 Task task = new Task(() =>
                 {
                     XmlDocument xmlGame = new XmlDocument();
-                    //xmlGame.Load(ofd.FileName);
-                    xmlGame.Load(@"D:\work\RTD\Deploy\GAME.xml");
+                    xmlGame.Load(ofd.FileName);
                     foreach (XmlNode xmlNode in xmlGame.GetElementsByTagName("string"))
                     {
                         if (xmlNode.Attributes["name"] != null && xmlNode.Attributes["name"].Value.StartsWith("LDBS"))
@@ -171,6 +171,24 @@ namespace RTDDataExecuter
                 task.Start();
             }
         }
+        private void SaveSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.IsShowDropInfo = IsShowDropInfoCheckBox.IsChecked.GetValueOrDefault(false);
+            Settings.IsShowBoxInfo = IsShowBoxInfoCheckBox.IsChecked.GetValueOrDefault(false);
+            Settings.IsEnableLevelLimiter = IsEnableLevelLimiterCheckBox.IsChecked.GetValueOrDefault(false);
+            Settings.IsDefaultLvMax = IsDefaultLvMaxCheckBox.IsChecked.GetValueOrDefault(false);
+            Settings.IsUseLocalTime = IsUseLocalTimeCheckBox.IsChecked.GetValueOrDefault(false);
+            try
+            {
+                Settings.Save();
+                SaveSettingsButton.Content = new Run("SAVED");
+            }
+            catch (Exception ex)
+            {
+                Utility.ShowException(ex.Message);
+                SaveSettingsButton.Content = new Run("FAILED, click to retry.");
+            }
+        }
 
         private void RefreshControl()
         {
@@ -181,48 +199,13 @@ namespace RTDDataExecuter
             w.Skill.Refresh();
             w.Guide.Refresh();
         }
-        public void InitSettings()
+        private void InitSettings()
         {
-            Settings.IsShowDropInfo = Properties.Settings.Default.IsShowDropInfo;
-            Settings.IsShowBoxInfo = Properties.Settings.Default.IsShowBoxInfo;
-            Settings.IsEnableLevelLimiter = Properties.Settings.Default.IsEnableLevelLimiter;
-            Settings.IsDefaultLvMax = Properties.Settings.Default.IsDefaultLvMax;
             IsShowDropInfoCheckBox.IsChecked = Settings.IsShowDropInfo;
             IsShowBoxInfoCheckBox.IsChecked = Settings.IsShowBoxInfo;
             IsEnableLevelLimiterCheckBox.IsChecked = Settings.IsEnableLevelLimiter;
             IsDefaultLvMaxCheckBox.IsChecked = Settings.IsDefaultLvMax;
-        }
-        private void IsShowDropInfoCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            Settings.IsShowDropInfo = true;
-        }
-        private void IsShowDropInfoCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Settings.IsShowDropInfo = false;
-        }
-        private void IsShowBoxInfoCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            Settings.IsShowBoxInfo = true;
-        }
-        private void IsShowBoxInfoCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Settings.IsShowBoxInfo = false;
-        }
-        private void IsEnableLevelLimiterCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            Settings.IsEnableLevelLimiter = true;
-        }
-        private void IsEnableLevelLimiterCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Settings.IsEnableLevelLimiter = false;
-        }
-        private void IsDefaultLvMaxCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            Settings.IsDefaultLvMax = true;
-        }
-        private void IsDefaultLvMaxCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Settings.IsDefaultLvMax = false;
+            IsUseLocalTimeCheckBox.IsChecked = Settings.IsUseLocalTime;
         }
     }
 }
