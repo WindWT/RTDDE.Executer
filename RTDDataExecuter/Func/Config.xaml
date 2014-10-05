@@ -34,7 +34,7 @@
             </Grid>
             <GroupBox DockPanel.Dock="Top" Header="Settings">
                 <StackPanel>
-                    <CheckBox Name="IsShowDropInfoCheckBox" >Show drop &amp; exp info(may NOT working on iOS)</CheckBox>
+                    <CheckBox Name="IsShowDropInfoCheckBox" >Show drop &amp; exp info</CheckBox>
                     <CheckBox Name="IsShowBoxInfoCheckBox"   >Show box info</CheckBox>
                     <CheckBox Name="IsEnableLevelLimiterCheckBox"  >Enable level limiter</CheckBox>
                     <CheckBox Name="IsDefaultLvMaxCheckBox"  >Set LV to max by default</CheckBox>

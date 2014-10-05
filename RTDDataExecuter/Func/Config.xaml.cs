@@ -94,10 +94,13 @@ namespace RTDDataExecuter
                     //}
                     using (StreamReader sr = new StreamReader(ofd.FileName))
                     {
-                        var game = new MapData(sr.BaseStream);
-                        DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.UnitTalkMaster>(game.UTM));
-                        DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.LevelDataMaster>(game.LDM));
-                        DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.EnemyTableMaster>(game.ETM));                        
+                        List<MapData> game = MapData.FromPlist(sr.BaseStream);
+                        foreach (MapData data in game)
+                        {
+                            DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.UnitTalkMaster>(data.UTM));
+                            DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.LevelDataMaster>(data.LDM));
+                            DAL.FromSingle(JSON.ToSingle<RTDDataProvider.MasterData.EnemyTableMaster>(data.ETM));
+                        }
                     }
                 });
                 task.ContinueWith(t =>

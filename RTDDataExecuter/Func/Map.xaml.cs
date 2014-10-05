@@ -64,30 +64,15 @@ namespace RTDDataExecuter
                     throw new Exception("NO MAP DATA.");
                 }
                 DataRow levelData = dt.Rows[0];
-                if (Settings.IsShowDropInfo == false)
-                {
-                    return BindMonsterDataToMap(InitMapData(
-                    levelData["map_data"].ToString(),
-                    Convert.ToInt32(levelData["width"]),
-                    Convert.ToInt32(levelData["height"]),
-                    Convert.ToInt32(levelData["start_x"]),
-                    Convert.ToInt32(levelData["start_y"]),
-                    Convert.ToInt32(levelData["distance"]),
-                    repeat
-                    ), initMonsterTask.Result);
-                }
-                else
-                {
-                    return BindDropDataToMap(BindMonsterDataToMap(InitMapData(
-                    levelData["map_data"].ToString(),
-                    Convert.ToInt32(levelData["width"]),
-                    Convert.ToInt32(levelData["height"]),
-                    Convert.ToInt32(levelData["start_x"]),
-                    Convert.ToInt32(levelData["start_y"]),
-                    Convert.ToInt32(levelData["distance"]),
-                    repeat
-                    ), initMonsterTask.Result), MapData.GetEnemyInfo(levelID));
-                }
+                return BindDropDataToMap(BindMonsterDataToMap(InitMapData(
+                levelData["map_data"].ToString(),
+                Convert.ToInt32(levelData["width"]),
+                Convert.ToInt32(levelData["height"]),
+                Convert.ToInt32(levelData["start_x"]),
+                Convert.ToInt32(levelData["start_y"]),
+                Convert.ToInt32(levelData["distance"]),
+                repeat
+                ), initMonsterTask.Result), Settings.IsShowDropInfo ? MapData.GetEnemyInfo(levelID) : null);
             }
             );
             task.ContinueWith(t =>
