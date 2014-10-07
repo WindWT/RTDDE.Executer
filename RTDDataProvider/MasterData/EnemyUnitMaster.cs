@@ -35,5 +35,8 @@ namespace RTDDataProvider.MasterData
         public int pat;
         public int p0;
         public int p1;
+        public int pat_01;
+        public int p0_01;
+        public int p1_01;
     }
 }

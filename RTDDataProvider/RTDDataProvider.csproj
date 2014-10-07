@@ -64,6 +64,7 @@
     <Compile Include="MapData.cs" />
     <Compile Include="MasterData\AccessoryMaster.cs" />
     <Compile Include="MasterData\EnemyInfo.cs" />
+    <Compile Include="MasterData\EventCutinMaster.cs" />
     <Compile Include="MasterData\LevelDataMaster.cs" />
     <Compile Include="MasterData\LoginBonusMaster.cs" />
     <Compile Include="MasterData\ActiveSkillMaster.cs" />

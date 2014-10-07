@@ -17,5 +17,6 @@ namespace RTDDataProvider.MasterData
         public string text;
         public int display_order;
         public string banner;
+        public uint talk_dialog_id;
     }
 }

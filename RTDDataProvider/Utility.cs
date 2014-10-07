@@ -128,7 +128,10 @@ namespace RTDDataProvider
         ATTRI_ATK_ENHANCE_MAXLIFE = 100,
         ATTRI_ATK_ENHANCE_LIFEUNDER = 101,
         NEO_COUNTER = 102,
-        BUFFER = 103,
+        LIFE_AND_ATK_ATTR_ENHANCE = 103,
+        SOUL_DRAIN_AND_ATTR_UP_SOUL = 104,
+        DAMAGE_REDUCTION_AND_REFLECTION = 105,
+        BUFFER = 106,
     }
     public enum ActiveSkillType
     {
@@ -200,6 +203,7 @@ namespace RTDDataProvider
         EnemyScanDefDown = 66,
         ElementBind = 67,
         AttributeNextAtkUp = 68,
+        ShufflePanelAttack = 69,
     }
     public enum PanelSkillType
     {
@@ -232,6 +236,9 @@ namespace RTDDataProvider
         UNLIMITED_WEAPON = 27,
         DAMAGE_AND_UNLIMITED = 28,
         ONE_SOULGET_TWO_LIFEFULLHEAL = 29,
+        PANEL_CHANGE_RANDOM = 30,
+        PANEL_CHANGE_UPPER = 31,
+        PANEL_CHANGE_LOWER = 32,
     }
     public enum AccessoryType
     {
@@ -317,6 +324,8 @@ namespace RTDDataProvider
         POK_THR,
         RVS_LBO,
         POK_HED,
+        YORISHIRO,
+        POK_CHIBISHIRO,
         PLAYER_END,
         MS01SLA,
         MS01SQU,
@@ -363,6 +372,7 @@ namespace RTDDataProvider
         MS01_ORG_GUN,
         MS03FLY_02,
         MS01RVS,
+        MS06DRA,
         MAX,
     }
     public enum ENEMY_TYPE
@@ -419,9 +429,12 @@ namespace RTDDataProvider
         POWUP_BY_LIFE,
         FIRST_DEADLY,
         FIRST_CURSE,
-        GUARD_COMBO,
+        GUARD_COMBO_LESS,
         INVISIBLE,
         REFLECT,
+        GUARD_COMBO_MORE,
+        POISON_DOWN_SOUL,
+        SHUFFLE_DOWN_SOUL,
         MAX,
     }
     public enum Message_Name
@@ -515,6 +528,15 @@ namespace RTDDataProvider
         EnemyLogic_GuardCombo,
         EnemyLogic_Invisible,
         EnemyLogic_Reflect,
+        LAST_QUEST_MSG_1,
+        LAST_QUEST_MSG_2,
+        LAST_QUEST_MSG_3,
+        LAST_QUEST_MSG_4,
+        LAST_QUEST_MSG_5,
+        LAST_QUEST_MSG_6,
+        LAST_QUEST_MSG_7,
+        LAST_QUEST_MSG_8,
+        EnemyLogic_ShuffleSoulDown,
         ALL,
     }
     public struct EnemyEffectAssign
@@ -828,7 +850,9 @@ namespace RTDDataProvider
 		new EnemyEffectAssign(11, "ef_atk_blade_08", null),
 		new EnemyEffectAssign(211, "ef_atk_arrow_07", null),
 		new EnemyEffectAssign(212, "ef_atk_arrow_05", null),
-		new EnemyEffectAssign(12, "ef_atk_blade_09", null)
+		new EnemyEffectAssign(12, "ef_atk_blade_09", null),
+		new EnemyEffectAssign(311, "ef_atk_magic_03", null),
+		new EnemyEffectAssign(312, "ef_atk_magic_03", null)
 	};
         #endregion
         public static AssignID ParseUnitKind(int kind)

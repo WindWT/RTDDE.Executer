@@ -95,10 +95,16 @@
                             <TextBox Name="MapEnemyInfo_def" Width="50"></TextBox>
                             <TextBlock Text="pattern" Width="50"/>
                             <TextBox Name="MapEnemyInfo_pat" Width="250"></TextBox>
-                            <TextBlock Text="param0" Width="50"/>
+                            <TextBlock Text="p0" Width="50"/>
                             <TextBox Name="MapEnemyInfo_p0" Width="100"></TextBox>
-                            <TextBlock Text="param1" Width="50"/>
+                            <TextBlock Text="p1" Width="50"/>
                             <TextBox Name="MapEnemyInfo_p1" Width="100"></TextBox>
+                            <TextBlock Text="pattern2" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_pat_01" Width="250"></TextBox>
+                            <TextBlock Text="p2_0" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_p0_01" Width="100"></TextBox>
+                            <TextBlock Text="p2_1" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_p1_01" Width="100"></TextBox>
                             <Separator Width="300"/>
                         </WrapPanel>
                     </ScrollViewer>

@@ -617,6 +617,9 @@ namespace RTDDataExecuter
                 MapEnemyInfo_pat.Text = Utility.ParseAttackPattern(eum.pat);
                 MapEnemyInfo_p0.Text = eum.p0.ToString();
                 MapEnemyInfo_p1.Text = eum.p1.ToString();
+                MapEnemyInfo_pat_01.Text = Utility.ParseAttackPattern(eum.pat_01);
+                MapEnemyInfo_p0_01.Text = eum.p0_01.ToString();
+                MapEnemyInfo_p1_01.Text = eum.p1_01.ToString();
 
             }, MainWindow.uiTaskScheduler);
             task.Start();

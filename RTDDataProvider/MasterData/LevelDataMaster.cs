@@ -20,5 +20,7 @@ namespace RTDDataProvider.MasterData
         public string hash;
         //public EnemyTableMaster enemy_table_master;
         //public UnitTalkMaster unit_talk_master;
+        //public EventCutinMaster[] event_cutin_master;
+        public uint clear_talk_id;
     }
 }
