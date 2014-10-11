@@ -89,7 +89,7 @@ order by point";
                 QuestCategoryInfo_order.Text = qcm.display_order.ToString();
                 QuestCategoryInfo_icon.Text = qcm.icon;
                 QuestCategoryInfo_kind.Text = Utility.ParseQuestKind(qcm.kind);
-                QuestCategoryInfo_zbtn_kind.Text = Utility.ParseZBTNKind(qcm.kind);
+                QuestCategoryInfo_zbtn_kind.Text = Utility.ParseZBTNKind(qcm.zbtn_kind);
                 QuestCategoryInfo_pt_num.Text = qcm.pt_num.ToString();
                 QuestCategoryInfo_text.Text = Utility.ParseText(qcm.text);
 
