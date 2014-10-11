@@ -11,27 +11,11 @@ namespace RTDDataProvider
 {
     public static class DAL
     {
-        private static readonly string DB_LOCAL_FILEPATH = "RTD.db";
-        private static readonly string connectionString = "Data Source=" + DB_LOCAL_FILEPATH;
+        private static string connectionString = "Data Source=RTD.db";
+        public static string ConnectionString { get; set; }
 
         static DAL()
         {
-            if (!System.IO.File.Exists(DB_LOCAL_FILEPATH))
-            {
-                //如果文件不存在，则创建数据库
-                using (SQLiteConnection connection = new SQLiteConnection(connectionString))
-                {
-                    connection.Open();
-                    using (SQLiteCommand command = new SQLiteCommand(connection))
-                    {
-                        command.CommandText = "CREATE TABLE Demo(id integer NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE)";
-                        command.ExecuteNonQuery();
-
-                        command.CommandText = "DROP TABLE Demo";
-                        command.ExecuteNonQuery();
-                    }
-                }
-            }
         }
 
         /// <summary>
