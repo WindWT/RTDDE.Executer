@@ -12,7 +12,17 @@ namespace RTDDataProvider
     public static class DAL
     {
         private static string connectionString = "Data Source=RTD.db";
-        public static string ConnectionString { get; set; }
+        public static string ConnectionString
+        {
+            get
+            {
+                return connectionString;
+            }
+            set
+            {
+                connectionString = value;
+            }
+        }
 
         static DAL()
         {
