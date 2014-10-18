@@ -46,81 +46,28 @@ namespace RTDDE.Executer
         }
         public static TaskScheduler uiTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
-        private void TabStrip_Unchecked(object sender, RoutedEventArgs e)
+        private void MenuItem_Checked(object sender, RoutedEventArgs e)
         {
-            int checkedTabNumber = 0;
-            foreach (var children in TabGrid.Children)
-            {
-                if (children is ToggleButton)
-                {
-                    if (((ToggleButton)children).IsChecked == true)
-                    {
-                        checkedTabNumber++;
-                    }
-                }
-            }
-            if (checkedTabNumber == 0)
-            {
-                ((ToggleButton)sender).IsChecked = true;
-            }
-        }
-        private void TabStrip_Checked(object sender, RoutedEventArgs e)
-        {
-            ToggleButton tb = sender as ToggleButton;
-            ChangeTab(tb.Name.Replace("_TabStrip", String.Empty));
-        }
-        public void ChangeTab(string name, bool hasTab = true)
-        {
-            if (MainGrid == null)
-            {
-                return;
-            }
-            foreach (var children in MainGrid.Children)
-            {
-                Grid grid;
-                if (children is Grid)
-                {
-                    grid = (Grid)children;
-                }
-                else if (((ContentControl)children).Content is Grid)
-                {
-                    grid = (Grid)((ContentControl)children).Content;
-                }
-                else
-                {
-                    continue;
-                }
-                if (grid.Name != name + "Tab")
-                {
-                    grid.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    grid.Visibility = Visibility.Visible;
-                }
-            }
-            if (hasTab)
-            {
-                foreach (var children in TabGrid.Children)
-                {
-                    if (children is ToggleButton)
-                    {
-                        if (((ToggleButton)children).Name != name + "_TabStrip")
-                        {
-                            ((ToggleButton)children).IsChecked = false;
-                        }
-                        else
-                        {
-                            if (((ToggleButton)children).IsChecked == false)
-                            {
-                                ((ToggleButton)children).IsChecked = true;
-                            }
-                        }
-                    }
-                }
-            }
+            Button tb = sender as Button;
+            ChangeTab(tb.Name.Replace("MenuItem_", String.Empty));
         }
 
+        public void ChangeTab(string tabName)
+        {
+            foreach (UserControl child in MainGrid.Children)
+            {
+                if (child.Name == tabName)
+                {
+                    child.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    child.Visibility = Visibility.Collapsed;
+                }
+            }
+            MenuButton.IsChecked = false;
+        }
+        
         //异常信息显示15秒之后消失。
         private DispatcherTimer dispatcherTimer = null;
         private void StatusBarExceptionMessage_TextChanged(object sender, TextChangedEventArgs e)
@@ -174,11 +121,6 @@ namespace RTDDE.Executer
         private void MinimizedButton_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = System.Windows.WindowState.Minimized;
-        }
-
-        private void MoveBar_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            ChangeTab("Diff", false);
         }
     }
 }

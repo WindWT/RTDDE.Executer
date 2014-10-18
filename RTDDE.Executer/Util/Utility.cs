@@ -54,6 +54,11 @@ namespace RTDDE.Executer
             var w = (MainWindow)Application.Current.MainWindow;
             w.StatusBarExceptionMessage.Text = message;
         }
+        public static void ChangeTab(string tabName)
+        {
+            var w = (MainWindow)Application.Current.MainWindow;
+            w.ChangeTab(tabName);
+        }
         public static void BindData(DataGrid dg, string sql)
         {
             BindData(dg, sql, null);

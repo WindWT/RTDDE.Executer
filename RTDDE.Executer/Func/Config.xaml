@@ -2,8 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:RTDDE.Executer"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" >
     <Grid Name="ConfigTab" IsVisibleChanged="ConfigTab_IsVisibleChanged">
         <DockPanel Background="#FFE5E5E5">
@@ -42,7 +41,6 @@
                     <Button Name="SaveSettingsButton" Click="SaveSettingsButton_Click">Save Settings</Button>
                 </StackPanel>
             </GroupBox>
-            <local:Common x:Name="Common" />
         </DockPanel>
     </Grid>
 </UserControl>

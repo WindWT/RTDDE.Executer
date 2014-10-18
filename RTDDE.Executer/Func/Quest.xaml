@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d">
-    <Grid Name="QuestTab" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="300"/>
@@ -36,6 +36,8 @@
                     </WrapPanel>
                 </Expander.Content>
             </Expander>
+            <Separator Width="300"/>
+            <Button Width="300" Name="QuestInfo_ViewMap" Click="QuestInfo_ViewMap_Click" Visibility="Collapsed">View Map</Button>
             <Separator Width="300"/>
             <TextBlock Text="id" Width="50"/>
             <TextBox Name="QuestInfo_id" Width="50" IsReadOnly="True"></TextBox>

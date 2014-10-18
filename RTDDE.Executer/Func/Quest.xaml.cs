@@ -37,8 +37,10 @@ namespace RTDDE.Executer
             if (QuestDataGrid.SelectedItem == null)
             {
                 //avoid Exception
+                QuestInfo_ViewMap.Visibility = Visibility.Collapsed;
                 return;
             }
+            QuestInfo_ViewMap.Visibility = Visibility.Visible;
             string eqInfo_id = ((DataRowView)QuestDataGrid.SelectedItem).Row["id"].ToString();
             QuestInfo_id.Text = eqInfo_id;
             Task<DataTable> task = new Task<DataTable>(() =>
@@ -324,6 +326,13 @@ FROM QUEST_MASTER WHERE ";
             QuestSearch_category.Text = String.Empty;
             QuestSearch_category_name.Text = String.Empty;
             QuestTypeRadio_Event.IsChecked = true;
+        }
+
+        private void QuestInfo_ViewMap_Click(object sender, RoutedEventArgs e)
+        {
+            var w = (MainWindow)Application.Current.MainWindow;
+            w.Map.InitMap(QuestInfo_id.Text);
+            w.ChangeTab("Map");
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="RTDDE.Executer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:RTDDE.Executer"
+        xmlns:RTDDE="clr-namespace:RTDDE.Executer"
         Title="RTDDE.Executer"  MinWidth="640" MinHeight="480" Width="720" Height="540"
         Icon="Resources/Icon256.ico" WindowStyle="None" ResizeMode="NoResize">
     <Window.Resources>
@@ -18,8 +18,13 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
-        <DockPanel  Grid.RowSpan="3" Grid.ColumnSpan="3">
-            <StatusBar DockPanel.Dock="Bottom" Height="20" VerticalAlignment="Bottom" 
+        <Grid  Grid.RowSpan="3" Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="36" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StatusBar Grid.Row="2" Height="20" VerticalAlignment="Bottom" 
                        Background="{StaticResource HighlightBrush}">
                 <StatusBarItem Padding="0" Margin="0">
                     <TextBox Name="StatusBarExceptionMessage"
@@ -28,49 +33,88 @@
                              Background="Transparent" BorderThickness="0"/>
                 </StatusBarItem>
             </StatusBar>
-            <Grid DockPanel.Dock="Top" Name="TabGrid">
+            <Grid Name="TabGrid" Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <!--MoveBar-->
-                <ContentControl Grid.ColumnSpan="11" Name="MoveBar"
-                                MouseDown="MoveBar_MouseDown" MouseDoubleClick="MoveBar_MouseDoubleClick" MouseRightButtonUp="MoveBar_MouseRightButtonUp">
+                <ContentControl Grid.ColumnSpan="512" Name="MoveBar"
+                                MouseDown="MoveBar_MouseDown" MouseDoubleClick="MoveBar_MouseDoubleClick">
                     <Rectangle Fill="Transparent"/>
                 </ContentControl>
                 <!--Button-->
-                <ToggleButton Grid.Column="0"  Name="Quest_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Quest</ToggleButton>
-                <ToggleButton Grid.Column="1"  Name="Map_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Map</ToggleButton>
-                <ToggleButton Grid.Column="2"  Name="QuestCategory_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Category</ToggleButton>
-                <ToggleButton Grid.Column="3"  Name="Unit_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Unit</ToggleButton>
-                <ToggleButton Grid.Column="4"  Name="Skill_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Skill</ToggleButton>
-                <ToggleButton Grid.Column="5"  Name="Accessory_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Accessory</ToggleButton>
-                <ToggleButton Grid.Column="6"  Name="Guide_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Guide</ToggleButton>
-                <ToggleButton Grid.Column="8"  Name="Config_TabStrip" Checked="TabStrip_Checked" Unchecked="TabStrip_Unchecked">Config</ToggleButton>
-                <Button Grid.Column="9" Name="MinimizedButton" Width="36" Click="MinimizedButton_Click"></Button>
-                <Button Grid.Column="10" Name="CloseButton" Width="36" Style="{StaticResource CloseButton}" Click="CloseButton_Click"></Button>
+                <ToggleButton Grid.Column="0"  Name="MenuButton" Content="MENU">
+                    <ToggleButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                    Storyboard.TargetName="MenuStack" 
+                                    Storyboard.TargetProperty="Width"
+                                    To="200" Duration="0:0:0.300">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                    Storyboard.TargetName="MenuStack" 
+                                    Storyboard.TargetProperty="Width"
+                                    To="0" Duration="0:0:0.300">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ToggleButton.Triggers>
+                </ToggleButton>
+                <Button Grid.Column="2" Name="MinimizedButton" Width="36" Click="MinimizedButton_Click"></Button>
+                <Button Grid.Column="3" Name="CloseButton" Width="36" Style="{StaticResource CloseButton}" Click="CloseButton_Click"></Button>
             </Grid>
-            <Grid DockPanel.Dock="Top" Name="MainGrid">
-                <local:Quest x:Name="Quest"/>
-                <local:Map x:Name="Map"/>
-                <local:QuestCategory x:Name="QuestCategory"/>
-                <local:Unit x:Name="Unit"/>
-                <local:Skill x:Name="Skill"/>
-                <local:Accessory x:Name="Accessory" />
-                <local:Guide x:Name="Guide" />
-                <local:Config x:Name="Config" />
-                <local:Diff x:Name="Diff" />
+            <DockPanel Panel.ZIndex="1024" Grid.Row="1" Name="MenuStack" Width="0" HorizontalAlignment="Left" Background="{StaticResource DefaultBrush}">
+                <DockPanel.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                        <Setter Property="FontSize" Value="18"></Setter>
+                        <Setter Property="FontFamily" Value="Segoe UI"></Setter>
+                        <Setter Property="DockPanel.Dock" Value="Top"></Setter>
+                    </Style>
+                </DockPanel.Resources>
+                <!-- MenuItem_Bottom -->
+                <Button Name="MenuItem_Config" Click="MenuItem_Checked" DockPanel.Dock="Bottom">Config</Button>
+                <Button Name="MenuItem_Common" Click="MenuItem_Checked" DockPanel.Dock="Bottom">Common</Button>
+                <Button Name="MenuItem_Diff" Click="MenuItem_Checked" DockPanel.Dock="Bottom" Visibility="Collapsed">Diff</Button>
+                <!-- MenuItem -->
+                <Button Name="MenuItem_Quest" Click="MenuItem_Checked">Quest</Button>
+                <Button Name="MenuItem_QuestCategory" Click="MenuItem_Checked">QuestCategory</Button>
+                <Button Name="MenuItem_Unit" Click="MenuItem_Checked">Unit</Button>
+                <Button Name="MenuItem_Skill" Click="MenuItem_Checked">Skill</Button>
+                <Button Name="MenuItem_Accessory" Click="MenuItem_Checked">Accessory</Button>
+                <Button Name="MenuItem_Guide" Click="MenuItem_Checked">Guide</Button>
+                <TextBlock></TextBlock>
+            </DockPanel>
+            <Grid Grid.Row="1" Name="MainGrid">
+                <RTDDE:Quest x:Name="Quest"/>
+                <RTDDE:Map x:Name="Map"/>
+                <RTDDE:QuestCategory x:Name="QuestCategory"/>
+                <RTDDE:Unit x:Name="Unit"/>
+                <RTDDE:Skill x:Name="Skill"/>
+                <RTDDE:Accessory x:Name="Accessory" />
+                <RTDDE:Guide x:Name="Guide" />
+                <RTDDE:Config x:Name="Config" />
+                <RTDDE:Diff x:Name="Diff" />
+                <RTDDE:Common x:Name="Common" />
             </Grid>
-        </DockPanel>
+        </Grid>
         <Rectangle Name="topLeft" Fill="Transparent" Grid.Column="0" Grid.Row="0" />
         <Rectangle Name="top" Fill="Transparent" Grid.Column="1" Grid.Row="0" />
         <Rectangle Name="topRight" Fill="Transparent" Grid.Column="2" Grid.Row="0" />

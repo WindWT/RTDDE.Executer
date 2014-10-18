@@ -204,11 +204,14 @@ namespace RTDDE.Executer
         }
         private void InitSettings()
         {
-            IsShowDropInfoCheckBox.IsChecked = Settings.IsShowDropInfo;
-            IsShowBoxInfoCheckBox.IsChecked = Settings.IsShowBoxInfo;
-            IsEnableLevelLimiterCheckBox.IsChecked = Settings.IsEnableLevelLimiter;
-            IsDefaultLvMaxCheckBox.IsChecked = Settings.IsDefaultLvMax;
-            IsUseLocalTimeCheckBox.IsChecked = Settings.IsUseLocalTime;
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) == false)
+            {
+                IsShowDropInfoCheckBox.IsChecked = Settings.IsShowDropInfo;
+                IsShowBoxInfoCheckBox.IsChecked = Settings.IsShowBoxInfo;
+                IsEnableLevelLimiterCheckBox.IsChecked = Settings.IsEnableLevelLimiter;
+                IsDefaultLvMaxCheckBox.IsChecked = Settings.IsDefaultLvMax;
+                IsUseLocalTimeCheckBox.IsChecked = Settings.IsUseLocalTime;
+            }
         }
     }
 }

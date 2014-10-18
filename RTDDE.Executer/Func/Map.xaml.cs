@@ -29,21 +29,7 @@ namespace RTDDE.Executer
         {
             InitializeComponent();
         }
-        private void MapTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var w = (MainWindow)Application.Current.MainWindow;
-            if (w == null)  //designer friendly
-            {
-                return;
-            }
-            var QuestInfo_id = (TextBox)w.Quest.FindName("QuestInfo_id");
-            if (string.IsNullOrWhiteSpace(QuestInfo_id.Text) == false && ((Grid)sender).IsVisible == true)
-            {
-                string levelID = QuestInfo_id.Text;
-                InitMap(levelID);
-            }
-        }
-        private void InitMap(string levelID, int repeat = 1)
+        public void InitMap(string levelID = "-1", int repeat = 1)
         {
             Task<DataTable> initMonsterTask = new Task<DataTable>(GetMonsterData, levelID);
             initMonsterTask.ContinueWith(t =>
@@ -743,6 +729,11 @@ namespace RTDDE.Executer
             lastCell.drop_unit_id = bossInfo.drop_unit_id.ToString();
             lastCell.add_attribute_exp = bossInfo.add_attribute_exp.ToString();
             return map;
+        }
+
+        private void Map_ButtonReturn_Click(object sender, RoutedEventArgs e)
+        {
+            Utility.ChangeTab("Quest");
         }
     }
 }
