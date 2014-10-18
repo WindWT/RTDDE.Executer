@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="RTDDE.Executer.Model"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"   
+             mc:Ignorable="d">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Helix:HelixViewport3D Name="viewer" ShowCameraInfo="False" Orthographic="True" Background="White" VerticalAlignment="Stretch">
+            <Helix:HelixViewport3D.DefaultCamera>
+                <OrthographicCamera LookDirection="0,0,-0.5" UpDirection="0,1,0" Position="-0.1,-0.1,0.5" Width="1.25"></OrthographicCamera>
+            </Helix:HelixViewport3D.DefaultCamera>
+            <Helix:SortingVisual3D x:Name="sortingVisual">
+
+            </Helix:SortingVisual3D>
+        </Helix:HelixViewport3D>
+    </Grid>
+</UserControl>

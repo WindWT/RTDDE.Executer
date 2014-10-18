@@ -204,6 +204,7 @@ namespace RTDDE.Executer
         }
         private void InitSettings()
         {
+            //fake for designer
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) == false)
             {
                 IsShowDropInfoCheckBox.IsChecked = Settings.IsShowDropInfo;

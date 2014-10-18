@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:RTDDE="clr-namespace:RTDDE.Executer"
              mc:Ignorable="d" >
-    <Grid Name="UnitTab" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Initialized="UnitTab_Initialized">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Initialized="UnitTab_Initialized">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="300"/>
@@ -63,6 +64,74 @@
                 <TextBox Name="UnitInfo_sub_a1" Width="100" IsReadOnly="True"></TextBox>
                 <TextBlock Text="model" Width="50"/>
                 <TextBox Name="UnitInfo_model" Width="250" IsReadOnly="True"></TextBox>
+                <Button Name="Unit_ShowModel" Width="299" HorizontalAlignment="Left" Content="Show Model">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                    Storyboard.TargetName="Model" 
+                                    Storyboard.TargetProperty="Width"
+                                    To="300" Duration="0:0:0.300">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                    <DoubleAnimation
+                                    Storyboard.TargetName="Unit_ShowModel" 
+                                    Storyboard.TargetProperty="Width"
+                                    To="1" Duration="0:0:0.300">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                    <DoubleAnimation
+                                    Storyboard.TargetName="Unit_HideModel" 
+                                    Storyboard.TargetProperty="Width"
+                                    To="299" Duration="0:0:0.300">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Name="Unit_HideModel" Width="0" HorizontalAlignment="Right" Content="Hide Model">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                    Storyboard.TargetName="Model" 
+                                    Storyboard.TargetProperty="Width"
+                                    To="0" Duration="0:0:0.300">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                    <DoubleAnimation
+                                    Storyboard.TargetName="Unit_ShowModel" 
+                                    Storyboard.TargetProperty="Width"
+                                    To="299" Duration="0:0:0.300">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                    <DoubleAnimation
+                                    Storyboard.TargetName="Unit_HideModel" 
+                                    Storyboard.TargetProperty="Width"
+                                    To="1" Duration="0:0:0.300">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
             </WrapPanel>
             <Expander Width="300" BorderThickness="0" Name="UnitStoryExpander" IsExpanded="False">
                 <Expander.Header>
@@ -245,5 +314,6 @@
                 </Expander>
             </StackPanel>
         </ScrollViewer>
+        <RTDDE:Model x:Name="Model" HorizontalAlignment="Right" Width="0" Grid.Column="1" Grid.Row="1" Panel.ZIndex="512"></RTDDE:Model>
     </Grid>
 </UserControl>
