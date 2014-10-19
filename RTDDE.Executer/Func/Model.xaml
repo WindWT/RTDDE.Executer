@@ -8,7 +8,7 @@
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Helix:HelixViewport3D Name="viewer" ShowCameraInfo="False" Orthographic="True" Background="White" VerticalAlignment="Stretch">
             <Helix:HelixViewport3D.DefaultCamera>
-                <OrthographicCamera LookDirection="0,0,-0.5" UpDirection="0,1,0" Position="-0.1,-0.1,0.5" Width="1.25"></OrthographicCamera>
+                <OrthographicCamera LookDirection="0,0,-0.5" UpDirection="0,1,0" Position="-0.1,-0.1,1" Width="1.25"></OrthographicCamera>
             </Helix:HelixViewport3D.DefaultCamera>
             <Helix:SortingVisual3D x:Name="sortingVisual">
 

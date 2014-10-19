@@ -64,7 +64,7 @@
                 <TextBox Name="UnitInfo_sub_a1" Width="100" IsReadOnly="True"></TextBox>
                 <TextBlock Text="model" Width="50"/>
                 <TextBox Name="UnitInfo_model" Width="250" IsReadOnly="True"></TextBox>
-                <Button Name="Unit_ShowModel" Width="299" HorizontalAlignment="Left" Content="Show Model">
+                <Button Name="Unit_ShowModel" Click="Unit_ShowModel_Click" Width="299" HorizontalAlignment="Left" Content="Show Model">
                     <Button.Triggers>
                         <EventTrigger RoutedEvent="Button.Click">
                             <BeginStoryboard>

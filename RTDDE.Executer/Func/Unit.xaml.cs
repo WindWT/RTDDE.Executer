@@ -514,5 +514,15 @@ WHERE uo.id={0}";
 	1.2999999523162842
 };
         #endregion
+
+        private void Unit_ShowModel_Click(object sender, RoutedEventArgs e)
+        {
+            string g_id = UnitInfo_g_id.Text;
+            if (string.IsNullOrEmpty(g_id))
+            {
+                return;
+            }
+            Model.Load(Convert.ToInt32(g_id), UnitInfo_model.Text);
+        }
     }
 }

@@ -25,6 +25,7 @@ namespace RTDDE.Executer
             }
         }
         private static bool isUseLocalTime = false;
+        public static string DisunityPath { get; set; }
         private static IniData data = new IniData();
         public static readonly string CONFIG_FILENAME = "config.ini";
         static Settings()
@@ -43,6 +44,7 @@ namespace RTDDE.Executer
             IsEnableLevelLimiter = Convert.ToBoolean(data["Common"]["IsEnableLevelLimiter"]);
             IsDefaultLvMax = Convert.ToBoolean(data["Common"]["IsDefaultLvMax"]);
             IsUseLocalTime = Convert.ToBoolean(data["Common"]["IsUseLocalTime"]);
+            DisunityPath = data["Common"]["DisunityPath"];
         }
         public static void Save()
         {
@@ -51,6 +53,7 @@ namespace RTDDE.Executer
             data["Common"]["IsEnableLevelLimiter"] = IsEnableLevelLimiter.ToString();
             data["Common"]["IsDefaultLvMax"] = IsDefaultLvMax.ToString();
             data["Common"]["IsUseLocalTime"] = IsUseLocalTime.ToString();
+            data["Common"]["DisunityPath"] = DisunityPath;
             FileIniDataParser parser = new FileIniDataParser();
             parser.WriteFile(CONFIG_FILENAME, data);
         }
@@ -63,6 +66,7 @@ namespace RTDDE.Executer
             initData["Common"].AddKey("IsEnableLevelLimiter", "true");
             initData["Common"].AddKey("IsDefaultLvMax", "true");
             initData["Common"].AddKey("IsUseLocalTime", "false");
+            initData["Common"].AddKey("DisunityPath", "");
             FileIniDataParser parser = new FileIniDataParser();
             parser.WriteFile(CONFIG_FILENAME, initData);
             return initData;

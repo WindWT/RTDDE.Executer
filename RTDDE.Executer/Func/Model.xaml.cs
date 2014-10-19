@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -15,6 +16,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using RTDDE.Provider;
+using System.IO;
+using System.Net;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace RTDDE.Executer
 {
@@ -36,19 +42,136 @@ namespace RTDDE.Executer
                 {
                     System.IO.File.Copy(@"x86\FreeImage.dll", "FreeImage.dll", true);
                 }
+                //LoadModel(999, "330_e06_wz_fat_h_01");
             }
-            LoadModel(0, "");
         }
-        public void LoadModel(int g_id, string model)
-        {            
-            InitModel();
-        }
-        private void InitModel()
+        private class ModelInfo
         {
+            public int g_id;
+            public string modelName;
+            public string GetFileName()
+            {
+                return ((g_id - 1) / 10 * 10 + 1).ToString() + "-" + (((g_id - 1) / 10 + 1) * 10).ToString();
+            }
+            public string GetUnity3DFilePath()
+            {
+                return string.Format(@"model\{0}.unity3d", GetFileName());
+            }
+            public string GetModelDirectory()
+            {
+                return string.Format(@"model\{0}", GetFileName());
+            }
+            public ModelInfo() :
+                this(0, string.Empty) { }
+            public ModelInfo(int i, string s)
+            {
+                g_id = i;
+                modelName = s;
+            }
+        }
+        private ModelInfo modelInfo = new ModelInfo();
+        public void Load(int g_id, string model)
+        {
+            lock (modelInfo)
+            {
+                modelInfo = new ModelInfo(g_id, model);
+                //List<string> fileList = InitModelFile(modelInfo);
+                Task<List<string>> taskInitModelFile = new Task<List<string>>(() => InitModelFile(modelInfo));
+                taskInitModelFile.ContinueWith(t =>
+                    {
+                        try
+                        {
+                            InitModel(t.Result);
+                        }
+                        catch (Exception ex)
+                        {
+                            File.Delete(modelInfo.GetUnity3DFilePath());
+                            Directory.Delete(modelInfo.GetModelDirectory(), true);
+                        }
+                    }, MainWindow.uiTaskScheduler);
+                taskInitModelFile.Start();
+            }
+        }
+        private List<string> InitModelFile(ModelInfo info)
+        {
+            if (AssetBundleDefine.m_BasicBundles.Any(o => o.fileName == modelInfo.GetFileName()) == false)
+            {
+                return new List<string>();
+            }
+            AssetBundleDefine.AssetBundleInfo abi = AssetBundleDefine.m_BasicBundles.First(o => o.fileName == modelInfo.GetFileName());
+            if (Directory.Exists("model") == false)
+            {
+                Directory.CreateDirectory("model");
+            }
+            //first find exist model file
+            List<string> fileList = GetUnpackFile(modelInfo);
+            if (fileList.Count > 0)
+            {
+                return fileList;
+            }
+            else if (File.Exists(info.GetUnity3DFilePath()))
+            {
+                //find unity3d file, then extract
+                UnpackFile(modelInfo);
+                return GetUnpackFile(modelInfo);
+            }
+            else
+            {
+                //download,extract,return
+                using (WebClient client = new WebClient())
+                {
+                    //client.DownloadFileCompleted += (sender, e) =>
+                    //{
+                    //    UnpackFile(modelInfo);
+                    //    fileList = GetUnpackFile(modelInfo);
+                    //};
+                    client.DownloadFile(new Uri(abi.GetURL()), modelInfo.GetUnity3DFilePath());
+                    UnpackFile(modelInfo);
+                    return GetUnpackFile(modelInfo);
+                }
+            }
+        }
+        private void UnpackFile(ModelInfo info)
+        {
+            Process p = new Process();
+            // Redirect the output stream of the child process.
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.FileName = Settings.DisunityPath;
+            p.StartInfo.Arguments = string.Format("-f texture2d,mesh extract {0}", info.GetUnity3DFilePath());
+            p.Start();
+            p.WaitForExit();
+        }
+        private List<string> GetUnpackFile(ModelInfo info)
+        {
+            List<string> unpacked = new List<string>();
+            DirectoryInfo di = new DirectoryInfo(info.GetModelDirectory());
+            if (di.Exists)
+            {
+                foreach (FileInfo fi in di.GetFiles("*.*", SearchOption.AllDirectories))
+                {
+                    string unpackedFileName = System.IO.Path.GetFileNameWithoutExtension(fi.FullName);
+                    if (unpackedFileName.Contains(info.modelName) || info.modelName.Contains(unpackedFileName))
+                    {
+                        unpacked.Add(fi.FullName);
+                    }
+                }
+            }
+            return unpacked;
+        }
+        private void InitModel(List<string> fileList)
+        {
+            string objFilePath = fileList.Find(o => o.EndsWith(".obj"));
+            string ddsFilePath = fileList.Find(o => o.EndsWith(".dds"));
+            string wpnddsFilePath = fileList.Find(o => o.EndsWith("wpn.dds"));
+            if (string.IsNullOrEmpty(objFilePath) || string.IsNullOrEmpty(ddsFilePath))
+            {
+                Utility.ShowException("MODEL ERROR");
+                return;
+            }
             ModelImporter importer = new ModelImporter();
-            Model3DGroup objModel = importer.Load(@"D:\work\RTD\RTDDE.ModelViewer\RTDDE.ModelViewer\bin\Release\e06_wz_fat_h_01.obj");
+            Model3DGroup objModel = importer.Load(objFilePath);
 
-            FIBITMAP fiBitmap = FreeImage.Load(FREE_IMAGE_FORMAT.FIF_DDS, @"D:\work\RTD\RTDDE.ModelViewer\RTDDE.ModelViewer\bin\Release\330_e06_wz_fat_h_01.dds", FREE_IMAGE_LOAD_FLAGS.DEFAULT);
+            FIBITMAP fiBitmap = FreeImage.Load(FREE_IMAGE_FORMAT.FIF_DDS, ddsFilePath, FREE_IMAGE_LOAD_FLAGS.DEFAULT);
             Bitmap b = FreeImage.GetBitmap(fiBitmap);
             BitmapSource bitmapSource = BitmapToBitmapSource(b);
 

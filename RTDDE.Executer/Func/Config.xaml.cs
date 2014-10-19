@@ -181,6 +181,7 @@ namespace RTDDE.Executer
             Settings.IsEnableLevelLimiter = IsEnableLevelLimiterCheckBox.IsChecked.GetValueOrDefault(false);
             Settings.IsDefaultLvMax = IsDefaultLvMaxCheckBox.IsChecked.GetValueOrDefault(false);
             Settings.IsUseLocalTime = IsUseLocalTimeCheckBox.IsChecked.GetValueOrDefault(false);
+            Settings.DisunityPath = DisunityPathTextBox.Text;
             try
             {
                 Settings.Save();
@@ -212,6 +213,7 @@ namespace RTDDE.Executer
                 IsEnableLevelLimiterCheckBox.IsChecked = Settings.IsEnableLevelLimiter;
                 IsDefaultLvMaxCheckBox.IsChecked = Settings.IsDefaultLvMax;
                 IsUseLocalTimeCheckBox.IsChecked = Settings.IsUseLocalTime;
+                DisunityPathTextBox.Text = Settings.DisunityPath;
             }
         }
     }
