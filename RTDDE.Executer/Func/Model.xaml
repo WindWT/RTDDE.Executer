@@ -6,13 +6,12 @@
              xmlns:Helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"   
              mc:Ignorable="d">
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <Helix:HelixViewport3D Name="viewer" ShowCameraInfo="False" Orthographic="True" Background="White" VerticalAlignment="Stretch">
+        <Helix:HelixViewport3D Name="viewer" IsHeadLightEnabled="True" ShowCameraInfo="False" Orthographic="True" Background="White" VerticalAlignment="Stretch">
             <Helix:HelixViewport3D.DefaultCamera>
                 <OrthographicCamera LookDirection="0,0,-0.5" UpDirection="0,1,0" Position="-0.1,-0.1,1" Width="1.25"></OrthographicCamera>
             </Helix:HelixViewport3D.DefaultCamera>
-            <Helix:SortingVisual3D x:Name="sortingVisual">
-
-            </Helix:SortingVisual3D>
+            <ModelVisual3D x:Name="model">
+            </ModelVisual3D>
         </Helix:HelixViewport3D>
     </Grid>
 </UserControl>

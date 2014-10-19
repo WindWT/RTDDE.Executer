@@ -161,7 +161,7 @@ namespace RTDDE.Executer
         private void InitModel(List<string> fileList)
         {
             string objFilePath = fileList.Find(o => o.EndsWith(".obj"));
-            string ddsFilePath = fileList.Find(o => o.EndsWith(".dds"));
+            string ddsFilePath = fileList.Find(o => o.EndsWith(".dds") && (o.Contains("wpn.dss") == false));
             string wpnddsFilePath = fileList.Find(o => o.EndsWith("wpn.dds"));
             if (string.IsNullOrEmpty(objFilePath) || string.IsNullOrEmpty(ddsFilePath))
             {
@@ -172,21 +172,22 @@ namespace RTDDE.Executer
             Model3DGroup objModel = importer.Load(objFilePath);
 
             FIBITMAP fiBitmap = FreeImage.Load(FREE_IMAGE_FORMAT.FIF_DDS, ddsFilePath, FREE_IMAGE_LOAD_FLAGS.DEFAULT);
-            Bitmap b = FreeImage.GetBitmap(fiBitmap);
-            BitmapSource bitmapSource = BitmapToBitmapSource(b);
-
+            BitmapSource bitmapSource = BitmapToBitmapSource(FreeImage.GetBitmap(fiBitmap));
             ImageBrush textureBrush = new ImageBrush(bitmapSource) { ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
             var material = new DiffuseMaterial(textureBrush);
 
+            FIBITMAP fiBitmapWpn = FreeImage.Load(FREE_IMAGE_FORMAT.FIF_DDS, wpnddsFilePath, FREE_IMAGE_LOAD_FLAGS.DEFAULT);
+            BitmapSource bitmapSourceWpn = BitmapToBitmapSource(FreeImage.GetBitmap(fiBitmapWpn));
+            ImageBrush textureBrushWpn = new ImageBrush(bitmapSourceWpn) { ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
+            var materialWpn = new DiffuseMaterial(textureBrushWpn);
+
             Model3DGroup group = new Model3DGroup();
-            foreach (GeometryModel3D model3d in objModel.Children)
+            if (objModel.Children.Count > 0)
             {
-                //model3d.Material = material;
-                //model3d.BackMaterial = material;
+                GeometryModel3D model3d = objModel.Children[0] as GeometryModel3D;
                 MeshGeometry3D mesh = model3d.Geometry as MeshGeometry3D;
                 //MeshGeometry3D sortedMesh = GetSortedMesh(mesh);
                 List<MeshGeometry3D> splitedMeshList = SplitMesh(mesh);
-                //model3d.Geometry = splitedMeshList[12];
                 foreach (MeshGeometry3D splitedMesh in splitedMeshList)
                 {
                     GeometryModel3D splitModel = new GeometryModel3D();
@@ -196,9 +197,22 @@ namespace RTDDE.Executer
                     group.Children.Add(splitModel);
                 }
             }
-
-            viewer.Children.Add(new DefaultLights());
-            sortingVisual.Content = group;
+            if (objModel.Children.Count > 1)
+            {
+                GeometryModel3D model3d = objModel.Children[1] as GeometryModel3D;
+                MeshGeometry3D mesh = model3d.Geometry as MeshGeometry3D;
+                //MeshGeometry3D sortedMesh = GetSortedMesh(mesh);
+                List<MeshGeometry3D> splitedMeshList = SplitMesh(mesh);
+                foreach (MeshGeometry3D splitedMesh in splitedMeshList)
+                {
+                    GeometryModel3D splitModel = new GeometryModel3D();
+                    splitModel.Geometry = splitedMesh;
+                    splitModel.Material = materialWpn;
+                    splitModel.BackMaterial = materialWpn;
+                    group.Children.Add(splitModel);
+                }
+            }
+            model.Content = group;
         }
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
         public static extern bool DeleteObject(IntPtr hObject);
