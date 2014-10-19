@@ -176,11 +176,6 @@ namespace RTDDE.Executer
             ImageBrush textureBrush = new ImageBrush(bitmapSource) { ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
             var material = new DiffuseMaterial(textureBrush);
 
-            FIBITMAP fiBitmapWpn = FreeImage.Load(FREE_IMAGE_FORMAT.FIF_DDS, wpnddsFilePath, FREE_IMAGE_LOAD_FLAGS.DEFAULT);
-            BitmapSource bitmapSourceWpn = BitmapToBitmapSource(FreeImage.GetBitmap(fiBitmapWpn));
-            ImageBrush textureBrushWpn = new ImageBrush(bitmapSourceWpn) { ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
-            var materialWpn = new DiffuseMaterial(textureBrushWpn);
-
             Model3DGroup group = new Model3DGroup();
             if (objModel.Children.Count > 0)
             {
@@ -197,8 +192,13 @@ namespace RTDDE.Executer
                     group.Children.Add(splitModel);
                 }
             }
-            if (objModel.Children.Count > 1)
+            if (objModel.Children.Count > 1 && string.IsNullOrEmpty(wpnddsFilePath) == false)
             {
+                FIBITMAP fiBitmapWpn = FreeImage.Load(FREE_IMAGE_FORMAT.FIF_DDS, wpnddsFilePath, FREE_IMAGE_LOAD_FLAGS.DEFAULT);
+                BitmapSource bitmapSourceWpn = BitmapToBitmapSource(FreeImage.GetBitmap(fiBitmapWpn));
+                ImageBrush textureBrushWpn = new ImageBrush(bitmapSourceWpn) { ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
+                var materialWpn = new DiffuseMaterial(textureBrushWpn);
+
                 GeometryModel3D model3d = objModel.Children[1] as GeometryModel3D;
                 MeshGeometry3D mesh = model3d.Geometry as MeshGeometry3D;
                 //MeshGeometry3D sortedMesh = GetSortedMesh(mesh);
