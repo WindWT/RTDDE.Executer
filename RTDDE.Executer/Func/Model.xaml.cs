@@ -176,7 +176,7 @@ namespace RTDDE.Executer
             ImageBrush textureBrush = new ImageBrush(bitmapSource) { ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
             var material = new DiffuseMaterial(textureBrush);
 
-            Model3DGroup group = new Model3DGroup();
+            List<GeometryModel3D> splitedModelList = new List<GeometryModel3D>();
             if (objModel.Children.Count > 0)
             {
                 GeometryModel3D model3d = objModel.Children[0] as GeometryModel3D;
@@ -189,7 +189,7 @@ namespace RTDDE.Executer
                     splitModel.Geometry = splitedMesh;
                     splitModel.Material = material;
                     splitModel.BackMaterial = material;
-                    group.Children.Add(splitModel);
+                    splitedModelList.Add(splitModel);
                 }
             }
             if (objModel.Children.Count > 1 && string.IsNullOrEmpty(wpnddsFilePath) == false)
@@ -209,8 +209,14 @@ namespace RTDDE.Executer
                     splitModel.Geometry = splitedMesh;
                     splitModel.Material = materialWpn;
                     splitModel.BackMaterial = materialWpn;
-                    group.Children.Add(splitModel);
+                    splitedModelList.Add(splitModel);
                 }
+            }
+            //group.Children = group.Children.OrderBy(o => (o as GeometryModel3D).Geometry.Bounds.Z);
+            Model3DGroup group = new Model3DGroup();
+            foreach (GeometryModel3D splitedModel in splitedModelList.OrderBy(o => o.Geometry.Bounds.Z))
+            {
+                group.Children.Add(splitedModel);
             }
             model.Content = group;
         }

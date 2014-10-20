@@ -12,9 +12,10 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="UnitDataGrid" AutoGenerateColumns="True" SelectionChanged="UnitDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
+        <DataGrid Grid.Column="0" Grid.RowSpan="3" Name="UnitDataGrid" AutoGenerateColumns="True" SelectionChanged="UnitDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
         <WrapPanel Grid.Column="1" Grid.Row="0">
             <Expander Width="300" BorderThickness="0" Name="UnitSearchExpander" IsExpanded="False">
                 <Expander.Header>
@@ -133,28 +134,28 @@
                     </Button.Triggers>
                 </Button>
             </WrapPanel>
-            <Expander Width="300" BorderThickness="0" Name="UnitStoryExpander" IsExpanded="False">
-                <Expander.Header>
-                    <Label Content="Story"></Label>
-                </Expander.Header>
-                <Expander.Content>
-                    <WrapPanel Name="UnitInfo_Panel_Story">
-                        <Separator Width="300"/>
-                        <RichTextBox Name="UnitInfo_story" IsReadOnly="True" Width="300"></RichTextBox>
-                        <TextBlock Text="ct_text" Width="50"/>
-                        <TextBox Name="UnitInfo_ct_text" Width="250" IsReadOnly="True"></TextBox>
-                        <TextBlock Text="sct_text" Width="50"/>
-                        <TextBox Name="UnitInfo_sct_text" Width="250" IsReadOnly="True"></TextBox>
-                        <TextBlock Text="sct6_text" Width="50"/>
-                        <TextBox Name="UnitInfo_sct6_text" Width="250" IsReadOnly="True"></TextBox>
-                        <TextBlock Text="a_skill_text" Width="50"/>
-                        <TextBox Name="UnitInfo_a_skill_text" Width="250" IsReadOnly="True"></TextBox>
-                        <Separator Width="300"/>
-                    </WrapPanel>
-                </Expander.Content>
-            </Expander>
         </WrapPanel>
-        <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+        <Expander Grid.Column="1" Grid.Row="1" Width="300" BorderThickness="0" Name="UnitStoryExpander" IsExpanded="False">
+            <Expander.Header>
+                <Label Content="Story"></Label>
+            </Expander.Header>
+            <Expander.Content>
+                <WrapPanel Name="UnitInfo_Panel_Story">
+                    <Separator Width="300"/>
+                    <RichTextBox Name="UnitInfo_story" IsReadOnly="True" Width="300"></RichTextBox>
+                    <TextBlock Text="ct_text" Width="50"/>
+                    <TextBox Name="UnitInfo_ct_text" Width="250" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="sct_text" Width="50"/>
+                    <TextBox Name="UnitInfo_sct_text" Width="250" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="sct6_text" Width="50"/>
+                    <TextBox Name="UnitInfo_sct6_text" Width="250" IsReadOnly="True"></TextBox>
+                    <TextBlock Text="a_skill_text" Width="50"/>
+                    <TextBox Name="UnitInfo_a_skill_text" Width="250" IsReadOnly="True"></TextBox>
+                    <Separator Width="300"/>
+                </WrapPanel>
+            </Expander.Content>
+        </Expander>
+        <ScrollViewer Grid.Column="1" Grid.Row="2" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
             <StackPanel>
                 <WrapPanel Name="UnitInfo_Panel_General">
                     <TextBlock Text="lv" Width="50"/>
@@ -314,6 +315,6 @@
                 </Expander>
             </StackPanel>
         </ScrollViewer>
-        <RTDDE:Model x:Name="Model" HorizontalAlignment="Right" Width="0" Grid.Column="1" Grid.Row="1" Panel.ZIndex="512"></RTDDE:Model>
+        <RTDDE:Model x:Name="Model" HorizontalAlignment="Right" Width="0" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Panel.ZIndex="512"></RTDDE:Model>
     </Grid>
 </UserControl>
