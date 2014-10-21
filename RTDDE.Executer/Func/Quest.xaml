@@ -3,17 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:RTDDE="clr-namespace:RTDDE.Executer"
              mc:Ignorable="d">
-    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid Name="UnitGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="300"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="QuestDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
+        <DataGrid Grid.Column="0" Grid.RowSpan="3" Name="QuestDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
         <WrapPanel Grid.Column="1" Grid.Row="0">
             <RadioButton GroupName="QuestType" Content="Event" Width="100" IsChecked="True" Name="QuestTypeRadio_Event" Checked="QuestTypeRadio_Event_Checked"></RadioButton>
             <RadioButton GroupName="QuestType" Content="Daily" Width="100" Name="QuestTypeRadio_Daily" Checked="QuestTypeRadio_Daily_Checked"></RadioButton>
@@ -37,12 +39,67 @@
                 </Expander.Content>
             </Expander>
             <Separator Width="300"/>
-            <Button Width="300" Name="QuestInfo_ViewMap" Click="QuestInfo_ViewMap_Click" Visibility="Collapsed">View Map</Button>
+            <Grid>
+                <Button Name="Quest_ShowMapButton" Width="300" HorizontalAlignment="Left" Content="Show Map">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard>
+                                <Storyboard Name="SB_ShowMap" Completed="SB_ShowMap_Completed">
+                                    <DoubleAnimation
+                                    Storyboard.TargetName="MapGrid" 
+                                    Storyboard.TargetProperty="Width"
+                                    To="{Binding ElementName=UnitGrid, Path=ActualWidth}" Duration="0:0:0.300">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                    <DoubleAnimation
+                                    Storyboard.TargetName="Quest_HideMapButton" 
+                                    Storyboard.TargetProperty="Width"
+                                    To="300" Duration="0:0:0.300">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Name="Quest_HideMapButton" Width="0" Panel.ZIndex="256" HorizontalAlignment="Right" Content="Hide Map">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard>
+                                <Storyboard Name="SB_HideMap">
+                                    <DoubleAnimation
+                                    Storyboard.TargetName="MapGrid" 
+                                    Storyboard.TargetProperty="Width"
+                                    To="0" Duration="0:0:0.300">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                    <DoubleAnimation
+                                    Storyboard.TargetName="Quest_HideMapButton" 
+                                    Storyboard.TargetProperty="Width"
+                                    To="0" Duration="0:0:0.300">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+            </Grid>
             <Separator Width="300"/>
             <TextBlock Text="id" Width="50"/>
             <TextBox Name="QuestInfo_id" Width="50" IsReadOnly="True"></TextBox>
             <TextBlock Text="name" Width="50"/>
             <TextBox Name="QuestInfo_name" Width="150" IsReadOnly="True"></TextBox>
+        </WrapPanel>
+        <WrapPanel Grid.Column="1" Grid.Row="1">
             <TextBlock Text="pt" Width="50"/>
             <TextBox Name="QuestInfo_pt" Width="50" IsReadOnly="True"></TextBox>
             <TextBlock Text="difficulty" Width="50"/>
@@ -81,9 +138,9 @@
             <TextBox Name="QuestInfo_category_text" Width="300" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" TextAlignment="Right"></TextBox>
             <TextBlock Text="banner" Width="50"/>
             <TextBox Name="QuestInfo_category_banner" Width="250" IsReadOnly="True"></TextBox>
-            <Separator Width="300"/>
+            <Separator Width="300"></Separator>
         </WrapPanel>
-        <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+        <ScrollViewer Grid.Column="1" Grid.Row="2" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
             <StackPanel>
                 <WrapPanel Name="QuestInfo_challenge">
                     <TextBlock Text="gold" Foreground="Gold" Width="50" />
@@ -130,5 +187,8 @@
                 </WrapPanel>
             </StackPanel>
         </ScrollViewer>
+        <Grid Name="MapGrid" Width="0" Background="White" HorizontalAlignment="Right" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Panel.ZIndex="512">
+            <RTDDE:Map x:Name="Map"></RTDDE:Map>
+        </Grid>
     </Grid>
 </UserControl>

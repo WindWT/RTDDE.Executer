@@ -48,14 +48,13 @@
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <WrapPanel Grid.Row="0">
-                        <Button Width="300" Name="Map_ButtonReturn" Click="Map_ButtonReturn_Click">Return To Quest</Button>
                         <TextBlock Text="#" Width="25"/>
                         <TextBox Name="MapEnemyInfo_Mark" Width="50" IsReadOnly="True"></TextBox>
                         <TextBlock Text="name" Width="50"/>
                         <TextBox Name="MapEnemyInfo_name" Width="175" IsReadOnly="True"></TextBox>
                         <Separator Width="300"/>
                     </WrapPanel>
-                    <ScrollViewer  Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
                         <WrapPanel>
                             <TextBlock Text="id" Width="50"/>
                             <TextBox Name="MapEnemyInfo_id" Width="50" IsReadOnly="True"></TextBox>

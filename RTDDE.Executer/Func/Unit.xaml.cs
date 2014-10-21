@@ -515,7 +515,7 @@ WHERE uo.id={0}";
 };
         #endregion
 
-        private void Unit_ShowModel_Click(object sender, RoutedEventArgs e)
+        private void SB_ShowModel_Completed(object sender, EventArgs e)
         {
             string g_id = UnitInfo_g_id.Text;
             if (string.IsNullOrEmpty(g_id))
@@ -523,6 +523,11 @@ WHERE uo.id={0}";
                 return;
             }
             Model.Load(Convert.ToInt32(g_id), UnitInfo_model.Text);
+        }
+
+        private void SB_HideModel_Completed(object sender, EventArgs e)
+        {
+            Model.Unload();
         }
     }
 }

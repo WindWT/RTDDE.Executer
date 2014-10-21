@@ -29,7 +29,7 @@ namespace RTDDE.Executer
         {
             InitializeComponent();
         }
-        public void InitMap(string levelID = "-1", int repeat = 1)
+        public void Load(string levelID = "-1", int repeat = 1)
         {
             Task<DataTable> initMonsterTask = new Task<DataTable>(GetMonsterData, levelID);
             initMonsterTask.ContinueWith(t =>
@@ -729,11 +729,6 @@ namespace RTDDE.Executer
             lastCell.drop_unit_id = bossInfo.drop_unit_id.ToString();
             lastCell.add_attribute_exp = bossInfo.add_attribute_exp.ToString();
             return map;
-        }
-
-        private void Map_ButtonReturn_Click(object sender, RoutedEventArgs e)
-        {
-            Utility.ChangeTab("Quest");
         }
     }
 }

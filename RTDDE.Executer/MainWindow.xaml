@@ -104,7 +104,6 @@
             </DockPanel>
             <Grid Grid.Row="1" Name="MainGrid">
                 <RTDDE:Quest x:Name="Quest"/>
-                <RTDDE:Map x:Name="Map"/>
                 <RTDDE:QuestCategory x:Name="QuestCategory"/>
                 <RTDDE:Unit x:Name="Unit"/>
                 <RTDDE:Skill x:Name="Skill"/>

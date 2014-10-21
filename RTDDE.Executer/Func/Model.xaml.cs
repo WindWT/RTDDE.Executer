@@ -89,10 +89,15 @@ namespace RTDDE.Executer
                         {
                             File.Delete(modelInfo.GetUnity3DFilePath());
                             Directory.Delete(modelInfo.GetModelDirectory(), true);
+                            Utility.ShowException(ex.Message);
                         }
                     }, MainWindow.uiTaskScheduler);
                 taskInitModelFile.Start();
             }
+        }
+        public void Unload()
+        {
+            model.Content = null;
         }
         private List<string> InitModelFile(ModelInfo info)
         {

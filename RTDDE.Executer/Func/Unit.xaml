@@ -65,74 +65,60 @@
                 <TextBox Name="UnitInfo_sub_a1" Width="100" IsReadOnly="True"></TextBox>
                 <TextBlock Text="model" Width="50"/>
                 <TextBox Name="UnitInfo_model" Width="250" IsReadOnly="True"></TextBox>
-                <Button Name="Unit_ShowModel" Click="Unit_ShowModel_Click" Width="299" HorizontalAlignment="Left" Content="Show Model">
-                    <Button.Triggers>
-                        <EventTrigger RoutedEvent="Button.Click">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation
+                <Grid>
+                    <Button Name="Unit_ShowModelButton" Width="300" HorizontalAlignment="Left" Content="Show Model">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard Name="SB_ShowModel" Completed="SB_ShowModel_Completed">
+                                        <DoubleAnimation
                                     Storyboard.TargetName="Model" 
                                     Storyboard.TargetProperty="Width"
                                     To="300" Duration="0:0:0.300">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                    <DoubleAnimation
-                                    Storyboard.TargetName="Unit_ShowModel" 
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation
+                                    Storyboard.TargetName="Unit_HideModelButton" 
                                     Storyboard.TargetProperty="Width"
-                                    To="1" Duration="0:0:0.300">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                    <DoubleAnimation
-                                    Storyboard.TargetName="Unit_HideModel" 
-                                    Storyboard.TargetProperty="Width"
-                                    To="299" Duration="0:0:0.300">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Button.Triggers>
-                </Button>
-                <Button Name="Unit_HideModel" Width="0" HorizontalAlignment="Right" Content="Hide Model">
-                    <Button.Triggers>
-                        <EventTrigger RoutedEvent="Button.Click">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation
+                                    To="300" Duration="0:0:0.300">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Name="Unit_HideModelButton" Width="0" Panel.ZIndex="256" HorizontalAlignment="Right" Content="Hide Model">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard Name="SB_HideModel" Completed="SB_HideModel_Completed">
+                                        <DoubleAnimation
                                     Storyboard.TargetName="Model" 
                                     Storyboard.TargetProperty="Width"
                                     To="0" Duration="0:0:0.300">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                    <DoubleAnimation
-                                    Storyboard.TargetName="Unit_ShowModel" 
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation
+                                    Storyboard.TargetName="Unit_HideModelButton" 
                                     Storyboard.TargetProperty="Width"
-                                    To="299" Duration="0:0:0.300">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                    <DoubleAnimation
-                                    Storyboard.TargetName="Unit_HideModel" 
-                                    Storyboard.TargetProperty="Width"
-                                    To="1" Duration="0:0:0.300">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Button.Triggers>
-                </Button>
+                                    To="0" Duration="0:0:0.300">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </Grid>
             </WrapPanel>
         </WrapPanel>
         <Expander Grid.Column="1" Grid.Row="1" Width="300" BorderThickness="0" Name="UnitStoryExpander" IsExpanded="False">
