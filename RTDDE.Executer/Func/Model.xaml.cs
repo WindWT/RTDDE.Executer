@@ -76,6 +76,7 @@ namespace RTDDE.Executer
         {
             lock (modelInfo)
             {
+                LoadingMask.Visibility = Visibility.Visible;
                 modelInfo = new ModelInfo(g_id, model);
                 //List<string> fileList = InitModelFile(modelInfo);
                 Task<List<string>> taskInitModelFile = new Task<List<string>>(() => InitModelFile(modelInfo));
@@ -98,6 +99,7 @@ namespace RTDDE.Executer
         public void Unload()
         {
             model.Content = null;
+            LoadingMask.Visibility = Visibility.Visible;
         }
         private List<string> InitModelFile(ModelInfo info)
         {
@@ -140,13 +142,15 @@ namespace RTDDE.Executer
         }
         private void UnpackFile(ModelInfo info)
         {
-            Process p = new Process();
-            // Redirect the output stream of the child process.
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.FileName = Settings.DisunityPath;
-            p.StartInfo.Arguments = string.Format("-f texture2d,mesh extract {0}", info.GetUnity3DFilePath());
-            p.Start();
-            p.WaitForExit();
+            using (Process p = new Process())
+            {
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.FileName = Settings.DisunityPath;
+                p.StartInfo.Arguments = string.Format("-f texture2d,mesh extract {0}", info.GetUnity3DFilePath());
+                p.Start();
+                p.WaitForExit();
+            }
         }
         private List<string> GetUnpackFile(ModelInfo info)
         {
@@ -226,6 +230,7 @@ namespace RTDDE.Executer
                 group.Children.Add(splitedModel);
             }
             model.Content = group;
+            LoadingMask.Visibility = Visibility.Collapsed;
         }
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
         public static extern bool DeleteObject(IntPtr hObject);

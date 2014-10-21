@@ -6,9 +6,14 @@
              xmlns:Helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"   
              mc:Ignorable="d">
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <Helix:HelixViewport3D Name="viewer" ShowFrameRate="True" IsRotationEnabled="False" IsHeadLightEnabled="True" ShowCameraInfo="False" Orthographic="True" Background="White" VerticalAlignment="Stretch">
+        <Rectangle Name="LoadingMask" Fill="Black" Opacity="0.5" Panel.ZIndex="1">
+            
+        </Rectangle>
+        <Helix:HelixViewport3D Name="viewer" ShowViewCube="False"
+                               ShowFrameRate="True" IsRotationEnabled="False" IsHeadLightEnabled="True" 
+                               Orthographic="True" Background="White" VerticalAlignment="Stretch">
             <Helix:HelixViewport3D.DefaultCamera>
-                <OrthographicCamera LookDirection="0,0,-0.5" UpDirection="0,1,0" Position="-0.1,-0.1,1" Width="1.25"></OrthographicCamera>
+                <OrthographicCamera LookDirection="0,0,-0.5" UpDirection="0,1,0" Position="-0.2,-0.1,1" Width="1.25"></OrthographicCamera>
             </Helix:HelixViewport3D.DefaultCamera>
             <ModelVisual3D x:Name="model">
             </ModelVisual3D>
