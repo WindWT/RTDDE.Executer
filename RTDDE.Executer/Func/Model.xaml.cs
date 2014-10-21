@@ -118,6 +118,11 @@ namespace RTDDE.Executer
             {
                 return fileList;
             }
+            else if (string.IsNullOrEmpty(Settings.DisunityPath))
+            {
+                //disable unpack & download if no disunity
+                return fileList;
+            }
             else if (File.Exists(info.GetUnity3DFilePath()))
             {
                 //find unity3d file, then extract
@@ -176,6 +181,7 @@ namespace RTDDE.Executer
             string wpnddsFilePath = fileList.Find(o => o.EndsWith("wpn.dds"));
             if (string.IsNullOrEmpty(objFilePath) || string.IsNullOrEmpty(ddsFilePath))
             {
+                LoadingMask.Visibility = Visibility.Collapsed;
                 Utility.ShowException("MODEL ERROR");
                 return;
             }
