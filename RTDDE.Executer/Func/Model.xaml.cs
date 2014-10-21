@@ -34,15 +34,17 @@ namespace RTDDE.Executer
             InitializeComponent();
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) == false)
             {
-                if (Environment.Is64BitProcess)
+                if (File.Exists("FreeImage.dll") == false)
                 {
-                    System.IO.File.Copy(@"x64\FreeImage.dll", "FreeImage.dll", true);
+                    if (Environment.Is64BitProcess)
+                    {
+                        System.IO.File.Copy(@"x64\FreeImage.dll", "FreeImage.dll", true);
+                    }
+                    else
+                    {
+                        System.IO.File.Copy(@"x86\FreeImage.dll", "FreeImage.dll", true);
+                    }
                 }
-                else
-                {
-                    System.IO.File.Copy(@"x86\FreeImage.dll", "FreeImage.dll", true);
-                }
-                //LoadModel(999, "330_e06_wz_fat_h_01");
             }
         }
         private class ModelInfo
