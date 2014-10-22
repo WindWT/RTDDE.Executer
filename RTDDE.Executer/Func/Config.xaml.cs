@@ -216,5 +216,15 @@ namespace RTDDE.Executer
                 DisunityPathTextBox.Text = Settings.DisunityPath;
             }
         }
+        private void SelectDisunityPathButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.DefaultExt = ".bat";
+            ofd.Filter = "Disunity Bat|disunity.bat";
+            if (ofd.ShowDialog() == true)
+            {
+                DisunityPathTextBox.Text = ofd.FileName;
+            }
+        }
     }
 }
