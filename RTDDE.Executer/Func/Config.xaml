@@ -42,7 +42,7 @@
                         <TextBlock DockPanel.Dock="Left">Disunity Path</TextBlock>
                         <Button DockPanel.Dock="Right" Name="SelectDisunityPathButton" Click="SelectDisunityPathButton_Click">...</Button>
                         <TextBox VerticalContentAlignment="Center" Name="DisunityPathTextBox"></TextBox>
-                    </DockPanel>                    
+                    </DockPanel>
                     <Button Name="SaveSettingsButton" Click="SaveSettingsButton_Click">Save Settings</Button>
                 </StackPanel>
             </GroupBox>

@@ -50,11 +50,19 @@
                     <ToggleButton.Triggers>
                         <EventTrigger RoutedEvent="ToggleButton.Checked">
                             <BeginStoryboard>
-                                <Storyboard>
+                                <Storyboard Name="SB_ShowMenu" Completed="SB_ShowMenu_Completed">
                                     <DoubleAnimation
                                     Storyboard.TargetName="MenuStack" 
                                     Storyboard.TargetProperty="Width"
                                     To="200" Duration="0:0:0.300">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                    <DoubleAnimation
+                                    Storyboard.TargetName="MenuMask" 
+                                    Storyboard.TargetProperty="Opacity"
+                                    To="0.5" Duration="0:0:0.300">
                                         <DoubleAnimation.EasingFunction>
                                             <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
                                         </DoubleAnimation.EasingFunction>
@@ -64,10 +72,18 @@
                         </EventTrigger>
                         <EventTrigger RoutedEvent="ToggleButton.Unchecked">
                             <BeginStoryboard>
-                                <Storyboard>
+                                <Storyboard Name="SB_HideMenu" Completed="SB_HideMenu_Completed">
                                     <DoubleAnimation
                                     Storyboard.TargetName="MenuStack" 
                                     Storyboard.TargetProperty="Width"
+                                    To="0" Duration="0:0:0.300">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                    <DoubleAnimation
+                                    Storyboard.TargetName="MenuMask" 
+                                    Storyboard.TargetProperty="Opacity"
                                     To="0" Duration="0:0:0.300">
                                         <DoubleAnimation.EasingFunction>
                                             <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
@@ -81,6 +97,7 @@
                 <Button Grid.Column="2" Name="MinimizedButton" Width="36" Click="MinimizedButton_Click"></Button>
                 <Button Grid.Column="3" Name="CloseButton" Width="36" Style="{StaticResource CloseButton}" Click="CloseButton_Click"></Button>
             </Grid>
+            <Rectangle Panel.ZIndex="1023" Grid.ColumnSpan="3" Grid.Row="1" Name="MenuMask" Opacity="0" HorizontalAlignment="Stretch" Fill="Black" MouseUp="MenuMask_MouseUp" IsHitTestVisible="False"/>
             <DockPanel Panel.ZIndex="1024" Grid.Row="1" Name="MenuStack" Width="0" HorizontalAlignment="Left" Background="{StaticResource DefaultBrush}">
                 <DockPanel.Resources>
                     <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">

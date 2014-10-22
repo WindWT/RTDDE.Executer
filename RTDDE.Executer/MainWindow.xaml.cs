@@ -67,7 +67,22 @@ namespace RTDDE.Executer
             }
             MenuButton.IsChecked = false;
         }
-        
+
+        private void SB_ShowMenu_Completed(object sender, EventArgs e)
+        {
+            MenuMask.IsHitTestVisible = true;
+        }
+
+        private void SB_HideMenu_Completed(object sender, EventArgs e)
+        {
+            MenuMask.IsHitTestVisible = false;
+        }
+
+        private void MenuMask_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            MenuButton.IsChecked = false;
+        }
+
         //异常信息显示15秒之后消失。
         private DispatcherTimer dispatcherTimer = null;
         private void StatusBarExceptionMessage_TextChanged(object sender, TextChangedEventArgs e)
