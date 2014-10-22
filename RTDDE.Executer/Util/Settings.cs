@@ -26,6 +26,7 @@ namespace RTDDE.Executer
         }
         private static bool isUseLocalTime = false;
         public static string DisunityPath { get; set; }
+        public static string AdbPath { get; set; }
         private static IniData data = new IniData();
         public static readonly string CONFIG_FILENAME = "config.ini";
         static Settings()
@@ -45,6 +46,7 @@ namespace RTDDE.Executer
             IsDefaultLvMax = Convert.ToBoolean(data["Common"]["IsDefaultLvMax"]);
             IsUseLocalTime = Convert.ToBoolean(data["Common"]["IsUseLocalTime"]);
             DisunityPath = data["Common"]["DisunityPath"];
+            AdbPath = data["Common"]["AdbPath"];
         }
         public static void Save()
         {
@@ -54,6 +56,7 @@ namespace RTDDE.Executer
             data["Common"]["IsDefaultLvMax"] = IsDefaultLvMax.ToString();
             data["Common"]["IsUseLocalTime"] = IsUseLocalTime.ToString();
             data["Common"]["DisunityPath"] = DisunityPath;
+            data["Common"]["AdbPath"] = AdbPath;
             FileIniDataParser parser = new FileIniDataParser();
             parser.WriteFile(CONFIG_FILENAME, data);
         }
@@ -67,6 +70,7 @@ namespace RTDDE.Executer
             initData["Common"].AddKey("IsDefaultLvMax", "true");
             initData["Common"].AddKey("IsUseLocalTime", "false");
             initData["Common"].AddKey("DisunityPath", "");
+            initData["Common"].AddKey("AdbPath", "");
             FileIniDataParser parser = new FileIniDataParser();
             parser.WriteFile(CONFIG_FILENAME, initData);
             return initData;

@@ -182,6 +182,7 @@ namespace RTDDE.Executer
             Settings.IsDefaultLvMax = IsDefaultLvMaxCheckBox.IsChecked.GetValueOrDefault(false);
             Settings.IsUseLocalTime = IsUseLocalTimeCheckBox.IsChecked.GetValueOrDefault(false);
             Settings.DisunityPath = DisunityPathTextBox.Text;
+            Settings.AdbPath = AdbPathTextBox.Text;
             try
             {
                 Settings.Save();
@@ -214,6 +215,29 @@ namespace RTDDE.Executer
                 IsDefaultLvMaxCheckBox.IsChecked = Settings.IsDefaultLvMax;
                 IsUseLocalTimeCheckBox.IsChecked = Settings.IsUseLocalTime;
                 DisunityPathTextBox.Text = Settings.DisunityPath;
+                AdbPathTextBox.Text = Settings.AdbPath;
+            }
+        }
+
+        private void SelectDisunityPathButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.DefaultExt = ".bat";
+            ofd.Filter = "Disunity Bat|disunity.bat";
+            if (ofd.ShowDialog() == true)
+            {
+                DisunityPathTextBox.Text = ofd.FileName;
+            }
+        }
+
+        private void SelectAdbPathButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.DefaultExt = ".exe";
+            ofd.Filter = "ADB|ADB.exe";
+            if (ofd.ShowDialog() == true)
+            {
+                AdbPathTextBox.Text = ofd.FileName;
             }
         }
     }
