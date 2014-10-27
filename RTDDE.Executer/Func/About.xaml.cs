@@ -35,7 +35,7 @@ namespace RTDDE.Executer
             UsageTextiOS.Text =
 @"[RoDora]/Library/Caches/
 =====>Config-Import MDBS MsgPack
-[RoDora]/Library/???/GAME
+[RoDora]/Library/Caches/GAME
 =====>Config-Import GAME(MAP Data)
 [RoDora]/Library/Preferences/jp.co.acquire.RTD.plist
 =====>??????";
