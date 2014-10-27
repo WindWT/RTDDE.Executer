@@ -163,6 +163,9 @@
     <Compile Include="Func\Unit.xaml.cs">
       <DependentUpon>Unit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Func\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Util\Settings.cs" />
     <Compile Include="Util\SkillMaster.cs" />
     <Compile Include="Util\Utility.cs" />
@@ -211,6 +214,10 @@
     <Page Include="Func\Unit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Func\About.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

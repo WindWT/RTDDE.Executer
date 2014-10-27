@@ -107,12 +107,13 @@
                     </Style>
                 </DockPanel.Resources>
                 <!-- MenuItem_Bottom -->
+                <Button Name="MenuItem_About" Click="MenuItem_Checked" DockPanel.Dock="Bottom">About</Button>
                 <Button Name="MenuItem_Config" Click="MenuItem_Checked" DockPanel.Dock="Bottom">Config</Button>
                 <Button Name="MenuItem_Common" Click="MenuItem_Checked" DockPanel.Dock="Bottom">Common</Button>
                 <Button Name="MenuItem_Diff" Click="MenuItem_Checked" DockPanel.Dock="Bottom" Visibility="Collapsed">Diff</Button>
                 <!-- MenuItem -->
                 <Button Name="MenuItem_Quest" Click="MenuItem_Checked">Quest</Button>
-                <Button Name="MenuItem_QuestCategory" Click="MenuItem_Checked">QuestCategory</Button>
+                <Button Name="MenuItem_QuestCategory" Click="MenuItem_Checked">Category</Button>
                 <Button Name="MenuItem_Unit" Click="MenuItem_Checked">Unit</Button>
                 <Button Name="MenuItem_Skill" Click="MenuItem_Checked">Skill</Button>
                 <Button Name="MenuItem_Accessory" Click="MenuItem_Checked">Accessory</Button>
@@ -129,6 +130,7 @@
                 <RTDDE:Config x:Name="Config" />
                 <RTDDE:Diff x:Name="Diff" />
                 <RTDDE:Common x:Name="Common" />
+                <RTDDE:About x:Name="About" />
             </Grid>
         </Grid>
         <Rectangle Name="topLeft" Fill="Transparent" Grid.Column="0" Grid.Row="0" />
