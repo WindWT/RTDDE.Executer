@@ -167,7 +167,9 @@
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\Settings.cs" />
+    <Compile Include="Util\Skills.cs" />
     <Compile Include="Util\SkillMaster.cs" />
+    <Compile Include="Util\UnitInfo.cs" />
     <Compile Include="Util\Utility.cs" />
     <Compile Include="Util\WindowBorder.cs" />
     <Compile Include="Util\WindowResizer.cs" />

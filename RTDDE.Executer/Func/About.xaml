@@ -16,7 +16,11 @@
             <TextBox Name="UsageTextAndroid" MaxLines="4" IsReadOnly="True" AcceptsReturn="True"></TextBox>
             <TextBlock>Usage(iOS)(File Browser required):</TextBlock>
             <TextBox Name="UsageTextiOS" MaxLines="4" IsReadOnly="True" AcceptsReturn="True"></TextBox>
+            <TextBlock>
+                <Hyperlink NavigateUri="https://github.com/WindWT/RTDDE.Executer/releases" RequestNavigate="Hyperlink_RequestNavigate">GitHub Releases</Hyperlink>
+            </TextBlock>
             <!--Lib-->
+            
         </StackPanel>
         <WebBrowser Grid.Column="1" Source="http://smartphone.acquire.co.jp/rtd/app/webview/info/"></WebBrowser>
     </Grid>

@@ -121,51 +121,6 @@ namespace RTDDE.Executer
             }
             UnitInfo_BindData(UnitInfo_id.Text);
         }
-        /*private void UnitInfo_g_id_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //防止死循环触发事件
-            if (UnitInfo_g_id.IsFocused)
-            {
-                if (string.IsNullOrWhiteSpace(UnitInfo_g_id.Text))
-                {
-                    UnitInfo_g_id.Text = "1";
-                }
-                Regex r = new Regex("[^0-9]");
-                if (r.Match(UnitInfo_g_id.Text).Success)
-                {
-                    UnitInfo_g_id.Text = "1";
-                }
-                string g_id = UnitInfo_g_id.Text;
-                if (IsDefaultLvMax)
-                {
-                    UnitInfo_lv.Text = "99"; 
-                }
-                else
-                {
-                    UnitInfo_lv.Text = "1";
-                }
-                Task<string> task = new Task<string>(() =>
-                {
-                    string sql = @"SELECT id FROM unit_master WHERE g_id={0}";
-                    DB db = new DB();
-                    return db.GetString(String.Format(sql, g_id));
-                });
-                task.ContinueWith(t =>
-                {
-                    if (t.Exception != null)
-                    {
-                        StatusBarExceptionMessage.Text = t.Exception.InnerException.Message;
-                        return;
-                    }
-                    if (string.IsNullOrWhiteSpace(t.Result) == false)
-                    {
-                        UnitInfo_id.Text = t.Result;
-                        UnitInfo_BindData(t.Result);
-                    }
-                }, uiTaskScheduler);
-                task.Start();
-            }
-        }*/
 
         public void UnitInfo_BindData(string unitid)
         {
@@ -175,121 +130,106 @@ namespace RTDDE.Executer
             }
             double thislevel = Convert.ToDouble(Convert.ToInt32(UnitInfo_lv.Text));
 
-            Task<DataTable> task = new Task<DataTable>(() =>
+            Task<UnitInfo> task = new Task<UnitInfo>(() =>
             {
                 string sql = @"
 Select *,
-(SELECT NAME FROM UNIT_MASTER as ui WHERE uo.rev_unit_id=ui.id) as rev_unit_name,
-(SELECT NAME FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_fire=ui.id) as ultimate_rev_unit_name_fire,
-(SELECT NAME FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_water=ui.id) as ultimate_rev_unit_name_water,
-(SELECT NAME FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_shine=ui.id) as ultimate_rev_unit_name_shine,
-(SELECT NAME FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_dark=ui.id) as ultimate_rev_unit_name_dark
+IFNULL((SELECT g_id FROM UNIT_MASTER as ui WHERE uo.rev_unit_id=ui.id),0) as rev_unit_g_id,
+IFNULL((SELECT NAME FROM UNIT_MASTER as ui WHERE uo.rev_unit_id=ui.id),'') as rev_unit_name,
+IFNULL((SELECT g_id FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_fire=ui.id),0) as ultimate_rev_unit_g_id_fire,
+IFNULL((SELECT NAME FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_fire=ui.id),'') as ultimate_rev_unit_name_fire,
+IFNULL((SELECT g_id FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_water=ui.id),0) as ultimate_rev_unit_g_id_water,
+IFNULL((SELECT NAME FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_water=ui.id),'') as ultimate_rev_unit_name_water,
+IFNULL((SELECT g_id FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_shine=ui.id),0) as ultimate_rev_unit_g_id_shine,
+IFNULL((SELECT NAME FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_shine=ui.id),'') as ultimate_rev_unit_name_shine,
+IFNULL((SELECT g_id FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_dark=ui.id),0) as ultimate_rev_unit_g_id_dark,
+IFNULL((SELECT NAME FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_dark=ui.id),'') as ultimate_rev_unit_name_dark
 from unit_master as uo
 WHERE uo.id={0}";
-                return DAL.GetDataTable(String.Format(sql, unitid));
+                //return DAL.GetDataTable(String.Format(sql, unitid));
+                return DAL.ToSingle<UnitInfo>(String.Format(sql, unitid));
             });
-            Task<List<SkillMaster>> taskSkill = new Task<List<SkillMaster>>(() =>
+            Task<Skills> taskSkills = new Task<Skills>(() =>
             {
-                List<SkillMaster> skillList = new List<SkillMaster>();
                 Task.WaitAll(task);
-                if (task.Result == null || task.Result.Rows.Count == 0)
+                if (task.Result == null)
                 {
                     return null;
                 }
-                DataRow unitData = task.Result.Rows[0];
+                UnitInfo ui = task.Result;
 
-                double maxlevel = Convert.ToDouble(unitData["lv_max"]);
+                double maxlevel = ui.lv_max;
                 if (Settings.IsEnableLevelLimiter && (thislevel > maxlevel))
                 {
                     thislevel = maxlevel;
                 }
 
-                int partyRankSkillId = Convert.ToInt32(unitData["p_skill_id"]);
-                int activeRankSkillId = Convert.ToInt32(unitData["a_skill_id"]);
-                int panelRankSkillId = Convert.ToInt32(unitData["panel_skill_id"]);
-
-                skillList.Add(new SkillMaster("PARTY_SKILL", partyRankSkillId, (int)thislevel));
-                skillList.Add(new SkillMaster("ACTIVE_SKILL", activeRankSkillId, (int)thislevel));
-                skillList.Add(new SkillMaster("PANEL_SKILL", panelRankSkillId, (int)thislevel));
-                return skillList;
+                return new Skills(ui.p_skill_id, ui.a_skill_id, ui.panel_skill_id, ui.limit_skill_id, (int)thislevel);
             });
             Task<AccessoryMaster> taskAccessory = new Task<AccessoryMaster>(() =>
             {
                 string sql = @"SELECT * FROM accessory_master WHERE id={0}";
                 return DAL.ToSingle<AccessoryMaster>(String.Format(sql, unitid));
             });
-            taskSkill.ContinueWith(t =>
+            taskSkills.ContinueWith(t =>
             {
                 if (t.Exception != null)
                 {
                     Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
-                if (task.Result == null || task.Result.Rows.Count == 0)
+                if (task.Result == null)
                 {
                     return;
                 }
-                DataRow unitData = task.Result.Rows[0];
-                UnitInfo_g_id.Text = unitData["g_id"].ToString();
-                UnitInfo_ui_id.Text = unitData["ui_id"].ToString();
-                UnitInfo_flag_no.Text = unitData["flag_no"].ToString();
-                UnitInfo_name.Text = unitData["name"].ToString();
+                UnitInfo ui = task.Result;
+                UnitInfo_g_id.Text = ui.g_id.ToString();
+                UnitInfo_ui_id.Text = ui.ui_id.ToString();
+                UnitInfo_flag_no.Text = ui.flag_no.ToString();
+                UnitInfo_name.Text = ui.name;
                 string rare = string.Empty;
-                for (int i = 0; i < Convert.ToInt32(unitData["category"]); i++)
+                for (int i = 0; i < ui.category; i++)
                 {
                     rare += "★";
                 }
                 UnitInfo_category.Text = rare;
-                UnitInfo_style.Text = Utility.ParseStyletype(Convert.ToInt32(unitData["style"]));
-                UnitInfo_attribute.Text = Utility.ParseAttributetype(Convert.ToByte(unitData["attribute"]));
-                UnitInfo_sub_a1.Text = Utility.ParseAttributetype(Convert.ToByte(unitData["sub_a1"]));
-                UnitInfo_model.Text = unitData["model"].ToString();
-                UnitInfo_kind.Text = Utility.ParseUnitKind(Convert.ToInt32(unitData["kind"])).ToString();
+                UnitInfo_style.Text = Utility.ParseStyletype(ui.style);
+                UnitInfo_attribute.Text = Utility.ParseAttributetype(ui.attribute);
+                UnitInfo_sub_a1.Text = Utility.ParseAttributetype(ui.sub_a1);
+                UnitInfo_model.Text = ui.model;
+                UnitInfo_kind.Text = Utility.ParseUnitKind(ui.kind).ToString();
+                UnitInfo_bonus_limit_base.Text = ui.bonus_limit_base.ToString();
 
-                UnitInfo_need_pt.Text = unitData["need_pt"].ToString();
-                UnitInfo_bonus_limit_base.Text = unitData["bonus_limit_base"].ToString();
-                UnitInfo_rev_unit_id.Text = unitData["rev_unit_id"].ToString();
-                UnitInfo_rev_unit_name.Text = unitData["rev_unit_name"].ToString();
+                //Rev
+                UnitRevStackPanel.Children.Clear();
+                UnitRevStackPanel.Children.Add(createRevGrid(ui.need_pt, ui.rev_unit_id, ui.rev_unit_g_id, ui.rev_unit_name, "Rev"));
+                UnitRevStackPanel.Children.Add(createRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_fire, ui.ultimate_rev_unit_g_id_fire, ui.ultimate_rev_unit_name_fire, "UltFire"));
+                UnitRevStackPanel.Children.Add(createRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_water, ui.ultimate_rev_unit_g_id_water, ui.ultimate_rev_unit_name_water, "UltWater"));
+                UnitRevStackPanel.Children.Add(createRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_shine, ui.ultimate_rev_unit_g_id_shine, ui.ultimate_rev_unit_name_shine, "UltShine"));
+                UnitRevStackPanel.Children.Add(createRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_dark, ui.ultimate_rev_unit_g_id_dark, ui.ultimate_rev_unit_name_dark, "UltDark"));
 
-                if (Convert.ToInt32(unitData["ultimate_rev_unit_id_fire"]) == 0
-                    && Convert.ToInt32(unitData["ultimate_rev_unit_id_water"]) == 0
-                    && Convert.ToInt32(unitData["ultimate_rev_unit_id_shine"]) == 0
-                    && Convert.ToInt32(unitData["ultimate_rev_unit_id_dark"]) == 0)
-                {
-                    UnitInfo_Panel_ultimate_rev.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    UnitInfo_Panel_ultimate_rev.Visibility = Visibility.Visible;
-                    UnitInfo_max_attribute_exp.Text = unitData["max_attribute_exp"].ToString();
-                    UnitInfo_rev_unit_name_fire.Text = unitData["ultimate_rev_unit_name_fire"].ToString();
-                    UnitInfo_rev_unit_name_water.Text = unitData["ultimate_rev_unit_name_water"].ToString();
-                    UnitInfo_rev_unit_name_shine.Text = unitData["ultimate_rev_unit_name_shine"].ToString();
-                    UnitInfo_rev_unit_name_dark.Text = unitData["ultimate_rev_unit_name_dark"].ToString();
-                }
-
-                double maxlevel = Convert.ToDouble(unitData["lv_max"]);
+                double maxlevel = ui.lv_max;
                 UnitInfo_lv_max.Text = maxlevel.ToString("0");
                 UnitInfo_lv.Text = thislevel.ToString("0");
 
                 //calc hp atk heal
-                double y = UnitParam_CategoryPer[Convert.ToInt32(unitData["category"]) - 1];
-                int num = (Convert.ToInt32(unitData["style"]) - 1) * 3;
+                double y = UnitParam_CategoryPer[ui.category - 1];
+                int num = (ui.style - 1) * 3;
                 double y2 = UnitParam_StylePer[num];
                 double y3 = UnitParam_StylePer[num + 1];
                 double y4 = UnitParam_StylePer[num + 2];
 
-                double thishp = (int)(Math.Pow(Math.Pow(thislevel, y), y2) * Convert.ToDouble(unitData["life"]));
-                double thisattack = (int)(Math.Pow(Math.Pow(thislevel, y), y3) * Convert.ToDouble(unitData["attack"]));
-                double thisheal = (int)(Math.Pow(Math.Pow(thislevel, y), y4) * Convert.ToDouble(unitData["heal"]));
+                double thishp = (int)(Math.Pow(Math.Pow(thislevel, y), y2) * Convert.ToDouble(ui.life));
+                double thisattack = (int)(Math.Pow(Math.Pow(thislevel, y), y3) * Convert.ToDouble(ui.attack));
+                double thisheal = (int)(Math.Pow(Math.Pow(thislevel, y), y4) * Convert.ToDouble(ui.heal));
                 UnitInfo_HP.Text = thishp.ToString("0");
                 UnitInfo_ATK.Text = thisattack.ToString("0");
                 UnitInfo_HEAL.Text = thisheal.ToString("0");
 
                 //calc exp pt
-                int num2 = Convert.ToInt32(unitData["category"]) - 1;
-                float perMax = (float)(Math.Pow(thislevel, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(unitData["grow"])));
-                float perMin = (float)(Math.Pow(thislevel - 1, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(unitData["grow"])));
+                int num2 = ui.category - 1;
+                float perMax = (float)(Math.Pow(thislevel, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(ui.grow)));
+                float perMin = (float)(Math.Pow(thislevel - 1, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(ui.grow)));
                 if (thislevel == maxlevel)
                 {
                     UnitInfo_EXP.Text = perMin.ToString("0");
@@ -298,31 +238,32 @@ WHERE uo.id={0}";
                 {
                     UnitInfo_EXP.Text = perMin.ToString("0") + "~" + perMax.ToString("0");
                 }
-                UnitInfo_EXP_max.Text = ((float)(Math.Pow(maxlevel - 1, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(unitData["grow"])))).ToString("0");
+                UnitInfo_EXP_max.Text = ((float)(Math.Pow(maxlevel - 1, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(ui.grow)))).ToString("0");
 
-                int set_pt = Convert.ToInt32(unitData["set_pt"]);
-                UnitInfo_pt.Text = ((int)((float)(thislevel - 1) * Math.Pow((float)set_pt, 0.5f) + (float)set_pt)).ToString("0");
+                int set_pt = ui.set_pt;
+                UnitInfo_pt.Text = ((int)((float)(thislevel - 1) * Math.Pow((float)ui.set_pt, 0.5f) + (float)set_pt)).ToString("0");
                 //story
-                var storyDoc = Utility.ParseTextToDocument(unitData["story"].ToString());
+                var storyDoc = Utility.ParseTextToDocument(ui.story);
                 storyDoc.TextAlignment = TextAlignment.Center;
-                UnitInfo_story.Padding = new Thickness(7, 0, 7, 0);
+                UnitInfo_story.Padding = new Thickness(37, 0, 37, 0);
                 UnitInfo_story.Document = storyDoc;
                 //cutin
-                UnitInfo_ct_text.Text = unitData["ct_text"].ToString();
-                UnitInfo_sct_text.Text = unitData["sct_text"].ToString();
-                UnitInfo_sct6_text.Text = unitData["sct6_text"].ToString();
-                UnitInfo_a_skill_text.Text = unitData["a_skill_text"].ToString();
+                UnitInfo_ct_text.Text = ui.ct_text;
+                UnitInfo_sct_text.Text = ui.sct_text;
+                UnitInfo_sct6_text.Text = ui.sct6_text;
+                UnitInfo_a_skill_text.Text = ui.a_skill_text;
                 //skill
-                partySkill_BindData(t.Result[0]);
-                activeSkill_BindData(t.Result[1]);
-                panelSkill_BindData(t.Result[2]);
-                if (UnitInfo_PartySkill.Visibility == Visibility.Collapsed && UnitInfo_ActiveSkill.Visibility == Visibility.Collapsed && UnitInfo_PanelSkill.Visibility == Visibility.Collapsed)
+                if (ui.p_skill_id == 0 && ui.a_skill_id == 0 && ui.panel_skill_id == 0 && ui.limit_skill_id == 0)
                 {
                     UnitSkillExpander.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
                     UnitSkillExpander.Visibility = Visibility.Visible;
+                    partySkill_BindData(t.Result.partySkill);
+                    activeSkill_BindData(t.Result.activeSkill);
+                    panelSkill_BindData(t.Result.panelSkill);
+                    limitSkill_BindData(t.Result.limitSkill, t.Result.limitActiveSkill);
                 }
                 //Accessory
                 Task.WaitAll(taskAccessory);
@@ -350,12 +291,43 @@ WHERE uo.id={0}";
 
             }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
             task.Start();
-            taskSkill.Start();
+            taskSkills.Start();
             taskAccessory.Start();
         }
-        private void partySkill_BindData(SkillMaster skill)
+
+        private Grid createRevGrid(int pt, int id, int g_id, string name, string type)
         {
-            if (skill.id == 0)
+            Grid grid = new Grid();
+            if (id == 0)
+            {
+                return grid;
+            }
+            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+            TextBox tbPt = new TextBox() { Text = pt.ToString() };
+            tbPt.SetValue(Grid.ColumnProperty, 0);
+            grid.Children.Add(tbPt);
+            TextBlock tbRev = new TextBlock() { Text = type };
+            tbRev.SetValue(Grid.ColumnProperty, 1);
+            grid.Children.Add(tbRev);
+            TextBox tbId = new TextBox() { Text = id.ToString() };
+            tbId.SetValue(Grid.ColumnProperty, 2);
+            grid.Children.Add(tbId);
+            TextBox tbgId = new TextBox() { Text = g_id.ToString() };
+            tbgId.SetValue(Grid.ColumnProperty, 3);
+            grid.Children.Add(tbgId);
+            TextBox tbName = new TextBox() { Text = name };
+            tbName.SetValue(Grid.ColumnProperty, 4);
+            grid.Children.Add(tbName);
+            return grid;
+        }
+
+        private void partySkill_BindData(PartySkillMaster skill)
+        {
+            if (skill == null || skill.id == 0)
             {
                 UnitInfo_PartySkill.Visibility = Visibility.Collapsed;
                 return;
@@ -368,15 +340,16 @@ WHERE uo.id={0}";
             partySkill_attribute.Text = Utility.ParseAttributetype(skill.attribute);
             partySkill_sub_attr.Text = Utility.ParseAttributetype(skill.sub_attr);
             partySkill_style.Text = Utility.ParseStyletype(skill.style);
+            partySkill_type_id.Text = skill.type.ToString();
             partySkill_type.Text = Utility.ParseSkillType((PassiveSkillType)skill.type);
             partySkill_num.Text = skill.num.ToString();
             partySkill_num_01.Text = skill.num_01.ToString();
             partySkill_num_02.Text = skill.num_02.ToString();
             partySkill_num_03.Text = skill.num_03.ToString();
         }
-        private void activeSkill_BindData(SkillMaster skill)
+        private void activeSkill_BindData(ActiveSkillMaster skill)
         {
-            if (skill.id == 0)
+            if (skill == null || skill.id == 0)
             {
                 UnitInfo_ActiveSkill.Visibility = Visibility.Collapsed;
                 return;
@@ -390,6 +363,7 @@ WHERE uo.id={0}";
             activeSkill_sub_attr.Text = Utility.ParseAttributetype(skill.sub_attr);
             activeSkill_style.Text = Utility.ParseStyletype(skill.style);
             activeSkill_type.Text = Utility.ParseSkillType((ActiveSkillType)skill.type);
+            activeSkill_type_id.Text = skill.type.ToString();
             activeSkill_num.Text = skill.num.ToString();
             activeSkill_num_01.Text = skill.num_01.ToString();
             activeSkill_num_02.Text = skill.num_02.ToString();
@@ -398,9 +372,9 @@ WHERE uo.id={0}";
             activeSkill_phase.Text = ((SkillPhase)skill.phase).ToString();
             activeSkill_limit_num.Text = skill.limit_num.ToString();
         }
-        private void panelSkill_BindData(SkillMaster skill)
+        private void panelSkill_BindData(PanelSkillMaster skill)
         {
-            if (skill.id == 0)
+            if (skill == null || skill.id == 0)
             {
                 UnitInfo_PanelSkill.Visibility = Visibility.Collapsed;
                 return;
@@ -413,12 +387,155 @@ WHERE uo.id={0}";
             panelSkill_attribute.Text = Utility.ParseAttributetype(skill.attribute);
             panelSkill_style.Text = Utility.ParseStyletype(skill.style);
             panelSkill_type.Text = Utility.ParseSkillType((PanelSkillType)skill.type);
+            panelSkill_type_id.Text = skill.type.ToString();
             panelSkill_num.Text = skill.num.ToString();
             panelSkill_num_01.Text = skill.num_01.ToString();
             panelSkill_num_02.Text = skill.num_02.ToString();
             panelSkill_num_03.Text = skill.num_03.ToString();
             panelSkill_phase.Text = ((SkillPhase)skill.phase).ToString();
-            panelSkill_duplication.Text = skill.duplication == 1 ? "重複可" : skill.duplication == 2 ? "重複不可" : String.Empty;
+            panelSkill_duplication.Text = skill.duplication == 1 ? true.ToString() : skill.duplication == 2 ? false.ToString() : String.Empty;
+        }
+        private void limitSkill_BindData(LimitSkillMaster skill, ActiveSkillMaster[] laSkill)
+        {
+            if (skill == null || skill.id == 0)
+            {
+                UnitInfo_LimitSkill.Visibility = Visibility.Collapsed;
+                return;
+            }
+            UnitInfo_LimitSkill.Visibility = Visibility.Visible;
+
+            limitSkill_id.Text = skill.id.ToString();
+            limitSkill_name.Text = skill.name;
+            limitSkill_general_text.Document = Utility.ParseTextToDocument(skill.general_text);
+            limitSkill_coefficient.Text = skill.coefficient.ToString();
+
+            UnitInfo_LimitSkill_AS.Children.Clear();
+            for (int i = 0; i < 3; i++)
+            {
+                ActiveSkillMaster askill = laSkill[i];
+                Grid grid = new Grid();
+                if (askill.id == 0)
+                {
+                    continue;
+                }
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                TextBlock tblTitle = new TextBlock() { FontWeight = FontWeights.Bold, Text = string.Format("L_AS{0}", i.ToString()) };
+                tblTitle.SetValue(Grid.ColumnProperty, 0);
+                tblTitle.SetValue(Grid.RowProperty, 0);
+                grid.Children.Add(tblTitle);
+                TextBox tbId = new TextBox() { Text = askill.id.ToString() };
+                tbId.SetValue(Grid.ColumnProperty, 1);
+                tbId.SetValue(Grid.RowProperty, 0);
+                grid.Children.Add(tbId);
+                TextBox tbName = new TextBox() { Text = askill.name };
+                tbName.SetValue(Grid.ColumnProperty, 2);
+                tbName.SetValue(Grid.RowProperty, 0);
+                tbName.SetValue(Grid.ColumnSpanProperty, 2);
+                grid.Children.Add(tbName);
+                RichTextBox rtb = new RichTextBox() { Document = Utility.ParseTextToDocument(askill.text) };
+                rtb.SetValue(Grid.ColumnProperty, 0);
+                rtb.SetValue(Grid.RowProperty, 1);
+                rtb.SetValue(Grid.ColumnSpanProperty, 4);
+                grid.Children.Add(rtb);
+                TextBlock tblType = new TextBlock() { Text = "type" };
+                tblType.SetValue(Grid.ColumnProperty, 0);
+                tblType.SetValue(Grid.RowProperty, 2);
+                grid.Children.Add(tblType);
+                TextBox tbTypeId = new TextBox() { Text = askill.type.ToString() };
+                tbTypeId.SetValue(Grid.ColumnProperty, 1);
+                tbTypeId.SetValue(Grid.RowProperty, 2);
+                grid.Children.Add(tbTypeId);
+                TextBox tbType = new TextBox() { Text = Utility.ParseSkillType((ActiveSkillType)askill.type) };
+                tbType.SetValue(Grid.ColumnProperty, 2);
+                tbType.SetValue(Grid.RowProperty, 2);
+                tbType.SetValue(Grid.ColumnSpanProperty, 2);
+                grid.Children.Add(tbType);
+                TextBlock tblAttr = new TextBlock() { Text = "attribute" };
+                tblAttr.SetValue(Grid.ColumnProperty, 0);
+                tblAttr.SetValue(Grid.RowProperty, 3);
+                grid.Children.Add(tblAttr);
+                TextBox tbAttr = new TextBox() { Text = Utility.ParseAttributetype(askill.attribute) };
+                tbAttr.SetValue(Grid.ColumnProperty, 1);
+                tbAttr.SetValue(Grid.RowProperty, 3);
+                grid.Children.Add(tbAttr);
+                TextBox tbSubAttr = new TextBox() { Text = Utility.ParseAttributetype(askill.sub_attr) };
+                tbSubAttr.SetValue(Grid.ColumnProperty, 2);
+                tbSubAttr.SetValue(Grid.RowProperty, 3);
+                grid.Children.Add(tbSubAttr);
+                //gridStyle
+                Grid gridStyle = new Grid();
+                gridStyle.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                gridStyle.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                TextBlock tblStyle = new TextBlock() { Text = "style" };
+                tblStyle.SetValue(Grid.ColumnProperty, 0);
+                gridStyle.Children.Add(tblStyle);
+                TextBox tbStyle = new TextBox() { Text = Utility.ParseStyletype(askill.style) };
+                tbStyle.SetValue(Grid.ColumnProperty, 1);
+                gridStyle.Children.Add(tbStyle);
+                gridStyle.SetValue(Grid.ColumnProperty, 3);
+                gridStyle.SetValue(Grid.RowProperty, 3);
+                grid.Children.Add(gridStyle);
+                //gridInfo
+                Grid gridInfo = new Grid();
+                gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                TextBlock tblPhase = new TextBlock() { Text = "phase" };
+                tblPhase.SetValue(Grid.ColumnProperty, 0);
+                gridInfo.Children.Add(tblPhase);
+                TextBox tbPhase = new TextBox() { Text = ((SkillPhase)askill.phase).ToString() };
+                tbPhase.SetValue(Grid.ColumnProperty, 1);
+                gridInfo.Children.Add(tbPhase);
+                TextBlock tblSoul = new TextBlock() { Text = "soul" };
+                tblSoul.SetValue(Grid.ColumnProperty, 2);
+                gridInfo.Children.Add(tblSoul);
+                TextBox tbSoul = new TextBox() { Text = askill.soul.ToString() };
+                tbSoul.SetValue(Grid.ColumnProperty, 3);
+                gridInfo.Children.Add(tbSoul);
+                TextBlock tblLimitNum = new TextBlock() { Text = "limit_num" };
+                tblLimitNum.SetValue(Grid.ColumnProperty, 4);
+                gridInfo.Children.Add(tblLimitNum);
+                TextBox tbLimitNum = new TextBox() { Text = askill.limit_num.ToString() };
+                tbLimitNum.SetValue(Grid.ColumnProperty, 5);
+                gridInfo.Children.Add(tbLimitNum);
+                gridInfo.SetValue(Grid.ColumnSpanProperty, 4);
+                gridInfo.SetValue(Grid.RowProperty, 4);
+                grid.Children.Add(gridInfo);
+                //gridNum
+                Grid gridNum = new Grid();
+                gridNum.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                gridNum.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                gridNum.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                gridNum.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                TextBox tbNum = new TextBox() { Text = askill.num.ToString() };
+                tbNum.SetValue(Grid.ColumnProperty, 0);
+                gridNum.Children.Add(tbNum);
+                TextBox tbNum01 = new TextBox() { Text = askill.num_01.ToString() };
+                tbNum01.SetValue(Grid.ColumnProperty, 1);
+                gridNum.Children.Add(tbNum01);
+                TextBox tbNum02 = new TextBox() { Text = askill.num_02.ToString() };
+                tbNum02.SetValue(Grid.ColumnProperty, 2);
+                gridNum.Children.Add(tbNum02);
+                TextBox tbNum03 = new TextBox() { Text = askill.num_03.ToString() };
+                tbNum03.SetValue(Grid.ColumnProperty, 3);
+                gridNum.Children.Add(tbNum03);
+                gridNum.SetValue(Grid.ColumnSpanProperty, 4);
+                gridNum.SetValue(Grid.RowProperty, 5);
+                grid.Children.Add(gridNum);
+                UnitInfo_LimitSkill_AS.Children.Add(grid);
+            }
         }
 
         private void UnitSearchClear_Click(object sender, RoutedEventArgs e)

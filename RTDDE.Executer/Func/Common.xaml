@@ -11,7 +11,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Name="CommonSQLTextBox"
+                <TextBox Grid.Column="0" Name="CommonSQLTextBox" IsReadOnly="False"
                                      AcceptsReturn="True" AcceptsTab="True" 
                                      VerticalScrollBarVisibility="Auto"
                                      Text="{Binding ElementName=CommonSQLComboBox,Path=SelectedValue,Mode=OneWay}"/>
