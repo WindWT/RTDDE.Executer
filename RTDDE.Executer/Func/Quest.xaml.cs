@@ -124,20 +124,17 @@ namespace RTDDE.Executer
                     QuestInfo_opentype.Children.Add(new TextBox()
                     {
                         Text = type.Type,
-                        Width = 60,
-                        IsReadOnly = true
+                        Width = 60
                     });
                     QuestInfo_opentype.Children.Add(new TextBox()
                     {
                         Text = type.Param,
-                        Width = 200,
-                        IsReadOnly = true
+                        Width = 200
                     });
                     QuestInfo_opentype.Children.Add(new TextBox()
                     {
                         Text = type.Group.ToString(),
-                        Width = 40,
-                        IsReadOnly = true
+                        Width = 40
                     });
                 }
 
