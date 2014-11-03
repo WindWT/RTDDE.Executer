@@ -31,6 +31,10 @@ namespace RTDDE.Executer
         }
         public void Load(string levelID = "-1", int repeat = 1)
         {
+            if(string.IsNullOrEmpty(levelID))
+            {
+                levelID = "-1";
+            }
             Task<DataTable> initMonsterTask = new Task<DataTable>(GetMonsterData, levelID);
             initMonsterTask.ContinueWith(t =>
             {
@@ -47,7 +51,8 @@ namespace RTDDE.Executer
                 DataTable dt = DAL.GetDataTable("SELECT a.*,b.distance FROM level_data_master a left join quest_master b on a.level_data_id=b.id WHERE a.level_data_id=" + levelID);
                 if (dt.Rows.Count == 0)
                 {
-                    throw new Exception("NO MAP DATA.");
+                    //throw new Exception("NO MAP DATA.");
+                    return null;
                 }
                 DataRow levelData = dt.Rows[0];
                 return BindDropDataToMap(BindMonsterDataToMap(InitMapData(
@@ -68,6 +73,15 @@ namespace RTDDE.Executer
                 {
                     Utility.ShowException(t.Exception.InnerException.Message);
                     return;
+                }
+                else if (t.Result == null)
+                {
+                    MapGrid.Children.Add(new TextBlock()
+                    {
+                        Text = "No map data, import GAME first.",
+                        FontWeight = FontWeights.Bold,
+                        Padding = new Thickness(24)
+                    });
                 }
                 else
                 {

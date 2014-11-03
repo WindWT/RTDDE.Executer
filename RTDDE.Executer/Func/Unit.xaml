@@ -160,6 +160,7 @@
         </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
             <StackPanel>
+                <Separator/>
                 <Expander BorderThickness="0" Name="UnitStoryExpander" IsExpanded="False">
                     <Expander.Header>
                         <Label Content="Story"></Label>
