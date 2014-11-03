@@ -151,7 +151,7 @@
         <Style TargetType="Separator">
             <Setter Property="Background" Value="{StaticResource SeparatorBrush}"/>
         </Style>
-        <Style TargetType="ComboBox" x:Key="BaseComboBox">
+        <Style TargetType="ComboBox">
             <Setter Property="DisplayMemberPath" Value="Key"/>
             <Setter Property="SelectedValuePath" Value="Value"/>
             <Setter Property="SelectedIndex" Value="0"/>

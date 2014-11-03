@@ -6,7 +6,7 @@
              mc:Ignorable="d" >
     <Grid Name="DiffTab">
         <DockPanel LastChildFill="True">
-            <ComboBox DockPanel.Dock="Top" Name="TableSelectComboBox" Initialized="TableSelectComboBox_Initialized" SelectionChanged="TableSelectComboBox_SelectionChanged" Style="{StaticResource ResourceKey=BaseComboBox}"></ComboBox>
+            <ComboBox DockPanel.Dock="Top" Name="TableSelectComboBox" Initialized="TableSelectComboBox_Initialized" SelectionChanged="TableSelectComboBox_SelectionChanged"></ComboBox>
             <Grid DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>

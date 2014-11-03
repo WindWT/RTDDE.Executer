@@ -59,7 +59,7 @@
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <Grid.Resources>
-                                <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ResourceKey=BaseComboBox}">
+                                <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
                                     <EventSetter Event="SelectionChanged" Handler="UnitSearch_SelectionChanged"/>
                                 </Style>
                             </Grid.Resources>

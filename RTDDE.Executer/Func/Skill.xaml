@@ -28,12 +28,16 @@
                 <Expander.Content>
                     <WrapPanel>
                         <WrapPanel.Resources>
-                            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ResourceKey=BaseComboBox}">
+                            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
                                 <EventSetter Event="SelectionChanged" Handler="SkillSearch_SelectionChanged"/>
+                            </Style>
+                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Setter Property="IsReadOnly" Value="False"></Setter>
+                                <EventSetter Event="TextChanged" Handler="SkillSearch_TextChanged"/>
                             </Style>
                         </WrapPanel.Resources>
                         <TextBlock Text="name" Width="50"/>
-                        <TextBox Name="SkillSearch_name" Width="250" TextChanged="SkillSearch_TextChanged"></TextBox>
+                        <TextBox Name="SkillSearch_name" Width="250"></TextBox>
                         <TextBlock Text="type" Width="50"/>
                         <ComboBox Name="SkillSearch_type" Width="100"></ComboBox>
                         <TextBlock Text="attribute" Width="50"/>

@@ -22,12 +22,16 @@
                 <Expander.Content>
                     <WrapPanel>
                         <WrapPanel.Resources>
-                            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ResourceKey=BaseComboBox}">
+                            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
                                 <EventSetter Event="SelectionChanged" Handler="AccessorySearch_SelectionChanged"/>
+                            </Style>
+                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Setter Property="IsReadOnly" Value="False"></Setter>
+                                <EventSetter Event="TextChanged" Handler="AccessorySearch_TextChanged"/>
                             </Style>
                         </WrapPanel.Resources>
                         <TextBlock Text="name" Width="50"/>
-                        <TextBox Name="AccessorySearch_name" Width="250" TextChanged="AccessorySearch_TextChanged"></TextBox>
+                        <TextBox Name="AccessorySearch_name" Width="250"></TextBox>
                         <TextBlock Text="type" Width="50"/>
                         <ComboBox Name="AccessorySearch_type" Width="100"></ComboBox>
                         <TextBlock Text="attribute" Width="50"/>
