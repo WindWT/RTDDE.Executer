@@ -184,8 +184,6 @@ WHERE uo.id={0}";
                 }
                 UnitInfo ui = task.Result;
                 UnitInfo_g_id.Text = ui.g_id.ToString();
-                UnitInfo_ui_id.Text = ui.ui_id.ToString();
-                UnitInfo_flag_no.Text = ui.flag_no.ToString();
                 UnitInfo_name.Text = ui.name;
                 string rare = string.Empty;
                 for (int i = 0; i < ui.category; i++)
@@ -196,7 +194,6 @@ WHERE uo.id={0}";
                 UnitInfo_style.Text = Utility.ParseStyletype(ui.style);
                 UnitInfo_attribute.Text = Utility.ParseAttributetype(ui.attribute);
                 UnitInfo_sub_a1.Text = Utility.ParseAttributetype(ui.sub_a1);
-                UnitInfo_model.Text = ui.model;
                 UnitInfo_kind.Text = Utility.ParseUnitKind(ui.kind).ToString();
                 UnitInfo_bonus_limit_base.Text = ui.bonus_limit_base.ToString();
 
@@ -228,17 +225,13 @@ WHERE uo.id={0}";
 
                 //calc exp pt
                 int num2 = ui.category - 1;
-                float perMax = (float)(Math.Pow(thislevel, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(ui.grow)));
-                float perMin = (float)(Math.Pow(thislevel - 1, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(ui.grow)));
-                if (thislevel == maxlevel)
-                {
-                    UnitInfo_EXP.Text = perMin.ToString("0");
-                }
-                else
-                {
-                    UnitInfo_EXP.Text = perMin.ToString("0") + "~" + perMax.ToString("0");
-                }
-                UnitInfo_EXP_max.Text = ((float)(Math.Pow(maxlevel - 1, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(ui.grow)))).ToString("0");
+                float expThisLevel = (float)(Math.Pow(thislevel - 1, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(ui.grow)));
+                float expNextLevel = (float)(Math.Pow(thislevel, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(ui.grow)));
+                UnitInfo_EXP.Text = expThisLevel.ToString("0");
+                UnitInfo_EXP_Next.Text = thislevel == maxlevel ? "MAX" : expNextLevel.ToString("0");
+                UnitInfo_cost.Text = (ui.cost * thislevel).ToString("0");
+                UnitInfo_sale.Text = (ui.sale * thislevel).ToString("0");
+                UnitInfo_mix.Text = (ui.mix * thislevel).ToString("0");
 
                 int set_pt = ui.set_pt;
                 UnitInfo_pt.Text = ((int)((float)(thislevel - 1) * Math.Pow((float)ui.set_pt, 0.5f) + (float)set_pt)).ToString("0");
@@ -288,6 +281,19 @@ WHERE uo.id={0}";
                     accessory_attribute.Text = Utility.ParseAttributetype(acce.attribute);
                     accessory_su_a1.Text = Utility.ParseAttributetype(acce.su_a1);
                 }
+                //Advanced
+                UnitInfo_ui_id.Text = ui.ui_id.ToString();
+                UnitInfo_flag_no.Text = ui.flag_no.ToString();
+                UnitInfo_model.Text = ui.model;
+                UnitInfo_sub_c1.Text = ui.sub_c1.ToString();
+                UnitInfo_sub_c2.Text = ui.sub_c2.ToString();
+                UnitInfo_sub_c3.Text = ui.sub_c3.ToString();
+                UnitInfo_sub_c4.Text = ui.sub_c4.ToString();
+                UnitInfo_shadow.Text = ui.shadow.ToString();
+                UnitInfo_ap_rec_val.Text = ui.ap_rec_val.ToString();
+                UnitInfo_yorisiro.Text = ui.yorisiro.ToString();
+                UnitInfo_present.Text = ui.present.ToString();
+                UnitInfo_material_type.Text = ui.material_type.ToString();
 
             }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
             task.Start();
