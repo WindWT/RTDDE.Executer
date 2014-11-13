@@ -319,6 +319,24 @@ namespace RTDDE.Executer
                 w.ChangeTab("Unit");
             }
         }
+        private class SkillType
+        {
+            public int id { get; set; }
+            public string name { get; set; }
+        }
+        private Dictionary<string, string> GetSkillTypeDict<T>() where T : struct , IConvertible
+        {
+            var typeDict = new Dictionary<string, string>()
+            {
+                {"------",""},
+            };
+            foreach (T type in Enum.GetValues(typeof(T)))
+            {
+                string id = (Convert.ToInt32(type)).ToString();
+                typeDict.Add(string.Format("{0}_{1}", id, type.ToString()), id);
+            }
+            return typeDict;
+        }
         private void SkillTypeRadio_Party_Checked(object sender, RoutedEventArgs e)
         {
             SkillInfo_PartySkill.Visibility = Visibility.Visible;
@@ -326,15 +344,7 @@ namespace RTDDE.Executer
             SkillInfo_PanelSkill.Visibility = Visibility.Collapsed;
             SkillUnitRankInfo.Children.Clear();
             Utility.BindData(SkillDataGrid, "select id,type,name from party_skill_master order by type,id");
-            var typeDict = new Dictionary<string, string>()
-            {
-                {"------",""},
-            };
-            foreach (PassiveSkillType type in Enum.GetValues(typeof(PassiveSkillType)))
-            {
-                typeDict.Add(type.ToString(), ((int)type).ToString());
-            }
-            SkillSearch_type.ItemsSource = typeDict;
+            SkillSearch_type.ItemsSource = GetSkillTypeDict<PassiveSkillType>();
         }
         private void SkillTypeRadio_Active_Checked(object sender, RoutedEventArgs e)
         {
@@ -343,15 +353,7 @@ namespace RTDDE.Executer
             SkillInfo_PanelSkill.Visibility = Visibility.Collapsed;
             SkillUnitRankInfo.Children.Clear();
             Utility.BindData(SkillDataGrid, "select id,type,name from active_skill_master order by type,id");
-            var typeDict = new Dictionary<string, string>()
-            {
-                {"------",""},
-            };
-            foreach (ActiveSkillType type in Enum.GetValues(typeof(ActiveSkillType)))
-            {
-                typeDict.Add(type.ToString(), ((int)type).ToString());
-            }
-            SkillSearch_type.ItemsSource = typeDict;
+            SkillSearch_type.ItemsSource = GetSkillTypeDict<ActiveSkillType>();
         }
         private void SkillTypeRadio_Panel_Checked(object sender, RoutedEventArgs e)
         {
@@ -360,15 +362,15 @@ namespace RTDDE.Executer
             SkillInfo_PanelSkill.Visibility = Visibility.Visible;
             SkillUnitRankInfo.Children.Clear();
             Utility.BindData(SkillDataGrid, "select id,type,name from panel_skill_master order by type,id");
-            var typeDict = new Dictionary<string, string>()
-            {
-                {"------",""},
-            };
-            foreach (PanelSkillType type in Enum.GetValues(typeof(PanelSkillType)))
-            {
-                typeDict.Add(type.ToString(), ((int)type).ToString());
-            }
-            SkillSearch_type.ItemsSource = typeDict;
+            SkillSearch_type.ItemsSource = GetSkillTypeDict<PanelSkillType>();
+        }
+        private void SkillTypeRadio_Limit_Checked(object sender, RoutedEventArgs e)
+        {
+            SkillInfo_PartySkill.Visibility = Visibility.Collapsed;
+            SkillInfo_ActiveSkill.Visibility = Visibility.Collapsed;
+            SkillInfo_PanelSkill.Visibility = Visibility.Collapsed;
+            SkillUnitRankInfo.Children.Clear();
+            //Utility.BindData(SkillDataGrid, "select id,type,name from panel_skill_master order by type,id");
         }
         private string GetSkillTableByRadioChecked()
         {
