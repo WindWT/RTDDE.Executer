@@ -16,6 +16,10 @@ namespace RTDDE.Executer
         public LimitSkillMaster limitSkill;
         public ActiveSkillMaster[] limitActiveSkill;
 
+        public Skills()
+        {
+
+        }
         public Skills(int unitid, int level = 1)
         {
             UnitMaster um = DAL.ToSingle<UnitMaster>(string.Format("SELECT * FROM UNIT_MASTER WHERE id={0}", unitid));
@@ -24,6 +28,19 @@ namespace RTDDE.Executer
         public Skills(int p_skill_id, int a_skill_id, int panel_skill_id, int limit_skill_id, int level = 1)
         {
             InitSkills(p_skill_id, a_skill_id, panel_skill_id, limit_skill_id, level);
+        }
+        public static Skills FromLimitSkillId(int limitSkillId)
+        {
+            Skills s = new Skills();
+            s.limitSkill = DAL.ToSingle<LimitSkillMaster>(string.Format("SELECT * FROM LIMIT_SKILL_MASTER WHERE id={0}", limitSkillId));
+            s.limitActiveSkill = new ActiveSkillMaster[3];
+            if ((s.limitSkill == null || s.limitSkill.id == 0) == false)
+            {
+                s.limitActiveSkill[0] = DAL.ToSingle<ActiveSkillMaster>(string.Format("SELECT * FROM ACTIVE_SKILL_MASTER WHERE id={0}", s.limitSkill.skill_id_00));
+                s.limitActiveSkill[1] = DAL.ToSingle<ActiveSkillMaster>(string.Format("SELECT * FROM ACTIVE_SKILL_MASTER WHERE id={0}", s.limitSkill.skill_id_01));
+                s.limitActiveSkill[2] = DAL.ToSingle<ActiveSkillMaster>(string.Format("SELECT * FROM ACTIVE_SKILL_MASTER WHERE id={0}", s.limitSkill.skill_id_02));
+            }
+            return s;
         }
         private void InitSkills(int p_skill_id, int a_skill_id, int panel_skill_id, int limit_skill_id, int level = 1)
         {

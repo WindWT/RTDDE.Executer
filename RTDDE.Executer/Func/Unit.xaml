@@ -435,8 +435,15 @@
                                 <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="limitSkill_general_text"></RichTextBox>
                                 <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="coefficient"/>
                                 <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="limitSkill_coefficient"></TextBox>
-                                <StackPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Name="UnitInfo_LimitSkill_AS">
-                                </StackPanel>
+                                <Expander Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" BorderThickness="0" IsExpanded="False">
+                                    <Expander.Header>
+                                        <Label Content="LimitAS"></Label>
+                                    </Expander.Header>
+                                    <Expander.Content>
+                                        <StackPanel Name="UnitInfo_LimitSkill_AS">
+                                        </StackPanel>
+                                    </Expander.Content>
+                                </Expander>
                             </Grid>
                         </StackPanel>
                     </Expander.Content>
