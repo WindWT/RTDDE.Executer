@@ -638,6 +638,18 @@ WHERE uo.id={0}";
 };
         #endregion
 
+        public void SelectUnitById(int id)
+        {
+            foreach (var item in UnitDataGrid.Items)
+            {
+                if ((item as DataRowView).Row["id"].ToString() == id.ToString())
+                {
+                    UnitDataGrid.SelectedItem = item;
+                    UnitDataGrid.ScrollIntoView(item);
+                    break;
+                }
+            }
+        }
         private void SB_ShowModel_Completed(object sender, EventArgs e)
         {
             string g_id = UnitInfo_g_id.Text;

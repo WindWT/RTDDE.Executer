@@ -516,16 +516,7 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
             {
                 var w = (MainWindow)Application.Current.MainWindow;
                 string id = (sender as TextBox).Tag.ToString();
-                ((TextBox)w.Unit.FindName("UnitInfo_id")).Text = id;
-                if (Settings.IsDefaultLvMax)
-                {
-                    ((TextBox)w.Unit.FindName("UnitInfo_lv")).Text = "99";
-                }
-                else
-                {
-                    ((TextBox)w.Unit.FindName("UnitInfo_lv")).Text = "1";
-                }
-                w.Unit.UnitInfo_BindData(id);
+                w.Unit.SelectUnitById(Convert.ToInt32(id));
                 w.ChangeTab("Unit");
             }
         }
