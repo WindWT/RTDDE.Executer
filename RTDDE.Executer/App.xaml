@@ -159,5 +159,8 @@
         <Style TargetType="GroupBox">
             <Setter Property="BorderThickness" Value="0"></Setter>
         </Style>
+        <Style TargetType="Expander">
+            <Setter Property="BorderThickness" Value="0"></Setter>
+        </Style>
     </Application.Resources>
 </Application>

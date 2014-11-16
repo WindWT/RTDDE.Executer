@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="RTDDE.Executer.Area"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" >
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Canvas Grid.Row="0" Name="AreaCanvas">
+
+        </Canvas>
+        <Expander Grid.Row="1" Background="White" ExpandDirection="Up"
+                  IsExpanded="False">
+            <Expander.Header>
+                <Label Content="AreaInfo"></Label>
+            </Expander.Header>
+            <Expander.Content>
+                <StackPanel>
+                    <Button>x</Button>
+                    <Button>x</Button>
+                    <Button>x</Button>
+                </StackPanel>
+            </Expander.Content>
+        </Expander>
+    </Grid>
+</UserControl>

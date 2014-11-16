@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="RTDDE.Executer.World"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:RTDDE="clr-namespace:RTDDE.Executer"
+             mc:Ignorable="d" >    
+    <Grid Background="White" Initialized="World_Initialized">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="18,18,18,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" FontSize="24" FontFamily="Segoe UI">Select World</TextBlock>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Name="WorldButtonStackPanel">
+                    <!--2 button here-->
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        <RTDDE:Field Grid.Row="1" x:Name="Field" HorizontalAlignment="Stretch"></RTDDE:Field>
+    </Grid>
+</UserControl>

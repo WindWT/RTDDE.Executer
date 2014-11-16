@@ -112,6 +112,7 @@
                 <Button Name="MenuItem_Common" Click="MenuItem_Checked" DockPanel.Dock="Bottom">Common</Button>
                 <Button Name="MenuItem_Diff" Click="MenuItem_Checked" DockPanel.Dock="Bottom" Visibility="Collapsed">Diff</Button>
                 <!-- MenuItem -->
+                <Button Name="MenuItem_World" Click="MenuItem_Checked">World</Button>
                 <Button Name="MenuItem_Quest" Click="MenuItem_Checked">Quest</Button>
                 <Button Name="MenuItem_QuestCategory" Click="MenuItem_Checked">Category</Button>
                 <Button Name="MenuItem_Unit" Click="MenuItem_Checked">Unit</Button>
@@ -121,6 +122,7 @@
                 <TextBlock></TextBlock>
             </DockPanel>
             <Grid Grid.Row="1" Name="MainGrid">
+                <RTDDE:World x:Name="World"/>
                 <RTDDE:Quest x:Name="Quest"/>
                 <RTDDE:QuestCategory x:Name="QuestCategory"/>
                 <RTDDE:Unit x:Name="Unit"/>
