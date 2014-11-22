@@ -116,6 +116,7 @@
                 <Button Name="MenuItem_Quest" Click="MenuItem_Checked">Quest</Button>
                 <Button Name="MenuItem_QuestCategory" Click="MenuItem_Checked">Category</Button>
                 <Button Name="MenuItem_Unit" Click="MenuItem_Checked">Unit</Button>
+                <Button Name="MenuItem_Enemy" Click="MenuItem_Checked">Enemy</Button>
                 <Button Name="MenuItem_Skill" Click="MenuItem_Checked">Skill</Button>
                 <Button Name="MenuItem_Accessory" Click="MenuItem_Checked">Accessory</Button>
                 <Button Name="MenuItem_Guide" Click="MenuItem_Checked">Guide</Button>
@@ -126,6 +127,7 @@
                 <RTDDE:Quest x:Name="Quest"/>
                 <RTDDE:QuestCategory x:Name="QuestCategory"/>
                 <RTDDE:Unit x:Name="Unit"/>
+                <RTDDE:Enemy x:Name="Enemy"/>
                 <RTDDE:Skill x:Name="Skill"/>
                 <RTDDE:Accessory x:Name="Accessory" />
                 <RTDDE:Guide x:Name="Guide" />

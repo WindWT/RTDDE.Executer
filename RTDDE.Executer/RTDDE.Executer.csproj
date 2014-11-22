@@ -137,6 +137,9 @@
     <Compile Include="Func\Field.xaml.cs">
       <DependentUpon>Field.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Func\Enemy.xaml.cs">
+      <DependentUpon>Enemy.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Func\World.xaml.cs">
       <DependentUpon>World.xaml</DependentUpon>
     </Compile>
@@ -190,6 +193,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Func\Field.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Func\Enemy.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

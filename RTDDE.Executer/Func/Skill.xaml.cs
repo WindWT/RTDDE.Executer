@@ -46,20 +46,20 @@ namespace RTDDE.Executer
         }
         private class SkillUnitRank
         {
-            public int id;
-            public int g_id;
-            public string name;
-            public int skill_01_09;
-            public int skill_10_19;
-            public int skill_20_29;
-            public int skill_30_39;
-            public int skill_40_49;
-            public int skill_50_59;
-            public int skill_60_69;
-            public int skill_70_79;
-            public int skill_80_89;
-            public int skill_90_99;
-            public int skill_100;
+            public int id { get; set; }
+            public int g_id { get; set; }
+            public string name { get; set; }
+            public int skill_01_09 { get; set; }
+            public int skill_10_19 { get; set; }
+            public int skill_20_29 { get; set; }
+            public int skill_30_39 { get; set; }
+            public int skill_40_49 { get; set; }
+            public int skill_50_59 { get; set; }
+            public int skill_60_69 { get; set; }
+            public int skill_70_79 { get; set; }
+            public int skill_80_89 { get; set; }
+            public int skill_90_99 { get; set; }
+            public int skill_100 { get; set; }
             public bool HasSkill(int skill)
             {
                 if (skill == skill_01_09 || skill == skill_10_19 || skill == skill_20_29 ||
