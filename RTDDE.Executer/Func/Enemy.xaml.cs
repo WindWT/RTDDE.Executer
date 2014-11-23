@@ -35,23 +35,15 @@ namespace RTDDE.Executer
         private void EnemyTab_Initialized(object sender, EventArgs e)
         {
             Utility.BindData(EnemyDataGrid, "SELECT id,name FROM Enemy_Unit_MASTER order by id");
-            EnemySearch_category.ItemsSource = new Dictionary<string, string>()
+            EnemySearch_chara_symbol.ItemsSource = new Dictionary<string, string>()
             {
                 {"------",""},
-                {"★","1"},
-                {"★★","2"},
-                {"★★★","3"},
-                {"★★★★","4"},
-                {"★★★★★","5"},
-                {"★×6","6"}
-            };
-            EnemySearch_style.ItemsSource = new Dictionary<string, string>()
-            {
-                {"------",""},
-                {"KNIGHT","1"},
-                {"LANCER","2"},
-                {"ARCHER","3"},
-                {"WIZARD","4"}
+                {"★","10"},
+                {"★★","11"},
+                {"★★★","12"},
+                {"★★★★","13"},
+                {"★★★★★","14"},
+                {"★×6","15"}
             };
             var attrDict = new Dictionary<string, string>()
             {
@@ -63,7 +55,16 @@ namespace RTDDE.Executer
                 {"DARK","5"}
             };
             EnemySearch_attribute.ItemsSource = attrDict;
-            EnemySearch_sub_a1.ItemsSource = attrDict;
+            var typeDict = new Dictionary<string, string>()
+            {
+                {"------",""},
+            };
+            foreach (ENEMY_TYPE type in Enum.GetValues(typeof(ENEMY_TYPE)))
+            {
+                string id = (Convert.ToInt32(type)).ToString();
+                typeDict.Add(string.Format("{0}_{1}", id, type.ToString()), id);
+            }
+            EnemySearch_type.ItemsSource = typeDict;
             var kindDict = new Dictionary<string, string>()
             {
                 {"------",""},
@@ -75,7 +76,7 @@ namespace RTDDE.Executer
                     kindDict.Add(kind.ToString(), Utility.ParseAssignID(kind).ToString());
                 }
             }
-            EnemySearch_kind.ItemsSource = kindDict;
+            EnemySearch_chara_kind.ItemsSource = kindDict;
         }
 
         private void EnemyDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -87,16 +88,7 @@ namespace RTDDE.Executer
             }
             string Enemyid = ((DataRowView)EnemyDataGrid.SelectedItem).Row["id"].ToString();
             EnemyInfo_id.Text = Enemyid;
-
-            if (Settings.IsDefaultLvMax)
-            {
-                EnemyInfo_lv.Text = "99";
-            }
-            else
-            {
-                EnemyInfo_lv.Text = "1";
-            }
-
+            EnemyInfo_lv.Text = "1";
             EnemyInfo_BindData(Enemyid);
         }
         private void EnemyInfo_lv_LostFocus(object sender, RoutedEventArgs e)
@@ -108,16 +100,8 @@ namespace RTDDE.Executer
             Regex r = new Regex("[^0-9]");
             if (r.Match(EnemyInfo_lv.Text).Success)
             {
-                if (Settings.IsDefaultLvMax)
-                {
-                    EnemyInfo_lv.Text = "99";     //This will trigger itself again
-                    return;
-                }
-                else
-                {
-                    EnemyInfo_lv.Text = "1";
-                    return;
-                }
+                EnemyInfo_lv.Text = "1";
+                return;
             }
             EnemyInfo_BindData(EnemyInfo_id.Text);
         }
@@ -128,15 +112,11 @@ namespace RTDDE.Executer
             {
                 return;
             }
-            double thislevel = Convert.ToDouble(Convert.ToInt32(EnemyInfo_lv.Text));
+            int thislevel = Convert.ToInt32(EnemyInfo_lv.Text);
 
             Task<EnemyUnitMaster> task = new Task<EnemyUnitMaster>(() =>
             {
-                string sql = @"
-Select *
-from Enemy_unit_master as eum
-WHERE eum.id={0}";
-                //return DAL.GetDataTable(String.Format(sql, Enemyid));
+                string sql = @"Select * from Enemy_unit_master WHERE id={0}";
                 return DAL.ToSingle<EnemyUnitMaster>(String.Format(sql, Enemyid));
             });
             task.ContinueWith(t =>
@@ -150,12 +130,48 @@ WHERE eum.id={0}";
                 {
                     return;
                 }
-                EnemyUnitMaster ui = task.Result;
-                EnemyInfo_name.Text = ui.name;
-                EnemyInfo_attribute.Text = Utility.ParseAttributetype(ui.attribute);
+                EnemyUnitMaster eum = task.Result;
+                EnemyInfo_id.Text = eum.id.ToString();
+                EnemyInfo_chara_flag_no.Text = eum.chara_flag_no == 0 ? string.Empty : eum.chara_flag_no.ToString();
+                int rare = eum.chara_symbol - 9;    //chara_symbol start from 10, equal to rare 1
+                string rareText = string.Empty;
+                if (rare >= 1 && rare <= 6)
+                {
+                    for (int i = 0; i < rare; i++)
+                    {
+                        rareText += "★";
+                    }
+                }
+                EnemyInfo_chara_symbol.Text = rareText;
+                EnemyInfo_name.Text = eum.name;
+                EnemyInfo_attribute.Text = Utility.ParseAttributetype(eum.attribute);
+                EnemyInfo_type.Text = Utility.ParseEnemyType(eum.type);
+                EnemyInfo_chara_kind.Text = eum.chara_flag_no == 0 ? string.Empty : Utility.ParseUnitKind(eum.chara_kind).ToString();
 
                 EnemyInfo_lv.Text = thislevel.ToString("0");
+                EnemyInfo_HP.Text = Utility.RealCalc(eum.life, eum.up_life, thislevel).ToString();
+                EnemyInfo_ATK.Text = Utility.RealCalc(eum.attack, eum.up_attack, thislevel).ToString();
+                EnemyInfo_DEF.Text = Utility.RealCalc(eum.defense, eum.up_defense, thislevel).ToString();
+                EnemyInfo_soul_pt.Text = eum.soul_pt.ToString();
+                EnemyInfo_gold_pt.Text = eum.gold_pt.ToString();
+                EnemyInfo_flag.Text = Convert.ToBoolean(eum.flag).ToString();
+                EnemyInfo_isUnit.Text = Utility.IsUnitEnemy(eum.type).ToString();
+                EnemyInfo_turn.Text = eum.turn.ToString();
+                EnemyInfo_ui.Text = eum.ui.ToString();
 
+                EnemyInfo_pat.Text = Utility.ParseAttackPattern(eum.pat);
+                EnemyInfo_p0.Text = eum.p0.ToString();
+                EnemyInfo_p1.Text = eum.p1.ToString();
+                EnemyInfo_pat_01.Text = Utility.ParseAttackPattern(eum.pat_01);
+                EnemyInfo_p0_01.Text = eum.p0_01.ToString();
+                EnemyInfo_p1_01.Text = eum.p1_01.ToString();
+                //Advanced
+                EnemyInfo_model.Text = eum.model;
+                EnemyInfo_texture.Text = eum.texture;
+                EnemyInfo_icon.Text = eum.icon.ToString();
+                EnemyInfo_shadow.Text = eum.shadow.ToString();
+                EnemyInfo_up.Text = eum.up.ToString();
+                EnemyInfo_atk_ef_id.Text = eum.atk_ef_id.ToString();
             }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
             task.Start();
         }
@@ -163,12 +179,7 @@ WHERE eum.id={0}";
         private void EnemySearchClear_Click(object sender, RoutedEventArgs e)
         {
             EnemySearch_id.Text = string.Empty;
-            EnemySearch_g_id.Text = string.Empty;
             EnemySearch_name.Text = string.Empty;
-            EnemySearch_category.SelectedIndex = 0;
-            EnemySearch_style.SelectedIndex = 0;
-            EnemySearch_attribute.SelectedIndex = 0;
-            EnemySearch_sub_a1.SelectedIndex = 0;
             Utility.BindData(EnemyDataGrid, "SELECT id,name FROM Enemy_Unit_MASTER order by id");
         }
         private void EnemySearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -190,25 +201,21 @@ WHERE eum.id={0}";
             {
                 sql += "name LIKE '%" + EnemySearch_name.Text.Trim() + "%' AND ";
             }
-            if (String.IsNullOrWhiteSpace((string)EnemySearch_category.SelectedValue) == false)
+            if (String.IsNullOrWhiteSpace((string)EnemySearch_chara_symbol.SelectedValue) == false)
             {
-                sql += "category=" + EnemySearch_category.SelectedValue.ToString() + " AND ";
+                sql += "chara_symbol=" + EnemySearch_chara_symbol.SelectedValue.ToString() + " AND ";
             }
-            if (String.IsNullOrWhiteSpace((string)EnemySearch_kind.SelectedValue) == false)
+            if (String.IsNullOrWhiteSpace((string)EnemySearch_chara_kind.SelectedValue) == false)
             {
-                sql += "kind=" + EnemySearch_kind.SelectedValue.ToString() + " AND ";
+                sql += "chara_kind=" + EnemySearch_chara_kind.SelectedValue.ToString() + " AND ";
             }
-            if (String.IsNullOrWhiteSpace((string)EnemySearch_style.SelectedValue) == false)
+            if (String.IsNullOrWhiteSpace((string)EnemySearch_type.SelectedValue) == false)
             {
-                sql += "style=" + EnemySearch_style.SelectedValue.ToString() + " AND ";
+                sql += "type=" + EnemySearch_type.SelectedValue.ToString() + " AND ";
             }
             if (String.IsNullOrWhiteSpace((string)EnemySearch_attribute.SelectedValue) == false)
             {
                 sql += "attribute=" + EnemySearch_attribute.SelectedValue.ToString() + " AND ";
-            }
-            if (String.IsNullOrWhiteSpace((string)EnemySearch_sub_a1.SelectedValue) == false)
-            {
-                sql += "sub_a1=" + EnemySearch_sub_a1.SelectedValue.ToString() + " AND ";
             }
             sql += " 1=1 ORDER BY id";
             return sql;

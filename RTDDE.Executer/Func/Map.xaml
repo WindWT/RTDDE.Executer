@@ -49,44 +49,44 @@
                     </Grid.RowDefinitions>
                     <WrapPanel Grid.Row="0">
                         <TextBlock Text="#" Width="25"/>
-                        <TextBox Name="MapEnemyInfo_Mark" Width="50" IsReadOnly="True"></TextBox>
+                        <TextBox Name="MapEnemyInfo_Mark" Width="50"></TextBox>
                         <TextBlock Text="name" Width="50"/>
-                        <TextBox Name="MapEnemyInfo_name" Width="175" IsReadOnly="True"></TextBox>
+                        <TextBox Name="MapEnemyInfo_name" Width="175"></TextBox>
                         <Separator Width="300"/>
                     </WrapPanel>
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
                         <WrapPanel>
                             <TextBlock Text="id" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_id" Width="50" IsReadOnly="True"></TextBox>
+                            <TextBox Name="MapEnemyInfo_id" Width="50"></TextBox>
                             <TextBlock Text="model" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_model" Width="150" IsReadOnly="True"></TextBox>
+                            <TextBox Name="MapEnemyInfo_model" Width="150"></TextBox>
                             <TextBlock Text="rate" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_rate" Width="50" IsReadOnly="True"></TextBox>
+                            <TextBox Name="MapEnemyInfo_rate" Width="50"></TextBox>
                             <TextBlock Text="texture" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_texture" Width="150" IsReadOnly="True"></TextBox>
+                            <TextBox Name="MapEnemyInfo_texture" Width="150"></TextBox>
                             <TextBlock Text="drop_id" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_drop_id" Width="50" IsReadOnly="True"></TextBox>
+                            <TextBox Name="MapEnemyInfo_drop_id" Width="50"></TextBox>
                             <TextBlock Text="type" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_type" Width="150" IsReadOnly="True"></TextBox>
+                            <TextBox Name="MapEnemyInfo_type" Width="150"></TextBox>
                             <TextBlock Text="Dragon" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_isDragon" Width="50" IsReadOnly="True"></TextBox>
+                            <TextBox Name="MapEnemyInfo_isDragon" Width="50"></TextBox>
                             <TextBlock Text="Unit" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_isUnitEnemy" Width="50" IsReadOnly="True"></TextBox>
+                            <TextBox Name="MapEnemyInfo_isUnitEnemy" Width="50"></TextBox>
                             <TextBlock Text="attribute" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_attribute" Width="50" IsReadOnly="True"></TextBox>
+                            <TextBox Name="MapEnemyInfo_attribute" Width="50"></TextBox>
                             <TextBlock Text="soul_pt" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_soul_pt" Width="50" IsReadOnly="True"></TextBox>
+                            <TextBox Name="MapEnemyInfo_soul_pt" Width="50"></TextBox>
                             <TextBlock Text="gold_pt" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_gold_pt" Width="50" IsReadOnly="True"></TextBox>
+                            <TextBox Name="MapEnemyInfo_gold_pt" Width="50"></TextBox>
                             <TextBlock Text="turn" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_turn" Width="50" IsReadOnly="True"></TextBox>
+                            <TextBox Name="MapEnemyInfo_turn" Width="50"></TextBox>
                             <Separator Width="300"/>
                             <TextBlock Text="lv" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_lv" Width="50" TextChanged="MapEnemyInfo_lv_TextChanged"></TextBox>
+                            <TextBox Name="MapEnemyInfo_lv" Width="50" IsReadOnly="False" TextChanged="MapEnemyInfo_lv_TextChanged"></TextBox>
                             <TextBlock Text="lv_min" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_lv_min" Width="50" IsReadOnly="True"></TextBox>
+                            <TextBox Name="MapEnemyInfo_lv_min" Width="50"></TextBox>
                             <TextBlock Text="lv_max" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_lv_max" Width="50" IsReadOnly="True"></TextBox>
+                            <TextBox Name="MapEnemyInfo_lv_max" Width="50"></TextBox>
                             <TextBlock Text="life" Width="50"/>
                             <TextBox Name="MapEnemyInfo_life" Width="100"></TextBox>
                             <TextBlock Text="atk" Width="25"/>
