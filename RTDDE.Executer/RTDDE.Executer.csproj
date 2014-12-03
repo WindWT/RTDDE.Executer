@@ -166,8 +166,8 @@
     <Compile Include="Func\Quest.xaml.cs">
       <DependentUpon>Quest.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Func\QuestCategory.xaml.cs">
-      <DependentUpon>QuestCategory.xaml</DependentUpon>
+    <Compile Include="Func\QuestArea.xaml.cs">
+      <DependentUpon>QuestArea.xaml</DependentUpon>
     </Compile>
     <Compile Include="Func\Skill.xaml.cs">
       <DependentUpon>Skill.xaml</DependentUpon>
@@ -232,7 +232,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Func\QuestCategory.xaml">
+    <Page Include="Func\QuestArea.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

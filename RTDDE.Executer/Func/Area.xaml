@@ -18,11 +18,9 @@
                 <Label Content="AreaInfo"></Label>
             </Expander.Header>
             <Expander.Content>
-                <StackPanel>
-                    <Button>x</Button>
-                    <Button>x</Button>
-                    <Button>x</Button>
-                </StackPanel>
+                <Grid>
+                    <TextBox Name="AreaInfo_Name"></TextBox>               
+                </Grid>
             </Expander.Content>
         </Expander>
     </Grid>

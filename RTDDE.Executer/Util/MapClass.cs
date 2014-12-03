@@ -12,9 +12,10 @@ namespace RTDDE.Executer
         public Brush Background { get; set; }
         public Color OverlayColor { get; set; }
         public FontWeight fontWeight { get; set; }
-        public string drop_unit_id { get; set; }
-        public string add_attribute_exp { get; set; }
-        public string drop_id { get; set; }
+        public int drop_unit_id { get; set; }
+        public int add_attribute_exp { get; set; }
+        public int unit_exp { get; set; }
+        public int drop_id { get; set; }
         public int x { get; set; }
         public int y { get; set; }
 
@@ -37,9 +38,7 @@ namespace RTDDE.Executer
             this.Background = background;
             this.fontWeight = bold;
             this.OverlayColor = overlayColor;
-            this.drop_unit_id = string.Empty;
-            this.add_attribute_exp = string.Empty;
-            this.drop_id = string.Empty;
+            this.drop_unit_id = -1;
         }
         public override string ToString()
         {

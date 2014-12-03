@@ -113,8 +113,8 @@
                 <Button Name="MenuItem_Diff" Click="MenuItem_Checked" DockPanel.Dock="Bottom" Visibility="Collapsed">Diff</Button>
                 <!-- MenuItem -->
                 <Button Name="MenuItem_World" Click="MenuItem_Checked">World</Button>
+                <Button Name="MenuItem_QuestArea" Click="MenuItem_Checked">Area</Button>
                 <Button Name="MenuItem_Quest" Click="MenuItem_Checked">Quest</Button>
-                <Button Name="MenuItem_QuestCategory" Click="MenuItem_Checked">Category</Button>
                 <Button Name="MenuItem_Unit" Click="MenuItem_Checked">Unit</Button>
                 <Button Name="MenuItem_Enemy" Click="MenuItem_Checked">Enemy</Button>
                 <Button Name="MenuItem_Skill" Click="MenuItem_Checked">Skill</Button>
@@ -125,7 +125,7 @@
             <Grid Grid.Row="1" Name="MainGrid">
                 <RTDDE:World x:Name="World"/>
                 <RTDDE:Quest x:Name="Quest"/>
-                <RTDDE:QuestCategory x:Name="QuestCategory"/>
+                <RTDDE:QuestArea x:Name="QuestArea"/>
                 <RTDDE:Unit x:Name="Unit"/>
                 <RTDDE:Enemy x:Name="Enemy"/>
                 <RTDDE:Skill x:Name="Skill"/>

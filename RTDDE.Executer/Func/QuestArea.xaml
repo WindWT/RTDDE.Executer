@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="RTDDE.Executer.QuestArea"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="QuestAreaDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestAreaDataGrid_SelectionChanged" FrozenColumnCount="2" >
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <EventSetter Event="MouseDoubleClick" Handler="QuestAreaDataGrid_MouseDoubleClick"/>
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
+        <WrapPanel Grid.Column="1" Grid.Row="0">
+            <RadioButton GroupName="QuestAreaType" Content="Main" Width="150" IsChecked="True" Name="QuestAreaTypeRadio_Main" Checked="QuestAreaTypeRadio_Main_Checked"></RadioButton>
+            <RadioButton GroupName="QuestAreaType" Content="Event" Width="150" Name="QuestAreaTypeRadio_Event" Checked="QuestAreaTypeRadio_Event_Checked"></RadioButton>
+            <Separator Width="300"/>
+            <TextBlock Text="id" Width="50"/>
+            <TextBox Name="QuestAreaInfo_id" Width="50" IsReadOnly="True"></TextBox>
+            <TextBox Name="QuestAreaInfo_name" Width="200" IsReadOnly="True" TextAlignment="Right"></TextBox>
+            <TextBox Name="QuestAreaInfo_text" Width="300" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+            <TextBlock Text="order" Width="50"/>
+            <TextBox Name="QuestAreaInfo_display_order" Width="100" IsReadOnly="True"></TextBox>
+            <TextBlock Text="icon" Width="50"/>
+            <TextBox Name="QuestAreaInfo_icon_texture" Width="100" IsReadOnly="True"></TextBox>
+            <Separator Width="300"/>
+        </WrapPanel>
+        <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                <WrapPanel Name="QuestAreaInfo_quest">
+
+                </WrapPanel>
+                <WrapPanel Name="QuestAreaInfo_reward">
+
+                </WrapPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

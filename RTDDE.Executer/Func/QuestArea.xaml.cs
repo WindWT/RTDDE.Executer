@@ -18,33 +18,30 @@ using System.Windows.Shapes;
 
 namespace RTDDE.Executer
 {
-    /// <summary>
-    /// QuestCategory.xaml 的交互逻辑
-    /// </summary>
-    public partial class QuestCategory : UserControl
+    public partial class QuestArea : UserControl
     {
-        public QuestCategory()
+        public QuestArea()
         {
             InitializeComponent();
         }
         public void Refresh()
         {
-            QuestCategoryTypeRadio_Normal.IsChecked = false;
-            QuestCategoryTypeRadio_Normal.IsChecked = true;
+            QuestAreaTypeRadio_Main.IsChecked = false;
+            QuestAreaTypeRadio_Main.IsChecked = true;
         }
-        private void QuestCategoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void QuestAreaDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (QuestCategoryDataGrid.SelectedItem == null)
+            if (QuestAreaDataGrid.SelectedItem == null)
             {
                 //avoid Exception
                 return;
             }
-            string qcInfo_id = ((DataRowView)QuestCategoryDataGrid.SelectedItem).Row["id"].ToString();
-            QuestCategoryInfo_id.Text = qcInfo_id;
-            Task<QuestCategoryMaster> task = new Task<QuestCategoryMaster>(() =>
+            string qcInfo_id = ((DataRowView)QuestAreaDataGrid.SelectedItem).Row["id"].ToString();
+            QuestAreaInfo_id.Text = qcInfo_id;
+            Task<QuestAreaMaster> task = new Task<QuestAreaMaster>(() =>
             {
-                string sql = "SELECT * FROM quest_category_master WHERE id={0}";
-                return DAL.ToSingle<QuestCategoryMaster>(String.Format(sql, qcInfo_id));
+                string sql = "SELECT * FROM quest_area_master WHERE id={0}";
+                return DAL.ToSingle<QuestAreaMaster>(String.Format(sql, qcInfo_id));
             });
             Task<List<QuestMaster>> taskQuest = new Task<List<QuestMaster>>(() =>
             {
@@ -72,7 +69,7 @@ order by point";
                 {
                     return;
                 }
-                QuestCategoryMaster qcm = t.Result;
+                QuestAreaMaster qam = t.Result;
                 Task.WaitAll(taskQuest, taskReward);
                 if (taskQuest.Exception != null)
                 {
@@ -85,71 +82,68 @@ order by point";
                     return;
                 }
 
-                QuestCategoryInfo_name.Text = qcm.name;
-                QuestCategoryInfo_order.Text = qcm.display_order.ToString();
-                QuestCategoryInfo_icon.Text = qcm.icon;
-                QuestCategoryInfo_kind.Text = Utility.ParseQuestKind(qcm.kind);
-                QuestCategoryInfo_zbtn_kind.Text = Utility.ParseZBTNKind(qcm.zbtn_kind);
-                QuestCategoryInfo_pt_num.Text = qcm.pt_num.ToString();
-                QuestCategoryInfo_text.Text = Utility.ParseText(qcm.text);
+                QuestAreaInfo_name.Text = qam.name;
+                QuestAreaInfo_display_order.Text = qam.display_order.ToString();
+                QuestAreaInfo_icon_texture.Text = qam.icon_texture;
+                QuestAreaInfo_text.Text = Utility.ParseText(qam.text);
 
                 List<QuestMaster> listQM = taskQuest.Result;
                 if (listQM == null||listQM.Count==0 )
                 {
-                    QuestCategoryInfo_quest.Visibility = Visibility.Collapsed;
+                    QuestAreaInfo_quest.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    QuestCategoryInfo_quest.Children.Clear();
-                    QuestCategoryInfo_quest.Visibility = Visibility.Visible;
+                    QuestAreaInfo_quest.Children.Clear();
+                    QuestAreaInfo_quest.Visibility = Visibility.Visible;
                     foreach (QuestMaster qm in listQM)
                     {
-                        QuestCategoryInfo_quest.Children.Add(new TextBlock()
+                        QuestAreaInfo_quest.Children.Add(new TextBlock()
                         {
                             Text = qm.id.ToString(),
                             Width = 50
                         });
-                        QuestCategoryInfo_quest.Children.Add(new TextBox()
+                        QuestAreaInfo_quest.Children.Add(new TextBox()
                         {
                             Text = qm.name,
                             Width = 250
                         });
                     }
-                    QuestCategoryInfo_quest.Children.Add(new Separator() { Width = 300 });
+                    QuestAreaInfo_quest.Children.Add(new Separator() { Width = 300 });
                 }
                 DataTable dtReward = taskReward.Result;
                 if (dtReward == null || dtReward.Rows.Count == 0)
                 {
-                    QuestCategoryInfo_reward.Visibility = Visibility.Collapsed;
+                    QuestAreaInfo_reward.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    QuestCategoryInfo_reward.Children.Clear();
-                    QuestCategoryInfo_reward.Visibility = Visibility.Visible;
+                    QuestAreaInfo_reward.Children.Clear();
+                    QuestAreaInfo_reward.Visibility = Visibility.Visible;
                     foreach (DataRow drReward in dtReward.Rows)
                     {
-                        QuestCategoryInfo_reward.Children.Add(new TextBlock()
+                        QuestAreaInfo_reward.Children.Add(new TextBlock()
                         {
                             Text = drReward["point"].ToString(),
                             Width = 25
                         });
-                        QuestCategoryInfo_reward.Children.Add(new TextBox()
+                        QuestAreaInfo_reward.Children.Add(new TextBox()
                         {
                             Text = Utility.ParsePresenttype(drReward["present_type"].ToString()),
                             Width = 50
                         });
-                        QuestCategoryInfo_reward.Children.Add(new TextBox()
+                        QuestAreaInfo_reward.Children.Add(new TextBox()
                         {
                             Text = drReward["present_param_name"].ToString(),
                             Width = 175
                         });
-                        QuestCategoryInfo_reward.Children.Add(new TextBox()
+                        QuestAreaInfo_reward.Children.Add(new TextBox()
                         {
                             Text = drReward["present_param_1"].ToString(),
                             Width = 50
                         });
                     }
-                    QuestCategoryInfo_reward.Children.Add(new Separator() { Width = 300 });
+                    QuestAreaInfo_reward.Children.Add(new Separator() { Width = 300 });
                 }
 
             }, MainWindow.uiTaskScheduler);
@@ -157,7 +151,7 @@ order by point";
             taskQuest.Start();
             taskReward.Start();
         }
-        private void QuestCategoryDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void QuestAreaDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (sender != null)
             {
@@ -172,26 +166,15 @@ order by point";
             }
         }
 
-        private void QuestCategoryTypeRadio_Normal_Checked(object sender, RoutedEventArgs e)
+        private void QuestAreaTypeRadio_Main_Checked(object sender, RoutedEventArgs e)
         {
-            QuestCategoryTypeRadio_Checked(0);
+            string sql = "SELECT id,name,text FROM quest_area_master WHERE parent_field_id>0 order by id DESC";
+            Utility.BindData(QuestAreaDataGrid, sql);
         }
-        private void QuestCategoryTypeRadio_Event_Checked(object sender, RoutedEventArgs e)
+        private void QuestAreaTypeRadio_Event_Checked(object sender, RoutedEventArgs e)
         {
-            QuestCategoryTypeRadio_Checked(1);
-        }
-        private void QuesCategorytTypeRadio_LargeEvent_Checked(object sender, RoutedEventArgs e)
-        {
-            QuestCategoryTypeRadio_Checked(2);
-        }
-        private void QuestCategoryTypeRadio_Special_Checked(object sender, RoutedEventArgs e)
-        {
-            QuestCategoryTypeRadio_Checked(3);
-        }
-        private void QuestCategoryTypeRadio_Checked(int zbtn_kind)
-        {
-            string sql = string.Format("SELECT id,name,text FROM quest_category_master WHERE zbtn_kind={0} order by id", zbtn_kind.ToString());
-            Utility.BindData(QuestCategoryDataGrid, sql);
+            string sql = "SELECT id,name,text FROM quest_area_master WHERE parent_field_id=0 order by id DESC";
+            Utility.BindData(QuestAreaDataGrid, sql);
         }
     }
 }

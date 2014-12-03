@@ -31,7 +31,7 @@ namespace RTDDE.Executer
         }
         public void Load(string levelID = "-1", int repeat = 1)
         {
-            if(string.IsNullOrEmpty(levelID))
+            if (string.IsNullOrEmpty(levelID))
             {
                 levelID = "-1";
             }
@@ -410,15 +410,16 @@ namespace RTDDE.Executer
                     b.SetValue(Grid.ColumnProperty, col);
 
                     StringBuilder sb = new StringBuilder();
-                    if (String.IsNullOrWhiteSpace(c.drop_unit_id) == false)
+                    if (c.drop_unit_id > 0)
                     {
-                        if (c.drop_unit_id != "0")
-                        {
-                            sb.AppendLine("掉落:" + Utility.ParseUnitName(c.drop_unit_id));
-                        }
-                        sb.AppendLine("觉醒pt:" + c.add_attribute_exp);
+                        sb.AppendLine("掉落:" + Utility.ParseUnitName(c.drop_unit_id.ToString()));
                     }
-                    if (string.IsNullOrWhiteSpace(c.drop_id) == false)
+                    if (c.drop_unit_id >= 0)
+                    {
+                        sb.AppendLine("觉醒pt:" + c.add_attribute_exp);
+                        sb.AppendLine("exp:" + c.unit_exp);
+                    }
+                    if (c.drop_id != 0)
                     {
                         sb.AppendLine("掉落表id:" + c.drop_id);
                     }
@@ -637,7 +638,7 @@ namespace RTDDE.Executer
                     {
                         continue;
                     }
-                    c.drop_id = foundRow[0]["drop_id"].ToString();
+                    c.drop_id = Convert.ToInt32(foundRow[0]["drop_id"]);
                     string enemyId = foundRow[0]["id"].ToString();
                     switch (enemyId)
                     {
@@ -705,8 +706,9 @@ namespace RTDDE.Executer
                     EnemyInfo ei = DropData.Find(o => { return o.x == c.x && o.y == c.y && !(o.x == 0 && o.y == 0); });
                     if (ei != null)
                     {
-                        c.drop_unit_id = ei.drop_unit_id.ToString();
-                        c.add_attribute_exp = ei.add_attribute_exp.ToString();
+                        c.drop_unit_id = ei.drop_unit_id;
+                        c.add_attribute_exp = ei.add_attribute_exp;
+                        c.unit_exp = ei.unit_exp;
                         switch (ei.drop_unit_id)
                         {
                             case 15004:
@@ -736,12 +738,20 @@ namespace RTDDE.Executer
                                 }
                         }
                     }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(c.CellData) == false && c.CellData.StartsWith("E"))
+                        {
+                            c.Foreground = Brushes.LightGray;
+                        }
+                    }
                 }
             }
             MapCell lastCell = map.Rows.Find(o => { return true; }).Cells.FindLast(o => { return true; });
             EnemyInfo bossInfo = DropData.Find(o => { return o.enemy_id == 0; });
-            lastCell.drop_unit_id = bossInfo.drop_unit_id.ToString();
-            lastCell.add_attribute_exp = bossInfo.add_attribute_exp.ToString();
+            lastCell.drop_unit_id = bossInfo.drop_unit_id;
+            lastCell.add_attribute_exp = bossInfo.add_attribute_exp;
+            lastCell.unit_exp = bossInfo.unit_exp;
             return map;
         }
     }

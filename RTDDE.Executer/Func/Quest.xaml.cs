@@ -44,9 +44,9 @@ namespace RTDDE.Executer
             Task<DataTable> task = new Task<DataTable>(() =>
             {
                 string sql = @"SELECT *,
-(select name from quest_category_master where quest_category_master.id=category) as category_name,
-(select text from quest_category_master where quest_category_master.id=category) as category_text,
-(select banner from quest_category_master where quest_category_master.id=category) as category_banner,
+(select name from quest_area_master where quest_area_master.id=category) as category_name,
+(select text from quest_area_master where quest_area_master.id=category) as category_text,
+(select banner_texture from quest_area_master where quest_area_master.id=category) as category_banner,
 (SELECT target_name FROM SP_EVENT_MASTER where SP_EVENT_MASTER.sp_event_id=quest_master.sp_event_id) as sp_event_name,
 (SELECT target_name FROM SP_EVENT_MASTER where SP_EVENT_MASTER.sp_event_id=quest_master.open_sp_event_id) as open_sp_event_name,open_sp_event_point,
 (case when present_type=4 then (select name from unit_master where unit_master.id=quest_master.present_param) else present_param end) as present_param_name ,
@@ -118,24 +118,33 @@ namespace RTDDE.Executer
                 QuestInfo_open_date.Text = Utility.ParseRTDDate(dr["open_date"].ToString(), true);
                 QuestInfo_close_date.Text = Utility.ParseRTDDate(dr["close_date"].ToString(), true);
 
-                QuestInfo_opentype.Children.Clear();
-                foreach (OpenType type in t.Result)
+                QuestInfo_opentype_content.Children.Clear();
+                List<OpenType> opentypes = t.Result;
+                if (opentypes.Count == 0)
                 {
-                    QuestInfo_opentype.Children.Add(new TextBox()
+                    QuestInfo_opentype.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    QuestInfo_opentype.Visibility = Visibility.Visible;
+                    foreach (OpenType type in t.Result)
                     {
-                        Text = type.Type,
-                        Width = 60
-                    });
-                    QuestInfo_opentype.Children.Add(new TextBox()
-                    {
-                        Text = type.Param,
-                        Width = 200
-                    });
-                    QuestInfo_opentype.Children.Add(new TextBox()
-                    {
-                        Text = type.Group.ToString(),
-                        Width = 40
-                    });
+                        QuestInfo_opentype_content.Children.Add(new TextBox()
+                        {
+                            Text = type.Type,
+                            Width = 60
+                        });
+                        QuestInfo_opentype_content.Children.Add(new TextBox()
+                        {
+                            Text = type.Param,
+                            Width = 200
+                        });
+                        QuestInfo_opentype_content.Children.Add(new TextBox()
+                        {
+                            Text = type.Group.ToString(),
+                            Width = 40
+                        });
+                    }
                 }
 
                 if (string.IsNullOrWhiteSpace(dr["sp_event_id"].ToString())
@@ -186,7 +195,7 @@ namespace RTDDE.Executer
         private void QuestTypeRadio_Event_Checked(object sender, RoutedEventArgs e)
         {
             string sql = @"SELECT id,name,stamina,
-(select name from quest_category_master where quest_category_master.id=category) as category,
+(select name from quest_area_master where quest_area_master.id=category) as category,
        ( CASE
                 WHEN open_date<>0 THEN open_date
                 WHEN open_type_1 = 4 THEN open_param_1 
@@ -220,7 +229,7 @@ namespace RTDDE.Executer
         {
             string today = DateTime.Today.AddHours(1).ToString("yyyyMMddHH");
             string sql = @"SELECT id,name,stamina,
-(select name from quest_category_master where quest_category_master.id=category) as category,
+(select name from quest_area_master where quest_area_master.id=category) as category,
        ( CASE
                 WHEN open_type_1 = 1 THEN open_param_1 
                 WHEN open_type_2 = 1 THEN open_param_2 
@@ -278,9 +287,9 @@ ORDER BY DayOfWeek,id DESC";
         private void QuestTypeRadio_Main_Checked(object sender, RoutedEventArgs e)
         {
             string sql = @"SELECT id,name,stamina,
-(select name from quest_category_master where quest_category_master.id=category) as category
+(select parent_field_id from quest_area_master where quest_area_master.id=category) as hasParent
 FROM QUEST_MASTER
-WHERE category<1000
+WHERE hasParent>0
 ORDER BY id DESC";
             Utility.BindData(QuestDataGrid, sql);
         }
@@ -292,7 +301,7 @@ ORDER BY id DESC";
             QuestTypeRadio_Main.IsChecked = false;
 
             string sql = @"SELECT id,name,stamina,
-(select name from quest_category_master where quest_category_master.id=category) as category_name
+(select name from quest_area_master where quest_area_master.id=category) as category_name
 FROM QUEST_MASTER WHERE ";
             if (String.IsNullOrWhiteSpace(QuestSearch_id.Text) == false)
             {

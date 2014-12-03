@@ -1,4 +1,5 @@
 ﻿using RTDDE.Provider;
+using RTDDE.Provider.Enums;
 using System;
 using System.Collections.Generic;
 using System.Data;

@@ -135,7 +135,7 @@
             <TextBlock Text="category" Width="50"/>
             <TextBox Name="QuestInfo_category" Width="50"></TextBox>
             <TextBox Name="QuestInfo_category_name" Width="200" TextAlignment="Right"></TextBox>
-            <TextBox Name="QuestInfo_category_text" Width="300" AcceptsReturn="True" TextWrapping="Wrap" TextAlignment="Right"></TextBox>
+            <TextBox Name="QuestInfo_category_text" Width="300" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
             <TextBlock Text="banner" Width="50"/>
             <TextBox Name="QuestInfo_category_banner" Width="250"></TextBox>
             <Separator Width="300"></Separator>
@@ -172,10 +172,12 @@
                     <TextBox Name="QuestInfo_panel_heart" Width="25"></TextBox>
                     <TextBox Name="QuestInfo_panel_sp" Width="25"></TextBox>
                     <Separator Width="300"/>
+                </WrapPanel>
+                <WrapPanel Name="QuestInfo_opentype">
                     <TextBlock Text="opentype" Width="60"/>
                     <TextBlock Text="param" Width="200"/>
                     <TextBlock Text="group" Width="40"/>
-                    <WrapPanel Name="QuestInfo_opentype"></WrapPanel>
+                    <WrapPanel Name="QuestInfo_opentype_content"></WrapPanel>
                     <Separator Width="300"/>
                 </WrapPanel>
                 <WrapPanel Name="QuestInfo_sp_event">

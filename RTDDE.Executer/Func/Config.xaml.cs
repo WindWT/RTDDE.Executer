@@ -140,7 +140,13 @@ namespace RTDDE.Executer
                             continue;
                         }
                         string enumName = filename.Replace("_Msg.bytes", string.Empty);
-                        MASTERDB mdbEnum = (MASTERDB)Enum.Parse(typeof(MASTERDB), enumName, true);
+                        MASTERDB mdbEnum;
+                        Enum.TryParse<MASTERDB>(enumName, true, out mdbEnum);
+                        if (mdbEnum == default(MASTERDB))
+                        {
+                            //type not exist, skip
+                            continue;
+                        }
                         string json = string.Empty;
                         using (StreamReader sr = new StreamReader(filepath))
                         {
@@ -198,7 +204,7 @@ namespace RTDDE.Executer
         {
             var w = (MainWindow)Application.Current.MainWindow;
             w.Quest.Refresh();
-            w.QuestCategory.Refresh();
+            w.QuestArea.Refresh();
             w.Unit.Refresh();
             w.Skill.Refresh();
             w.Guide.Refresh();

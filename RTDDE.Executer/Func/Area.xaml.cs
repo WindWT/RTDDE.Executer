@@ -58,10 +58,36 @@ namespace RTDDE.Executer
                     };
                     btn.SetValue(Canvas.LeftProperty, (double)qam.icon_pos_x * SCALE_PARAMETER + LEFT_OFFSET);
                     btn.SetValue(Canvas.TopProperty, (double)qam.icon_pos_y * SCALE_PARAMETER + TOP_OFFSET);
+                    btn.SetValue(Grid.ZIndexProperty, 128);
+                    btn.Click += (e, s) =>
+                    {
+                        if (qam.move_field_id > 0)
+                        {
+                            LoadArea((int)qam.move_field_id);
+                        }
+                        AreaInfo_Name.Text = qam.name;
+                    };
                     AreaCanvas.Children.Add(btn);
+                    QuestAreaMaster nextQam = t.Result.Find(o => o.id == qam.connect_area_id);
+                    if (nextQam != null)
+                    {
+                        AreaCanvas.Children.Add(GetAreaLine(qam, nextQam));
+                    }
+
                 }
             }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
             task.Start();
+        }
+        private Line GetAreaLine(QuestAreaMaster thisArea, QuestAreaMaster nextArea)
+        {
+            Line line = new Line();
+            line.X1 = (thisArea.icon_pos_x + thisArea.icon_col_w / 2) * SCALE_PARAMETER + LEFT_OFFSET;
+            line.Y1 = (thisArea.icon_pos_y + thisArea.icon_col_h / 2) * SCALE_PARAMETER + TOP_OFFSET;
+            line.X2 = (nextArea.icon_pos_x + nextArea.icon_col_w / 2) * SCALE_PARAMETER + LEFT_OFFSET;
+            line.Y2 = (nextArea.icon_pos_y + nextArea.icon_col_h / 2) * SCALE_PARAMETER + TOP_OFFSET;
+            line.Stroke = new SolidColorBrush(Colors.Red);
+            line.StrokeThickness = 3;
+            return line;
         }
     }
 }
