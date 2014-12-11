@@ -56,14 +56,7 @@ namespace RTDDE.Executer
         {
             foreach (UserControl child in MainGrid.Children)
             {
-                if (child.Name == tabName)
-                {
-                    child.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    child.Visibility = Visibility.Collapsed;
-                }
+                child.Visibility = child.Name == tabName ? Visibility.Visible : Visibility.Collapsed;
             }
             MenuButton.IsChecked = false;
         }
@@ -84,7 +77,7 @@ namespace RTDDE.Executer
         }
 
         //异常信息显示15秒之后消失。
-        private DispatcherTimer dispatcherTimer = null;
+        private DispatcherTimer _dispatcherTimer = null;
         private void StatusBarExceptionMessage_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(StatusBarExceptionMessage.Text))
@@ -94,17 +87,16 @@ namespace RTDDE.Executer
             else
             {
                 StatusBarExceptionMessage.Visibility = Visibility.Visible;
-                dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
-                dispatcherTimer.Interval = new TimeSpan(0, 0, 15);
+                _dispatcherTimer = new DispatcherTimer {Interval = new TimeSpan(0, 0, 15)};
                 EventHandler eh = null;
                 eh = (a, b) =>
                 {
-                    dispatcherTimer.Tick -= eh;
-                    dispatcherTimer.Stop();
+                    _dispatcherTimer.Tick -= eh;
+                    _dispatcherTimer.Stop();
                     StatusBarExceptionMessage.Text = String.Empty;
                 };
-                dispatcherTimer.Tick += eh;
-                dispatcherTimer.Start();
+                _dispatcherTimer.Tick += eh;
+                _dispatcherTimer.Start();
             }
         }
 

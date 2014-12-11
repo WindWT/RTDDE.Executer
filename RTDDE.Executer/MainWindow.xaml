@@ -1,7 +1,7 @@
 ﻿<Window x:Class="RTDDE.Executer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:RTDDE="clr-namespace:RTDDE.Executer"
+        xmlns:RTDDE="clr-namespace:RTDDE.Executer.Func"
         Title="RTDDE.Executer"  MinWidth="640" MinHeight="480" Width="720" Height="540"
         Icon="Resources/Icon256.ico" WindowStyle="None" ResizeMode="NoResize">
     <Window.Resources>

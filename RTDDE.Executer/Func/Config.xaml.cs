@@ -1,24 +1,16 @@
-﻿using RTDDE.Provider;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Xml;
+using RTDDE.Provider;
+using RTDDE.Provider.Enums;
 
-namespace RTDDE.Executer
+namespace RTDDE.Executer.Func
 {
     /// <summary>
     /// Config.xaml 的交互逻辑
@@ -135,14 +127,13 @@ namespace RTDDE.Executer
                     foreach (string filepath in System.IO.Directory.GetFiles(path))
                     {
                         string filename = System.IO.Path.GetFileName(filepath);
-                        if (filename.EndsWith("_Msg.bytes") == false)
+                        if (filename != null && filename.EndsWith("_Msg.bytes") == false)
                         {
                             continue;
                         }
                         string enumName = filename.Replace("_Msg.bytes", string.Empty);
                         MASTERDB mdbEnum;
-                        Enum.TryParse<MASTERDB>(enumName, true, out mdbEnum);
-                        if (mdbEnum == default(MASTERDB))
+                        if (Enum.TryParse<MASTERDB>(enumName, true, out mdbEnum))
                         {
                             //type not exist, skip
                             continue;
@@ -153,7 +144,7 @@ namespace RTDDE.Executer
                             json = MsgBytes.ToJson(sr.BaseStream);
                         }
                         //Dynamic type from enum
-                        Type currentType = Utility.Enum2Type(mdbEnum);
+                        Type currentType = Converter.Enum2Type(mdbEnum);
                         //Generate Method
                         MethodInfo methodToList = typeof(JSON).GetMethod("ToList").MakeGenericMethod(currentType);
                         MethodInfo methodToDB = typeof(DAL).GetMethod("FromList").MakeGenericMethod(currentType);
@@ -212,21 +203,21 @@ namespace RTDDE.Executer
         private void InitSettings()
         {
             //fake for designer
-            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) == false)
-            {
-                IsShowDropInfoCheckBox.IsChecked = Settings.IsShowDropInfo;
-                IsShowBoxInfoCheckBox.IsChecked = Settings.IsShowBoxInfo;
-                IsEnableLevelLimiterCheckBox.IsChecked = Settings.IsEnableLevelLimiter;
-                IsDefaultLvMaxCheckBox.IsChecked = Settings.IsDefaultLvMax;
-                IsUseLocalTimeCheckBox.IsChecked = Settings.IsUseLocalTime;
-                DisunityPathTextBox.Text = Settings.DisunityPath;
-            }
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this)) return;
+            IsShowDropInfoCheckBox.IsChecked = Settings.IsShowDropInfo;
+            IsShowBoxInfoCheckBox.IsChecked = Settings.IsShowBoxInfo;
+            IsEnableLevelLimiterCheckBox.IsChecked = Settings.IsEnableLevelLimiter;
+            IsDefaultLvMaxCheckBox.IsChecked = Settings.IsDefaultLvMax;
+            IsUseLocalTimeCheckBox.IsChecked = Settings.IsUseLocalTime;
+            DisunityPathTextBox.Text = Settings.DisunityPath;
         }
         private void SelectDisunityPathButton_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            ofd.DefaultExt = ".bat";
-            ofd.Filter = "Disunity Bat|disunity.bat";
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog
+            {
+                DefaultExt = ".bat",
+                Filter = "Disunity Bat|disunity.bat"
+            };
             if (ofd.ShowDialog() == true)
             {
                 DisunityPathTextBox.Text = ofd.FileName;
