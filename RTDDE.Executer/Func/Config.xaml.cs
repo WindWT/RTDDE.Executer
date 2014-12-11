@@ -113,11 +113,13 @@ namespace RTDDE.Executer.Func
         }
         private void ImportMsgPackButton_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            ofd.CheckFileExists = false;
-            ofd.ValidateNames = false;
-            ofd.FileName = "Ignore me";
-            ofd.Title = "Browse Folder Then Press Open";
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog
+            {
+                CheckFileExists = false,
+                ValidateNames = false,
+                FileName = "Ignore me",
+                Title = "Browse Folder Then Press Open"
+            };
             if (ofd.ShowDialog() == true)
             {
                 ImportMsgPackButton.Content = new Run("Importing MDBS MsgPack...");
@@ -133,7 +135,7 @@ namespace RTDDE.Executer.Func
                         }
                         string enumName = filename.Replace("_Msg.bytes", string.Empty);
                         MASTERDB mdbEnum;
-                        if (Enum.TryParse<MASTERDB>(enumName, true, out mdbEnum))
+                        if (Enum.TryParse<MASTERDB>(enumName, true, out mdbEnum) == false)
                         {
                             //type not exist, skip
                             continue;
