@@ -37,6 +37,7 @@ namespace RTDDE.Executer.Func
             SkillTypeRadio_Party.IsChecked = false;
             SkillTypeRadio_Party.IsChecked = true;
         }
+        [DAL(UseProperty = true)]
         private class SkillUnitRank
         {
             public int id { get; set; }
