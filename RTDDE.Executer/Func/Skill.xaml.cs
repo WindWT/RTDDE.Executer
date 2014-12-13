@@ -14,10 +14,7 @@ using RTDDE.Provider.MasterData;
 
 namespace RTDDE.Executer.Func
 {
-    /// <summary>
-    /// Skill1.xaml 的交互逻辑
-    /// </summary>
-    public partial class Skill : UserControl
+    public partial class Skill : UserControl, IRefreshable
     {
         public Skill()
         {
@@ -169,7 +166,7 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
 
                 SetSkillUnitRankInfo(tUSR.Result, Convert.ToInt32(skillId));
 
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
             taskSkillUnitRank.Start();
         }
@@ -227,7 +224,7 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
 
                 SetSkillUnitRankInfo(tUSR.Result, Convert.ToInt32(skillId));
 
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
             taskSkillUnitRank.Start();
         }
@@ -283,7 +280,7 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
 
                 SetSkillUnitRankInfo(tUSR.Result, Convert.ToInt32(skillId));
 
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
             taskSkillUnitRank.Start();
         }
@@ -458,7 +455,7 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
 
                 SetSkillUnitRankInfo(tUSR.Result, Convert.ToInt32(skillId));
 
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
             taskSkillUnitRank.Start();
         }

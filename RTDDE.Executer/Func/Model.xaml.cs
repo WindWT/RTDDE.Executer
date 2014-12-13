@@ -16,10 +16,7 @@ using RTDDE.Provider;
 
 namespace RTDDE.Executer.Func
 {
-    /// <summary>
-    /// Model.xaml 的交互逻辑
-    /// </summary>
-    public partial class Model : UserControl
+    public partial class Model : UserControl, IRefreshable
     {
         public Model()
         {
@@ -38,6 +35,11 @@ namespace RTDDE.Executer.Func
                     }
                 }
             }
+        }
+
+        public void Refresh()
+        {
+            Unload();
         }
         private class ModelInfo
         {
@@ -84,7 +86,7 @@ namespace RTDDE.Executer.Func
                             Directory.Delete(modelInfo.GetModelDirectory(), true);
                             Utility.ShowException(ex.Message);
                         }
-                    }, MainWindow.uiTaskScheduler);
+                    }, MainWindow.UiTaskScheduler);
                 taskInitModelFile.Start();
             }
         }

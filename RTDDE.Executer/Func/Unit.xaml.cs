@@ -11,10 +11,7 @@ using RTDDE.Provider.MasterData;
 
 namespace RTDDE.Executer.Func
 {
-    /// <summary>
-    /// Unit.xaml 的交互逻辑
-    /// </summary>
-    public partial class Unit : UserControl
+    public partial class Unit : UserControl, IRefreshable
     {
         public Unit()
         {
@@ -287,7 +284,7 @@ WHERE uo.id={0}";
                 UnitInfo_present.Text = ui.present.ToString();
                 UnitInfo_material_type.Text = ui.material_type.ToString();
 
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
             taskSkills.Start();
             taskAccessory.Start();

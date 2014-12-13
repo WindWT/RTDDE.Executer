@@ -8,10 +8,7 @@ using RTDDE.Provider;
 
 namespace RTDDE.Executer.Func
 {
-    /// <summary>
-    /// Quest.xaml 的交互逻辑
-    /// </summary>
-    public partial class Quest : UserControl
+    public partial class Quest : UserControl, IRefreshable
     {
         public Quest()
         {
@@ -177,7 +174,7 @@ namespace RTDDE.Executer.Func
                 QuestInfo_present_type.Text = Utility.ParsePresenttype(dr["present_type"].ToString());
                 QuestInfo_present_param.Text = dr["present_param_name"].ToString();
                 QuestInfo_present_param_1.Text = dr["present_param_1"].ToString();
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
             taskParse.Start();
         }

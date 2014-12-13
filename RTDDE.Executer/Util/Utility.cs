@@ -77,7 +77,7 @@ namespace RTDDE.Executer
                     return;
                 }
                 dg.ItemsSource = t.Result.DefaultView;
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
         }
         public static T GetVisualChild<T>(DependencyObject parent) where T : DependencyObject

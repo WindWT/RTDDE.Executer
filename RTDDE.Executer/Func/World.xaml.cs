@@ -7,22 +7,15 @@ using RTDDE.Provider.MasterData;
 
 namespace RTDDE.Executer.Func
 {
-    /// <summary>
-    /// Common.xaml 的交互逻辑
-    /// </summary>
-    public partial class World : UserControl
+    public partial class World : UserControl, IRefreshable
     {
         public World()
         {
             InitializeComponent();
         }
-
-        private void World_Initialized(object sender, EventArgs e)
+        public void Refresh()
         {
-            Task<List<QuestWorldMaster>> task = new Task<List<QuestWorldMaster>>(() =>
-            {
-                return DAL.ToList<QuestWorldMaster>("SELECT * FROM QUEST_WORLD_MASTER ORDER BY ID");
-            });
+            Task<List<QuestWorldMaster>> task = new Task<List<QuestWorldMaster>>(() => DAL.ToAllList<QuestWorldMaster>("id"));
             task.ContinueWith(t =>
             {
                 if (t.Exception != null)
@@ -38,13 +31,19 @@ namespace RTDDE.Executer.Func
                         Content = qwm.name
                     };
                     btn.Click += (s, args) =>
-                        {
-                            Field.LoadField((int)qwm.id);
-                        };
+                    {
+                        Field.LoadField((int)qwm.id);
+                    };
                     WorldButtonStackPanel.Children.Add(btn);
                 }
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
+            Field.Refresh();
+        }
+
+        private void World_Initialized(object sender, EventArgs e)
+        {
+            Refresh();
         }
     }
 }

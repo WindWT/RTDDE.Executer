@@ -11,7 +11,7 @@ namespace RTDDE.Executer.Func
     /// <summary>
     /// Guide.xaml 的交互逻辑
     /// </summary>
-    public partial class Guide : UserControl
+    public partial class Guide : UserControl, IRefreshable
     {
         public Guide()
         {
@@ -76,7 +76,7 @@ namespace RTDDE.Executer.Func
                         GuideTalk.Children.Add(grid);
                     }
                 }
-            }, MainWindow.uiTaskScheduler);
+            }, MainWindow.UiTaskScheduler);
             task.Start();
         }
     }

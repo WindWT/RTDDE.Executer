@@ -44,12 +44,15 @@ namespace RTDDE.Executer
                 new WindowBorder(BorderPosition.Left, left));
             ChangeTab("Quest");
         }
-        public static TaskScheduler uiTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+        public static readonly TaskScheduler UiTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
         private void MenuItem_Checked(object sender, RoutedEventArgs e)
         {
             Button tb = sender as Button;
-            ChangeTab(tb.Name.Replace("MenuItem_", String.Empty));
+            if (tb != null)
+            {
+                ChangeTab(tb.Name.Replace("MenuItem_", String.Empty));
+            }
         }
 
         public void ChangeTab(string tabName)
@@ -87,7 +90,7 @@ namespace RTDDE.Executer
             else
             {
                 StatusBarExceptionMessage.Visibility = Visibility.Visible;
-                _dispatcherTimer = new DispatcherTimer {Interval = new TimeSpan(0, 0, 15)};
+                _dispatcherTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 15) };
                 EventHandler eh = null;
                 eh = (a, b) =>
                 {
@@ -115,19 +118,12 @@ namespace RTDDE.Executer
 
         private void MoveBar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (this.WindowState == System.Windows.WindowState.Normal)
-            {
-                this.WindowState = System.Windows.WindowState.Maximized;
-            }
-            else
-            {
-                this.WindowState = System.Windows.WindowState.Normal;
-            }
+            this.WindowState = this.WindowState == WindowState.Normal ? WindowState.Maximized : WindowState.Normal;
         }
 
         private void MinimizedButton_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = System.Windows.WindowState.Minimized;
+            this.WindowState = WindowState.Minimized;
         }
     }
 }

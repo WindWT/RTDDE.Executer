@@ -14,7 +14,7 @@ namespace RTDDE.Executer.Func
     /// <summary>
     /// Enemy.xaml 的交互逻辑
     /// </summary>
-    public partial class Enemy : UserControl
+    public partial class Enemy : UserControl, IRefreshable
     {
         public Enemy()
         {
@@ -164,7 +164,7 @@ namespace RTDDE.Executer.Func
                 EnemyInfo_shadow.Text = eum.shadow.ToString();
                 EnemyInfo_up.Text = eum.up.ToString();
                 EnemyInfo_atk_ef_id.Text = eum.atk_ef_id.ToString();
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
         }
 

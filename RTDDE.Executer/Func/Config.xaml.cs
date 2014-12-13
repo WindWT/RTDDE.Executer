@@ -66,7 +66,7 @@ namespace RTDDE.Executer.Func
                         ImportAndroidGAMEButton.Content = new Run("MAP Data Successfully Imported.");
                         RefreshControl();
                     }
-                }, MainWindow.uiTaskScheduler);
+                }, MainWindow.UiTaskScheduler);
                 task.Start();
             }
         }
@@ -107,7 +107,7 @@ namespace RTDDE.Executer.Func
                         ImportiOSGAMEButton.Content = new Run("MAP Data Successfully Imported.");
                         RefreshControl();
                     }
-                }, MainWindow.uiTaskScheduler);
+                }, MainWindow.UiTaskScheduler);
                 task.Start();
             }
         }
@@ -169,7 +169,7 @@ namespace RTDDE.Executer.Func
                         ImportMsgPackButton.Content = new Run("MDBS MsgPack Successfully Imported.");
                         RefreshControl();
                     }
-                }, MainWindow.uiTaskScheduler);
+                }, MainWindow.UiTaskScheduler);
                 task.Start();
             }
         }
@@ -196,11 +196,13 @@ namespace RTDDE.Executer.Func
         private void RefreshControl()
         {
             var w = (MainWindow)Application.Current.MainWindow;
-            w.Quest.Refresh();
-            w.QuestArea.Refresh();
-            w.Unit.Refresh();
-            w.Skill.Refresh();
-            w.Guide.Refresh();
+            foreach (UserControl child in w.MainGrid.Children)
+            {
+                if (child is IRefreshable)
+                {
+                    (child as IRefreshable).Refresh();
+                }
+            }
         }
         private void InitSettings()
         {

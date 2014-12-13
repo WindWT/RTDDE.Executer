@@ -139,7 +139,7 @@ namespace RTDDE.Executer.Func
                 ScrollViewer svNew = Utility.GetVisualChild<ScrollViewer>(NewTableDataGrid);
                 svOld.ScrollChanged += new ScrollChangedEventHandler(svOld_ScrollChanged);
                 svNew.ScrollChanged += new ScrollChangedEventHandler(svNew_ScrollChanged);
-            }, MainWindow.uiTaskScheduler);
+            }, MainWindow.UiTaskScheduler);
             task.Start();
             taskDataSet.Start();
         }

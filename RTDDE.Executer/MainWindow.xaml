@@ -132,7 +132,7 @@
                 <RTDDE:Accessory x:Name="Accessory" />
                 <RTDDE:Guide x:Name="Guide" />
                 <RTDDE:Config x:Name="Config" />
-                <RTDDE:Diff x:Name="Diff" />
+                <!--<RTDDE:Diff x:Name="Diff" />-->
                 <RTDDE:Common x:Name="Common" />
                 <RTDDE:About x:Name="About" />
             </Grid>

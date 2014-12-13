@@ -12,11 +12,16 @@ namespace RTDDE.Executer.Func
     /// <summary>
     /// Common.xaml 的交互逻辑
     /// </summary>
-    public partial class Field : UserControl
+    public partial class Field : UserControl, IRefreshable
     {
         public Field()
         {
             InitializeComponent();
+        }
+        public void Refresh()
+        {
+            FieldCanvas.Children.Clear();
+            Area.Refresh();
         }
         private static readonly double SCALE_PARAMETER = 0.5d;
         private static readonly double LEFT_OFFSET = -50d;
@@ -65,7 +70,7 @@ namespace RTDDE.Executer.Func
                         FieldCanvas.Children.Add(lineCanvas);
                     }
                 }
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
         }
         private Canvas GetArrowCanvas(int type = 1, int rotation = 0, byte reverse = 0)

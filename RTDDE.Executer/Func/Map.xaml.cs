@@ -16,11 +16,16 @@ namespace RTDDE.Executer.Func
     /// <summary>
     /// Map.xaml 的交互逻辑
     /// </summary>
-    public partial class Map : UserControl
+    public partial class Map : UserControl, IRefreshable
     {
         public Map()
         {
             InitializeComponent();
+        }
+
+        public void Refresh()
+        {
+            Unload();
         }
         public void Load(string levelID = "-1", int repeat = 1)
         {
@@ -37,7 +42,7 @@ namespace RTDDE.Executer.Func
                     return;
                 }
                 MapMonsterGrid.ItemsSource = t.Result.DefaultView;
-            }, MainWindow.uiTaskScheduler);
+            }, MainWindow.UiTaskScheduler);
 
             Task<MapTable> task = new Task<MapTable>(() =>
             {
@@ -80,9 +85,15 @@ namespace RTDDE.Executer.Func
                 {
                     DrawMap(t.Result);
                 }
-            }, MainWindow.uiTaskScheduler);
+            }, MainWindow.UiTaskScheduler);
             task.Start();
             initMonsterTask.Start();
+        }
+
+        public void Unload()
+        {
+            MapMonsterGrid.ItemsSource = null;
+            ClearMap();
         }
 
         /*按列生成地图
@@ -615,7 +626,7 @@ namespace RTDDE.Executer.Func
                 MapEnemyInfo_p0_01.Text = eum.p0_01.ToString();
                 MapEnemyInfo_p1_01.Text = eum.p1_01.ToString();
 
-            }, MainWindow.uiTaskScheduler);
+            }, MainWindow.UiTaskScheduler);
             task.Start();
         }
 

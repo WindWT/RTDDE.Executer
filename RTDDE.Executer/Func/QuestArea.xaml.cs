@@ -10,7 +10,7 @@ using RTDDE.Provider.MasterData;
 
 namespace RTDDE.Executer.Func
 {
-    public partial class QuestArea : UserControl
+    public partial class QuestArea : UserControl, IRefreshable
     {
         public QuestArea()
         {
@@ -138,7 +138,7 @@ order by point";
                     QuestAreaInfo_reward.Children.Add(new Separator() { Width = 300 });
                 }
 
-            }, MainWindow.uiTaskScheduler);
+            }, MainWindow.UiTaskScheduler);
             task.Start();
             taskQuest.Start();
             taskReward.Start();

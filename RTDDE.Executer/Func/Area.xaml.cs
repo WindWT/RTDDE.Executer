@@ -12,11 +12,15 @@ namespace RTDDE.Executer.Func
     /// <summary>
     /// Common.xaml 的交互逻辑
     /// </summary>
-    public partial class Area : UserControl
+    public partial class Area : UserControl, IRefreshable
     {
         public Area()
         {
             InitializeComponent();
+        }
+        public void Refresh()
+        {
+            AreaCanvas.Children.Clear();
         }
         private static readonly double SCALE_PARAMETER = 0.5d;
         private static readonly double LEFT_OFFSET = -75d;
@@ -66,7 +70,7 @@ namespace RTDDE.Executer.Func
                     }
 
                 }
-            }, MainWindow.uiTaskScheduler);    //this Task work on ui thread
+            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
         }
         private Line GetAreaLine(QuestAreaMaster thisArea, QuestAreaMaster nextArea)
