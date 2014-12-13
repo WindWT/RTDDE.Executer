@@ -18,7 +18,7 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
-        <Grid  Grid.RowSpan="3" Grid.ColumnSpan="3">
+        <Grid Grid.RowSpan="3" Grid.ColumnSpan="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="36" />
                 <RowDefinition Height="*" />
@@ -33,7 +33,7 @@
                              Background="Transparent" BorderThickness="0"/>
                 </StatusBarItem>
             </StatusBar>
-            <Grid Name="TabGrid" Grid.Row="0">
+            <Grid Name="TabGrid" Grid.Row="0" Height="36">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -46,7 +46,7 @@
                     <Rectangle Fill="Transparent"/>
                 </ContentControl>
                 <!--Button-->
-                <ToggleButton Grid.Column="0"  Name="MenuButton" Content="MENU">
+                <ToggleButton Grid.Column="0"  Name="MenuButton" Content="MENU" Style="{StaticResource MenuStyle}">
                     <ToggleButton.Triggers>
                         <EventTrigger RoutedEvent="ToggleButton.Checked">
                             <BeginStoryboard>
