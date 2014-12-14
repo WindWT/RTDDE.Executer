@@ -3,11 +3,14 @@ using IniParser.Model;
 using System;
 using System.IO;
 using System.Text;
+using RTDDE.Provider;
 
 namespace RTDDE.Executer
 {
     public static class Settings
     {
+        #region Settings
+
         public static bool IsShowDropInfo { get; set; }
         public static bool IsShowBoxInfo { get; set; }
         public static bool IsEnableLevelLimiter { get; set; }
@@ -16,57 +19,89 @@ namespace RTDDE.Executer
         {
             get
             {
-                return isUseLocalTime;
+                return _isUseLocalTime;
             }
             set
             {
-                isUseLocalTime = value;
-                Utility.UseLocalTime = isUseLocalTime;
+                _isUseLocalTime = value;
+                Utility.UseLocalTime = _isUseLocalTime;
             }
         }
-        private static bool isUseLocalTime = false;
+        private static bool _isUseLocalTime = false;
         public static string DisunityPath { get; set; }
-        private static IniData data = new IniData();
+        public static string DatabaseName { get; set; }
+        private static string _connectionString;
+        public static string ConnectionString
+        {
+            get { return _connectionString; }
+            set
+            {
+                _connectionString = value;
+                DAL.ConnectionString = _connectionString;
+            }
+        }
+
+        #endregion
+
+        private static readonly IniData Data;
         public static readonly string CONFIG_FILENAME = "config.ini";
+
         static Settings()
         {
             if (File.Exists(CONFIG_FILENAME) == false)
             {
-                data = initConfigFile();
+                Data = InitConfigFile();
             }
             else
             {
                 FileIniDataParser parser = new FileIniDataParser();
-                data = parser.ReadFile(CONFIG_FILENAME);
+                Data = parser.ReadFile(CONFIG_FILENAME);
             }
-            IsShowDropInfo = Convert.ToBoolean(data["Common"]["IsShowDropInfo"]);
-            IsShowBoxInfo = Convert.ToBoolean(data["Common"]["IsShowBoxInfo"]);
-            IsEnableLevelLimiter = Convert.ToBoolean(data["Common"]["IsEnableLevelLimiter"]);
-            IsDefaultLvMax = Convert.ToBoolean(data["Common"]["IsDefaultLvMax"]);
-            IsUseLocalTime = Convert.ToBoolean(data["Common"]["IsUseLocalTime"]);
-            DisunityPath = data["Common"]["DisunityPath"];
+            try
+            {
+                IsShowDropInfo = Convert.ToBoolean(Data["General"]["IsShowDropInfo"]);
+                IsShowBoxInfo = Convert.ToBoolean(Data["General"]["IsShowBoxInfo"]);
+                IsEnableLevelLimiter = Convert.ToBoolean(Data["General"]["IsEnableLevelLimiter"]);
+                IsDefaultLvMax = Convert.ToBoolean(Data["General"]["IsDefaultLvMax"]);
+                IsUseLocalTime = Convert.ToBoolean(Data["General"]["IsUseLocalTime"]);
+                DisunityPath = Data["Model"]["DisunityPath"];
+                DatabaseName = Data["Database"]["DatabaseName"];
+                ConnectionString = Data["Database"]["ConnectionString"];
+            }
+            catch (Exception ex)
+            {
+                //config file read error
+                Data = InitConfigFile();
+                Utility.ShowException("Config ERROR, use default config.");
+            }
         }
         public static void Save()
         {
-            data["Common"]["IsShowDropInfo"] = IsShowDropInfo.ToString();
-            data["Common"]["IsShowBoxInfo"] = IsShowBoxInfo.ToString();
-            data["Common"]["IsEnableLevelLimiter"] = IsEnableLevelLimiter.ToString();
-            data["Common"]["IsDefaultLvMax"] = IsDefaultLvMax.ToString();
-            data["Common"]["IsUseLocalTime"] = IsUseLocalTime.ToString();
-            data["Common"]["DisunityPath"] = DisunityPath;
+            Data["General"]["IsShowDropInfo"] = IsShowDropInfo.ToString();
+            Data["General"]["IsShowBoxInfo"] = IsShowBoxInfo.ToString();
+            Data["General"]["IsEnableLevelLimiter"] = IsEnableLevelLimiter.ToString();
+            Data["General"]["IsDefaultLvMax"] = IsDefaultLvMax.ToString();
+            Data["General"]["IsUseLocalTime"] = IsUseLocalTime.ToString();
+            Data["Model"]["DisunityPath"] = DisunityPath;
+            Data["Database"]["DatabaseName"] = DatabaseName;
+            Data["Database"]["ConnectionString"] = ConnectionString;
             FileIniDataParser parser = new FileIniDataParser();
-            parser.WriteFile(CONFIG_FILENAME, data);
+            parser.WriteFile(CONFIG_FILENAME, Data);
         }
-        private static IniData initConfigFile()
+        private static IniData InitConfigFile()
         {
             IniData initData = new IniData();
-            initData.Sections.AddSection("Common");
-            initData["Common"].AddKey("IsShowDropInfo", "false");
-            initData["Common"].AddKey("IsShowBoxInfo", "true");
-            initData["Common"].AddKey("IsEnableLevelLimiter", "true");
-            initData["Common"].AddKey("IsDefaultLvMax", "true");
-            initData["Common"].AddKey("IsUseLocalTime", "false");
-            initData["Common"].AddKey("DisunityPath", "");
+            initData.Sections.AddSection("General");
+            initData["General"].AddKey("IsShowDropInfo", "false");
+            initData["General"].AddKey("IsShowBoxInfo", "true");
+            initData["General"].AddKey("IsEnableLevelLimiter", "true");
+            initData["General"].AddKey("IsDefaultLvMax", "true");
+            initData["General"].AddKey("IsUseLocalTime", "false");
+            initData.Sections.AddSection("Model");
+            initData["Model"].AddKey("DisunityPath", string.Empty);
+            initData.Sections.AddSection("Database");
+            initData["Database"].AddKey("DatabaseName", "Acquire");
+            initData["Database"].AddKey("ConnectionString", "Data Source=RTD.db");
             FileIniDataParser parser = new FileIniDataParser();
             parser.WriteFile(CONFIG_FILENAME, initData);
             return initData;
