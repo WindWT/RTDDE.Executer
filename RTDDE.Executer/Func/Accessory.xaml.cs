@@ -78,7 +78,7 @@ namespace RTDDE.Executer.Func
                 Accessory_detail.Document = Utility.ParseTextToDocument(dr["detail"].ToString());
                 Accessory_type.Text = Utility.ParseAccessoryType(Convert.ToInt32(dr["type"]));
                 Accessory_attribute.Text = Utility.ParseAttributetype(Convert.ToInt32(dr["attribute"]));
-                Accessory_su_a1.Text = Utility.ParseAttributetype(Convert.ToInt32(dr["su_a1"]));
+                Accessory_su_a1.Text = dr["su_a1"].ToString();  //not sub attribute
                 Accessory_style.Text = Utility.ParseStyletype(Convert.ToInt32(dr["style"]));
                 Accessory_num_01.Text = dr["num_01"].ToString();
                 Accessory_num_02.Text = dr["num_02"].ToString();

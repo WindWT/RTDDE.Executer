@@ -268,7 +268,7 @@ WHERE uo.id={0}";
                     accessory_conv_money.Text = acce.conv_money.ToString();
                     accessory_style.Text = Utility.ParseStyletype(acce.style);
                     accessory_attribute.Text = Utility.ParseAttributetype(acce.attribute);
-                    accessory_su_a1.Text = Utility.ParseAttributetype(acce.su_a1);
+                    accessory_su_a1.Text = acce.su_a1.ToString();  //not sub attribute
                 }
                 //Advanced
                 UnitInfo_ui_id.Text = ui.ui_id.ToString();
