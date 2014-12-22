@@ -27,19 +27,19 @@ namespace RTDDE.Executer
         {
             InitializeComponent();
             UsageTextAndroid.Text =
-@"/data/data/jp.co.acquire.RTD/files/
+@"/data/data/com.joymobee.rtd/files/
 =====>Config-Import MDBS MsgPack
-/data/data/jp.co.acquire.RTD/shared_prefs/GAME.xml
+/data/data/com.joymobee.rtd/shared_prefs/GAME.xml
 =====>Config-Import GAME(MAP Data)
-/data/data/jp.co.acquire.RTD/shared_prefs/com.prime31.UnityPlayerNativeActivity.xml
+/data/data/com.joymobee.rtd/shared_prefs/com.prime31.UnityPlayerNativeActivity.xml
 =====>??????";
-            UsageTextiOS.Text =
-@"[RoDora]/Library/Caches/
-=====>Config-Import MDBS MsgPack
-[RoDora]/Library/Caches/GAME
-=====>Config-Import GAME(MAP Data)
-[RoDora]/Library/Preferences/jp.co.acquire.RTD.plist
-=====>??????";
+//            UsageTextiOS.Text =
+//@"[RoDora]/Library/Caches/
+//=====>Config-Import MDBS MsgPack
+//[RoDora]/Library/Caches/GAME
+//=====>Config-Import GAME(MAP Data)
+//[RoDora]/Library/Preferences/com.joymobee.rtd.plist
+//=====>??????";
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)

@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using RTDDE.Provider;
 using System.Data;
 using System.Threading.Tasks;
+using RTDDE.Provider.Enums;
 
 namespace RTDDE.Executer
 {

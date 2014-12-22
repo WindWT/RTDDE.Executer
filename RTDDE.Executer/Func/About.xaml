@@ -22,6 +22,6 @@
             <!--Lib-->
             
         </StackPanel>
-        <WebBrowser Grid.Column="1" Source="http://smartphone.acquire.co.jp/rtd/app/webview/info/"></WebBrowser>
+        <WebBrowser Grid.Column="1" Source="http://www.joymobee.com/RTD/news/noticeApp.aspx"></WebBrowser>
     </Grid>
 </UserControl>

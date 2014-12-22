@@ -1,4 +1,5 @@
 ﻿using RTDDE.Provider;
+using RTDDE.Provider.Enums;
 using RTDDE.Provider.MasterData;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,7 @@ namespace RTDDE.Executer
             SkillTypeRadio_Party.IsChecked = false;
             SkillTypeRadio_Party.IsChecked = true;
         }
+        [DAL(UseProperty = true)]
         private class SkillUnitRank
         {
             public int id { get; set; }

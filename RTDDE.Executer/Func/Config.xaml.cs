@@ -1,4 +1,5 @@
 ﻿using RTDDE.Provider;
+using RTDDE.Provider.Enums;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -147,7 +148,7 @@ namespace RTDDE.Executer
                             json = MsgBytes.ToJson(sr.BaseStream);
                         }
                         //Dynamic type from enum
-                        Type currentType = Utility.Enum2Type(mdbEnum);
+                        Type currentType = Converter.Enum2Type(mdbEnum);
                         //Generate Method
                         MethodInfo methodToList = typeof(JSON).GetMethod("ToList").MakeGenericMethod(currentType);
                         MethodInfo methodToDB = typeof(DAL).GetMethod("FromList").MakeGenericMethod(currentType);
