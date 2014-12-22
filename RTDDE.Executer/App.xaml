@@ -101,16 +101,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style TargetType="RadioButton">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <ToggleButton IsChecked="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                          Content="{Binding Content, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="RadioButton"/>
         <Style TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
