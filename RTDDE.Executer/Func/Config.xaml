@@ -42,12 +42,6 @@
                             <CheckBox Name="IsUseLocalTimeCheckBox"  >Show local time instead of GMT+9</CheckBox>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Database">
-                        <StackPanel Orientation="Horizontal">
-                            <RadioButton GroupName="Database" Name="DatabaseAcquireRadioButton" Content="Acquire"></RadioButton>
-                            <RadioButton GroupName="Database" Name="DatabaseJoymobeeRadioButton" Content="Joymobee"></RadioButton>
-                        </StackPanel>
-                    </GroupBox>
                     <GroupBox Header="Disunity Path">
                         <DockPanel>
                             <Button DockPanel.Dock="Right" Name="SelectDisunityPathButton" Click="SelectDisunityPathButton_Click">...</Button>

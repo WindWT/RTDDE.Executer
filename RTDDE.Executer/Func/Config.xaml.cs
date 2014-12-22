@@ -181,29 +181,9 @@ namespace RTDDE.Executer.Func
             Settings.IsDefaultLvMax = IsDefaultLvMaxCheckBox.IsChecked.GetValueOrDefault(false);
             Settings.IsUseLocalTime = IsUseLocalTimeCheckBox.IsChecked.GetValueOrDefault(false);
             Settings.DisunityPath = DisunityPathTextBox.Text;
-            string oldConnectionString = Settings.ConnectionString;
-            if (DatabaseAcquireRadioButton.IsChecked == true)
-            {
-                Settings.DatabaseName = "Acquire";
-                Settings.ConnectionString = "Data Source=RTD.db";
-            }
-            else if (DatabaseJoymobeeRadioButton.IsChecked == true)
-            {
-                Settings.DatabaseName = "Joymobee";
-                Settings.ConnectionString = "Data Source=RTD_TW.db";
-            }
-            else
-            {
-                Settings.DatabaseName = "Acquire";
-                Settings.ConnectionString = "Data Source=RTD.db";
-            }
             try
             {
                 Settings.Save();
-                if (string.CompareOrdinal(oldConnectionString, Settings.ConnectionString) != 0)
-                {
-                    RefreshControl();
-                }
                 SaveSettingsButton.Content = new Run("SAVED");
             }
             catch (Exception ex)
@@ -234,18 +214,6 @@ namespace RTDDE.Executer.Func
             IsDefaultLvMaxCheckBox.IsChecked = Settings.IsDefaultLvMax;
             IsUseLocalTimeCheckBox.IsChecked = Settings.IsUseLocalTime;
             DisunityPathTextBox.Text = Settings.DisunityPath;
-            if (string.Compare(Settings.DatabaseName, "Joymobee", StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                DatabaseJoymobeeRadioButton.IsChecked = true;
-            }
-            else if (string.Compare(Settings.DatabaseName, "Acquire", StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                DatabaseAcquireRadioButton.IsChecked = true;
-            }
-            else
-            {
-                DatabaseAcquireRadioButton.IsChecked = true;
-            }
         }
         private void SelectDisunityPathButton_Click(object sender, RoutedEventArgs e)
         {

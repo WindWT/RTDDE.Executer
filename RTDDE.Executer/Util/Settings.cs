@@ -65,7 +65,6 @@ namespace RTDDE.Executer
                 IsDefaultLvMax = Convert.ToBoolean(Data["General"]["IsDefaultLvMax"]);
                 IsUseLocalTime = Convert.ToBoolean(Data["General"]["IsUseLocalTime"]);
                 DisunityPath = Data["Model"]["DisunityPath"];
-                DatabaseName = Data["Database"]["DatabaseName"];
                 ConnectionString = Data["Database"]["ConnectionString"];
             }
             catch (Exception ex)
@@ -83,7 +82,6 @@ namespace RTDDE.Executer
             Data["General"]["IsDefaultLvMax"] = IsDefaultLvMax.ToString();
             Data["General"]["IsUseLocalTime"] = IsUseLocalTime.ToString();
             Data["Model"]["DisunityPath"] = DisunityPath;
-            Data["Database"]["DatabaseName"] = DatabaseName;
             Data["Database"]["ConnectionString"] = ConnectionString;
             FileIniDataParser parser = new FileIniDataParser();
             parser.WriteFile(CONFIG_FILENAME, Data);
@@ -100,7 +98,6 @@ namespace RTDDE.Executer
             initData.Sections.AddSection("Model");
             initData["Model"].AddKey("DisunityPath", string.Empty);
             initData.Sections.AddSection("Database");
-            initData["Database"].AddKey("DatabaseName", "Acquire");
             initData["Database"].AddKey("ConnectionString", "Data Source=RTD.db");
             FileIniDataParser parser = new FileIniDataParser();
             parser.WriteFile(CONFIG_FILENAME, initData);
