@@ -416,7 +416,7 @@
                                     <TextBox Grid.Column="3" Name="panelSkill_num_03"></TextBox>
                                 </Grid>
                             </Grid>
-                            <Grid Name="UnitInfo_LimitSkill">
+                            <!--<Grid Name="UnitInfo_LimitSkill">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="50"></ColumnDefinition>
                                     <ColumnDefinition Width="50"></ColumnDefinition>
@@ -444,7 +444,7 @@
                                         </StackPanel>
                                     </Expander.Content>
                                 </Expander>
-                            </Grid>
+                            </Grid>-->
                         </StackPanel>
                     </Expander.Content>
                 </Expander>

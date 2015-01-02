@@ -37,7 +37,7 @@
                     <CheckBox Name="IsShowBoxInfoCheckBox"   >Show box info</CheckBox>
                     <CheckBox Name="IsEnableLevelLimiterCheckBox"  >Enable level limiter</CheckBox>
                     <CheckBox Name="IsDefaultLvMaxCheckBox"  >Set LV to max by default</CheckBox>
-                    <CheckBox Name="IsUseLocalTimeCheckBox"  >Show local time instead of GMT+9</CheckBox>
+                    <CheckBox Name="IsUseLocalTimeCheckBox" IsChecked="False" IsEnabled="False">Show local time instead of GMT+9</CheckBox>
                     <DockPanel>
                         <TextBlock DockPanel.Dock="Left">Disunity Path</TextBlock>
                         <Button DockPanel.Dock="Right" Name="SelectDisunityPathButton" Click="SelectDisunityPathButton_Click">...</Button>

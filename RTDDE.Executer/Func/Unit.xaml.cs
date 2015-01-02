@@ -257,7 +257,7 @@ WHERE uo.id={0}";
                     partySkill_BindData(t.Result.partySkill);
                     activeSkill_BindData(t.Result.activeSkill);
                     panelSkill_BindData(t.Result.panelSkill);
-                    limitSkill_BindData(t.Result.limitSkill, t.Result.limitActiveSkill);
+                    //limitSkill_BindData(t.Result.limitSkill, t.Result.limitActiveSkill);
                 }
                 //Accessory
                 Task.WaitAll(taskAccessory);
@@ -402,148 +402,148 @@ WHERE uo.id={0}";
             panelSkill_phase.Text = ((SkillPhase)skill.phase).ToString();
             panelSkill_duplication.Text = skill.duplication == 1 ? true.ToString() : skill.duplication == 2 ? false.ToString() : String.Empty;
         }
-        private void limitSkill_BindData(LimitSkillMaster skill, ActiveSkillMaster[] laSkill)
-        {
-            if (skill == null || skill.id == 0)
-            {
-                UnitInfo_LimitSkill.Visibility = Visibility.Collapsed;
-                return;
-            }
-            UnitInfo_LimitSkill.Visibility = Visibility.Visible;
+        //private void limitSkill_BindData(LimitSkillMaster skill, ActiveSkillMaster[] laSkill)
+        //{
+        //    if (skill == null || skill.id == 0)
+        //    {
+        //        UnitInfo_LimitSkill.Visibility = Visibility.Collapsed;
+        //        return;
+        //    }
+        //    UnitInfo_LimitSkill.Visibility = Visibility.Visible;
 
-            limitSkill_id.Text = skill.id.ToString();
-            limitSkill_name.Text = skill.name;
-            limitSkill_general_text.Document = Utility.ParseTextToDocument(skill.general_text);
-            limitSkill_coefficient.Text = skill.coefficient.ToString();
+        //    limitSkill_id.Text = skill.id.ToString();
+        //    limitSkill_name.Text = skill.name;
+        //    limitSkill_general_text.Document = Utility.ParseTextToDocument(skill.general_text);
+        //    limitSkill_coefficient.Text = skill.coefficient.ToString();
 
-            UnitInfo_LimitSkill_AS.Children.Clear();
-            for (int i = 0; i < 3; i++)
-            {
-                ActiveSkillMaster askill = laSkill[i];
-                Grid grid = new Grid();
-                if (askill.id == 0)
-                {
-                    continue;
-                }
-                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
-                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
-                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
-                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
-                grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
-                grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
-                grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
-                grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
-                grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
-                TextBlock tblTitle = new TextBlock() { FontWeight = FontWeights.Bold, Text = string.Format("L_AS{0}", i.ToString()) };
-                tblTitle.SetValue(Grid.ColumnProperty, 0);
-                tblTitle.SetValue(Grid.RowProperty, 0);
-                grid.Children.Add(tblTitle);
-                TextBox tbId = new TextBox() { Text = askill.id.ToString() };
-                tbId.SetValue(Grid.ColumnProperty, 1);
-                tbId.SetValue(Grid.RowProperty, 0);
-                grid.Children.Add(tbId);
-                TextBox tbName = new TextBox() { Text = askill.name };
-                tbName.SetValue(Grid.ColumnProperty, 2);
-                tbName.SetValue(Grid.RowProperty, 0);
-                tbName.SetValue(Grid.ColumnSpanProperty, 2);
-                grid.Children.Add(tbName);
-                RichTextBox rtb = new RichTextBox() { Document = Utility.ParseTextToDocument(askill.text) };
-                rtb.SetValue(Grid.ColumnProperty, 0);
-                rtb.SetValue(Grid.RowProperty, 1);
-                rtb.SetValue(Grid.ColumnSpanProperty, 4);
-                grid.Children.Add(rtb);
-                TextBlock tblType = new TextBlock() { Text = "type" };
-                tblType.SetValue(Grid.ColumnProperty, 0);
-                tblType.SetValue(Grid.RowProperty, 2);
-                grid.Children.Add(tblType);
-                TextBox tbTypeId = new TextBox() { Text = askill.type.ToString() };
-                tbTypeId.SetValue(Grid.ColumnProperty, 1);
-                tbTypeId.SetValue(Grid.RowProperty, 2);
-                grid.Children.Add(tbTypeId);
-                TextBox tbType = new TextBox() { Text = Utility.ParseSkillType((ActiveSkillType)askill.type) };
-                tbType.SetValue(Grid.ColumnProperty, 2);
-                tbType.SetValue(Grid.RowProperty, 2);
-                tbType.SetValue(Grid.ColumnSpanProperty, 2);
-                grid.Children.Add(tbType);
-                TextBlock tblAttr = new TextBlock() { Text = "attribute" };
-                tblAttr.SetValue(Grid.ColumnProperty, 0);
-                tblAttr.SetValue(Grid.RowProperty, 3);
-                grid.Children.Add(tblAttr);
-                TextBox tbAttr = new TextBox() { Text = Utility.ParseAttributetype(askill.attribute) };
-                tbAttr.SetValue(Grid.ColumnProperty, 1);
-                tbAttr.SetValue(Grid.RowProperty, 3);
-                grid.Children.Add(tbAttr);
-                TextBox tbSubAttr = new TextBox() { Text = Utility.ParseAttributetype(askill.sub_attr) };
-                tbSubAttr.SetValue(Grid.ColumnProperty, 2);
-                tbSubAttr.SetValue(Grid.RowProperty, 3);
-                grid.Children.Add(tbSubAttr);
-                //gridStyle
-                Grid gridStyle = new Grid();
-                gridStyle.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
-                gridStyle.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                TextBlock tblStyle = new TextBlock() { Text = "style" };
-                tblStyle.SetValue(Grid.ColumnProperty, 0);
-                gridStyle.Children.Add(tblStyle);
-                TextBox tbStyle = new TextBox() { Text = Utility.ParseStyletype(askill.style) };
-                tbStyle.SetValue(Grid.ColumnProperty, 1);
-                gridStyle.Children.Add(tbStyle);
-                gridStyle.SetValue(Grid.ColumnProperty, 3);
-                gridStyle.SetValue(Grid.RowProperty, 3);
-                grid.Children.Add(gridStyle);
-                //gridInfo
-                Grid gridInfo = new Grid();
-                gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                TextBlock tblPhase = new TextBlock() { Text = "phase" };
-                tblPhase.SetValue(Grid.ColumnProperty, 0);
-                gridInfo.Children.Add(tblPhase);
-                TextBox tbPhase = new TextBox() { Text = ((SkillPhase)askill.phase).ToString() };
-                tbPhase.SetValue(Grid.ColumnProperty, 1);
-                gridInfo.Children.Add(tbPhase);
-                TextBlock tblSoul = new TextBlock() { Text = "soul" };
-                tblSoul.SetValue(Grid.ColumnProperty, 2);
-                gridInfo.Children.Add(tblSoul);
-                TextBox tbSoul = new TextBox() { Text = askill.soul.ToString() };
-                tbSoul.SetValue(Grid.ColumnProperty, 3);
-                gridInfo.Children.Add(tbSoul);
-                TextBlock tblLimitNum = new TextBlock() { Text = "limit_num" };
-                tblLimitNum.SetValue(Grid.ColumnProperty, 4);
-                gridInfo.Children.Add(tblLimitNum);
-                TextBox tbLimitNum = new TextBox() { Text = askill.limit_num.ToString() };
-                tbLimitNum.SetValue(Grid.ColumnProperty, 5);
-                gridInfo.Children.Add(tbLimitNum);
-                gridInfo.SetValue(Grid.ColumnSpanProperty, 4);
-                gridInfo.SetValue(Grid.RowProperty, 4);
-                grid.Children.Add(gridInfo);
-                //gridNum
-                Grid gridNum = new Grid();
-                gridNum.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                gridNum.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                gridNum.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                gridNum.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                TextBox tbNum = new TextBox() { Text = askill.num.ToString() };
-                tbNum.SetValue(Grid.ColumnProperty, 0);
-                gridNum.Children.Add(tbNum);
-                TextBox tbNum01 = new TextBox() { Text = askill.num_01.ToString() };
-                tbNum01.SetValue(Grid.ColumnProperty, 1);
-                gridNum.Children.Add(tbNum01);
-                TextBox tbNum02 = new TextBox() { Text = askill.num_02.ToString() };
-                tbNum02.SetValue(Grid.ColumnProperty, 2);
-                gridNum.Children.Add(tbNum02);
-                TextBox tbNum03 = new TextBox() { Text = askill.num_03.ToString() };
-                tbNum03.SetValue(Grid.ColumnProperty, 3);
-                gridNum.Children.Add(tbNum03);
-                gridNum.SetValue(Grid.ColumnSpanProperty, 4);
-                gridNum.SetValue(Grid.RowProperty, 5);
-                grid.Children.Add(gridNum);
-                UnitInfo_LimitSkill_AS.Children.Add(grid);
-            }
-        }
+        //    UnitInfo_LimitSkill_AS.Children.Clear();
+        //    for (int i = 0; i < 3; i++)
+        //    {
+        //        ActiveSkillMaster askill = laSkill[i];
+        //        Grid grid = new Grid();
+        //        if (askill.id == 0)
+        //        {
+        //            continue;
+        //        }
+        //        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+        //        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+        //        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+        //        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+        //        grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+        //        grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+        //        grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+        //        grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+        //        grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+        //        grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+        //        TextBlock tblTitle = new TextBlock() { FontWeight = FontWeights.Bold, Text = string.Format("L_AS{0}", i.ToString()) };
+        //        tblTitle.SetValue(Grid.ColumnProperty, 0);
+        //        tblTitle.SetValue(Grid.RowProperty, 0);
+        //        grid.Children.Add(tblTitle);
+        //        TextBox tbId = new TextBox() { Text = askill.id.ToString() };
+        //        tbId.SetValue(Grid.ColumnProperty, 1);
+        //        tbId.SetValue(Grid.RowProperty, 0);
+        //        grid.Children.Add(tbId);
+        //        TextBox tbName = new TextBox() { Text = askill.name };
+        //        tbName.SetValue(Grid.ColumnProperty, 2);
+        //        tbName.SetValue(Grid.RowProperty, 0);
+        //        tbName.SetValue(Grid.ColumnSpanProperty, 2);
+        //        grid.Children.Add(tbName);
+        //        RichTextBox rtb = new RichTextBox() { Document = Utility.ParseTextToDocument(askill.text) };
+        //        rtb.SetValue(Grid.ColumnProperty, 0);
+        //        rtb.SetValue(Grid.RowProperty, 1);
+        //        rtb.SetValue(Grid.ColumnSpanProperty, 4);
+        //        grid.Children.Add(rtb);
+        //        TextBlock tblType = new TextBlock() { Text = "type" };
+        //        tblType.SetValue(Grid.ColumnProperty, 0);
+        //        tblType.SetValue(Grid.RowProperty, 2);
+        //        grid.Children.Add(tblType);
+        //        TextBox tbTypeId = new TextBox() { Text = askill.type.ToString() };
+        //        tbTypeId.SetValue(Grid.ColumnProperty, 1);
+        //        tbTypeId.SetValue(Grid.RowProperty, 2);
+        //        grid.Children.Add(tbTypeId);
+        //        TextBox tbType = new TextBox() { Text = Utility.ParseSkillType((ActiveSkillType)askill.type) };
+        //        tbType.SetValue(Grid.ColumnProperty, 2);
+        //        tbType.SetValue(Grid.RowProperty, 2);
+        //        tbType.SetValue(Grid.ColumnSpanProperty, 2);
+        //        grid.Children.Add(tbType);
+        //        TextBlock tblAttr = new TextBlock() { Text = "attribute" };
+        //        tblAttr.SetValue(Grid.ColumnProperty, 0);
+        //        tblAttr.SetValue(Grid.RowProperty, 3);
+        //        grid.Children.Add(tblAttr);
+        //        TextBox tbAttr = new TextBox() { Text = Utility.ParseAttributetype(askill.attribute) };
+        //        tbAttr.SetValue(Grid.ColumnProperty, 1);
+        //        tbAttr.SetValue(Grid.RowProperty, 3);
+        //        grid.Children.Add(tbAttr);
+        //        TextBox tbSubAttr = new TextBox() { Text = Utility.ParseAttributetype(askill.sub_attr) };
+        //        tbSubAttr.SetValue(Grid.ColumnProperty, 2);
+        //        tbSubAttr.SetValue(Grid.RowProperty, 3);
+        //        grid.Children.Add(tbSubAttr);
+        //        //gridStyle
+        //        Grid gridStyle = new Grid();
+        //        gridStyle.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+        //        gridStyle.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+        //        TextBlock tblStyle = new TextBlock() { Text = "style" };
+        //        tblStyle.SetValue(Grid.ColumnProperty, 0);
+        //        gridStyle.Children.Add(tblStyle);
+        //        TextBox tbStyle = new TextBox() { Text = Utility.ParseStyletype(askill.style) };
+        //        tbStyle.SetValue(Grid.ColumnProperty, 1);
+        //        gridStyle.Children.Add(tbStyle);
+        //        gridStyle.SetValue(Grid.ColumnProperty, 3);
+        //        gridStyle.SetValue(Grid.RowProperty, 3);
+        //        grid.Children.Add(gridStyle);
+        //        //gridInfo
+        //        Grid gridInfo = new Grid();
+        //        gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+        //        gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+        //        gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+        //        gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+        //        gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+        //        gridInfo.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+        //        TextBlock tblPhase = new TextBlock() { Text = "phase" };
+        //        tblPhase.SetValue(Grid.ColumnProperty, 0);
+        //        gridInfo.Children.Add(tblPhase);
+        //        TextBox tbPhase = new TextBox() { Text = ((SkillPhase)askill.phase).ToString() };
+        //        tbPhase.SetValue(Grid.ColumnProperty, 1);
+        //        gridInfo.Children.Add(tbPhase);
+        //        TextBlock tblSoul = new TextBlock() { Text = "soul" };
+        //        tblSoul.SetValue(Grid.ColumnProperty, 2);
+        //        gridInfo.Children.Add(tblSoul);
+        //        TextBox tbSoul = new TextBox() { Text = askill.soul.ToString() };
+        //        tbSoul.SetValue(Grid.ColumnProperty, 3);
+        //        gridInfo.Children.Add(tbSoul);
+        //        TextBlock tblLimitNum = new TextBlock() { Text = "limit_num" };
+        //        tblLimitNum.SetValue(Grid.ColumnProperty, 4);
+        //        gridInfo.Children.Add(tblLimitNum);
+        //        TextBox tbLimitNum = new TextBox() { Text = askill.limit_num.ToString() };
+        //        tbLimitNum.SetValue(Grid.ColumnProperty, 5);
+        //        gridInfo.Children.Add(tbLimitNum);
+        //        gridInfo.SetValue(Grid.ColumnSpanProperty, 4);
+        //        gridInfo.SetValue(Grid.RowProperty, 4);
+        //        grid.Children.Add(gridInfo);
+        //        //gridNum
+        //        Grid gridNum = new Grid();
+        //        gridNum.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+        //        gridNum.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+        //        gridNum.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+        //        gridNum.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+        //        TextBox tbNum = new TextBox() { Text = askill.num.ToString() };
+        //        tbNum.SetValue(Grid.ColumnProperty, 0);
+        //        gridNum.Children.Add(tbNum);
+        //        TextBox tbNum01 = new TextBox() { Text = askill.num_01.ToString() };
+        //        tbNum01.SetValue(Grid.ColumnProperty, 1);
+        //        gridNum.Children.Add(tbNum01);
+        //        TextBox tbNum02 = new TextBox() { Text = askill.num_02.ToString() };
+        //        tbNum02.SetValue(Grid.ColumnProperty, 2);
+        //        gridNum.Children.Add(tbNum02);
+        //        TextBox tbNum03 = new TextBox() { Text = askill.num_03.ToString() };
+        //        tbNum03.SetValue(Grid.ColumnProperty, 3);
+        //        gridNum.Children.Add(tbNum03);
+        //        gridNum.SetValue(Grid.ColumnSpanProperty, 4);
+        //        gridNum.SetValue(Grid.RowProperty, 5);
+        //        grid.Children.Add(gridNum);
+        //        UnitInfo_LimitSkill_AS.Children.Add(grid);
+        //    }
+        //}
 
         private void UnitSearchClear_Click(object sender, RoutedEventArgs e)
         {

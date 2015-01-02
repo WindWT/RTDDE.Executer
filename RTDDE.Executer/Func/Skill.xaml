@@ -25,7 +25,7 @@
                 <RadioButton Grid.Column="0" GroupName="SkillType" Content="Party" Name="SkillTypeRadio_Party" Checked="SkillTypeRadio_Party_Checked"></RadioButton>
                 <RadioButton Grid.Column="1" GroupName="SkillType" Content="Active" Name="SkillTypeRadio_Active" Checked="SkillTypeRadio_Active_Checked"></RadioButton>
                 <RadioButton Grid.Column="2" GroupName="SkillType" Content="Panel" Name="SkillTypeRadio_Panel" Checked="SkillTypeRadio_Panel_Checked"></RadioButton>
-                <RadioButton Grid.Column="3" GroupName="SkillType" Content="Limit" Name="SkillTypeRadio_Limit" Checked="SkillTypeRadio_Limit_Checked"></RadioButton>
+                <RadioButton Grid.Column="3" GroupName="SkillType" Content="Limit" Name="SkillTypeRadio_Limit" Checked="SkillTypeRadio_Limit_Checked" IsEnabled="False"></RadioButton>
             </Grid>
             <Separator/>
             <Expander BorderThickness="0" Name="SkillSearchExpander" IsExpanded="False">

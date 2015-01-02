@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
-using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -17,34 +16,36 @@ namespace RTDDE.Executer
 {
     public sealed class Utility : RTDDE.Provider.Utility
     {
+        private static readonly Regex RegColor = new Regex(@"(\[[a-zA-Z0-9]{6}\])", RegexOptions.Compiled);
         public static FlowDocument ParseTextToDocument(string text)
         {
             var flowDoc = new FlowDocument();
             //string[] textParas = text.Split(new string[] { "\\n" }, StringSplitOptions.None);
             text = text.Replace("\n", @"\n");   //fix split issue
-            Paragraph pr = new Paragraph(); //prprpr
-            pr.Margin = new Thickness(0);
-            Regex rSplit = new Regex(@"(\[[a-zA-Z0-9]{6}\])(.*?)(\[-\])");
-            Regex rColor = new Regex(@"(\[[a-zA-Z0-9]{6}\])");
-            var textParts = rSplit.Split(text);
-            var nowFontColor = Brushes.Black;
+            Paragraph pr = new Paragraph { Margin = new Thickness(0) }; //prprpr
+            var textParts = RegColor.Split(text);
+            var currentTextColor = Brushes.Black;
             foreach (string textPart in textParts)
             {
-                Span span = new Span();
-                if (rColor.Match(textPart).Success)
+                if (RegColor.Match(textPart).Success)
                 {
                     string color = textPart.Trim(new char[] { '[', ']' });
-                    nowFontColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#" + color));
-                    continue;
+                    var convertFromString = ColorConverter.ConvertFromString("#" + color);
+                    if (convertFromString != null)
+                    {
+                        currentTextColor = new SolidColorBrush((Color)convertFromString);
+                    }
                 }
-                if (textPart == "[-]")
+                else
                 {
-                    nowFontColor = Brushes.Black;
-                    continue;
+                    foreach (string part in textPart.Split(new[] { @"[-]" }, StringSplitOptions.None))
+                    {
+                        Span span = new Span {Foreground = currentTextColor};
+                        span.Inlines.Add(new Run(part.Replace(@"\n", "\n")));
+                        pr.Inlines.Add(span);
+                        currentTextColor = Brushes.Black;
+                    }
                 }
-                span.Inlines.Add(new Run(textPart.Replace(@"\n", "\n")));
-                span.Foreground = nowFontColor;
-                pr.Inlines.Add(span);
             }
             flowDoc.Blocks.Add(pr);
             return flowDoc;
