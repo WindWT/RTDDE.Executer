@@ -87,9 +87,6 @@
     <Reference Include="HelixToolkit.Wpf">
       <HintPath>..\packages\HelixToolkit.Wpf.2014.2.425\lib\net40\HelixToolkit.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="INIFileParser">
-      <HintPath>..\packages\ini-parser.2.1.1\lib\INIFileParser.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationUI, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="ReachFramework" />
     <Reference Include="RTDDE.Provider">
@@ -179,6 +176,7 @@
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\IRefreshable.cs" />
+    <Compile Include="Util\ConfigData.cs" />
     <Compile Include="Util\Settings.cs" />
     <Compile Include="Util\Skills.cs" />
     <Compile Include="Util\UnitInfo.cs" />
@@ -268,11 +266,7 @@
       <SubType>Code</SubType>
     </Compile>
     <AppDesigner Include="Properties\" />
-    <None Include="LICENSE" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

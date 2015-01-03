@@ -175,12 +175,12 @@ namespace RTDDE.Executer.Func
         }
         private void SaveSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            Settings.IsShowDropInfo = IsShowDropInfoCheckBox.IsChecked.GetValueOrDefault(false);
-            Settings.IsShowBoxInfo = IsShowBoxInfoCheckBox.IsChecked.GetValueOrDefault(false);
-            Settings.IsEnableLevelLimiter = IsEnableLevelLimiterCheckBox.IsChecked.GetValueOrDefault(false);
-            Settings.IsDefaultLvMax = IsDefaultLvMaxCheckBox.IsChecked.GetValueOrDefault(false);
-            Settings.IsUseLocalTime = IsUseLocalTimeCheckBox.IsChecked.GetValueOrDefault(false);
-            Settings.DisunityPath = DisunityPathTextBox.Text;
+            Settings.Config.General.IsShowDropInfo = IsShowDropInfoCheckBox.IsChecked.GetValueOrDefault(false);
+            Settings.Config.General.IsShowBoxInfo = IsShowBoxInfoCheckBox.IsChecked.GetValueOrDefault(false);
+            Settings.Config.General.IsEnableLevelLimiter = IsEnableLevelLimiterCheckBox.IsChecked.GetValueOrDefault(false);
+            Settings.Config.General.IsDefaultLvMax = IsDefaultLvMaxCheckBox.IsChecked.GetValueOrDefault(false);
+            Settings.Config.General.IsUseLocalTime = IsUseLocalTimeCheckBox.IsChecked.GetValueOrDefault(false);
+            Settings.Config.Model.DisunityPath = DisunityPathTextBox.Text;
             try
             {
                 Settings.Save();
@@ -208,12 +208,12 @@ namespace RTDDE.Executer.Func
         {
             //fake for designer
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this)) return;
-            IsShowDropInfoCheckBox.IsChecked = Settings.IsShowDropInfo;
-            IsShowBoxInfoCheckBox.IsChecked = Settings.IsShowBoxInfo;
-            IsEnableLevelLimiterCheckBox.IsChecked = Settings.IsEnableLevelLimiter;
-            IsDefaultLvMaxCheckBox.IsChecked = Settings.IsDefaultLvMax;
-            IsUseLocalTimeCheckBox.IsChecked = Settings.IsUseLocalTime;
-            DisunityPathTextBox.Text = Settings.DisunityPath;
+            IsShowDropInfoCheckBox.IsChecked = Settings.Config.General.IsShowDropInfo;
+            IsShowBoxInfoCheckBox.IsChecked = Settings.Config.General.IsShowBoxInfo;
+            IsEnableLevelLimiterCheckBox.IsChecked = Settings.Config.General.IsEnableLevelLimiter;
+            IsDefaultLvMaxCheckBox.IsChecked = Settings.Config.General.IsDefaultLvMax;
+            IsUseLocalTimeCheckBox.IsChecked = Settings.Config.General.IsUseLocalTime;
+            DisunityPathTextBox.Text = Settings.Config.Model.DisunityPath;
         }
         private void SelectDisunityPathButton_Click(object sender, RoutedEventArgs e)
         {

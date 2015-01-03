@@ -32,7 +32,7 @@ namespace RTDDE.Executer
     {
         public MainWindow()
         {
-            DAL.ConnectionString = Settings.ConnectionString;
+            DAL.ConnectionString = Settings.Config.Database.ConnectionString;
             InitializeComponent();
             new WindowResizer(this,
                 new WindowBorder(BorderPosition.TopLeft, topLeft),

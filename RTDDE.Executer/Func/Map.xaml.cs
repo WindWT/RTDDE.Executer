@@ -61,7 +61,7 @@ namespace RTDDE.Executer.Func
                 Convert.ToInt32(levelData["start_y"]),
                 Convert.ToInt32(levelData["distance"]),
                 repeat
-                ), initMonsterTask.Result), Settings.IsShowDropInfo ? MapData.GetEnemyInfo(levelID) : null);
+                ), initMonsterTask.Result), Settings.Config.General.IsShowDropInfo ? MapData.GetEnemyInfo(levelID) : null);
             }
             );
             task.ContinueWith(t =>
@@ -282,7 +282,7 @@ namespace RTDDE.Executer.Func
                         var num2 = 31 & cellDataInt;
                         if (num2 >= 24)
                         {
-                            if (Settings.IsShowBoxInfo)
+                            if (Settings.Config.General.IsShowBoxInfo)
                             {
                                 switch (num2 - 23)
                                 {
@@ -535,7 +535,7 @@ namespace RTDDE.Executer.Func
             MapEnemyInfo_lv_max.Text = mmInfoRow["lv_max"].ToString();
             MapEnemyInfo_drop_id.Text = mmInfoRow["drop_id"].ToString();
 
-            if (Settings.IsDefaultLvMax)
+            if (Settings.Config.General.IsDefaultLvMax)
             {
                 MapEnemyInfo_lv.Text = "99";
             }
@@ -557,7 +557,7 @@ namespace RTDDE.Executer.Func
                 Regex r = new Regex("[^0-9]");
                 if (r.Match(MapEnemyInfo_lv.Text).Success)
                 {
-                    if (Settings.IsDefaultLvMax)
+                    if (Settings.Config.General.IsDefaultLvMax)
                     {
                         MapEnemyInfo_lv.Text = "99";
                         return;
@@ -610,7 +610,7 @@ namespace RTDDE.Executer.Func
 
                 int lv = Convert.ToInt32(MapEnemyInfo_lv.Text);
                 int lv_max = Convert.ToInt32(MapEnemyInfo_lv_max.Text);
-                if (Settings.IsEnableLevelLimiter && (lv > lv_max))
+                if (Settings.Config.General.IsEnableLevelLimiter && (lv > lv_max))
                 {
                     lv = lv_max;
                     MapEnemyInfo_lv.Text = lv.ToString("0");

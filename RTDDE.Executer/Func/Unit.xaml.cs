@@ -77,7 +77,7 @@ namespace RTDDE.Executer.Func
             string unitid = ((DataRowView)UnitDataGrid.SelectedItem).Row["id"].ToString();
             UnitInfo_id.Text = unitid;
 
-            if (Settings.IsDefaultLvMax)
+            if (Settings.Config.General.IsDefaultLvMax)
             {
                 UnitInfo_lv.Text = "99";
             }
@@ -97,7 +97,7 @@ namespace RTDDE.Executer.Func
             Regex r = new Regex("[^0-9]");
             if (r.Match(UnitInfo_lv.Text).Success)
             {
-                if (Settings.IsDefaultLvMax)
+                if (Settings.Config.General.IsDefaultLvMax)
                 {
                     UnitInfo_lv.Text = "99";     //This will trigger itself again
                     return;
@@ -135,7 +135,6 @@ IFNULL((SELECT g_id FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_dark=ui
 IFNULL((SELECT NAME FROM UNIT_MASTER as ui WHERE uo.ultimate_rev_unit_id_dark=ui.id),'') as ultimate_rev_unit_name_dark
 from unit_master as uo
 WHERE uo.id={0}";
-                //return DAL.GetDataTable(String.Format(sql, unitid));
                 return DAL.ToSingle<UnitInfo>(String.Format(sql, unitid));
             });
             Task<Skills> taskSkills = new Task<Skills>(() =>
@@ -148,7 +147,7 @@ WHERE uo.id={0}";
                 UnitInfo ui = task.Result;
 
                 double maxlevel = ui.lv_max;
-                if (Settings.IsEnableLevelLimiter && (thislevel > maxlevel))
+                if (Settings.Config.General.IsEnableLevelLimiter && (thislevel > maxlevel))
                 {
                     thislevel = maxlevel;
                 }

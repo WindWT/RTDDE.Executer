@@ -112,7 +112,7 @@ namespace RTDDE.Executer.Func
             {
                 return fileList;
             }
-            else if (string.IsNullOrEmpty(Settings.DisunityPath))
+            else if (string.IsNullOrEmpty(Settings.Config.Model.DisunityPath))
             {
                 //disable unpack & download if no disunity
                 return fileList;
@@ -145,7 +145,7 @@ namespace RTDDE.Executer.Func
             {
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.FileName = Settings.DisunityPath;
+                p.StartInfo.FileName = Settings.Config.Model.DisunityPath;
                 p.StartInfo.Arguments = string.Format("-f texture2d,mesh extract {0}", info.GetUnity3DFilePath());
                 p.Start();
                 p.WaitForExit();
