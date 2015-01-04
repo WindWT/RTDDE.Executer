@@ -210,6 +210,12 @@ namespace RTDDE.Executer.Func
             MapDataGrid.DataContext = mapTable;
         }*/
 
+        #region brush
+        private static readonly Brush FireBrush = new SolidColorBrush(Color.FromScRgb(1f, 0.9f, 0.4f, 0.3f));
+        private static readonly Brush WaterBrush = new SolidColorBrush(Color.FromScRgb(1f, 0.4f, 0.89f, 0.9f));
+        private static readonly Brush LightBrush = new SolidColorBrush(Color.FromScRgb(1f, 0.9f, 0.9f, 0.3f));
+        private static readonly Brush DarkBrush = new SolidColorBrush(Color.FromScRgb(1f, 0.76f, 0.58f, 0.9f));
+        #endregion
         private MapTable InitMapData(string mapData, int w, int h, int x, int y, int distance, int repeat)
         {
             if (repeat < 1)
@@ -242,26 +248,25 @@ namespace RTDDE.Executer.Func
                                 //AttributeTypeLight,
                                 case 1:
                                     {
-                                        mapCell.Background = Brushes.Yellow;
+                                        mapCell.Background = LightBrush;
                                         break;
                                     }
                                 //AttributeTypeDark,
                                 case 2:
                                     {
-                                        mapCell.Background = Brushes.Purple;
-                                        mapCell.Foreground = Brushes.White;
+                                        mapCell.Background = DarkBrush;
                                         break;
                                     }
                                 //AttributeTypeFire = 4,
                                 case 4:
                                     {
-                                        mapCell.Background = Brushes.Pink;
+                                        mapCell.Background = FireBrush;
                                         break;
                                     }
                                 //AttributeTypeWater = 8,
                                 case 8:
                                     {
-                                        mapCell.Background = Brushes.Aqua;
+                                        mapCell.Background = WaterBrush;
                                         break;
                                     }
                                 //AttributeTypeBossStart = 16,
@@ -387,10 +392,9 @@ namespace RTDDE.Executer.Func
                     {
                         Fill = new LinearGradientBrush()
                         {
-                            StartPoint = new Point(0, 0),
-                            EndPoint = new Point(5, 5),
-                            MappingMode = BrushMappingMode.Absolute,
-                            SpreadMethod = GradientSpreadMethod.Repeat,
+                            StartPoint = new Point(0, 1),
+                            EndPoint = new Point(1, 0),
+                            MappingMode = BrushMappingMode.RelativeToBoundingBox,
                             GradientStops = new GradientStopCollection()
                             {
                                 new GradientStop(c.OverlayColor,0.25),
@@ -414,14 +418,14 @@ namespace RTDDE.Executer.Func
                     b.SetValue(Grid.ColumnProperty, col);
 
                     StringBuilder sb = new StringBuilder();
-                    if (c.drop_unit_id > 0)
-                    {
-                        sb.AppendLine("掉落:" + Utility.ParseUnitName(c.drop_unit_id.ToString()));
-                    }
-                    if (c.drop_unit_id >= 0)
+                    if (map.HasDropInfo)
                     {
                         sb.AppendLine("觉醒pt:" + c.add_attribute_exp);
                         sb.AppendLine("exp:" + c.unit_exp);
+                        if (c.drop_unit != null)
+                        {
+                            sb.AppendLine(string.Format("掉落:[{0}]{1}", c.drop_unit.g_id, c.drop_unit.name));
+                        }
                     }
                     if (c.drop_id != 0)
                     {
@@ -703,6 +707,7 @@ namespace RTDDE.Executer.Func
             {
                 return map;
             }
+            map.HasDropInfo = true;
             foreach (MapRow r in map.Rows)
             {
                 foreach (MapCell c in r.Cells)
@@ -710,10 +715,15 @@ namespace RTDDE.Executer.Func
                     EnemyInfo ei = DropData.Find(o => { return o.x == c.x && o.y == c.y && !(o.x == 0 && o.y == 0); });
                     if (ei != null)
                     {
-                        c.drop_unit_id = ei.drop_unit_id;
+                        c.drop_unit =
+                            DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + ei.drop_unit_id.ToString());
                         c.add_attribute_exp = ei.add_attribute_exp;
                         c.unit_exp = ei.unit_exp;
-                        switch (ei.drop_unit_id)
+                        if (c.drop_unit == null)
+                        {
+                            continue;
+                        }
+                        switch (c.drop_unit.id)
                         {
                             case 15004:
                             case 15005:
@@ -753,7 +763,7 @@ namespace RTDDE.Executer.Func
             }
             MapCell lastCell = map.Rows.Find(o => { return true; }).Cells.FindLast(o => { return true; });
             EnemyInfo bossInfo = DropData.Find(o => { return o.enemy_id == 0; });
-            lastCell.drop_unit_id = bossInfo.drop_unit_id;
+            lastCell.drop_unit = DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + bossInfo.drop_unit_id.ToString());
             lastCell.add_attribute_exp = bossInfo.add_attribute_exp;
             lastCell.unit_exp = bossInfo.unit_exp;
             return map;

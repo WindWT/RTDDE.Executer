@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using RTDDE.Provider.MasterData;
 
 namespace RTDDE.Executer
 {
@@ -12,7 +13,7 @@ namespace RTDDE.Executer
         public Brush Background { get; set; }
         public Color OverlayColor { get; set; }
         public FontWeight fontWeight { get; set; }
-        public int drop_unit_id { get; set; }
+        public UnitMaster drop_unit { get; set; }
         public int add_attribute_exp { get; set; }
         public int unit_exp { get; set; }
         public int drop_id { get; set; }
@@ -38,7 +39,6 @@ namespace RTDDE.Executer
             this.Background = background;
             this.fontWeight = bold;
             this.OverlayColor = overlayColor;
-            this.drop_unit_id = -1;
         }
         public override string ToString()
         {
@@ -59,12 +59,15 @@ namespace RTDDE.Executer
         public MapTable()
         {
             Rows = new List<MapRow>();
+            HasDropInfo = false;
+            repeat = 1;
         }
         public int x { get; set; }
         public int y { get; set; }
         public int w { get; set; }
         public int h { get; set; }
         public int repeat { get; set; }
+        public bool HasDropInfo { get; set; }
     }
     /*public class MapColumn
     {
