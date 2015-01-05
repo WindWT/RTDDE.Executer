@@ -11,7 +11,7 @@ namespace RTDDE.Executer
         public string CellData { get; set; }
         public Brush Foreground { get; set; }
         public Brush Background { get; set; }
-        public Color OverlayColor { get; set; }
+        public Color YorishiroColor { get; set; }
         public FontWeight fontWeight { get; set; }
         public UnitMaster drop_unit { get; set; }
         public int add_attribute_exp { get; set; }
@@ -19,6 +19,7 @@ namespace RTDDE.Executer
         public int drop_id { get; set; }
         public int x { get; set; }
         public int y { get; set; }
+        public bool HasDropInfo { get; set; }
 
         public MapCell()
             : this(string.Empty)
@@ -32,13 +33,13 @@ namespace RTDDE.Executer
             : this(cellData, foreground, background, bold, Colors.Transparent)
         {
         }
-        public MapCell(string cellData, Brush foreground, Brush background, FontWeight bold, Color overlayColor)
+        public MapCell(string cellData, Brush foreground, Brush background, FontWeight bold, Color yorishiroColor)
         {
             this.CellData = cellData;
             this.Foreground = foreground;
             this.Background = background;
             this.fontWeight = bold;
-            this.OverlayColor = overlayColor;
+            this.YorishiroColor = yorishiroColor;
         }
         public override string ToString()
         {
@@ -59,7 +60,6 @@ namespace RTDDE.Executer
         public MapTable()
         {
             Rows = new List<MapRow>();
-            HasDropInfo = false;
             repeat = 1;
         }
         public int x { get; set; }
@@ -67,7 +67,6 @@ namespace RTDDE.Executer
         public int w { get; set; }
         public int h { get; set; }
         public int repeat { get; set; }
-        public bool HasDropInfo { get; set; }
     }
     /*public class MapColumn
     {

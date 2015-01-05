@@ -29,15 +29,13 @@ namespace RTDDE.Executer.Func
         }
         public void Load(string levelID = "-1", int repeat = 1)
         {
-            if (string.IsNullOrEmpty(levelID))
-            {
+            if (string.IsNullOrEmpty(levelID)) {
                 levelID = "-1";
             }
             Task<DataTable> initMonsterTask = new Task<DataTable>(GetMonsterData, levelID);
             initMonsterTask.ContinueWith(t =>
             {
-                if (t.Exception != null)
-                {
+                if (t.Exception != null) {
                     Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
@@ -47,8 +45,7 @@ namespace RTDDE.Executer.Func
             Task<MapTable> task = new Task<MapTable>(() =>
             {
                 DataTable dt = DAL.GetDataTable("SELECT a.*,b.distance FROM level_data_master a left join quest_master b on a.level_data_id=b.id WHERE a.level_data_id=" + levelID);
-                if (dt.Rows.Count == 0)
-                {
+                if (dt.Rows.Count == 0) {
                     //throw new Exception("NO MAP DATA.");
                     return null;
                 }
@@ -67,13 +64,11 @@ namespace RTDDE.Executer.Func
             task.ContinueWith(t =>
             {
                 ClearMap();
-                if (t.Exception != null)
-                {
+                if (t.Exception != null) {
                     Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
-                else if (t.Result == null)
-                {
+                else if (t.Result == null) {
                     MapGrid.Children.Add(new TextBlock()
                     {
                         Text = "No map data, import GAME first.",
@@ -81,8 +76,7 @@ namespace RTDDE.Executer.Func
                         Padding = new Thickness(24)
                     });
                 }
-                else
-                {
+                else {
                     DrawMap(t.Result);
                 }
             }, MainWindow.UiTaskScheduler);
@@ -218,8 +212,7 @@ namespace RTDDE.Executer.Func
         #endregion
         private MapTable InitMapData(string mapData, int w, int h, int x, int y, int distance, int repeat)
         {
-            if (repeat < 1)
-            {
+            if (repeat < 1) {
                 repeat = 1;
             }
             var mapTable = new MapTable();
@@ -229,55 +222,44 @@ namespace RTDDE.Executer.Func
             mapTable.w = w;
             mapTable.repeat = repeat;
 
-            for (int r = 0; r < repeat; r++)
-            {
-                for (int i = 0; i < w; i++)
-                {
+            for (int r = 0; r < repeat; r++) {
+                for (int i = 0; i < w; i++) {
                     var mapRow = new MapRow();
-                    for (int j = 0; j < h; j++)
-                    {
+                    for (int j = 0; j < h; j++) {
                         var mapCell = new MapCell();
 
                         string cellData = mapData.Substring((j * w + i) * 2, 2);
                         int cellDataInt = int.Parse(cellData, System.Globalization.NumberStyles.HexNumber);
                         int num = 7 & cellDataInt >> 5;
-                        if (num > 0)
-                        {
-                            switch (1 << (num - 1))
-                            {
+                        if (num > 0) {
+                            switch (1 << (num - 1)) {
                                 //AttributeTypeLight,
-                                case 1:
-                                    {
+                                case 1: {
                                         mapCell.Background = LightBrush;
                                         break;
                                     }
                                 //AttributeTypeDark,
-                                case 2:
-                                    {
+                                case 2: {
                                         mapCell.Background = DarkBrush;
                                         break;
                                     }
                                 //AttributeTypeFire = 4,
-                                case 4:
-                                    {
+                                case 4: {
                                         mapCell.Background = FireBrush;
                                         break;
                                     }
                                 //AttributeTypeWater = 8,
-                                case 8:
-                                    {
+                                case 8: {
                                         mapCell.Background = WaterBrush;
                                         break;
                                     }
                                 //AttributeTypeBossStart = 16,
-                                case 16:
-                                    {
+                                case 16: {
                                         mapCell.Background = Brushes.Silver;
                                         break;
                                     }
                                 //AttributeTypeBoss = 32,
-                                case 32:
-                                    {
+                                case 32: {
                                         mapCell.Background = Brushes.Black;
                                         break;
                                     }
@@ -285,12 +267,9 @@ namespace RTDDE.Executer.Func
                         }
 
                         var num2 = 31 & cellDataInt;
-                        if (num2 >= 24)
-                        {
-                            if (Settings.Config.General.IsShowBoxInfo)
-                            {
-                                switch (num2 - 23)
-                                {
+                        if (num2 >= 24) {
+                            if (Settings.Config.General.IsShowBoxInfo) {
+                                switch (num2 - 23) {
                                     case 1: cellData = "?"; break;
                                     case 2: cellData = "?$"; break;
                                     case 3: cellData = "♥"; break;
@@ -301,33 +280,27 @@ namespace RTDDE.Executer.Func
                                 }
                                 mapCell.fontWeight = FontWeights.Bold;
                             }
-                            else
-                            {
+                            else {
                                 cellData = "箱";
                             }
                         }
-                        else
-                        {
+                        else {
                             //this.EnemyUnitID = num2;
                             //this.TreasureID = 0;
                             cellData = "E" + (num2);
-                            if (num2 != 0)
-                            {
+                            if (num2 != 0) {
                                 //td.Attributes.Add("enemy", cellData);
                             }
-                            if (num2 >= 17)
-                            {
+                            if (num2 >= 17) {
                                 //E17以上一般都是史莱姆
                                 mapCell.Foreground = Brushes.Red;
                                 mapCell.fontWeight = FontWeights.Bold;
                             }
                         }
-                        if ((cellDataInt == 0) || (num2 == 0))
-                        {
+                        if ((cellDataInt == 0) || (num2 == 0)) {
                             cellData = "";
                         }
-                        if (i == y && j == x)
-                        {
+                        if (i == y && j == x) {
                             cellData = "★";
                         }
 
@@ -342,8 +315,7 @@ namespace RTDDE.Executer.Func
 
             //添加底部标记
             var mapMarkRow = new MapRow();
-            for (int j = 0; j < h; j++)
-            {
+            for (int j = 0; j < h; j++) {
                 var mapCellMark = new MapCell((distance - j + 3).ToString());    //magic number 3!
                 mapMarkRow.Cells.Add(mapCellMark);
             }
@@ -366,17 +338,14 @@ namespace RTDDE.Executer.Func
         {
             bool isFirstColDef = false;
             int row = 0;
-            foreach (MapRow r in map.Rows)
-            {
+            foreach (MapRow r in map.Rows) {
                 int col = 0;
                 MapGrid.RowDefinitions.Add(new RowDefinition()
                 {
                     Height = new GridLength(25)
                 });
-                foreach (MapCell c in r.Cells)
-                {
-                    if (!isFirstColDef)
-                    {
+                foreach (MapCell c in r.Cells) {
+                    if (!isFirstColDef) {
                         MapGrid.ColumnDefinitions.Add(new ColumnDefinition()
                         {
                             Width = new GridLength(25)
@@ -397,8 +366,8 @@ namespace RTDDE.Executer.Func
                             MappingMode = BrushMappingMode.RelativeToBoundingBox,
                             GradientStops = new GradientStopCollection()
                             {
-                                new GradientStop(c.OverlayColor,0.25),
-                                new GradientStop(Colors.Transparent,0.25)
+                                new GradientStop(c.YorishiroColor,1d/3d),
+                                new GradientStop(Colors.Transparent,1d/3d)
                             }
                         }
                     };
@@ -418,21 +387,17 @@ namespace RTDDE.Executer.Func
                     b.SetValue(Grid.ColumnProperty, col);
 
                     StringBuilder sb = new StringBuilder();
-                    if (map.HasDropInfo)
-                    {
+                    if (c.HasDropInfo) {
                         sb.AppendLine("觉醒pt:" + c.add_attribute_exp);
                         sb.AppendLine("exp:" + c.unit_exp);
-                        if (c.drop_unit != null)
-                        {
+                        if (c.drop_unit != null) {
                             sb.AppendLine(string.Format("掉落:[{0}]{1}", c.drop_unit.g_id, c.drop_unit.name));
                         }
                     }
-                    if (c.drop_id != 0)
-                    {
+                    if (c.drop_id != 0) {
                         sb.AppendLine("掉落表id:" + c.drop_id);
                     }
-                    if (string.IsNullOrWhiteSpace(sb.ToString().Trim()) == false)
-                    {
+                    if (string.IsNullOrWhiteSpace(sb.ToString().Trim()) == false) {
                         rec.ToolTip = new Run(sb.ToString().Trim());
                     }
                     col++;
@@ -445,8 +410,7 @@ namespace RTDDE.Executer.Func
             {
                 Width = new GridLength(25)
             });
-            for (int i = 0; i < row; i++)
-            {
+            for (int i = 0; i < row; i++) {
                 MapMarkGrid.RowDefinitions.Add(new RowDefinition()
                 {
                     Height = new GridLength(25)
@@ -477,20 +441,16 @@ namespace RTDDE.Executer.Func
             monsterData.Columns.Add("drop_id", typeof(int));
 
             QuestMaster qm = DAL.ToSingle<QuestMaster>("SELECT * FROM quest_master WHERE id=" + levelID);
-            if (qm == null)
-            {
+            if (qm == null) {
                 return monsterData;
             }
             DataTable enemyTableData = DAL.GetDataTable("SELECT * FROM enemy_table_master WHERE id=" + qm.enemy_table_id.ToString());
-            if (enemyTableData.Rows.Count == 0)
-            {
+            if (enemyTableData.Rows.Count == 0) {
                 //throw new Exception("NO ENEMY TABLE DATA.");
                 return monsterData;
             }
-            for (int i = 1; i <= 18; i++)
-            {
-                if (enemyTableData.Rows[0]["enemy" + i + "_set_id"].ToString() != "0")
-                {
+            for (int i = 1; i <= 18; i++) {
+                if (enemyTableData.Rows[0]["enemy" + i + "_set_id"].ToString() != "0") {
                     monsterData.Rows.Add(
                     new object[]{
                         "E"+enemyTableData.Rows[0]["enemy"+i+"_id"],
@@ -526,8 +486,7 @@ namespace RTDDE.Executer.Func
 
         private void MapMonsterGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (MapMonsterGrid.SelectedItem == null)
-            {
+            if (MapMonsterGrid.SelectedItem == null) {
                 //avoid Exception
                 return;
             }
@@ -539,12 +498,10 @@ namespace RTDDE.Executer.Func
             MapEnemyInfo_lv_max.Text = mmInfoRow["lv_max"].ToString();
             MapEnemyInfo_drop_id.Text = mmInfoRow["drop_id"].ToString();
 
-            if (Settings.Config.General.IsDefaultLvMax)
-            {
+            if (Settings.Config.General.IsDefaultLvMax) {
                 MapEnemyInfo_lv.Text = "99";
             }
-            else
-            {
+            else {
                 MapEnemyInfo_lv.Text = "1";
             }
             MapEnemyInfo_DataBind();
@@ -552,22 +509,17 @@ namespace RTDDE.Executer.Func
 
         private void MapEnemyInfo_lv_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (MapEnemyInfo_lv.IsFocused)
-            {
-                if (string.IsNullOrWhiteSpace(MapEnemyInfo_lv.Text))
-                {
+            if (MapEnemyInfo_lv.IsFocused) {
+                if (string.IsNullOrWhiteSpace(MapEnemyInfo_lv.Text)) {
                     MapEnemyInfo_lv.Text = "";
                 }
                 Regex r = new Regex("[^0-9]");
-                if (r.Match(MapEnemyInfo_lv.Text).Success)
-                {
-                    if (Settings.Config.General.IsDefaultLvMax)
-                    {
+                if (r.Match(MapEnemyInfo_lv.Text).Success) {
+                    if (Settings.Config.General.IsDefaultLvMax) {
                         MapEnemyInfo_lv.Text = "99";
                         return;
                     }
-                    else
-                    {
+                    else {
                         MapEnemyInfo_lv.Text = "1";
                         return;
                     }
@@ -578,8 +530,7 @@ namespace RTDDE.Executer.Func
 
         private void MapEnemyInfo_DataBind()
         {
-            if (string.IsNullOrWhiteSpace(MapEnemyInfo_id.Text))
-            {
+            if (string.IsNullOrWhiteSpace(MapEnemyInfo_id.Text)) {
                 return;
             }
             string enemyId = MapEnemyInfo_id.Text;
@@ -590,13 +541,11 @@ namespace RTDDE.Executer.Func
             });
             task.ContinueWith(t =>
             {
-                if (t.Exception != null)
-                {
+                if (t.Exception != null) {
                     Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
-                if (t.Result == null)
-                {
+                if (t.Result == null) {
                     return;
                 }
                 EnemyUnitMaster eum = t.Result;
@@ -614,8 +563,7 @@ namespace RTDDE.Executer.Func
 
                 int lv = Convert.ToInt32(MapEnemyInfo_lv.Text);
                 int lv_max = Convert.ToInt32(MapEnemyInfo_lv_max.Text);
-                if (Settings.Config.General.IsEnableLevelLimiter && (lv > lv_max))
-                {
+                if (Settings.Config.General.IsEnableLevelLimiter && (lv > lv_max)) {
                     lv = lv_max;
                     MapEnemyInfo_lv.Text = lv.ToString("0");
                 }
@@ -636,20 +584,16 @@ namespace RTDDE.Executer.Func
 
         private MapTable BindMonsterDataToMap(MapTable map, DataTable monsterData)
         {
-            foreach (MapRow r in map.Rows)
-            {
-                foreach (MapCell c in r.Cells)
-                {
+            foreach (MapRow r in map.Rows) {
+                foreach (MapCell c in r.Cells) {
                     string enemyNo = c.CellData;
                     DataRow[] foundRow = monsterData.Select("[#] = '" + enemyNo + "'");
-                    if (foundRow.Length < 1)
-                    {
+                    if (foundRow.Length < 1) {
                         continue;
                     }
                     c.drop_id = Convert.ToInt32(foundRow[0]["drop_id"]);
                     string enemyId = foundRow[0]["id"].ToString();
-                    switch (enemyId)
-                    {
+                    switch (enemyId) {
                         case "65002":   //移動床_上
                             {
                                 int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
@@ -703,59 +647,47 @@ namespace RTDDE.Executer.Func
 
         private MapTable BindDropDataToMap(MapTable map, List<EnemyInfo> DropData)
         {
-            if (DropData == null || DropData.Count == 0)
-            {
+            if (DropData == null || DropData.Count == 0) {
                 return map;
             }
-            map.HasDropInfo = true;
-            foreach (MapRow r in map.Rows)
-            {
-                foreach (MapCell c in r.Cells)
-                {
-                    EnemyInfo ei = DropData.Find(o => { return o.x == c.x && o.y == c.y && !(o.x == 0 && o.y == 0); });
-                    if (ei != null)
-                    {
+            foreach (MapRow r in map.Rows) {
+                foreach (MapCell c in r.Cells) {
+                    EnemyInfo ei = DropData.Find(o => o.x == c.x && o.y == c.y && !(o.x == 0 && o.y == 0));
+                    if (ei != null && ei.flag) {
+                        c.HasDropInfo = true;
                         c.drop_unit =
                             DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + ei.drop_unit_id.ToString());
                         c.add_attribute_exp = ei.add_attribute_exp;
                         c.unit_exp = ei.unit_exp;
-                        if (c.drop_unit == null)
-                        {
+                        if (c.drop_unit == null) {
                             continue;
                         }
-                        switch (c.drop_unit.id)
-                        {
-                            case 15004:
-                            case 15005:
-                            case 15006:
-                            case 15007:
-                                {
-                                    c.OverlayColor = Colors.Green;
-                                    break;
-                                }
-                            case 15022:
-                                {
-                                    c.OverlayColor = Colors.Black;
-                                    break;
-                                }
-                            case 15014:
-                                {
-                                    c.OverlayColor = Colors.Silver;
-                                    break;
-                                }
-                            case 15025:
-                            case 15026:
-                            case 15027:
-                                {
-                                    c.OverlayColor = Colors.MediumTurquoise;
-                                    break;
-                                }
+                        if (c.drop_unit.kind != 311) {   //not yorishiro, skip
+                            continue;
+                        }
+                        if (c.drop_unit.id == 15022) {
+                            //very bad yorishiro
+                            c.YorishiroColor = Colors.Black;
+                        }
+                        else if (c.drop_unit.mix > 30000) {
+                            //many exp
+                            c.YorishiroColor = Color.FromRgb(98, 255, 98);
+                        }
+                        else if (c.drop_unit.mix >= 25000) {
+                            //exp
+                            c.YorishiroColor = Color.FromRgb(255, 98, 98);
+                        }
+                        else if (c.drop_unit.set_pt >= 250) {
+                            //pt
+                            c.YorishiroColor = Color.FromRgb(98, 98, 255);
+                        }
+                        else if (c.drop_unit.sale >= 20000) {
+                            //sale
+                            c.YorishiroColor = Colors.Silver;
                         }
                     }
-                    else
-                    {
-                        if (string.IsNullOrEmpty(c.CellData) == false && c.CellData.StartsWith("E"))
-                        {
+                    else {
+                        if (string.IsNullOrEmpty(c.CellData) == false && c.CellData.StartsWith("E")) {
                             c.Foreground = Brushes.LightGray;
                         }
                     }
@@ -766,6 +698,7 @@ namespace RTDDE.Executer.Func
             lastCell.drop_unit = DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + bossInfo.drop_unit_id.ToString());
             lastCell.add_attribute_exp = bossInfo.add_attribute_exp;
             lastCell.unit_exp = bossInfo.unit_exp;
+            lastCell.HasDropInfo = true;
             return map;
         }
     }
