@@ -102,8 +102,8 @@ namespace RTDDE.Executer.Func
                 QuestInfo_h_name.Text = Utility.ParseUnitName(dr["h_id"].ToString());
                 QuestInfo_h_lv.Text = dr["h_lv"].ToString();
 
-                QuestInfo_open_date.Text = Utility.ParseRTDDate(dr["open_date"].ToString(), true);
-                QuestInfo_close_date.Text = Utility.ParseRTDDate(dr["close_date"].ToString(), true);
+                QuestInfo_open_date.Text = Utility.ParseRTDDate(dr["open_date"].ToString(), true).ToString("yyyy-MM-dd HH:mm ddd");
+                QuestInfo_close_date.Text = Utility.ParseRTDDate(dr["close_date"].ToString(), true).ToString("yyyy-MM-dd HH:mm ddd");
 
                 QuestInfo_opentype_content.Children.Clear();
                 List<OpenType> opentypes = t.Result;
@@ -147,8 +147,8 @@ namespace RTDDE.Executer.Func
                 }
 
                 QuestInfo_bonus.Text = Utility.ParseBonustype(dr["bonus_type"].ToString());
-                QuestInfo_bonus_start.Text = Utility.ParseRTDDate(dr["bonus_start"].ToString());
-                QuestInfo_bonus_end.Text = Utility.ParseRTDDate(dr["bonus_end"].ToString());
+                QuestInfo_bonus_start.Text = Utility.ParseRTDDate(dr["bonus_start"].ToString()).ToString("yyyy-MM-dd HH:mm ddd");
+                QuestInfo_bonus_end.Text = Utility.ParseRTDDate(dr["bonus_end"].ToString()).ToString("yyyy-MM-dd HH:mm ddd");
 
                 QuestInfo_panel_sword.Text = dr["panel_sword"].ToString();
                 QuestInfo_panel_lance.Text = dr["panel_lance"].ToString();
