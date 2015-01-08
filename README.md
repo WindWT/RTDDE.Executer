@@ -3,7 +3,7 @@ RTDDE.Executer
 
 Road to Dragons(AKA RoDora or RTD) Data Explorer
 
-Requires .NET 4.0
+Requires .NET 4.5
 
 ToDo
 ===============
