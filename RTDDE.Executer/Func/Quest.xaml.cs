@@ -102,8 +102,14 @@ namespace RTDDE.Executer.Func
                 QuestInfo_h_name.Text = Utility.ParseUnitName(dr["h_id"].ToString());
                 QuestInfo_h_lv.Text = dr["h_lv"].ToString();
 
-                QuestInfo_open_date.Text = Utility.ParseRTDDate(dr["open_date"].ToString(), true).ToString("yyyy-MM-dd HH:mm ddd");
-                QuestInfo_close_date.Text = Utility.ParseRTDDate(dr["close_date"].ToString(), true).ToString("yyyy-MM-dd HH:mm ddd");
+                var openDate = Utility.ParseRTDDate(dr["open_date"].ToString(), true);
+                QuestInfo_open_date.Text = openDate == DateTime.MinValue
+                    ? string.Empty
+                    : openDate.ToString("yyyy-MM-dd HH:mm ddd");
+                var closeDate = Utility.ParseRTDDate(dr["close_date"].ToString(), true);
+                QuestInfo_close_date.Text = closeDate == DateTime.MinValue
+                    ? string.Empty
+                    : closeDate.ToString("yyyy-MM-dd HH:mm ddd");
 
                 QuestInfo_opentype_content.Children.Clear();
                 List<OpenType> opentypes = t.Result;
@@ -147,8 +153,14 @@ namespace RTDDE.Executer.Func
                 }
 
                 QuestInfo_bonus.Text = Utility.ParseBonustype(dr["bonus_type"].ToString());
-                QuestInfo_bonus_start.Text = Utility.ParseRTDDate(dr["bonus_start"].ToString()).ToString("yyyy-MM-dd HH:mm ddd");
-                QuestInfo_bonus_end.Text = Utility.ParseRTDDate(dr["bonus_end"].ToString()).ToString("yyyy-MM-dd HH:mm ddd");
+                var bonusStart = Utility.ParseRTDDate(dr["bonus_start"].ToString());
+                QuestInfo_bonus_start.Text = bonusStart == DateTime.MinValue
+                    ? string.Empty
+                    : bonusStart.ToString("yyyy-MM-dd HH:mm");
+                var bonusEnd = Utility.ParseRTDDate(dr["bonus_end"].ToString());
+                QuestInfo_bonus_end.Text = bonusEnd == DateTime.MinValue
+                    ? string.Empty
+                    : bonusEnd.ToString("yyyy-MM-dd HH:mm");
 
                 QuestInfo_panel_sword.Text = dr["panel_sword"].ToString();
                 QuestInfo_panel_lance.Text = dr["panel_lance"].ToString();
