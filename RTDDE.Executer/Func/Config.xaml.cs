@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -124,8 +125,10 @@ namespace RTDDE.Executer.Func
             {
                 ImportMsgPackButton.Content = new Run("Importing MDBS MsgPack...");
                 string path = System.IO.Path.GetDirectoryName(ofd.FileName);
+                var stopwatch = new Stopwatch();
                 Task task = new Task(() =>
                 {
+                    stopwatch.Start();
                     foreach (string filepath in System.IO.Directory.GetFiles(path))
                     {
                         string filename = System.IO.Path.GetFileName(filepath);
@@ -140,21 +143,20 @@ namespace RTDDE.Executer.Func
                             //type not exist, skip
                             continue;
                         }
-                        string json = string.Empty;
                         using (StreamReader sr = new StreamReader(filepath))
                         {
-                            json = MsgBytes.ToJson(sr.BaseStream);
+                            //Dynamic type from enum
+                            Type currentType = Converter.Enum2Type(mdbEnum);
+                            //Generate Method
+                            MethodInfo methodToList =
+                                typeof (MsgBytes).GetMethod("ToList").MakeGenericMethod(currentType);
+                            MethodInfo methodToDB = typeof (DAL).GetMethod("FromList").MakeGenericMethod(currentType);
+                            //Invoke
+                            var list = methodToList.Invoke(null, new object[] {sr.BaseStream});
+                            //Drop table, 
+                            DAL.DropTable(enumName);
+                            methodToDB.Invoke(null, new object[] {list});
                         }
-                        //Dynamic type from enum
-                        Type currentType = Converter.Enum2Type(mdbEnum);
-                        //Generate Method
-                        MethodInfo methodToList = typeof(JSON).GetMethod("ToList").MakeGenericMethod(currentType);
-                        MethodInfo methodToDB = typeof(DAL).GetMethod("FromList").MakeGenericMethod(currentType);
-                        //Invoke
-                        var list = methodToList.Invoke(null, new object[] { json });
-                        //Drop table, 
-                        DAL.DropTable(enumName);
-                        methodToDB.Invoke(null, new object[] { list });
                     }
                 });
                 task.ContinueWith(t =>
@@ -166,7 +168,8 @@ namespace RTDDE.Executer.Func
                     }
                     else
                     {
-                        ImportMsgPackButton.Content = new Run("MDBS MsgPack Successfully Imported.");
+                        stopwatch.Stop();
+                        ImportMsgPackButton.Content = new Run("MDBS MsgPack Successfully Imported. ("+stopwatch.ElapsedMilliseconds+"ms)");
                         RefreshControl();
                     }
                 }, MainWindow.UiTaskScheduler);
