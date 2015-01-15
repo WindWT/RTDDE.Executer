@@ -37,7 +37,7 @@ namespace RTDDE.Executer.Func
             });
             Task<List<QuestMaster>> taskQuest = new Task<List<QuestMaster>>(() =>
             {
-                string sql = "SELECT * FROM quest_master WHERE category={0} order by display_order DESC";
+                string sql = "SELECT * FROM quest_master WHERE parent_area_id={0} order by display_order DESC";
                 return DAL.ToList<QuestMaster>(String.Format(sql, qcInfo_id));
             });
             Task<DataTable> taskReward = new Task<DataTable>(() =>
@@ -46,7 +46,7 @@ namespace RTDDE.Executer.Func
 (case when present_type=4 
 then (select name from unit_master where unit_master.id=quest_challenge_reward_master.present_param_0) 
 else present_param_0 end) as present_param_name 
-from quest_challenge_reward_master WHERE category={0}
+from quest_challenge_reward_master WHERE parent_area_id={0}
 order by point";
                 return DAL.GetDataTable(String.Format(sql, qcInfo_id));
             });
@@ -151,8 +151,8 @@ order by point";
                 string id = ((DataRowView)dgr.Item).Row["id"].ToString();
                 string name = ((DataRowView)dgr.Item).Row["name"].ToString();
                 var w = (MainWindow)Application.Current.MainWindow;
-                w.Quest.QuestSearch_category.Text = id;
-                w.Quest.QuestSearch_category_name.Text = name;
+                w.Quest.QuestSearch_parent_area_id.Text = id;
+                w.Quest.QuestSearch_parent_area_name.Text = name;
                 w.Quest.QuestSearchExpander.IsExpanded = true;
                 w.ChangeTab("Quest");
             }

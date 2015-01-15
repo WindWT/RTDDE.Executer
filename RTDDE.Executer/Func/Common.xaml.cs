@@ -18,14 +18,15 @@ namespace RTDDE.Executer.Func
         {
             CommonSQLComboBox.ItemsSource = new Dictionary<string, string>()
             {
-                {"------",""},
-                {"Rank","SELECT * FROM USER_RANK_MASTER"},
-                {"MDB","SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"},
-                {"LoginBonus",@"SELECT *,(CASE 
+                {"------", ""},
+                {"Rank", "SELECT * FROM USER_RANK_MASTER"},
+                {"MDB", "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"},
+                {"LoginBonus", @"SELECT *,(CASE 
 WHEN present_type=3 THEN 'STONE' 
 WHEN present_type=4 THEN (SELECT unit_master.name FROM unit_master WHERE unit_master.id=LOGIN_BONUS_MASTER.present_param)
 ELSE '' END) as present_name 
-FROM LOGIN_BONUS_MASTER order by day"}
+FROM LOGIN_BONUS_MASTER order by day"},
+                {"Gacha", @"SELECT * FROM GACHA_ITEM_MASTER order by id desc"}
             };
         }
         private void CommonTab_Initialized(object sender, EventArgs e)

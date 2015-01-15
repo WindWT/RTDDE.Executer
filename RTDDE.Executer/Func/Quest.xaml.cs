@@ -31,9 +31,9 @@ namespace RTDDE.Executer.Func
             Task<DataTable> task = new Task<DataTable>(() =>
             {
                 string sql = @"SELECT *,
-(select name from quest_area_master where quest_area_master.id=category) as category_name,
-(select text from quest_area_master where quest_area_master.id=category) as category_text,
-(select banner_texture from quest_area_master where quest_area_master.id=category) as category_banner,
+(select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name,
+(select text from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_text,
+(select banner_bg_texture from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_banner,
 (SELECT target_name FROM SP_EVENT_MASTER where SP_EVENT_MASTER.sp_event_id=quest_master.sp_event_id) as sp_event_name,
 (SELECT target_name FROM SP_EVENT_MASTER where SP_EVENT_MASTER.sp_event_id=quest_master.open_sp_event_id) as open_sp_event_name,open_sp_event_point,
 (case when present_type=4 then (select name from unit_master where unit_master.id=quest_master.present_param) else present_param end) as present_param_name ,
@@ -80,10 +80,10 @@ namespace RTDDE.Executer.Func
                 QuestInfo_pt.Text = dr["pt_num"].ToString();
                 QuestInfo_difficulty.Text = dr["difficulty"].ToString();
                 QuestInfo_stamina.Text = dr["stamina"].ToString();
-                QuestInfo_category.Text = dr["category"].ToString();
-                QuestInfo_category_name.Text = dr["category_name"].ToString();
-                QuestInfo_category_text.Text = Utility.ParseText(dr["category_text"].ToString());
-                QuestInfo_category_banner.Text = Utility.ParseText(dr["category_banner"].ToString());
+                QuestInfo_parent_area_id.Text = dr["parent_area_id"].ToString();
+                QuestInfo_parent_area_name.Text = dr["parent_area_name"].ToString();
+                QuestInfo_parent_area_text.Text = Utility.ParseText(dr["parent_area_text"].ToString());
+                QuestInfo_parent_area_banner.Text = Utility.ParseText(dr["parent_area_banner"].ToString());
                 QuestInfo_reward_money.Text = dr["reward_money"].ToString();
                 QuestInfo_reward_exp.Text = dr["reward_exp"].ToString();
                 QuestInfo_soul.Text = dr["soul"].ToString();
@@ -194,7 +194,7 @@ namespace RTDDE.Executer.Func
         private void QuestTypeRadio_Event_Checked(object sender, RoutedEventArgs e)
         {
             string sql = @"SELECT id,name,stamina,
-(select name from quest_area_master where quest_area_master.id=category) as category,
+(select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name,
        ( CASE
                 WHEN open_date<>0 THEN open_date
                 WHEN open_type_1 = 4 THEN open_param_1 
@@ -228,7 +228,7 @@ namespace RTDDE.Executer.Func
         {
             string today = DateTime.Today.AddHours(1).ToString("yyyyMMddHH");
             string sql = @"SELECT id,name,stamina,
-(select name from quest_area_master where quest_area_master.id=category) as category,
+(select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name,
        ( CASE
                 WHEN open_type_1 = 1 THEN open_param_1 
                 WHEN open_type_2 = 1 THEN open_param_2 
@@ -286,9 +286,9 @@ ORDER BY DayOfWeek,id DESC";
         private void QuestTypeRadio_Main_Checked(object sender, RoutedEventArgs e)
         {
             string sql = @"SELECT id,name,stamina,
-(select parent_field_id from quest_area_master where quest_area_master.id=category) as hasParent
+(select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name
 FROM QUEST_MASTER
-WHERE hasParent>0
+WHERE (select parent_field_id from quest_area_master where quest_area_master.id=parent_area_id)>0
 ORDER BY id DESC";
             Utility.BindData(QuestDataGrid, sql);
         }
@@ -300,7 +300,7 @@ ORDER BY id DESC";
             QuestTypeRadio_Main.IsChecked = false;
 
             string sql = @"SELECT id,name,stamina,
-(select name from quest_area_master where quest_area_master.id=category) as category_name
+(select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name
 FROM QUEST_MASTER WHERE ";
             if (String.IsNullOrWhiteSpace(QuestSearch_id.Text) == false)
             {
@@ -310,13 +310,13 @@ FROM QUEST_MASTER WHERE ";
             {
                 sql += "name LIKE '%" + QuestSearch_name.Text.Trim() + "%' AND ";
             }
-            if (String.IsNullOrWhiteSpace(QuestSearch_category.Text) == false)
+            if (String.IsNullOrWhiteSpace(QuestSearch_parent_area_id.Text) == false)
             {
-                sql += "category=" + QuestSearch_category.Text + " AND ";
+                sql += "parent_area_id=" + QuestSearch_parent_area_id.Text + " AND ";
             }
-            if (String.IsNullOrWhiteSpace(QuestSearch_category_name.Text) == false)
+            if (String.IsNullOrWhiteSpace(QuestSearch_parent_area_name.Text) == false)
             {
-                sql += "category_name LIKE '%" + QuestSearch_category_name.Text.Trim() + "%' AND ";
+                sql += "parent_area_name LIKE '%" + QuestSearch_parent_area_name.Text.Trim() + "%' AND ";
             }
             sql += " 1=1 ORDER BY id DESC";
             Utility.BindData(QuestDataGrid, sql);
@@ -326,8 +326,8 @@ FROM QUEST_MASTER WHERE ";
         {
             QuestSearch_id.Text = String.Empty;
             QuestSearch_name.Text = String.Empty;
-            QuestSearch_category.Text = String.Empty;
-            QuestSearch_category_name.Text = String.Empty;
+            QuestSearch_parent_area_id.Text = String.Empty;
+            QuestSearch_parent_area_name.Text = String.Empty;
             QuestTypeRadio_Event.IsChecked = true;
         }
 

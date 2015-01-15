@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -61,7 +62,8 @@ namespace RTDDE.Executer.Func
             {
                 if (kind.ToString().StartsWith("MS0") == false)
                 {
-                    kindDict.Add(kind.ToString(), Utility.ParseAssignID(kind).ToString());
+                    string id = Utility.ParseAssignID(kind).ToString();
+                    kindDict.Add(string.Format("{0}_{1}", id, kind.ToString()), id);
                 }
             }
             UnitSearch_kind.ItemsSource = kindDict;

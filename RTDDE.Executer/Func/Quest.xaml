@@ -31,9 +31,9 @@
                         <TextBox Name="QuestSearch_id" Width="50" TextChanged="QuestSearch_TextChanged" IsReadOnly="False"></TextBox>
                         <TextBlock Text="name" Width="50"/>
                         <TextBox Name="QuestSearch_name" Width="150" TextChanged="QuestSearch_TextChanged" IsReadOnly="False"></TextBox>
-                        <TextBlock Text="category" Width="50"/>
-                        <TextBox Name="QuestSearch_category" Width="50" TextChanged="QuestSearch_TextChanged" IsReadOnly="False"></TextBox>
-                        <TextBox Name="QuestSearch_category_name" Width="200" TextChanged="QuestSearch_TextChanged" IsReadOnly="False"></TextBox>
+                        <TextBlock Text="area" Width="50"/>
+                        <TextBox Name="QuestSearch_parent_area_id" Width="50" TextChanged="QuestSearch_TextChanged" IsReadOnly="False"></TextBox>
+                        <TextBox Name="QuestSearch_parent_area_name" Width="200" TextChanged="QuestSearch_TextChanged" IsReadOnly="False"></TextBox>
                         <Button Name="QuestSearchClear" Width="300" Click="QuestSearchClear_Click">Clear</Button>
                     </WrapPanel>
                 </Expander.Content>
@@ -132,12 +132,12 @@
             <TextBlock Text="banner" Width="50"/>
             <TextBox Name="QuestInfo_banner" Width="250"></TextBox>
             <Separator Width="300"/>
-            <TextBlock Text="category" Width="50"/>
-            <TextBox Name="QuestInfo_category" Width="50"></TextBox>
-            <TextBox Name="QuestInfo_category_name" Width="200" TextAlignment="Right"></TextBox>
-            <TextBox Name="QuestInfo_category_text" Width="300" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+            <TextBlock Text="area" Width="50"/>
+            <TextBox Name="QuestInfo_parent_area_id" Width="50"></TextBox>
+            <TextBox Name="QuestInfo_parent_area_name" Width="200" TextAlignment="Right"></TextBox>
+            <TextBox Name="QuestInfo_parent_area_text" Width="300" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
             <TextBlock Text="banner" Width="50"/>
-            <TextBox Name="QuestInfo_category_banner" Width="250"></TextBox>
+            <TextBox Name="QuestInfo_parent_area_banner" Width="250"></TextBox>
             <Separator Width="300"></Separator>
         </WrapPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="2" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">

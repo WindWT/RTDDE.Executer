@@ -33,7 +33,8 @@ namespace RTDDE.Executer.Func
             };
             foreach (AccessoryType type in Enum.GetValues(typeof(AccessoryType)))
             {
-                typeDict.Add(type.ToString(), ((int)type).ToString());
+                string id = ((int) type).ToString();
+                typeDict.Add(string.Format("{0}_{1}", id, type.ToString()), id);
             }
             AccessorySearch_type.ItemsSource = typeDict;
             //AccessorySearch_sub_attr.ItemsSource = attrDict;
