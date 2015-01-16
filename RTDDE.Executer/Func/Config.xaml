@@ -6,31 +6,12 @@
              mc:Ignorable="d" >
     <Grid Name="ConfigTab" IsVisibleChanged="ConfigTab_IsVisibleChanged">
         <DockPanel Background="#FFE5E5E5">
-            <Grid DockPanel.Dock="Top">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Header="General">
-                    <StackPanel>
-                        <Button Name="ImportMsgPackButton" Click="ImportMsgPackButton_Click">MsgPack</Button>
-                    </StackPanel>
-                </GroupBox>
-                <GroupBox Grid.Column="0" Grid.Row="1" Header="Android">
-                    <StackPanel>
-                        <Button Name="ImportAndroidGAMEButton" Click="ImportAndroidGAMEButton_Click">Android GAME</Button>
-                    </StackPanel>
-                </GroupBox>
-                <GroupBox Grid.Column="1" Grid.Row="1" Header="iOS">
-                    <StackPanel>
-                        <Button Name="ImportiOSGAMEButton" Click="ImportiOSGAMEButton_Click">iOS GAME</Button>
-                    </StackPanel>
-                </GroupBox>
-            </Grid>
+            <GroupBox DockPanel.Dock="Top" Header="Import">
+                <StackPanel>
+                    <Button Name="ImportMsgPackButton" Click="ImportMsgPackButton_Click">MsgPack</Button>
+                    <Button Name="ImportLdbsButton" Click="ImportLdbsButton_Click">LDBS</Button>
+                </StackPanel>
+            </GroupBox>
             <GroupBox DockPanel.Dock="Top" Header="Settings">
                 <StackPanel>
                     <GroupBox Header="General">

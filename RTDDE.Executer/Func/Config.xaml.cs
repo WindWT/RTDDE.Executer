@@ -25,33 +25,30 @@ namespace RTDDE.Executer.Func
         }
         private void ConfigTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ImportAndroidGAMEButton.Content = new Run("Import GAME(MAP Data)");
-            ImportiOSGAMEButton.Content = new Run("Import GAME(MAP Data)");
             ImportMsgPackButton.Content = new Run("Import MDBS MsgPack");
+            ImportLdbsButton.Content = new Run("Import MAP");
             SaveSettingsButton.Content = new Run("Save Settings");
         }
-        private void ImportAndroidGAMEButton_Click(object sender, RoutedEventArgs e)
+        private void ImportLdbsButton_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            ofd.DefaultExt = ".xml";
-            ofd.Filter = "GAME File|GAME.xml";
+            ofd.Filter = "LDBS File|LDBS0_Msg.bytes";
             if (ofd.ShowDialog() == true)
             {
-                ImportAndroidGAMEButton.Content = new Run("Importing MAP Data...");
+                ImportLdbsButton.Content = new Run("Importing MAP Data...");
+                string filename = ofd.FileName;
                 Task task = new Task(() =>
                 {
-                    XmlDocument xmlGame = new XmlDocument();
-                    xmlGame.Load(ofd.FileName);
-                    foreach (XmlNode xmlNode in xmlGame.GetElementsByTagName("string"))
+                    using (StreamReader sr = new StreamReader(filename))
                     {
-                        if (xmlNode.Attributes["name"] != null && xmlNode.Attributes["name"].Value.StartsWith("LDBS"))
-                        {
-                            string jsonGAME = xmlNode.InnerText;
-                            var game = new MapData(jsonGAME);
-                            DAL.FromSingle(JSON.ToSingle<RTDDE.Provider.MasterData.UnitTalkMaster>(game.UTM));
-                            DAL.FromSingle(JSON.ToSingle<RTDDE.Provider.MasterData.LevelDataMaster>(game.LDM));
-                            DAL.FromSingle(JSON.ToSingle<RTDDE.Provider.MasterData.EnemyTableMaster>(game.ETM));
-                        }
+                        var game = new MapData(sr.BaseStream);
+                        DAL.FromSingle(game.LDM);
+                        DAL.FromSingle(game.LDM.enemy_table_master);
+                        DAL.FromSingle(game.LDM.unit_talk_master);
+                        //foreach (var ecm in game.LDM.event_cutin_master)
+                        //{
+                        //    DAL.FromSingle(ecm);
+                        //}
                     }
 
                 });
@@ -60,52 +57,11 @@ namespace RTDDE.Executer.Func
                     if (t.Exception != null)
                     {
                         Utility.ShowException(t.Exception.InnerException.Message);
-                        ImportAndroidGAMEButton.Content = new Run("MAP Data Import Failed.");
+                        ImportLdbsButton.Content = new Run("MAP Data Import Failed.");
                     }
                     else
                     {
-                        ImportAndroidGAMEButton.Content = new Run("MAP Data Successfully Imported.");
-                        RefreshControl();
-                    }
-                }, MainWindow.UiTaskScheduler);
-                task.Start();
-            }
-        }
-        private void ImportiOSGAMEButton_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            ofd.Filter = "GAME File|GAME";
-            if (ofd.ShowDialog() == true)
-            {
-                ImportiOSGAMEButton.Content = new Run("Importing MAP Data...");
-                Task task = new Task(() =>
-                {
-                    //using (StreamReader sr = new StreamReader(ofd.FileName))
-                    //{
-                    //    DataTable dt = FileParser.ParsePlistFileLDB(sr.BaseStream);
-                    //    db.ImportDataTable(dt, "level_data_id", false);
-                    //}
-                    using (StreamReader sr = new StreamReader(ofd.FileName))
-                    {
-                        List<MapData> game = MapData.FromPlist(sr.BaseStream);
-                        foreach (MapData data in game)
-                        {
-                            DAL.FromSingle(JSON.ToSingle<RTDDE.Provider.MasterData.UnitTalkMaster>(data.UTM));
-                            DAL.FromSingle(JSON.ToSingle<RTDDE.Provider.MasterData.LevelDataMaster>(data.LDM));
-                            DAL.FromSingle(JSON.ToSingle<RTDDE.Provider.MasterData.EnemyTableMaster>(data.ETM));
-                        }
-                    }
-                });
-                task.ContinueWith(t =>
-                {
-                    if (t.Exception != null)
-                    {
-                        Utility.ShowException(t.Exception.InnerException.Message);
-                        ImportiOSGAMEButton.Content = new Run("MAP Data Import Failed.");
-                    }
-                    else
-                    {
-                        ImportiOSGAMEButton.Content = new Run("MAP Data Successfully Imported.");
+                        ImportLdbsButton.Content = new Run("MAP Data Successfully Imported.");
                         RefreshControl();
                     }
                 }, MainWindow.UiTaskScheduler);

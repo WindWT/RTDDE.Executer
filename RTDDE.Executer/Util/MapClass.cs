@@ -12,6 +12,7 @@ namespace RTDDE.Executer
         public Brush Foreground { get; set; }
         public Brush Background { get; set; }
         public Color YorishiroColor { get; set; }
+        public Color AttributeColor { get; set; }
         public FontWeight fontWeight { get; set; }
         public UnitMaster drop_unit { get; set; }
         public int add_attribute_exp { get; set; }
@@ -40,6 +41,7 @@ namespace RTDDE.Executer
             this.Background = background;
             this.fontWeight = bold;
             this.YorishiroColor = yorishiroColor;
+            this.AttributeColor = Colors.Transparent;
         }
         public override string ToString()
         {

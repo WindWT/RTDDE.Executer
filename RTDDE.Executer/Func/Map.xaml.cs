@@ -8,7 +8,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using RTDDE.Provider;
+using RTDDE.Provider.Enums;
 using RTDDE.Provider.MasterData;
 
 namespace RTDDE.Executer.Func
@@ -205,10 +207,18 @@ namespace RTDDE.Executer.Func
         }*/
 
         #region brush
-        private static readonly Brush FireBrush = new SolidColorBrush(Color.FromScRgb(1f, 0.9f, 0.4f, 0.3f));
-        private static readonly Brush WaterBrush = new SolidColorBrush(Color.FromScRgb(1f, 0.4f, 0.89f, 0.9f));
-        private static readonly Brush LightBrush = new SolidColorBrush(Color.FromScRgb(1f, 0.9f, 0.9f, 0.3f));
-        private static readonly Brush DarkBrush = new SolidColorBrush(Color.FromScRgb(1f, 0.76f, 0.58f, 0.9f));
+        //private static readonly Brush FireTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.9f, 0.4f, 0.3f));
+        //private static readonly Brush WaterTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.4f, 0.89f, 0.9f));
+        //private static readonly Brush LightTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.9f, 0.9f, 0.3f));
+        //private static readonly Brush DarkTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.76f, 0.58f, 0.9f));
+        private static readonly Brush FireTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.9f, 0.4f, 0.3f));
+        private static readonly Brush WaterTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.4f, 0.89f, 0.9f));
+        private static readonly Brush LightTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.9f, 0.9f, 0.3f));
+        private static readonly Brush DarkTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.76f, 0.58f, 0.9f));
+        private static readonly Color FireColor = Colors.Tomato;
+        private static readonly Color WaterColor = Colors.DodgerBlue;
+        private static readonly Color LightColor = Colors.Orange;
+        private static readonly Color DarkColor = Colors.Purple;
         #endregion
         private MapTable InitMapData(string mapData, int w, int h, int x, int y, int distance, int repeat)
         {
@@ -235,22 +245,22 @@ namespace RTDDE.Executer.Func
                             switch (1 << (num - 1)) {
                                 //AttributeTypeLight,
                                 case 1: {
-                                        mapCell.Background = LightBrush;
+                                        mapCell.Background = LightTransBrush;
                                         break;
                                     }
                                 //AttributeTypeDark,
                                 case 2: {
-                                        mapCell.Background = DarkBrush;
+                                        mapCell.Background = DarkTransBrush;
                                         break;
                                     }
                                 //AttributeTypeFire = 4,
                                 case 4: {
-                                        mapCell.Background = FireBrush;
+                                        mapCell.Background = FireTransBrush;
                                         break;
                                     }
                                 //AttributeTypeWater = 8,
                                 case 8: {
-                                        mapCell.Background = WaterBrush;
+                                        mapCell.Background = WaterTransBrush;
                                         break;
                                     }
                                 //AttributeTypeBossStart = 16,
@@ -290,11 +300,6 @@ namespace RTDDE.Executer.Func
                             cellData = "E" + (num2);
                             if (num2 != 0) {
                                 //td.Attributes.Add("enemy", cellData);
-                            }
-                            if (num2 >= 17) {
-                                //E17以上一般都是史莱姆
-                                mapCell.Foreground = Brushes.Red;
-                                mapCell.fontWeight = FontWeights.Bold;
                             }
                         }
                         if ((cellDataInt == 0) || (num2 == 0)) {
@@ -366,8 +371,10 @@ namespace RTDDE.Executer.Func
                             MappingMode = BrushMappingMode.RelativeToBoundingBox,
                             GradientStops = new GradientStopCollection()
                             {
-                                new GradientStop(c.YorishiroColor,1d/3d),
-                                new GradientStop(Colors.Transparent,1d/3d)
+                                new GradientStop(c.YorishiroColor,1d/4d),
+                                new GradientStop(Colors.Transparent,1d/4d),
+                                new GradientStop(Colors.Transparent,3d/4d),
+                                new GradientStop(c.AttributeColor,3d/4d)
                             }
                         }
                     };
@@ -593,52 +600,114 @@ namespace RTDDE.Executer.Func
                     }
                     c.drop_id = Convert.ToInt32(foundRow[0]["drop_id"]);
                     string enemyId = foundRow[0]["id"].ToString();
-                    switch (enemyId) {
-                        case "65002":   //移動床_上
-                            {
-                                int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
-                                enemyDropId -= 99;
-                                c.CellData = enemyDropId.ToString() + "↑";
+                    EnemyUnitMaster eum =
+                        DAL.ToSingle<EnemyUnitMaster>("SELECT * FROM ENEMY_UNIT_MASTER WHERE id=" + enemyId);
+                    switch (Utility.ParseAttributetype(eum.attribute))
+                    {
+                        case "FIRE":
+                        {
+                            c.AttributeColor = FireColor;
+                            break;
+                        }
+                        case "WATER":
+                        {
+                            c.AttributeColor = WaterColor;
+                            break;
+                        }
+                        case "LIGHT":
+                        {
+                            c.AttributeColor = LightColor;
+                            break;
+                        }
+                        case "DARK":
+                        {
+                            c.AttributeColor = DarkColor;
+                            break;
+                        }
+                    }
+                    switch ((ENEMY_TYPE)eum.type) {
+                        case ENEMY_TYPE.STAIRS: {
+                                switch (eum.id) {
+                                    case 40100: //上り階段
+                                {
+                                            int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                            //td.Text = "↗" + enemyDropId.ToString();
+                                            //tb.Text = "<a href='Map.aspx?id=" + enemyDropId + "'>↗</a>";
+                                            c.CellData = "↗";
+                                            break;
+                                        }
+                                    case 65001: //下り階段
+                                {
+                                    int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                    //td.Text = "↘" + enemyDropId.ToString();
+                                    //tb.Text = "<a href='Map.aspx?id=" + enemyDropId + "'>↘</a>";
+                                    c.CellData = "↘";
+                                    break;
+                                }
+                                }
                                 break;
                             }
-                        case "65003":   //移動床_直進
-                            {
-                                int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
-                                enemyDropId -= 299;
-                                c.CellData = enemyDropId.ToString() + "→";
+                        case ENEMY_TYPE.MOVING_PANEL: {
+                                switch (eum.id) {
+                                    case 65002: //移動床_上
+                                {
+                                            int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                            enemyDropId -= 99;
+                                            c.CellData = enemyDropId.ToString() + "↑";
+                                            break;
+                                        }
+                                    case 65003: //移動床_直進
+                                {
+                                    int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                    enemyDropId -= 299;
+                                    c.CellData = enemyDropId.ToString() + "→";
+                                    break;
+                                }
+                                    case 65004: //移動床_下
+                                {
+                                    int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
+                                    enemyDropId -= 199;
+                                    c.CellData = enemyDropId.ToString() + "↓";
+                                    break;
+                                }
+                                }
                                 break;
                             }
-                        case "65004":   //移動床_下
-                            {
-                                int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
-                                enemyDropId -= 199;
-                                c.CellData = enemyDropId.ToString() + "↓";
-                                break;
-                            }
-                        case "22000":   //宝箱
-                            {
+                        case ENEMY_TYPE.TREASURE: {
                                 c.CellData = "箱";
                                 c.Foreground = Brushes.Red;
                                 c.fontWeight = FontWeights.Bold;
                                 break;
                             }
-                        case "40100":   //上り階段
-                            {
-                                int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
-                                //td.Text = "↗" + enemyDropId.ToString();
-                                //tb.Text = "<a href='Map.aspx?id=" + enemyDropId + "'>↗</a>";
-                                c.CellData = "↗";
+                        case ENEMY_TYPE.SILVER_SLIME: {
+                                c.CellData = c.CellData.Replace("E", "S");
+                                c.Foreground = Brushes.Silver;
+                                c.fontWeight = FontWeights.Bold;
                                 break;
                             }
-                        case "65001":   //下り階段
-                            {
-                                int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
-                                //td.Text = "↘" + enemyDropId.ToString();
-                                //tb.Text = "<a href='Map.aspx?id=" + enemyDropId + "'>↘</a>";
-                                c.CellData = "↘";
+                        case ENEMY_TYPE.GOLD_SLIME: {
+                                c.CellData = c.CellData.Replace("E", "G");
+                                c.Foreground = Brushes.Gold;
+                                c.fontWeight = FontWeights.Bold;
                                 break;
                             }
-                        default: break;
+                        case ENEMY_TYPE.MINE: {
+                                c.CellData = "✹";
+                                c.Foreground = Brushes.Gray;
+                                break;
+                            }
+                        case ENEMY_TYPE.GOLD: {
+                                c.CellData = "$";
+                                c.Foreground = Brushes.Gray;
+                                break;
+                            }
+                        case ENEMY_TYPE.NOTHING: {
+                                c.CellData = string.Empty;
+                                c.Background = Brushes.Black;
+                                break;
+                            }
+                        default:
+                            break;
                     }
                 }
             }
