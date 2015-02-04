@@ -35,17 +35,7 @@ namespace RTDDE.Executer
         }
         public class DatabaseClass
         {
-            public string DatabaseName { get; set; }
-            public string ConnectionString
-            {
-                get { return _connectionString; }
-                set
-                {
-                    _connectionString = value;
-                    DAL.ConnectionString = _connectionString;
-                }
-            }
-            private string _connectionString;
+            public bool AutoBackup { get; set; }
         }
         public GeneralClass General;
         public ModelClass Model;
@@ -67,8 +57,7 @@ namespace RTDDE.Executer
             };
             Database = new DatabaseClass()
             {
-                DatabaseName = string.Empty,
-                ConnectionString = "Data Source=RTD.db"
+                AutoBackup = false
             };
         }
     }

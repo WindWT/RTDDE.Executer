@@ -33,14 +33,12 @@ namespace RTDDE.Executer.Func
         {
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
             ofd.Filter = "LDBS File|LDBS0_Msg.bytes";
-            if (ofd.ShowDialog() == true)
-            {
+            if (ofd.ShowDialog() == true) {
                 ImportLdbsButton.Content = new Run("Importing MAP Data...");
                 string filename = ofd.FileName;
                 Task task = new Task(() =>
                 {
-                    using (StreamReader sr = new StreamReader(filename))
-                    {
+                    using (StreamReader sr = new StreamReader(filename)) {
                         var game = new MapData(sr.BaseStream);
                         DAL.FromSingle(game.LDM);
                         DAL.FromSingle(game.LDM.enemy_table_master);
@@ -54,13 +52,11 @@ namespace RTDDE.Executer.Func
                 });
                 task.ContinueWith(t =>
                 {
-                    if (t.Exception != null)
-                    {
+                    if (t.Exception != null) {
                         Utility.ShowException(t.Exception.InnerException.Message);
                         ImportLdbsButton.Content = new Run("MAP Data Import Failed.");
                     }
-                    else
-                    {
+                    else {
                         ImportLdbsButton.Content = new Run("MAP Data Successfully Imported.");
                         RefreshControl();
                     }
@@ -77,59 +73,80 @@ namespace RTDDE.Executer.Func
                 FileName = "Ignore me",
                 Title = "Browse Folder Then Press Open"
             };
-            if (ofd.ShowDialog() == true)
-            {
+            if (ofd.ShowDialog() == true) {
                 ImportMsgPackButton.Content = new Run("Importing MDBS MsgPack...");
                 string path = System.IO.Path.GetDirectoryName(ofd.FileName);
                 var stopwatch = new Stopwatch();
-                Task task = new Task(() =>
+                long importTime = 0, backupTime = 0;
+                stopwatch.Start();
+                Task taskBackup = new Task(() =>
                 {
-                    stopwatch.Start();
-                    foreach (string filepath in System.IO.Directory.GetFiles(path))
-                    {
+                    if (Settings.Config.Database.AutoBackup == false) {
+                        return;
+                    }
+                    stopwatch.Restart();
+                    DirectoryInfo backupFolderInfo;
+                    if (Directory.Exists("backup") == false) {
+                        backupFolderInfo = Directory.CreateDirectory("backup");
+                    }
+                    else {
+                        backupFolderInfo = new DirectoryInfo("backup");
+                    }
+                    if (File.Exists("RTD.db")) {
+                        File.Copy("RTD.db", backupFolderInfo.Name + "\\RTD_backup_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + ".db");
+                    }
+                    stopwatch.Stop();
+                    backupTime = stopwatch.ElapsedMilliseconds;
+                });
+                Task taskImport = new Task(() =>
+                {
+                    taskBackup.Wait();
+                    stopwatch.Restart();
+                    foreach (string filepath in System.IO.Directory.GetFiles(path)) {
                         string filename = System.IO.Path.GetFileName(filepath);
-                        if (filename != null && filename.EndsWith("_Msg.bytes") == false)
-                        {
+                        if (filename != null && filename.EndsWith("_Msg.bytes") == false) {
                             continue;
                         }
                         string enumName = filename.Replace("_Msg.bytes", string.Empty);
                         MASTERDB mdbEnum;
-                        if (Enum.TryParse<MASTERDB>(enumName, true, out mdbEnum) == false)
-                        {
+                        if (Enum.TryParse<MASTERDB>(enumName, true, out mdbEnum) == false) {
                             //type not exist, skip
                             continue;
                         }
-                        using (StreamReader sr = new StreamReader(filepath))
-                        {
+                        using (StreamReader sr = new StreamReader(filepath)) {
                             //Dynamic type from enum
                             Type currentType = Converter.Enum2Type(mdbEnum);
                             //Generate Method
                             MethodInfo methodToList =
-                                typeof (MsgBytes).GetMethod("ToList").MakeGenericMethod(currentType);
-                            MethodInfo methodToDB = typeof (DAL).GetMethod("FromList").MakeGenericMethod(currentType);
+                                typeof(MsgBytes).GetMethod("ToList").MakeGenericMethod(currentType);
+                            MethodInfo methodToDB = typeof(DAL).GetMethod("FromList").MakeGenericMethod(currentType);
                             //Invoke
-                            var list = methodToList.Invoke(null, new object[] {sr.BaseStream});
+                            var list = methodToList.Invoke(null, new object[] { sr.BaseStream });
                             //Drop table, 
                             DAL.DropTable(enumName);
-                            methodToDB.Invoke(null, new object[] {list});
+                            methodToDB.Invoke(null, new object[] { list });
                         }
                     }
+                    stopwatch.Stop();
+                    importTime = stopwatch.ElapsedMilliseconds;
                 });
-                task.ContinueWith(t =>
+                taskImport.ContinueWith(t =>
                 {
-                    if (t.Exception != null)
-                    {
+                    if (t.Exception != null) {
                         Utility.ShowException(t.Exception.InnerException.Message);
                         ImportMsgPackButton.Content = new Run("MDBS MsgPack Import Failed.");
+                        return;
                     }
-                    else
-                    {
-                        stopwatch.Stop();
-                        ImportMsgPackButton.Content = new Run("MDBS MsgPack Successfully Imported. ("+stopwatch.ElapsedMilliseconds+"ms)");
-                        RefreshControl();
+                    if (Settings.Config.Database.AutoBackup == false) {
+                        ImportMsgPackButton.Content = new Run(string.Format("MDBS MsgPack Successfully Imported. ({0}ms)", importTime));
                     }
+                    else {
+                        ImportMsgPackButton.Content = new Run(string.Format("MDBS MsgPack Successfully Backuped & Imported . (B:{1}ms I:{0}ms)", importTime, backupTime));
+                    }
+                    RefreshControl();
                 }, MainWindow.UiTaskScheduler);
-                task.Start();
+                taskBackup.Start();
+                taskImport.Start();
             }
         }
         private void SaveSettingsButton_Click(object sender, RoutedEventArgs e)
@@ -139,14 +156,13 @@ namespace RTDDE.Executer.Func
             Settings.Config.General.IsEnableLevelLimiter = IsEnableLevelLimiterCheckBox.IsChecked.GetValueOrDefault(false);
             Settings.Config.General.IsDefaultLvMax = IsDefaultLvMaxCheckBox.IsChecked.GetValueOrDefault(false);
             Settings.Config.General.IsUseLocalTime = IsUseLocalTimeCheckBox.IsChecked.GetValueOrDefault(false);
+            Settings.Config.Database.AutoBackup = AutoBackupCheckBox.IsChecked.GetValueOrDefault(false);
             Settings.Config.Model.DisunityPath = DisunityPathTextBox.Text;
-            try
-            {
+            try {
                 Settings.Save();
                 SaveSettingsButton.Content = new Run("SAVED");
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Utility.ShowException(ex.Message);
                 SaveSettingsButton.Content = new Run("FAILED, click to retry.");
             }
@@ -155,10 +171,8 @@ namespace RTDDE.Executer.Func
         private void RefreshControl()
         {
             var w = (MainWindow)Application.Current.MainWindow;
-            foreach (UserControl child in w.MainGrid.Children)
-            {
-                if (child is IRefreshable)
-                {
+            foreach (UserControl child in w.MainGrid.Children) {
+                if (child is IRefreshable) {
                     (child as IRefreshable).Refresh();
                 }
             }
@@ -172,6 +186,7 @@ namespace RTDDE.Executer.Func
             IsEnableLevelLimiterCheckBox.IsChecked = Settings.Config.General.IsEnableLevelLimiter;
             IsDefaultLvMaxCheckBox.IsChecked = Settings.Config.General.IsDefaultLvMax;
             IsUseLocalTimeCheckBox.IsChecked = Settings.Config.General.IsUseLocalTime;
+            AutoBackupCheckBox.IsChecked = Settings.Config.Database.AutoBackup;
             DisunityPathTextBox.Text = Settings.Config.Model.DisunityPath;
         }
         private void SelectDisunityPathButton_Click(object sender, RoutedEventArgs e)
@@ -181,8 +196,7 @@ namespace RTDDE.Executer.Func
                 DefaultExt = ".bat",
                 Filter = "Disunity Bat|disunity.bat"
             };
-            if (ofd.ShowDialog() == true)
-            {
+            if (ofd.ShowDialog() == true) {
                 DisunityPathTextBox.Text = ofd.FileName;
             }
         }
