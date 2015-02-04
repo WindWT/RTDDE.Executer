@@ -731,9 +731,9 @@ namespace RTDDE.Executer.Func
                         if (c.drop_unit == null) {
                             continue;
                         }
-                        if (c.drop_unit.kind != 311) {   //not yorishiro, skip
-                            continue;
-                        }
+                        //if (c.drop_unit.kind != 311) {   //not yorishiro, skip
+                        //    continue;
+                        //}
                         if (c.drop_unit.id == 15022) {
                             //very bad yorishiro
                             c.YorishiroColor = Colors.Black;
