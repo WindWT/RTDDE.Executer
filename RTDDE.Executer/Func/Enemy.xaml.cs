@@ -14,15 +14,11 @@ namespace RTDDE.Executer.Func
     /// <summary>
     /// Enemy.xaml 的交互逻辑
     /// </summary>
-    public partial class Enemy : UserControl, IRefreshable
+    public partial class Enemy : UserControl
     {
         public Enemy()
         {
             InitializeComponent();
-        }
-        public void Refresh()
-        {
-            EnemyTab_Initialized(null, null);
         }
         private void EnemyTab_Initialized(object sender, EventArgs e)
         {

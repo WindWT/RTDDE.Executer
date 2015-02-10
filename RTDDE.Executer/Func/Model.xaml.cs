@@ -16,16 +16,11 @@ using RTDDE.Provider;
 
 namespace RTDDE.Executer.Func
 {
-    public partial class Model : UserControl, IRefreshable
+    public partial class Model : UserControl
     {
         public Model()
         {
             InitializeComponent();
-        }
-
-        public void Refresh()
-        {
-            Unload();
         }
         private class ModelInfo
         {

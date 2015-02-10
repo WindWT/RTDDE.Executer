@@ -22,6 +22,7 @@ using System.Windows.Threading;
 using System.Configuration;
 using System.Windows.Controls.Primitives;
 using System.ComponentModel;
+using RTDDE.Executer.Func;
 
 namespace RTDDE.Executer
 {
@@ -49,19 +50,40 @@ namespace RTDDE.Executer
         private void MenuItem_Checked(object sender, RoutedEventArgs e)
         {
             Button tb = sender as Button;
-            if (tb != null)
-            {
+            if (tb != null) {
                 ChangeTab(tb.Name.Replace("MenuItem_", String.Empty));
             }
         }
 
         public void ChangeTab(string tabName)
         {
-            foreach (UserControl child in MainGrid.Children)
-            {
-                child.Visibility = child.Name == tabName ? Visibility.Visible : Visibility.Collapsed;
+            foreach (UserControl child in MainGrid.Children) {
+                child.Visibility = Visibility.Collapsed;
+            }
+            var tab = GetTabByName(tabName);
+            if (tab != null) {
+                tab.Visibility = Visibility.Visible;
             }
             MenuButton.IsChecked = false;
+        }
+        public UserControl GetTabByName(string tabName)
+        {
+            foreach (UserControl child in MainGrid.Children) {
+                if (string.Compare(child.GetType().Name, tabName, StringComparison.OrdinalIgnoreCase) == 0) {
+                    return child;
+                }
+            }
+            //该Tab尚未创建，尝试创建
+            string tabFullName = string.Format("RTDDE.Executer.Func.{0}", tabName);
+            var tabType = Type.GetType(tabFullName);
+            if (tabType != null) {
+                UserControl tab = (UserControl)Activator.CreateInstance(tabType);
+                if (tab != null) {
+                    MainGrid.Children.Add(tab);
+                    return tab;
+                }
+            }
+            return null;
         }
 
         private void SB_ShowMenu_Completed(object sender, EventArgs e)
@@ -83,12 +105,10 @@ namespace RTDDE.Executer
         private DispatcherTimer _dispatcherTimer = null;
         private void StatusBarExceptionMessage_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(StatusBarExceptionMessage.Text))
-            {
+            if (string.IsNullOrWhiteSpace(StatusBarExceptionMessage.Text)) {
                 StatusBarExceptionMessage.Visibility = Visibility.Collapsed;
             }
-            else
-            {
+            else {
                 StatusBarExceptionMessage.Visibility = Visibility.Visible;
                 _dispatcherTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 15) };
                 EventHandler eh = null;
@@ -105,8 +125,7 @@ namespace RTDDE.Executer
 
         private void MoveBar_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
+            if (e.LeftButton == MouseButtonState.Pressed) {
                 this.DragMove();
             }
         }

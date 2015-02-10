@@ -58,7 +58,7 @@ namespace RTDDE.Executer.Func
                     }
                     else {
                         ImportLdbsButton.Content = new Run("MAP Data Successfully Imported.");
-                        RefreshControl();
+                        RefreshTabs();
                     }
                 }, MainWindow.UiTaskScheduler);
                 task.Start();
@@ -143,7 +143,7 @@ namespace RTDDE.Executer.Func
                     else {
                         ImportMsgPackButton.Content = new Run(string.Format("MDBS MsgPack Successfully Backuped & Imported . (B:{1}ms I:{0}ms)", importTime, backupTime));
                     }
-                    RefreshControl();
+                    RefreshTabs();
                 }, MainWindow.UiTaskScheduler);
                 taskBackup.Start();
                 taskImport.Start();
@@ -168,12 +168,13 @@ namespace RTDDE.Executer.Func
             }
         }
 
-        private void RefreshControl()
+        private void RefreshTabs()
         {
             var w = (MainWindow)Application.Current.MainWindow;
             foreach (UserControl child in w.MainGrid.Children) {
-                if (child is IRefreshable) {
-                    (child as IRefreshable).Refresh();
+                if ((child is Config) == false)
+                {
+                    w.MainGrid.Children.Remove(child);
                 }
             }
         }

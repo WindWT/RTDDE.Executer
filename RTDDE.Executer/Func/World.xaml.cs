@@ -7,25 +7,24 @@ using RTDDE.Provider.MasterData;
 
 namespace RTDDE.Executer.Func
 {
-    public partial class World : UserControl, IRefreshable
+    public partial class World : UserControl
     {
         public World()
         {
             InitializeComponent();
         }
-        public void Refresh()
+
+        private void World_Initialized(object sender, EventArgs e)
         {
             Task<List<QuestWorldMaster>> task = new Task<List<QuestWorldMaster>>(() => DAL.ToAllList<QuestWorldMaster>("id"));
             task.ContinueWith(t =>
             {
-                if (t.Exception != null)
-                {
+                if (t.Exception != null) {
                     Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
                 WorldButtonStackPanel.Children.Clear();
-                foreach (var qwm in t.Result)
-                {
+                foreach (var qwm in t.Result) {
                     var btn = new Button()
                     {
                         Content = qwm.name
@@ -38,12 +37,6 @@ namespace RTDDE.Executer.Func
                 }
             }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
-            Field.Refresh();
-        }
-
-        private void World_Initialized(object sender, EventArgs e)
-        {
-            Refresh();
         }
     }
 }

@@ -14,7 +14,7 @@ using RTDDE.Provider.MasterData;
 
 namespace RTDDE.Executer.Func
 {
-    public partial class Skill : UserControl, IRefreshable
+    public partial class Skill : UserControl
     {
         public Skill()
         {
@@ -31,11 +31,6 @@ namespace RTDDE.Executer.Func
             };
             SkillSearch_attribute.ItemsSource = attrDict;
             //SkillSearch_sub_attr.ItemsSource = attrDict;
-        }
-        public void Refresh()
-        {
-            SkillTypeRadio_Party.IsChecked = false;
-            SkillTypeRadio_Party.IsChecked = true;
         }
         [DAL(UseProperty = true)]
         private class SkillUnitRank
@@ -508,10 +503,10 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
         {
             if (sender != null)
             {
-                var w = (MainWindow)Application.Current.MainWindow;
+                var unit = (Unit)Utility.GetTabByName("Unit");
                 string id = (sender as TextBox).Tag.ToString();
-                w.Unit.SelectUnitById(Convert.ToInt32(id));
-                w.ChangeTab("Unit");
+                unit.SelectUnitById(Convert.ToInt32(id));
+                Utility.ChangeTab("Unit");
             }
         }
         private Dictionary<string, string> GetSkillTypeDict<T>() where T : struct , IConvertible

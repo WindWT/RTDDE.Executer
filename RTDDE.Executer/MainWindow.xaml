@@ -123,7 +123,7 @@
                 <TextBlock></TextBlock>
             </DockPanel>
             <Grid Grid.Row="1" Name="MainGrid">
-                <RTDDE:World x:Name="World"/>
+                <!--<RTDDE:World x:Name="World"/>
                 <RTDDE:Quest x:Name="Quest"/>
                 <RTDDE:QuestArea x:Name="QuestArea"/>
                 <RTDDE:Unit x:Name="Unit"/>
@@ -132,9 +132,9 @@
                 <RTDDE:Accessory x:Name="Accessory" />
                 <RTDDE:Guide x:Name="Guide" />
                 <RTDDE:Config x:Name="Config" />
-                <!--<RTDDE:Diff x:Name="Diff" />-->
+                --><!--<RTDDE:Diff x:Name="Diff" />--><!--
                 <RTDDE:Common x:Name="Common" />
-                <RTDDE:About x:Name="About" />
+                <RTDDE:About x:Name="About" />-->
             </Grid>
         </Grid>
         <Rectangle Name="topLeft" Fill="Transparent" Grid.Column="0" Grid.Row="0" />

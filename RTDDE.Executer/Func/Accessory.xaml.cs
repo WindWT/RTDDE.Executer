@@ -12,7 +12,7 @@ namespace RTDDE.Executer.Func
     /// <summary>
     /// Accessory.xaml 的交互逻辑
     /// </summary>
-    public partial class Accessory : UserControl, IRefreshable
+    public partial class Accessory : UserControl
     {
         public Accessory()
         {
@@ -39,13 +39,9 @@ namespace RTDDE.Executer.Func
             AccessorySearch_type.ItemsSource = typeDict;
             //AccessorySearch_sub_attr.ItemsSource = attrDict;
         }
-        public void Refresh()
-        {
-            Utility.BindData(AccessoryDataGrid, "SELECT id,type,name FROM Accessory_MASTER order by type,id");
-        }
         private void AccessoryTab_Initialized(object sender, EventArgs e)
         {
-            Refresh();
+            Utility.BindData(AccessoryDataGrid, "SELECT id,type,name FROM Accessory_MASTER order by type,id");
         }
         private void AccessoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

@@ -180,7 +180,6 @@
     <Compile Include="Func\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Util\IRefreshable.cs" />
     <Compile Include="Util\ConfigData.cs" />
     <Compile Include="Util\Settings.cs" />
     <Compile Include="Util\Skills.cs" />

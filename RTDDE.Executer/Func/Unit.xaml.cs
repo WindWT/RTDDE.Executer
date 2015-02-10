@@ -12,15 +12,11 @@ using RTDDE.Provider.MasterData;
 
 namespace RTDDE.Executer.Func
 {
-    public partial class Unit : UserControl, IRefreshable
+    public partial class Unit : UserControl
     {
         public Unit()
         {
             InitializeComponent();
-        }
-        public void Refresh()
-        {
-            UnitTab_Initialized(null, null);
         }
         private void UnitTab_Initialized(object sender, EventArgs e)
         {

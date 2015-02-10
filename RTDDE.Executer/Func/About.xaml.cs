@@ -7,7 +7,7 @@ namespace RTDDE.Executer.Func
     /// <summary>
     /// Common.xaml 的交互逻辑
     /// </summary>
-    public partial class About : UserControl, IRefreshable
+    public partial class About : UserControl
     {
         public About()
         {
@@ -33,11 +33,6 @@ namespace RTDDE.Executer.Func
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
-        }
-
-        public void Refresh()
-        {
-            
         }
     }
 }

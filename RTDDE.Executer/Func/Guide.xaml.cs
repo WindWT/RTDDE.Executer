@@ -11,15 +11,11 @@ namespace RTDDE.Executer.Func
     /// <summary>
     /// Guide.xaml 的交互逻辑
     /// </summary>
-    public partial class Guide : UserControl, IRefreshable
+    public partial class Guide : UserControl
     {
         public Guide()
         {
             InitializeComponent();
-        }
-        public void Refresh()
-        {
-            GuideTab_Initialized(null, null);
         }
         private void GuideTab_Initialized(object sender, EventArgs e)
         {

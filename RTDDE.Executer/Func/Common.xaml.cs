@@ -8,13 +8,13 @@ namespace RTDDE.Executer.Func
     /// <summary>
     /// Common.xaml 的交互逻辑
     /// </summary>
-    public partial class Common : UserControl, IRefreshable
+    public partial class Common : UserControl
     {
         public Common()
         {
             InitializeComponent();
         }
-        public void Refresh()
+        private void CommonTab_Initialized(object sender, EventArgs e)
         {
             CommonSQLComboBox.ItemsSource = new Dictionary<string, string>()
             {
@@ -28,10 +28,6 @@ ELSE '' END) as present_name
 FROM LOGIN_BONUS_MASTER order by day"},
                 {"Gacha", @"SELECT * FROM GACHA_ITEM_MASTER order by id desc"}
             };
-        }
-        private void CommonTab_Initialized(object sender, EventArgs e)
-        {
-            Refresh();
         }
         private void CommonSQLComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

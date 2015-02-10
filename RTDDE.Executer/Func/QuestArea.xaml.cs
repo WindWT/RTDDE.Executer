@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,16 +11,11 @@ using RTDDE.Provider.MasterData;
 
 namespace RTDDE.Executer.Func
 {
-    public partial class QuestArea : UserControl, IRefreshable
+    public partial class QuestArea : UserControl
     {
         public QuestArea()
         {
             InitializeComponent();
-        }
-        public void Refresh()
-        {
-            QuestAreaTypeRadio_Main.IsChecked = false;
-            QuestAreaTypeRadio_Main.IsChecked = true;
         }
         private void QuestAreaDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -150,11 +146,11 @@ order by point";
                 DataGridRow dgr = sender as DataGridRow;
                 string id = ((DataRowView)dgr.Item).Row["id"].ToString();
                 string name = ((DataRowView)dgr.Item).Row["name"].ToString();
-                var w = (MainWindow)Application.Current.MainWindow;
-                w.Quest.QuestSearch_parent_area_id.Text = id;
-                w.Quest.QuestSearch_parent_area_name.Text = name;
-                w.Quest.QuestSearchExpander.IsExpanded = true;
-                w.ChangeTab("Quest");
+                var quest = (Quest)Utility.GetTabByName("Quest");
+                quest.QuestSearch_parent_area_id.Text = id;
+                quest.QuestSearch_parent_area_name.Text = name;
+                quest.QuestSearchExpander.IsExpanded = true;
+                Utility.ChangeTab("Quest");
             }
         }
 

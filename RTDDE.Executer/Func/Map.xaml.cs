@@ -18,19 +18,22 @@ namespace RTDDE.Executer.Func
     /// <summary>
     /// Map.xaml 的交互逻辑
     /// </summary>
-    public partial class Map : UserControl, IRefreshable
+    public partial class Map : UserControl
     {
         public Map()
         {
             InitializeComponent();
         }
-
-        public void Refresh()
-        {
-            Unload();
-        }
         public void Load(string levelID = "-1", int repeat = 1)
         {
+            Unload();
+            //add loading text
+            MapGrid.Children.Add(new TextBlock()
+            {
+                Text = "Loading...",
+                FontWeight = FontWeights.Bold,
+                Padding = new Thickness(24)
+            });
             if (string.IsNullOrEmpty(levelID)) {
                 levelID = "-1";
             }
@@ -61,11 +64,10 @@ namespace RTDDE.Executer.Func
                 Convert.ToInt32(levelData["distance"]),
                 repeat
                 ), initMonsterTask.Result), Settings.Config.General.IsShowDropInfo ? MapData.GetEnemyInfo(levelID) : null);
-            }
-            );
+            });
             task.ContinueWith(t =>
             {
-                ClearMap();
+                MapGrid.Children.Clear();
                 if (t.Exception != null) {
                     Utility.ShowException(t.Exception.InnerException.Message);
                     return;
@@ -602,28 +604,23 @@ namespace RTDDE.Executer.Func
                     string enemyId = foundRow[0]["id"].ToString();
                     EnemyUnitMaster eum =
                         DAL.ToSingle<EnemyUnitMaster>("SELECT * FROM ENEMY_UNIT_MASTER WHERE id=" + enemyId);
-                    switch (Utility.ParseAttributetype(eum.attribute))
-                    {
-                        case "FIRE":
-                        {
-                            c.AttributeColor = FireColor;
-                            break;
-                        }
-                        case "WATER":
-                        {
-                            c.AttributeColor = WaterColor;
-                            break;
-                        }
-                        case "LIGHT":
-                        {
-                            c.AttributeColor = LightColor;
-                            break;
-                        }
-                        case "DARK":
-                        {
-                            c.AttributeColor = DarkColor;
-                            break;
-                        }
+                    switch (Utility.ParseAttributetype(eum.attribute)) {
+                        case "FIRE": {
+                                c.AttributeColor = FireColor;
+                                break;
+                            }
+                        case "WATER": {
+                                c.AttributeColor = WaterColor;
+                                break;
+                            }
+                        case "LIGHT": {
+                                c.AttributeColor = LightColor;
+                                break;
+                            }
+                        case "DARK": {
+                                c.AttributeColor = DarkColor;
+                                break;
+                            }
                     }
                     switch ((ENEMY_TYPE)eum.type) {
                         case ENEMY_TYPE.STAIRS: {

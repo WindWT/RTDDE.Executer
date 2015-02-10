@@ -12,15 +12,11 @@ namespace RTDDE.Executer.Func
     /// <summary>
     /// Common.xaml 的交互逻辑
     /// </summary>
-    public partial class Area : UserControl, IRefreshable
+    public partial class Area : UserControl
     {
         public Area()
         {
             InitializeComponent();
-        }
-        public void Refresh()
-        {
-            AreaCanvas.Children.Clear();
         }
         private static readonly double SCALE_PARAMETER = 0.5d;
         private static readonly double LEFT_OFFSET = -75d;
