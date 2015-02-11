@@ -214,7 +214,7 @@ WHERE uo.id={0}";
                 float expThisLevel = (float)(Math.Pow(thislevel - 1, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(ui.grow)));
                 float expNextLevel = (float)(Math.Pow(thislevel, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(ui.grow)));
                 UnitInfo_EXP.Text = expThisLevel.ToString("0");
-                UnitInfo_EXP_Next.Text = thislevel == maxlevel ? "MAX" : expNextLevel.ToString("0");
+                UnitInfo_EXP_Next.Text = Math.Abs(thislevel - maxlevel) < 0.1 ? "MAX" : expNextLevel.ToString("0");
                 UnitInfo_cost.Text = (ui.cost * thislevel).ToString("0");
                 UnitInfo_sale.Text = (ui.sale * thislevel).ToString("0");
                 UnitInfo_mix.Text = (ui.mix * thislevel).ToString("0");
@@ -535,8 +535,10 @@ WHERE uo.id={0}";
             UnitSearch_id.Text = string.Empty;
             UnitSearch_g_id.Text = string.Empty;
             UnitSearch_name.Text = string.Empty;
+            UnitSearch_story.Text = string.Empty;
             UnitSearch_category.SelectedIndex = 0;
             UnitSearch_style.SelectedIndex = 0;
+            UnitSearch_kind.SelectedIndex = 0;
             UnitSearch_attribute.SelectedIndex = 0;
             UnitSearch_sub_a1.SelectedIndex = 0;
             Utility.BindData(UnitDataGrid, "SELECT id,g_id,name FROM UNIT_MASTER order by g_id");
@@ -563,6 +565,9 @@ WHERE uo.id={0}";
             if (String.IsNullOrWhiteSpace(UnitSearch_name.Text) == false)
             {
                 sql += "name LIKE '%" + UnitSearch_name.Text.Trim() + "%' AND ";
+            }
+            if (String.IsNullOrWhiteSpace(UnitSearch_story.Text) == false) {
+                sql += "story LIKE '%" + UnitSearch_story.Text.Trim() + "%' AND ";
             }
             if (String.IsNullOrWhiteSpace((string)UnitSearch_category.SelectedValue) == false)
             {

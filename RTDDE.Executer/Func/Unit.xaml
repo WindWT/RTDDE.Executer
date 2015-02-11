@@ -32,6 +32,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <Grid.Resources>
                                 <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
@@ -45,6 +46,8 @@
                             <TextBox Grid.Row="0" Grid.Column="3" Name="UnitSearch_g_id"></TextBox>
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="name"/>
                             <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="UnitSearch_name"></TextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="story"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Name="UnitSearch_story"></TextBox>
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>
