@@ -16,11 +16,16 @@
                 <StackPanel>
                     <GroupBox Header="General">
                         <StackPanel>
-                            <CheckBox Name="IsShowDropInfoCheckBox" >Show drop &amp; exp info</CheckBox>
-                            <CheckBox Name="IsShowBoxInfoCheckBox"   >Show box info</CheckBox>
                             <CheckBox Name="IsEnableLevelLimiterCheckBox"  >Enable level limiter</CheckBox>
                             <CheckBox Name="IsDefaultLvMaxCheckBox"  >Set LV to max by default</CheckBox>
                             <CheckBox Name="IsUseLocalTimeCheckBox"  >Show local time instead of GMT+9</CheckBox>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Map">
+                        <StackPanel>
+                            <CheckBox Name="IsShowDropInfoCheckBox" >Show drop &amp; exp info</CheckBox>
+                            <CheckBox Name="IsShowBoxInfoCheckBox">Show box info</CheckBox>
+                            <CheckBox Name="IsShowEnemyAttributeCheckBox">Show enemy attribute on topright</CheckBox>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="DataBase">

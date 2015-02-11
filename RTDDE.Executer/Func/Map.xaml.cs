@@ -63,7 +63,7 @@ namespace RTDDE.Executer.Func
                 Convert.ToInt32(levelData["start_y"]),
                 Convert.ToInt32(levelData["distance"]),
                 repeat
-                ), initMonsterTask.Result), Settings.Config.General.IsShowDropInfo ? MapData.GetEnemyInfo(levelID) : null);
+                ), initMonsterTask.Result), Settings.Config.Map.IsShowDropInfo ? MapData.GetEnemyInfo(levelID) : null);
             });
             task.ContinueWith(t =>
             {
@@ -280,7 +280,7 @@ namespace RTDDE.Executer.Func
 
                         var num2 = 31 & cellDataInt;
                         if (num2 >= 24) {
-                            if (Settings.Config.General.IsShowBoxInfo) {
+                            if (Settings.Config.Map.IsShowBoxInfo) {
                                 switch (num2 - 23) {
                                     case 1: cellData = "?"; break;
                                     case 2: cellData = "?$"; break;
@@ -604,23 +604,25 @@ namespace RTDDE.Executer.Func
                     string enemyId = foundRow[0]["id"].ToString();
                     EnemyUnitMaster eum =
                         DAL.ToSingle<EnemyUnitMaster>("SELECT * FROM ENEMY_UNIT_MASTER WHERE id=" + enemyId);
-                    switch (Utility.ParseAttributetype(eum.attribute)) {
-                        case "FIRE": {
-                                c.AttributeColor = FireColor;
-                                break;
-                            }
-                        case "WATER": {
-                                c.AttributeColor = WaterColor;
-                                break;
-                            }
-                        case "LIGHT": {
-                                c.AttributeColor = LightColor;
-                                break;
-                            }
-                        case "DARK": {
-                                c.AttributeColor = DarkColor;
-                                break;
-                            }
+                    if (Settings.Config.Map.IsShowEnemyAttribute) {
+                        switch (Utility.ParseAttributetype(eum.attribute)) {
+                            case "FIRE": {
+                                    c.AttributeColor = FireColor;
+                                    break;
+                                }
+                            case "WATER": {
+                                    c.AttributeColor = WaterColor;
+                                    break;
+                                }
+                            case "LIGHT": {
+                                    c.AttributeColor = LightColor;
+                                    break;
+                                }
+                            case "DARK": {
+                                    c.AttributeColor = DarkColor;
+                                    break;
+                                }
+                        }
                     }
                     switch ((ENEMY_TYPE)eum.type) {
                         case ENEMY_TYPE.STAIRS: {

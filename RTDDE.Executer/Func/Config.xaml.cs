@@ -149,14 +149,29 @@ namespace RTDDE.Executer.Func
                 taskImport.Start();
             }
         }
+        private void RefreshTabs()
+        {
+            var w = (MainWindow)Application.Current.MainWindow;
+            foreach (UserControl child in w.MainGrid.Children) {
+                if ((child is Config) == false) {
+                    w.MainGrid.Children.Remove(child);
+                }
+            }
+        }
+
         private void SaveSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            Settings.Config.General.IsShowDropInfo = IsShowDropInfoCheckBox.IsChecked.GetValueOrDefault(false);
-            Settings.Config.General.IsShowBoxInfo = IsShowBoxInfoCheckBox.IsChecked.GetValueOrDefault(false);
+            //map
+            Settings.Config.Map.IsShowDropInfo = IsShowDropInfoCheckBox.IsChecked.GetValueOrDefault(false);
+            Settings.Config.Map.IsShowBoxInfo = IsShowBoxInfoCheckBox.IsChecked.GetValueOrDefault(false);
+            Settings.Config.Map.IsShowEnemyAttribute = IsShowEnemyAttributeCheckBox.IsChecked.GetValueOrDefault(false);
+            //general
             Settings.Config.General.IsEnableLevelLimiter = IsEnableLevelLimiterCheckBox.IsChecked.GetValueOrDefault(false);
             Settings.Config.General.IsDefaultLvMax = IsDefaultLvMaxCheckBox.IsChecked.GetValueOrDefault(false);
             Settings.Config.General.IsUseLocalTime = IsUseLocalTimeCheckBox.IsChecked.GetValueOrDefault(false);
+            //db
             Settings.Config.Database.AutoBackup = AutoBackupCheckBox.IsChecked.GetValueOrDefault(false);
+            //model
             Settings.Config.Model.DisunityPath = DisunityPathTextBox.Text;
             try {
                 Settings.Save();
@@ -167,27 +182,21 @@ namespace RTDDE.Executer.Func
                 SaveSettingsButton.Content = new Run("FAILED, click to retry.");
             }
         }
-
-        private void RefreshTabs()
-        {
-            var w = (MainWindow)Application.Current.MainWindow;
-            foreach (UserControl child in w.MainGrid.Children) {
-                if ((child is Config) == false)
-                {
-                    w.MainGrid.Children.Remove(child);
-                }
-            }
-        }
         private void InitSettings()
         {
             //fake for designer
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this)) return;
-            IsShowDropInfoCheckBox.IsChecked = Settings.Config.General.IsShowDropInfo;
-            IsShowBoxInfoCheckBox.IsChecked = Settings.Config.General.IsShowBoxInfo;
+            //map
+            IsShowDropInfoCheckBox.IsChecked = Settings.Config.Map.IsShowDropInfo;
+            IsShowBoxInfoCheckBox.IsChecked = Settings.Config.Map.IsShowBoxInfo;
+            IsShowEnemyAttributeCheckBox.IsChecked = Settings.Config.Map.IsShowEnemyAttribute;
+            //general
             IsEnableLevelLimiterCheckBox.IsChecked = Settings.Config.General.IsEnableLevelLimiter;
             IsDefaultLvMaxCheckBox.IsChecked = Settings.Config.General.IsDefaultLvMax;
             IsUseLocalTimeCheckBox.IsChecked = Settings.Config.General.IsUseLocalTime;
+            //db
             AutoBackupCheckBox.IsChecked = Settings.Config.Database.AutoBackup;
+            //model
             DisunityPathTextBox.Text = Settings.Config.Model.DisunityPath;
         }
         private void SelectDisunityPathButton_Click(object sender, RoutedEventArgs e)

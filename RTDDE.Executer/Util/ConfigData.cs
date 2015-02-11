@@ -11,8 +11,6 @@ namespace RTDDE.Executer
     {
         public class GeneralClass
         {
-            public bool IsShowDropInfo { get; set; }
-            public bool IsShowBoxInfo { get; set; }
             public bool IsEnableLevelLimiter { get; set; }
             public bool IsDefaultLvMax { get; set; }
             public bool IsUseLocalTime
@@ -29,6 +27,12 @@ namespace RTDDE.Executer
             }
             private bool _isUseLocalTime = false;
         }
+        public class MapClass
+        {
+            public bool IsShowDropInfo { get; set; }
+            public bool IsShowBoxInfo { get; set; }
+            public bool IsShowEnemyAttribute { get; set; }
+        }
         public class ModelClass
         {
             public string DisunityPath { get; set; }
@@ -38,6 +42,7 @@ namespace RTDDE.Executer
             public bool AutoBackup { get; set; }
         }
         public GeneralClass General;
+        public MapClass Map;
         public ModelClass Model;
         public DatabaseClass Database;
 
@@ -45,11 +50,15 @@ namespace RTDDE.Executer
         {
             General = new GeneralClass()
             {
-                IsShowDropInfo = false,
-                IsShowBoxInfo = true,
                 IsDefaultLvMax = true,
                 IsEnableLevelLimiter = true,
                 IsUseLocalTime = false
+            };
+            Map = new MapClass()
+            {
+                IsShowDropInfo = false,
+                IsShowBoxInfo = true,
+                IsShowEnemyAttribute = true
             };
             Model = new ModelClass()
             {
