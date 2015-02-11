@@ -32,7 +32,7 @@ namespace RTDDE.Executer.Func
         private void ImportLdbsButton_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            ofd.Filter = "LDBS File|LDBS0_Msg.bytes";
+            ofd.Filter = "LDBS File|LDBS*_Msg.bytes";
             if (ofd.ShowDialog() == true) {
                 ImportLdbsButton.Content = new Run("Importing MAP Data...");
                 string filename = ofd.FileName;
