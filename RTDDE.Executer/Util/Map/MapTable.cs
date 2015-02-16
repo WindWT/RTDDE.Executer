@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using RTDDE.Provider;
@@ -57,6 +58,7 @@ namespace RTDDE.Executer.Util.Map
 
                         string cellData = MapData.Substring((j * W + i) * 2, 2);
                         int cellDataInt = int.Parse(cellData, System.Globalization.NumberStyles.HexNumber);
+                        mapCell.RawCellData = cellDataInt;
                         int num = 7 & cellDataInt >> 5;
                         if (num > 0) {
                             switch (1 << (num - 1)) {
@@ -268,8 +270,24 @@ namespace RTDDE.Executer.Util.Map
             if (dropData == null || dropData.Count == 0) {
                 return;
             }
+            EnemyInfo bossInfo = dropData.Find(o => o.enemy_id == 0);
+            EnemyInfo deathInfo = dropData.Find(o => o.enemy_id == 99);
             foreach (MapRow r in this.Rows) {
                 foreach (MapCell c in r.Cells) {
+                    if (c.RawCellData == 192) {
+                        c.drop_unit = DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + bossInfo.drop_unit_id.ToString());
+                        c.add_attribute_exp = bossInfo.add_attribute_exp;
+                        c.unit_exp = bossInfo.unit_exp;
+                        c.HasDropInfo = true;
+                        continue;
+                    }
+                    if (c.RawCellData == 160) {
+                        c.drop_unit = DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + deathInfo.drop_unit_id.ToString());
+                        c.add_attribute_exp = deathInfo.add_attribute_exp;
+                        c.unit_exp = deathInfo.unit_exp;
+                        c.HasDropInfo = true;
+                        continue;
+                    }
                     EnemyInfo ei = dropData.Find(o => o.x == c.x && o.y == c.y && !(o.x == 0 && o.y == 0));
                     if (ei != null && ei.flag) {
                         c.HasDropInfo = true;
@@ -311,12 +329,6 @@ namespace RTDDE.Executer.Util.Map
                     }
                 }
             }
-            MapCell lastCell = this.Rows.Find(o => { return true; }).Cells.FindLast(o => { return true; });
-            EnemyInfo bossInfo = dropData.Find(o => { return o.enemy_id == 0; });
-            lastCell.drop_unit = DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + bossInfo.drop_unit_id.ToString());
-            lastCell.add_attribute_exp = bossInfo.add_attribute_exp;
-            lastCell.unit_exp = bossInfo.unit_exp;
-            lastCell.HasDropInfo = true;
         }
     }
 }

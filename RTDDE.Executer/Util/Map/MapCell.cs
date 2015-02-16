@@ -6,6 +6,7 @@ namespace RTDDE.Executer.Util.Map
 {
     public class MapCell
     {
+        public int RawCellData { get; set; }
         public string CellData { get; set; }
         public Brush Foreground { get; set; }
         public Brush Background { get; set; }
