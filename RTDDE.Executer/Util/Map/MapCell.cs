@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using RTDDE.Provider.MasterData;
 
-namespace RTDDE.Executer
+namespace RTDDE.Executer.Util.Map
 {
     public class MapCell
     {
@@ -48,42 +46,4 @@ namespace RTDDE.Executer
             return CellData;
         }
     }
-    public class MapRow
-    {
-        public List<MapCell> Cells { get; set; }
-        public MapRow()
-        {
-            Cells = new List<MapCell>();
-        }
-    }
-    public class MapTable
-    {
-        public List<MapRow> Rows { get; set; }
-        public MapTable()
-        {
-            Rows = new List<MapRow>();
-            repeat = 1;
-        }
-        public int x { get; set; }
-        public int y { get; set; }
-        public int w { get; set; }
-        public int h { get; set; }
-        public int repeat { get; set; }
-    }
-    /*public class MapColumn
-    {
-        public ObservableCollection<MapCell> MapCells { get; set; }
-        public MapColumn()
-        {
-            MapCells = new ObservableCollection<MapCell>();
-        }
-    }
-    public class MapTable
-    {
-        public ObservableCollection<MapColumn> MapColumns { get; set; }
-        public MapTable()
-        {
-            MapColumns = new ObservableCollection<MapColumn>();
-        }
-    }*/
 }

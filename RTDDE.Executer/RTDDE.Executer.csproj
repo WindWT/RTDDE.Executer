@@ -181,6 +181,8 @@
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\ConfigData.cs" />
+    <Compile Include="Util\Map\MapCell.cs" />
+    <Compile Include="Util\Map\MapRow.cs" />
     <Compile Include="Util\Settings.cs" />
     <Compile Include="Util\Skills.cs" />
     <Compile Include="Util\UnitInfo.cs" />
@@ -265,7 +267,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Util\MapClass.cs" />
+    <Compile Include="Util\Map\MapTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
