@@ -499,11 +499,11 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                 }
             }
         }
-        private void tb_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        async private void tb_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (sender != null)
             {
-                var unit = (Unit)Utility.GetTabByName("Unit");
+                var unit = (Unit)await Utility.GetTabByName("Unit");
                 string id = (sender as TextBox).Tag.ToString();
                 unit.SelectUnitById(Convert.ToInt32(id));
                 Utility.ChangeTab("Unit");

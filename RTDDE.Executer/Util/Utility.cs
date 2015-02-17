@@ -60,10 +60,10 @@ namespace RTDDE.Executer
             var w = (MainWindow)Application.Current.MainWindow;
             w.ChangeTab(tabName);
         }
-        public static UserControl GetTabByName(string tabName)
+        async public static Task<UserControl> GetTabByName(string tabName)
         {
             var w = (MainWindow)Application.Current.MainWindow;
-            return w.GetTabByName(tabName);
+            return await w.GetTabByName(tabName);
         }
         public static void BindData(DataGrid dg, string sql)
         {

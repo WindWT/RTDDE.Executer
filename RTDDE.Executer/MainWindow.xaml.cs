@@ -45,8 +45,19 @@ namespace RTDDE.Executer
                 new WindowBorder(BorderPosition.Left, left));
             ChangeTab("Quest");
         }
+        [Obsolete("use async and await instead")]
         public static readonly TaskScheduler UiTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
+        private string LastTabName { get; set; }
+        private void MenuButton_OnChecked(object sender, RoutedEventArgs e)
+        {
+            LastTabName = MenuButton.Content.ToString();
+            MenuButton.Content = "MENU";
+        }
+        private void MenuButton_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            MenuButton.Content = string.IsNullOrEmpty(LastTabName) ? "MENU" : LastTabName;
+        }
         private void MenuItem_Checked(object sender, RoutedEventArgs e)
         {
             Button tb = sender as Button;
@@ -55,18 +66,19 @@ namespace RTDDE.Executer
             }
         }
 
-        public void ChangeTab(string tabName)
+        public async void ChangeTab(string tabName)
         {
             foreach (UserControl child in MainGrid.Children) {
                 child.Visibility = Visibility.Collapsed;
             }
-            var tab = GetTabByName(tabName);
+            var tab = await GetTabByName(tabName);
             if (tab != null) {
                 tab.Visibility = Visibility.Visible;
+                LastTabName = tab.GetType().Name;
             }
             MenuButton.IsChecked = false;
         }
-        public UserControl GetTabByName(string tabName)
+        public async Task<UserControl> GetTabByName(string tabName)
         {
             foreach (UserControl child in MainGrid.Children) {
                 if (string.Compare(child.GetType().Name, tabName, StringComparison.OrdinalIgnoreCase) == 0) {
@@ -77,7 +89,14 @@ namespace RTDDE.Executer
             string tabFullName = string.Format("RTDDE.Executer.Func.{0}", tabName);
             var tabType = Type.GetType(tabFullName);
             if (tabType != null) {
-                UserControl tab = (UserControl)Activator.CreateInstance(tabType);
+                //long time loading, avoid UI lag
+                Task<UserControl> taskCreate = Task.Factory.StartNew(
+                    () => (UserControl)Activator.CreateInstance(tabType),
+                    CancellationToken.None,
+                    TaskCreationOptions.None,
+                    TaskScheduler.FromCurrentSynchronizationContext()
+                    );
+                UserControl tab = await taskCreate;
                 if (tab != null) {
                     MainGrid.Children.Add(tab);
                     return tab;

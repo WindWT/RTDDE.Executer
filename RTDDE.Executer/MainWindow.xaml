@@ -46,7 +46,7 @@
                     <Rectangle Fill="Transparent"/>
                 </ContentControl>
                 <!--Button-->
-                <ToggleButton Grid.Column="0"  Name="MenuButton" Content="MENU" Style="{StaticResource MenuStyle}">
+                <ToggleButton Grid.Column="0" Name="MenuButton" Content="MENU" Style="{StaticResource MenuStyle}" Checked="MenuButton_OnChecked" Unchecked="MenuButton_OnUnchecked">
                     <ToggleButton.Triggers>
                         <EventTrigger RoutedEvent="ToggleButton.Checked">
                             <BeginStoryboard>
