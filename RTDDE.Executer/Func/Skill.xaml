@@ -65,173 +65,173 @@
                     </Grid>
                 </Expander.Content>
             </Expander>
+            <Grid Name="SkillInfo_PartySkill">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="PARTY"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Name="partySkill_id"></TextBox>
+                <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="partySkill_name"></TextBox>
+                <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="partySkill_text"></RichTextBox>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="type"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Name="partySkill_type_id"></TextBox>
+                <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="partySkill_type"></TextBox>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="attribute"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Name="partySkill_attribute"></TextBox>
+                <TextBox Grid.Row="3" Grid.Column="2" Name="partySkill_sub_attr"></TextBox>
+                <Grid Grid.Row="3" Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="style"/>
+                    <TextBox Grid.Column="1" Name="partySkill_style"></TextBox>
+                </Grid>
+                <Grid Grid.Row="4" Grid.ColumnSpan="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Name="partySkill_num"></TextBox>
+                    <TextBox Grid.Column="1" Name="partySkill_num_01"></TextBox>
+                    <TextBox Grid.Column="2" Name="partySkill_num_02"></TextBox>
+                    <TextBox Grid.Column="3" Name="partySkill_num_03"></TextBox>
+                </Grid>
+            </Grid>
+            <Grid Name="SkillInfo_ActiveSkill">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="ACTIVE"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Name="activeSkill_id"></TextBox>
+                <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="activeSkill_name"></TextBox>
+                <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="activeSkill_text"></RichTextBox>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="type"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Name="activeSkill_type_id"></TextBox>
+                <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="activeSkill_type"></TextBox>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="attribute"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Name="activeSkill_attribute"></TextBox>
+                <TextBox Grid.Row="3" Grid.Column="2" Name="activeSkill_sub_attr"></TextBox>
+                <Grid Grid.Row="3" Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="style"/>
+                    <TextBox Grid.Column="1" Name="activeSkill_style"></TextBox>
+                </Grid>
+                <Grid Grid.Row="4" Grid.ColumnSpan="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="phase"/>
+                    <TextBox Grid.Column="1" Name="activeSkill_phase"></TextBox>
+                    <TextBlock Grid.Column="2" Text="soul"/>
+                    <TextBox Grid.Column="3" Name="activeSkill_soul"></TextBox>
+                    <TextBlock Grid.Column="4" Text="limit_num"/>
+                    <TextBox Grid.Column="5" Name="activeSkill_limit_num"></TextBox>
+                </Grid>
+                <Grid Grid.Row="5" Grid.ColumnSpan="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Name="activeSkill_num"></TextBox>
+                    <TextBox Grid.Column="1" Name="activeSkill_num_01"></TextBox>
+                    <TextBox Grid.Column="2" Name="activeSkill_num_02"></TextBox>
+                    <TextBox Grid.Column="3" Name="activeSkill_num_03"></TextBox>
+                </Grid>
+            </Grid>
+            <Grid Name="SkillInfo_PanelSkill">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="PANEL"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Name="panelSkill_id"></TextBox>
+                <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="panelSkill_name"></TextBox>
+                <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="panelSkill_text"></RichTextBox>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="type"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Name="panelSkill_type_id"></TextBox>
+                <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="panelSkill_type"></TextBox>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="attribute"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Name="panelSkill_attribute"></TextBox>
+                <Grid Grid.Row="3" Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="style"/>
+                    <TextBox Grid.Column="1" Name="panelSkill_style"></TextBox>
+                </Grid>
+                <Grid Grid.Row="4" Grid.ColumnSpan="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="phase"/>
+                    <TextBox Grid.Column="1" Name="panelSkill_phase"></TextBox>
+                    <TextBlock Grid.Column="2" Text="duplication"/>
+                    <TextBox Grid.Column="3" Name="panelSkill_duplication"></TextBox>
+                </Grid>
+                <Grid Grid.Row="5" Grid.ColumnSpan="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Name="panelSkill_num"></TextBox>
+                    <TextBox Grid.Column="1" Name="panelSkill_num_01"></TextBox>
+                    <TextBox Grid.Column="2" Name="panelSkill_num_02"></TextBox>
+                    <TextBox Grid.Column="3" Name="panelSkill_num_03"></TextBox>
+                </Grid>
+            </Grid>
         </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
             <StackPanel>
-                <Grid Name="SkillInfo_PartySkill">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="PARTY"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" Name="partySkill_id"></TextBox>
-                    <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="partySkill_name"></TextBox>
-                    <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="partySkill_text"></RichTextBox>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="type"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Name="partySkill_type_id"></TextBox>
-                    <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="partySkill_type"></TextBox>
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="attribute"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" Name="partySkill_attribute"></TextBox>
-                    <TextBox Grid.Row="3" Grid.Column="2" Name="partySkill_sub_attr"></TextBox>
-                    <Grid Grid.Row="3" Grid.Column="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="style"/>
-                        <TextBox Grid.Column="1" Name="partySkill_style"></TextBox>
-                    </Grid>
-                    <Grid Grid.Row="4" Grid.ColumnSpan="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Name="partySkill_num"></TextBox>
-                        <TextBox Grid.Column="1" Name="partySkill_num_01"></TextBox>
-                        <TextBox Grid.Column="2" Name="partySkill_num_02"></TextBox>
-                        <TextBox Grid.Column="3" Name="partySkill_num_03"></TextBox>
-                    </Grid>
-                </Grid>
-                <Grid Name="SkillInfo_ActiveSkill">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="ACTIVE"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" Name="activeSkill_id"></TextBox>
-                    <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="activeSkill_name"></TextBox>
-                    <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="activeSkill_text"></RichTextBox>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="type"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Name="activeSkill_type_id"></TextBox>
-                    <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="activeSkill_type"></TextBox>
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="attribute"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" Name="activeSkill_attribute"></TextBox>
-                    <TextBox Grid.Row="3" Grid.Column="2" Name="activeSkill_sub_attr"></TextBox>
-                    <Grid Grid.Row="3" Grid.Column="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="style"/>
-                        <TextBox Grid.Column="1" Name="activeSkill_style"></TextBox>
-                    </Grid>
-                    <Grid Grid.Row="4" Grid.ColumnSpan="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="phase"/>
-                        <TextBox Grid.Column="1" Name="activeSkill_phase"></TextBox>
-                        <TextBlock Grid.Column="2" Text="soul"/>
-                        <TextBox Grid.Column="3" Name="activeSkill_soul"></TextBox>
-                        <TextBlock Grid.Column="4" Text="limit_num"/>
-                        <TextBox Grid.Column="5" Name="activeSkill_limit_num"></TextBox>
-                    </Grid>
-                    <Grid Grid.Row="5" Grid.ColumnSpan="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Name="activeSkill_num"></TextBox>
-                        <TextBox Grid.Column="1" Name="activeSkill_num_01"></TextBox>
-                        <TextBox Grid.Column="2" Name="activeSkill_num_02"></TextBox>
-                        <TextBox Grid.Column="3" Name="activeSkill_num_03"></TextBox>
-                    </Grid>
-                </Grid>
-                <Grid Name="SkillInfo_PanelSkill">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="PANEL"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" Name="panelSkill_id"></TextBox>
-                    <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="panelSkill_name"></TextBox>
-                    <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="panelSkill_text"></RichTextBox>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="type"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Name="panelSkill_type_id"></TextBox>
-                    <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="panelSkill_type"></TextBox>
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="attribute"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Name="panelSkill_attribute"></TextBox>
-                    <Grid Grid.Row="3" Grid.Column="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="style"/>
-                        <TextBox Grid.Column="1" Name="panelSkill_style"></TextBox>
-                    </Grid>
-                    <Grid Grid.Row="4" Grid.ColumnSpan="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="phase"/>
-                        <TextBox Grid.Column="1" Name="panelSkill_phase"></TextBox>
-                        <TextBlock Grid.Column="2" Text="duplication"/>
-                        <TextBox Grid.Column="3" Name="panelSkill_duplication"></TextBox>
-                    </Grid>
-                    <Grid Grid.Row="5" Grid.ColumnSpan="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Name="panelSkill_num"></TextBox>
-                        <TextBox Grid.Column="1" Name="panelSkill_num_01"></TextBox>
-                        <TextBox Grid.Column="2" Name="panelSkill_num_02"></TextBox>
-                        <TextBox Grid.Column="3" Name="panelSkill_num_03"></TextBox>
-                    </Grid>
-                </Grid>
                 <Grid Name="SkillInfo_LimitSkill">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50"></ColumnDefinition>
