@@ -25,21 +25,16 @@ namespace RTDDE.Executer
             Paragraph pr = new Paragraph { Margin = new Thickness(0) }; //prprpr
             var textParts = RegColor.Split(text);
             var currentTextColor = Brushes.Black;
-            foreach (string textPart in textParts)
-            {
-                if (RegColor.Match(textPart).Success)
-                {
+            foreach (string textPart in textParts) {
+                if (RegColor.Match(textPart).Success) {
                     string color = textPart.Trim(new char[] { '[', ']' });
                     var convertFromString = ColorConverter.ConvertFromString("#" + color);
-                    if (convertFromString != null)
-                    {
+                    if (convertFromString != null) {
                         currentTextColor = new SolidColorBrush((Color)convertFromString);
                     }
                 }
-                else
-                {
-                    foreach (string part in textPart.Split(new[] { @"[-]" }, StringSplitOptions.None))
-                    {
+                else {
+                    foreach (string part in textPart.Split(new[] { @"[-]" }, StringSplitOptions.None)) {
                         Span span = new Span { Foreground = currentTextColor };
                         span.Inlines.Add(new Run(part.Replace(@"\n", "\n")));
                         pr.Inlines.Add(span);
@@ -77,12 +72,15 @@ namespace RTDDE.Executer
             });
             task.ContinueWith(t =>
             {
-                if (t.Exception != null)
-                {
+                if (t.Exception != null) {
                     Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
                 dg.ItemsSource = t.Result.DefaultView;
+                ScrollViewer scrollViewer = GetVisualChild<ScrollViewer>(dg);
+                if (scrollViewer != null) {
+                    scrollViewer.ScrollToTop();
+                }
             }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
         }
@@ -90,16 +88,13 @@ namespace RTDDE.Executer
         {
             T child = default(T);
             int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < numVisuals; i++)
-            {
+            for (int i = 0; i < numVisuals; i++) {
                 DependencyObject v = (DependencyObject)VisualTreeHelper.GetChild(parent, i);
                 child = v as T;
-                if (child == null)
-                {
+                if (child == null) {
                     child = GetVisualChild<T>(v);
                 }
-                else
-                {
+                else {
                     break;
                 }
             }
