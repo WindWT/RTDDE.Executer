@@ -86,6 +86,7 @@
                 <TextBox Name="QuestAreaInfo_display_order" Grid.Column="1"  ></TextBox>
                 <TextBlock Text="lock" Grid.Column="2" />
                 <TextBox Name="QuestAreaInfo_lock_type" Grid.Column="3" ></TextBox>
+                <!--<Image Name="QuestAreaInfo_banner_texture_image" Grid.ColumnSpan="4" Grid.Row="1"></Image>-->
             </Grid>
         </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
@@ -186,6 +187,7 @@
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="flag_no"/>
                             <TextBox Grid.Row="0" Grid.Column="1" Name="QuestAreaInfo_flag_no"></TextBox>
@@ -209,6 +211,8 @@
                             <TextBox Grid.Row="6" Grid.Column="1" Name="QuestAreaInfo_icon_col_w"></TextBox>
                             <TextBlock Grid.Row="6" Grid.Column="2" Text="icon_col_h"/>
                             <TextBox Grid.Row="6" Grid.Column="3" Name="QuestAreaInfo_icon_col_h"></TextBox>
+                            <TextBlock Grid.Row="7" Grid.Column="0" Text="banner_url"/>
+                            <TextBox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Name="QuestAreaInfo_banner_texture_url"></TextBox>
                         </Grid>
                     </Expander.Content>
                 </Expander>

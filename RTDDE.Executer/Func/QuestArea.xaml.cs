@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using RTDDE.Provider;
 using RTDDE.Provider.MasterData;
 
@@ -193,6 +195,20 @@ order by point";
             QuestAreaInfo_banner_bg_texture.Text = qam.banner_bg_texture;
             QuestAreaInfo_banner_texture.Text = qam.banner_texture;
             QuestAreaInfo_icon_texture.Text = qam.icon_texture;
+            QuestAreaInfo_banner_texture_url.Text = "http://www.acquirespdl.jp/RTD/DLC/BANNER/" + qam.banner_texture;
+
+            ////banner image
+            //if (string.IsNullOrEmpty(qam.banner_texture) == false) {
+            //    BitmapImage bitmapImage = new BitmapImage();
+            //    bitmapImage.BeginInit();
+            //    bitmapImage.UriSource = new Uri("http://www.acquirespdl.jp/RTD/DLC/BANNER/" + qam.banner_texture, UriKind.Absolute);
+            //    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            //    bitmapImage.EndInit();
+            //    QuestAreaInfo_banner_texture_image.Source = bitmapImage;
+            //}
+            //else {
+            //    QuestAreaInfo_banner_texture_image.Source = null;
+            //}
         }
         async private void QuestAreaDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
