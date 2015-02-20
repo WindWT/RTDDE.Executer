@@ -130,7 +130,38 @@
             </Grid>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="1">
-
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="panel" />
+                <TextBox Grid.Column="1" Name="QuestInfo_panel_sword" />
+                <TextBox Grid.Column="2" Name="QuestInfo_panel_lance" />
+                <TextBox Grid.Column="3" Name="QuestInfo_panel_archer" />
+                <TextBox Grid.Column="4" Name="QuestInfo_panel_cane"/>
+                <TextBox Grid.Column="5" Name="QuestInfo_panel_heart"/>
+                <TextBox Grid.Column="6" Name="QuestInfo_panel_sp"/>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="25"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="helper"/>
+                <TextBox Grid.Column="1" Name="QuestInfo_h_id"></TextBox>
+                <TextBox Grid.Column="2" Name="QuestInfo_h_name" ></TextBox>
+                <TextBlock Grid.Column="3" Text="lv"/>
+                <TextBox Grid.Column="4" Name="QuestInfo_h_lv"></TextBox>
+            </Grid>
         </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="2" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
             <StackPanel>
@@ -196,20 +227,6 @@
                     <TextBlock Grid.Row="1" Grid.Column="2" Text="bgm_b" />
                     <TextBox Grid.Row="1" Grid.Column="3" Name="QuestInfo_bgm_b" />
                 </Grid>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="25"></ColumnDefinition>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="helper"/>
-                    <TextBox Grid.Column="1" Name="QuestInfo_h_id"></TextBox>
-                    <TextBox Grid.Column="2" Name="QuestInfo_h_name" ></TextBox>
-                    <TextBlock Grid.Column="3" Text="lv"/>
-                    <TextBox Grid.Column="4" Name="QuestInfo_h_lv"></TextBox>
-                </Grid>
                 <Grid Name="QuestInfo_challenge">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50"></ColumnDefinition>
@@ -268,24 +285,6 @@
                     <TextBox Grid.Column="1" Name="QuestInfo_present_type" />
                     <TextBox Grid.Column="2" Name="QuestInfo_present_param"/>
                     <TextBox Grid.Column="3" Name="QuestInfo_present_param_1" />
-                </Grid>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="panel" />
-                    <TextBox Grid.Column="1" Name="QuestInfo_panel_sword" />
-                    <TextBox Grid.Column="2" Name="QuestInfo_panel_lance" />
-                    <TextBox Grid.Column="3" Name="QuestInfo_panel_archer" />
-                    <TextBox Grid.Column="4" Name="QuestInfo_panel_cane"/>
-                    <TextBox Grid.Column="5" Name="QuestInfo_panel_heart"/>
-                    <TextBox Grid.Column="6" Name="QuestInfo_panel_sp"/>
                 </Grid>
                 <Grid Name="QuestInfo_opentype">
                     <Grid.ColumnDefinitions>
