@@ -176,7 +176,7 @@ order by point";
                     TextBlock textBlock = new TextBlock() { Text = reward.point.ToString() };
                     textBlock.SetValue(Grid.ColumnProperty, 0);
                     grid.Children.Add(textBlock);
-                    TextBox typeTextBox = new TextBox() { Text = Utility.ParsePresenttype(reward.present_type.ToString()) };
+                    TextBox typeTextBox = new TextBox() { Text = Utility.ParsePresentType(reward.present_type) };
                     typeTextBox.SetValue(Grid.ColumnProperty, 1);
                     grid.Children.Add(typeTextBox);
                     TextBox nameTextBox = new TextBox() { Text = reward.present_param_name };

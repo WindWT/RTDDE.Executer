@@ -8,7 +8,7 @@
     <Grid Name="UnitGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="360"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -16,31 +16,31 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <DataGrid Grid.Column="0" Grid.RowSpan="3" Name="QuestDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
-        <WrapPanel Grid.Column="1" Grid.Row="0">
-            <RadioButton GroupName="QuestType" Content="Event" Width="100" IsChecked="True" Name="QuestTypeRadio_Event" Checked="QuestTypeRadio_Event_Checked"></RadioButton>
-            <RadioButton GroupName="QuestType" Content="Daily" Width="100" Name="QuestTypeRadio_Daily" Checked="QuestTypeRadio_Daily_Checked"></RadioButton>
-            <RadioButton GroupName="QuestType" Content="Main" Width="100" Name="QuestTypeRadio_Main" Checked="QuestTypeRadio_Main_Checked"></RadioButton>
-            <Separator Width="300"/>
-            <Expander Width="300" BorderThickness="0" Name="QuestSearchExpander">
+        <StackPanel Grid.Column="1" Grid.Row="0">
+            <UniformGrid Columns="3">
+                <RadioButton GroupName="QuestType" Content="Event" IsChecked="True" Name="QuestTypeRadio_Event" Checked="QuestTypeRadio_Event_Checked"></RadioButton>
+                <RadioButton GroupName="QuestType" Content="Daily" Name="QuestTypeRadio_Daily" Checked="QuestTypeRadio_Daily_Checked"></RadioButton>
+                <RadioButton GroupName="QuestType" Content="Main" Name="QuestTypeRadio_Main" Checked="QuestTypeRadio_Main_Checked"></RadioButton>
+            </UniformGrid>
+            <Expander BorderThickness="0" Name="QuestSearchExpander">
                 <Expander.Header>
                     <Label Content="Search"></Label>
                 </Expander.Header>
                 <Expander.Content>
-                    <WrapPanel>
+                    <Grid>
                         <TextBlock Text="id" Width="50"/>
-                        <TextBox Name="QuestSearch_id" Width="50" TextChanged="QuestSearch_TextChanged" IsReadOnly="False"></TextBox>
+                        <TextBox Name="QuestSearch_id" TextChanged="QuestSearch_TextChanged" IsReadOnly="False"/>
                         <TextBlock Text="name" Width="50"/>
-                        <TextBox Name="QuestSearch_name" Width="150" TextChanged="QuestSearch_TextChanged" IsReadOnly="False"></TextBox>
+                        <TextBox Name="QuestSearch_name" Width="150" TextChanged="QuestSearch_TextChanged" IsReadOnly="False"/>
                         <TextBlock Text="area" Width="50"/>
-                        <TextBox Name="QuestSearch_parent_area_id" Width="50" TextChanged="QuestSearch_TextChanged" IsReadOnly="False"></TextBox>
-                        <TextBox Name="QuestSearch_parent_area_name" Width="200" TextChanged="QuestSearch_TextChanged" IsReadOnly="False"></TextBox>
-                        <Button Name="QuestSearchClear" Width="300" Click="QuestSearchClear_Click">Clear</Button>
-                    </WrapPanel>
+                        <TextBox Name="QuestSearch_parent_area_id" TextChanged="QuestSearch_TextChanged" IsReadOnly="False"/>
+                        <TextBox Name="QuestSearch_parent_area_name" Width="200" TextChanged="QuestSearch_TextChanged" IsReadOnly="False"/>
+                        <Button Name="QuestSearchClear" Click="QuestSearchClear_Click">Clear</Button>
+                    </Grid>
                 </Expander.Content>
             </Expander>
-            <Separator Width="300"/>
             <Grid>
-                <Button Name="Quest_ShowMapButton" Width="300" HorizontalAlignment="Left" Content="Show Map">
+                <Button Name="Quest_ShowMapButton" Width="360" HorizontalAlignment="Left" Content="Show Map">
                     <Button.Triggers>
                         <EventTrigger RoutedEvent="Button.Click">
                             <BeginStoryboard>
@@ -48,7 +48,7 @@
                                     <DoubleAnimation
                                     Storyboard.TargetName="MapGrid" 
                                     Storyboard.TargetProperty="Width"
-                                    To="{Binding ElementName=UnitGrid, Path=ActualWidth}" Duration="0:0:0.300">
+                                    To="{Binding ElementName=UnitGrid, Path=ActualWidth}" Duration="0:0:0.360">
                                         <DoubleAnimation.EasingFunction>
                                             <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
                                         </DoubleAnimation.EasingFunction>
@@ -56,7 +56,7 @@
                                     <DoubleAnimation
                                     Storyboard.TargetName="Quest_HideMapButton" 
                                     Storyboard.TargetProperty="Width"
-                                    To="300" Duration="0:0:0.300">
+                                    To="360" Duration="0:0:0.360">
                                         <DoubleAnimation.EasingFunction>
                                             <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
                                         </DoubleAnimation.EasingFunction>
@@ -74,7 +74,7 @@
                                     <DoubleAnimation
                                     Storyboard.TargetName="MapGrid" 
                                     Storyboard.TargetProperty="Width"
-                                    To="0" Duration="0:0:0.300">
+                                    To="0" Duration="0:0:0.360">
                                         <DoubleAnimation.EasingFunction>
                                             <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
                                         </DoubleAnimation.EasingFunction>
@@ -82,7 +82,7 @@
                                     <DoubleAnimation
                                     Storyboard.TargetName="Quest_HideMapButton" 
                                     Storyboard.TargetProperty="Width"
-                                    To="0" Duration="0:0:0.300">
+                                    To="0" Duration="0:0:0.360">
                                         <DoubleAnimation.EasingFunction>
                                             <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
                                         </DoubleAnimation.EasingFunction>
@@ -93,100 +93,228 @@
                     </Button.Triggers>
                 </Button>
             </Grid>
-            <Separator Width="300"/>
-            <TextBlock Text="id" Width="50"/>
-            <TextBox Name="QuestInfo_id" Width="50"></TextBox>
-            <TextBlock Text="name" Width="50"/>
-            <TextBox Name="QuestInfo_name" Width="150"></TextBox>
-        </WrapPanel>
-        <WrapPanel Grid.Column="1" Grid.Row="1">
-            <TextBlock Text="pt" Width="50"/>
-            <TextBox Name="QuestInfo_pt" Width="50"></TextBox>
-            <TextBlock Text="difficulty" Width="50"/>
-            <TextBox Name="QuestInfo_difficulty" Width="50"></TextBox>
-            <TextBlock Text="stamina" Width="50"/>
-            <TextBox Name="QuestInfo_stamina" Width="50"></TextBox>
-            <TextBlock Text="money" Width="50"/>
-            <TextBox Name="QuestInfo_reward_money" Width="50"></TextBox>
-            <TextBlock Text="exp" Width="50"/>
-            <TextBox Name="QuestInfo_reward_exp" Width="50"></TextBox>
-            <TextBlock Text="init_soul" Width="50"/>
-            <TextBox Name="QuestInfo_soul" Width="50"></TextBox>
-            <TextBlock Text="bgm_f" Width="50"/>
-            <TextBox Name="QuestInfo_bgm_f" Width="100"></TextBox>
-            <TextBlock Text="bgm_b" Width="50"/>
-            <TextBox Name="QuestInfo_bgm_b" Width="100"></TextBox>
-            <TextBlock Text="money_limit" Width="75"/>
-            <TextBox Name="QuestInfo_reward_money_limit" Width="75"></TextBox>
-            <TextBlock Text="exp_limit" Width="75"/>
-            <TextBox Name="QuestInfo_reward_exp_limit" Width="75"></TextBox>
-            <TextBlock Text="event_cutin_id" Width="75"/>
-            <TextBox Name="QuestInfo_event_cutin_id" Width="75"></TextBox>
-            <TextBlock Text="sp_guide_id" Width="75"/>
-            <TextBox Name="QuestInfo_sp_guide_id" Width="75"></TextBox>
-            <TextBlock Text="helper" Width="50"/>
-            <TextBox Name="QuestInfo_h_id" Width="50"></TextBox>
-            <TextBox Name="QuestInfo_h_name" Width="150"></TextBox>
-            <TextBlock Text="lv" Width="25"/>
-            <TextBox Name="QuestInfo_h_lv" Width="25"></TextBox>
-            <TextBlock Text="banner" Width="50"/>
-            <TextBox Name="QuestInfo_banner" Width="250"></TextBox>
-            <Separator Width="300"/>
-            <TextBlock Text="area" Width="50"/>
-            <TextBox Name="QuestInfo_parent_area_id" Width="50"></TextBox>
-            <TextBox Name="QuestInfo_parent_area_name" Width="200" TextAlignment="Right"></TextBox>
-            <TextBox Name="QuestInfo_parent_area_text" Width="300" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
-            <TextBlock Text="banner" Width="50"/>
-            <TextBox Name="QuestInfo_parent_area_banner" Width="250"></TextBox>
-            <Separator Width="300"></Separator>
-        </WrapPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="65"></ColumnDefinition>
+                    <ColumnDefinition Width="85"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBox Name="QuestInfo_id" />
+                <TextBox Grid.Column="1" Name="QuestInfo_name_sub"/>
+                <TextBlock Grid.Column="2" Text="ENEMY Lv"></TextBlock>
+                <TextBox Grid.Column="3" Name="QuestInfo_quest_difficulty" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBox Grid.ColumnSpan="4" Name="QuestInfo_name"/>
+                <TextBlock Grid.Row="0" Grid.Column="4" Text="pt_num"/>
+                <TextBox Grid.Row="0" Grid.Column="5" Name="QuestInfo_pt_num"/>
+                <TextBlock Grid.Row="1" Text="distance" ></TextBlock>
+                <TextBox Grid.Row="1" Grid.Column="1" Name="QuestInfo_distance"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="stamina"/>
+                <TextBox Grid.Row="1" Grid.Column="3" Name="QuestInfo_stamina"/>
+                <TextBlock Grid.Row="1" Grid.Column="4" Text="difficulty"/>
+                <TextBox Grid.Row="1" Grid.Column="5" Name="QuestInfo_difficulty"/>
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="1">
+
+        </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="2" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
             <StackPanel>
-                <WrapPanel Name="QuestInfo_challenge">
-                    <TextBlock Text="gold" Foreground="Gold" Width="50" />
-                    <RichTextBox Name="QuestInfo_challenge_gold" Width="250" BorderBrush="Gold"></RichTextBox>
-                    <TextBlock Text="silver" Foreground="Silver" Width="50" />
-                    <RichTextBox Name="QuestInfo_challenge_silver" Width="250" BorderBrush="Silver"></RichTextBox>
-                    <TextBlock Text="bronze" Foreground="Brown" Width="50" />
-                    <RichTextBox Name="QuestInfo_challenge_bronze" Width="250" BorderBrush="Brown"></RichTextBox>
-                    <Separator Width="300"/>
-                </WrapPanel>
-                <WrapPanel>
-                    <TextBlock Text="open" Width="50"/>
-                    <TextBox Name="QuestInfo_open_date" Width="250"></TextBox>
-                    <TextBlock Text="close" Width="50"/>
-                    <TextBox Name="QuestInfo_close_date" Width="250"></TextBox>
-                    <TextBlock Text="bonus" Width="50"/>
-                    <TextBox Name="QuestInfo_bonus" Width="50"></TextBox>
-                    <TextBox Name="QuestInfo_bonus_start" Width="100"></TextBox>
-                    <TextBox Name="QuestInfo_bonus_end" Width="100"></TextBox>
-                    <TextBlock Text="present" Width="50"/>
-                    <TextBox Name="QuestInfo_present_type" Width="50"></TextBox>
-                    <TextBox Name="QuestInfo_present_param" Width="150"></TextBox>
-                    <TextBox Name="QuestInfo_present_param_1" Width="50"></TextBox>
-                    <TextBlock Text="panel" Width="50"/>
-                    <TextBox Name="QuestInfo_panel_sword" Width="50"></TextBox>
-                    <TextBox Name="QuestInfo_panel_lance" Width="50"></TextBox>
-                    <TextBox Name="QuestInfo_panel_archer" Width="50"></TextBox>
-                    <TextBox Name="QuestInfo_panel_cane" Width="50"></TextBox>
-                    <TextBox Name="QuestInfo_panel_heart" Width="25"></TextBox>
-                    <TextBox Name="QuestInfo_panel_sp" Width="25"></TextBox>
-                    <Separator Width="300"/>
-                </WrapPanel>
-                <WrapPanel Name="QuestInfo_opentype">
-                    <TextBlock Text="opentype" Width="60"/>
-                    <TextBlock Text="param" Width="200"/>
-                    <TextBlock Text="group" Width="40"/>
-                    <WrapPanel Name="QuestInfo_opentype_content"></WrapPanel>
-                    <Separator Width="300"/>
-                </WrapPanel>
-                <WrapPanel Name="QuestInfo_sp_event">
-                    <TextBlock Text="sp_event_id" Width="100"/>
-                    <TextBox Name="QuestInfo_sp_event_id" Width="200"></TextBox>
-                    <TextBlock Text="sp_event_name" Width="100"/>
-                    <TextBox Name="QuestInfo_sp_event_name" Width="200"></TextBox>
-                    <Separator Width="300"/>
-                </WrapPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="area"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="QuestInfo_parent_area_id"/>
+                    <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4" Name="QuestInfo_parent_area_name"/>
+                    <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Name="QuestInfo_parent_area_text" AcceptsReturn="True" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="display_order"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Name="QuestInfo_display_order"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="sp_guide_id"/>
+                    <TextBox Grid.Row="2" Grid.Column="3" Name="QuestInfo_sp_guide_id"/>
+                    <TextBlock Grid.Row="2" Grid.Column="4" Text="event_effect_flag"/>
+                    <TextBox Grid.Row="2" Grid.Column="5" Name="QuestInfo_event_effect_flag"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="money_limit"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Name="QuestInfo_reward_money_limit"/>
+                    <TextBlock Grid.Row="3" Grid.Column="2" Text="exp_limit"/>
+                    <TextBox Grid.Row="3" Grid.Column="3" Name="QuestInfo_reward_exp_limit"/>
+                    <TextBlock Grid.Row="3" Grid.Column="4" Text="soul"/>
+                    <TextBox Grid.Row="3" Grid.Column="5" Name="QuestInfo_soul"/>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="reward_money"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" Name="QuestInfo_reward_money"/>
+                    <TextBlock Grid.Row="4" Grid.Column="2" Text="reward_exp"/>
+                    <TextBox Grid.Row="4" Grid.Column="3" Name="QuestInfo_reward_exp"/>
+                    <TextBlock Grid.Row="4" Grid.Column="4" Text="reward_soul"/>
+                    <TextBox Grid.Row="4" Grid.Column="5" Name="QuestInfo_reward_soul"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="kind" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="QuestInfo_kind" />
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="zbtn_kind" />
+                    <TextBox Grid.Row="0" Grid.Column="3" Name="QuestInfo_zbtn_kind" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="bgm_f" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Name="QuestInfo_bgm_f" />
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="bgm_b" />
+                    <TextBox Grid.Row="1" Grid.Column="3" Name="QuestInfo_bgm_b" />
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="25"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="helper"/>
+                    <TextBox Grid.Column="1" Name="QuestInfo_h_id"></TextBox>
+                    <TextBox Grid.Column="2" Name="QuestInfo_h_name" ></TextBox>
+                    <TextBlock Grid.Column="3" Text="lv"/>
+                    <TextBox Grid.Column="4" Name="QuestInfo_h_lv"></TextBox>
+                </Grid>
+                <Grid Name="QuestInfo_challenge">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="gold" Foreground="Gold" />
+                    <RichTextBox Grid.Row="0" Grid.Column="1" Name="QuestInfo_challenge_gold"  BorderBrush="Gold"></RichTextBox>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="silver" Foreground="Silver" />
+                    <RichTextBox Grid.Row="1" Grid.Column="1" Name="QuestInfo_challenge_silver"  BorderBrush="Silver"></RichTextBox>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="bronze" Foreground="Brown" />
+                    <RichTextBox Grid.Row="2" Grid.Column="1" Name="QuestInfo_challenge_bronze"  BorderBrush="Brown"></RichTextBox>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="open" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="QuestInfo_open_date" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="close" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Name="QuestInfo_close_date" />
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="bonus" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="QuestInfo_bonus" />
+                    <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name="QuestInfo_bonus_start"/>
+                    <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Name="QuestInfo_bonus_end"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="present" />
+                    <TextBox Grid.Column="1" Name="QuestInfo_present_type" />
+                    <TextBox Grid.Column="2" Name="QuestInfo_present_param"/>
+                    <TextBox Grid.Column="3" Name="QuestInfo_present_param_1" />
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="panel" />
+                    <TextBox Grid.Column="1" Name="QuestInfo_panel_sword" />
+                    <TextBox Grid.Column="2" Name="QuestInfo_panel_lance" />
+                    <TextBox Grid.Column="3" Name="QuestInfo_panel_archer" />
+                    <TextBox Grid.Column="4" Name="QuestInfo_panel_cane"/>
+                    <TextBox Grid.Column="5" Name="QuestInfo_panel_heart"/>
+                    <TextBox Grid.Column="6" Name="QuestInfo_panel_sp"/>
+                </Grid>
+                <Grid Name="QuestInfo_opentype">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="opentype"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="param"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="group"/>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Name="QuestInfo_opentype_content"/>
+                </Grid>
+                <Grid Name="QuestInfo_sp_event">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="sp_event"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="QuestInfo_sp_event_id"/>
+                    <TextBox Grid.Row="0" Grid.Column="2" Name="QuestInfo_sp_event_name"/>
+                </Grid>
             </StackPanel>
         </ScrollViewer>
         <Grid Name="MapGrid" Width="0" Background="White" HorizontalAlignment="Right" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Panel.ZIndex="512">

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using RTDDE.Provider;
+using RTDDE.Provider.MasterData;
 
 namespace RTDDE.Executer.Func
 {
@@ -14,176 +15,169 @@ namespace RTDDE.Executer.Func
         {
             InitializeComponent();
         }
-        private void QuestDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        [DAL(UseProperty = true)]
+        public class QuestMasterExtend : QuestMaster
         {
-            if (QuestDataGrid.SelectedItem == null)
-            {
+            public string parent_area_name { get; set; }
+            public string parent_area_text { get; set; }
+            public string sp_event_name { get; set; }
+            public string open_sp_event_name { get; set; }
+            public string present_param_name { get; set; }
+            public string challenge0 { get; set; }
+            public string challenge1 { get; set; }
+            public string challenge2 { get; set; }
+        }
+        async private void QuestDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (QuestDataGrid.SelectedItem == null) {
                 //avoid Exception
                 return;
             }
             string eqInfo_id = ((DataRowView)QuestDataGrid.SelectedItem).Row["id"].ToString();
             QuestInfo_id.Text = eqInfo_id;
-            Task<DataTable> task = new Task<DataTable>(() =>
+            Task<QuestMasterExtend> questTask = Task.Run(() =>
             {
                 string sql = @"SELECT *,
 (select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name,
 (select text from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_text,
-(select banner_bg_texture from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_banner,
 (SELECT target_name FROM SP_EVENT_MASTER where SP_EVENT_MASTER.sp_event_id=quest_master.sp_event_id) as sp_event_name,
-(SELECT target_name FROM SP_EVENT_MASTER where SP_EVENT_MASTER.sp_event_id=quest_master.open_sp_event_id) as open_sp_event_name,open_sp_event_point,
-(case when present_type=4 then (select name from unit_master where unit_master.id=quest_master.present_param) else present_param end) as present_param_name ,
+(SELECT target_name FROM SP_EVENT_MASTER where SP_EVENT_MASTER.sp_event_id=quest_master.open_sp_event_id) as open_sp_event_name,
+(case when present_type=4 then (select name from unit_master where unit_master.id=quest_master.present_param) else present_param end) as present_param_name,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_0) as challenge0,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_1) as challenge1,
 (SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_2) as challenge2
   FROM quest_master WHERE id={0}";
-                return DAL.GetDataTable(String.Format(sql, eqInfo_id));
+                return DAL.ToSingle<QuestMasterExtend>(String.Format(sql, eqInfo_id));
             });
-            Task<List<OpenType>> taskParse = new Task<List<OpenType>>(() =>
+
+            QuestMasterExtend quest = await questTask;
+            Task<List<OpenType>> taskOpenType = Task.Run(() =>
             {
                 List<OpenType> opentypeList = new List<OpenType>();
-                Task.WaitAll(task);
-                if (task.Result == null || task.Result.Rows.Count == 0)
-                {
+                if (questTask.Result == null) {
                     return null;
                 }
-                DataRow dr = task.Result.Rows[0];
-                for (int i = 1; i <= 8; i++)
-                {
-                    string opentype = "open_type_" + i.ToString();
-                    string openparam = "open_param_" + i.ToString();
-                    string opengroup = "open_group_" + i.ToString();
-                    opentypeList.Add(Utility.ParseOpentype(dr[opentype].ToString(), dr[openparam].ToString(), Convert.ToInt32(dr[opengroup])));
+                for (int i = 1; i <= 8; i++) {
+                    opentypeList.Add(Utility.ParseOpentype(quest.GetOpenType(i), quest.GetOpenParam(i), quest.GetGroupParam(i)));
                 }
-                opentypeList.Add(new OpenType(dr["open_sp_event_name"].ToString(), dr["open_sp_event_point"].ToString(), 0));
+                opentypeList.Add(new OpenType(quest.open_sp_event_name, quest.open_sp_event_point.ToString(), 0));
                 opentypeList.RemoveAll(o => string.IsNullOrEmpty(o.Type));
                 return opentypeList;
+            });
+
+            string questDiff = string.Empty;
+            for (int i = 0; i < 8; i++) {
+                if (i < quest.quest_difficulty) {
+                    questDiff += "★";
+                }
+                else {
+                    questDiff += "☆";
+                }
             }
-            );
-            taskParse.ContinueWith(t =>
-            {
-                if (t.Exception != null)
-                {
-                    Utility.ShowException(t.Exception.InnerException.Message);
-                    return;
+            QuestInfo_quest_difficulty.Text = questDiff;
+            QuestInfo_name.Text = quest.name;
+            QuestInfo_name_sub.Text = quest.name_sub;
+            QuestInfo_pt_num.Text = quest.pt_num.ToString();
+            QuestInfo_difficulty.Text = quest.difficulty.ToString();
+            QuestInfo_stamina.Text = quest.stamina.ToString();
+            QuestInfo_distance.Text = quest.distance.ToString();
+
+            QuestInfo_parent_area_id.Text = quest.parent_area_id.ToString();
+            QuestInfo_parent_area_name.Text = quest.parent_area_name;
+            QuestInfo_parent_area_text.Text = Utility.ParseText(quest.parent_area_text);
+
+            QuestInfo_display_order.Text = quest.display_order.ToString();
+            QuestInfo_sp_guide_id.Text = quest.sp_guide_id.ToString();
+            QuestInfo_event_effect_flag.Text = quest.event_effect_flag.ToString();
+            QuestInfo_reward_money.Text = quest.reward_money.ToString();
+            QuestInfo_reward_exp.Text = quest.reward_exp.ToString();
+            QuestInfo_soul.Text = quest.soul.ToString();
+            QuestInfo_reward_money_limit.Text = quest.reward_money_limit.ToString();
+            QuestInfo_reward_exp_limit.Text = quest.reward_exp_limit.ToString();
+            QuestInfo_reward_soul.Text = quest.reward_soul.ToString();
+            QuestInfo_kind.Text = Utility.ParseQuestKind(quest.kind);
+            QuestInfo_zbtn_kind.Text = Utility.ParseZBTNKind(quest.zbtn_kind);
+            QuestInfo_bgm_f.Text = Utility.ParseBgmName(quest.bgm_f);
+            QuestInfo_bgm_b.Text = Utility.ParseBgmName(quest.bgm_b);
+            QuestInfo_h_id.Text = quest.h_id.ToString();
+            QuestInfo_h_name.Text = Utility.ParseUnitName(quest.h_id);
+            QuestInfo_h_lv.Text = quest.h_lv.ToString();
+
+            if (string.IsNullOrWhiteSpace(quest.challenge0)
+                && string.IsNullOrWhiteSpace(quest.challenge1)
+                && string.IsNullOrWhiteSpace(quest.challenge2)) {
+                QuestInfo_challenge.Visibility = Visibility.Collapsed;
+            }
+            else {
+                QuestInfo_challenge.Visibility = Visibility.Visible;
+                QuestInfo_challenge_gold.Document = Utility.ParseTextToDocument(quest.challenge2);
+                QuestInfo_challenge_silver.Document = Utility.ParseTextToDocument(quest.challenge1);
+                QuestInfo_challenge_bronze.Document = Utility.ParseTextToDocument(quest.challenge0);
+            }
+
+            var openDate = Utility.ParseRTDDate(quest.open_date, true);
+            QuestInfo_open_date.Text = openDate == DateTime.MinValue
+                ? string.Empty
+                : openDate.ToString("yyyy-MM-dd HH:mm ddd");
+            var closeDate = Utility.ParseRTDDate(quest.close_date, true);
+            QuestInfo_close_date.Text = closeDate == DateTime.MinValue
+                ? string.Empty
+                : closeDate.ToString("yyyy-MM-dd HH:mm ddd");
+
+            QuestInfo_opentype_content.Children.Clear();
+            List<OpenType> opentypes = await taskOpenType;
+            if (opentypes.Count == 0) {
+                QuestInfo_opentype.Visibility = Visibility.Collapsed;
+            }
+            else {
+                QuestInfo_opentype.Visibility = Visibility.Visible;
+                foreach (OpenType type in opentypes) {
+                    var grid = new Grid();
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(60) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                    TextBox typeTextBox = new TextBox() { Text = type.Type };
+                    typeTextBox.SetValue(Grid.ColumnProperty, 0);
+                    grid.Children.Add(typeTextBox);
+                    TextBox paramTextBox = new TextBox() { Text = type.Param };
+                    paramTextBox.SetValue(Grid.ColumnProperty, 1);
+                    grid.Children.Add(paramTextBox);
+                    TextBox groupTextBox = new TextBox() { Text = type.Group.ToString() };
+                    groupTextBox.SetValue(Grid.ColumnProperty, 2);
+                    grid.Children.Add(groupTextBox);
+                    QuestInfo_opentype_content.Children.Add(grid);
                 }
-                if (task.Result == null || task.Result.Rows.Count == 0)
-                {
-                    return;
-                }
-                DataRow dr = task.Result.Rows[0];
-                QuestInfo_name.Text = dr["name"].ToString();
-                QuestInfo_pt.Text = dr["pt_num"].ToString();
-                QuestInfo_difficulty.Text = dr["difficulty"].ToString();
-                QuestInfo_stamina.Text = dr["stamina"].ToString();
-                QuestInfo_parent_area_id.Text = dr["parent_area_id"].ToString();
-                QuestInfo_parent_area_name.Text = dr["parent_area_name"].ToString();
-                QuestInfo_parent_area_text.Text = Utility.ParseText(dr["parent_area_text"].ToString());
-                QuestInfo_parent_area_banner.Text = Utility.ParseText(dr["parent_area_banner"].ToString());
-                QuestInfo_reward_money.Text = dr["reward_money"].ToString();
-                QuestInfo_reward_exp.Text = dr["reward_exp"].ToString();
-                QuestInfo_soul.Text = dr["soul"].ToString();
-                QuestInfo_reward_money_limit.Text = dr["reward_money_limit"].ToString();
-                QuestInfo_reward_exp_limit.Text = dr["reward_exp_limit"].ToString();
-                //QuestInfo_bgm_f.Text = Utility.ParseBgmFileName(Convert.ToInt32(dr["bgm_f"]));
-                //QuestInfo_bgm_b.Text = Utility.ParseBgmFileName(Convert.ToInt32(dr["bgm_b"]));
-                QuestInfo_bgm_f.Text = dr["bgm_f"].ToString();
-                QuestInfo_bgm_b.Text = dr["bgm_b"].ToString();
-                QuestInfo_sp_guide_id.Text = dr["sp_guide_id"].ToString();
-                QuestInfo_event_cutin_id.Text = dr["event_cutin_id"].ToString();
+            }
 
-                QuestInfo_banner.Text = Utility.ParseText(dr["banner"].ToString());
+            if (quest.sp_event_id == 0) {
+                QuestInfo_sp_event.Visibility = Visibility.Collapsed;
+            }
+            else {
+                QuestInfo_sp_event.Visibility = Visibility.Visible;
+                QuestInfo_sp_event_id.Text = quest.sp_event_id.ToString();
+                QuestInfo_sp_event_name.Text = quest.sp_event_name;
+            }
 
-                QuestInfo_h_id.Text = dr["h_id"].ToString();
-                QuestInfo_h_name.Text = Utility.ParseUnitName(dr["h_id"].ToString());
-                QuestInfo_h_lv.Text = dr["h_lv"].ToString();
+            QuestInfo_bonus.Text = Utility.ParseBonusType(quest.bonus_type);
+            var bonusStart = Utility.ParseRTDDate((int)quest.bonus_start);
+            QuestInfo_bonus_start.Text = bonusStart == DateTime.MinValue
+                ? string.Empty
+                : bonusStart.ToString("yyyy-MM-dd HH:mm");
+            var bonusEnd = Utility.ParseRTDDate((int)quest.bonus_end);
+            QuestInfo_bonus_end.Text = bonusEnd == DateTime.MinValue
+                ? string.Empty
+                : bonusEnd.ToString("yyyy-MM-dd HH:mm");
 
-                var openDate = Utility.ParseRTDDate(dr["open_date"].ToString(), true);
-                QuestInfo_open_date.Text = openDate == DateTime.MinValue
-                    ? string.Empty
-                    : openDate.ToString("yyyy-MM-dd HH:mm ddd");
-                var closeDate = Utility.ParseRTDDate(dr["close_date"].ToString(), true);
-                QuestInfo_close_date.Text = closeDate == DateTime.MinValue
-                    ? string.Empty
-                    : closeDate.ToString("yyyy-MM-dd HH:mm ddd");
+            QuestInfo_panel_sword.Text = quest.panel_sword.ToString();
+            QuestInfo_panel_lance.Text = quest.panel_lance.ToString();
+            QuestInfo_panel_archer.Text = quest.panel_archer.ToString();
+            QuestInfo_panel_cane.Text = quest.panel_cane.ToString();
+            QuestInfo_panel_heart.Text = quest.panel_heart.ToString();
+            QuestInfo_panel_sp.Text = quest.panel_sp.ToString();
 
-                QuestInfo_opentype_content.Children.Clear();
-                List<OpenType> opentypes = t.Result;
-                if (opentypes.Count == 0)
-                {
-                    QuestInfo_opentype.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    QuestInfo_opentype.Visibility = Visibility.Visible;
-                    foreach (OpenType type in t.Result)
-                    {
-                        QuestInfo_opentype_content.Children.Add(new TextBox()
-                        {
-                            Text = type.Type,
-                            Width = 60
-                        });
-                        QuestInfo_opentype_content.Children.Add(new TextBox()
-                        {
-                            Text = type.Param,
-                            Width = 200
-                        });
-                        QuestInfo_opentype_content.Children.Add(new TextBox()
-                        {
-                            Text = type.Group.ToString(),
-                            Width = 40
-                        });
-                    }
-                }
-
-                if (string.IsNullOrWhiteSpace(dr["sp_event_id"].ToString())
-                    || dr["sp_event_id"].ToString() == "0")
-                {
-                    QuestInfo_sp_event.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    QuestInfo_sp_event.Visibility = Visibility.Visible;
-                    QuestInfo_sp_event_id.Text = dr["sp_event_id"].ToString();
-                    QuestInfo_sp_event_name.Text = dr["sp_event_name"].ToString();
-                }
-
-                QuestInfo_bonus.Text = Utility.ParseBonustype(dr["bonus_type"].ToString());
-                var bonusStart = Utility.ParseRTDDate(dr["bonus_start"].ToString());
-                QuestInfo_bonus_start.Text = bonusStart == DateTime.MinValue
-                    ? string.Empty
-                    : bonusStart.ToString("yyyy-MM-dd HH:mm");
-                var bonusEnd = Utility.ParseRTDDate(dr["bonus_end"].ToString());
-                QuestInfo_bonus_end.Text = bonusEnd == DateTime.MinValue
-                    ? string.Empty
-                    : bonusEnd.ToString("yyyy-MM-dd HH:mm");
-
-                QuestInfo_panel_sword.Text = dr["panel_sword"].ToString();
-                QuestInfo_panel_lance.Text = dr["panel_lance"].ToString();
-                QuestInfo_panel_archer.Text = dr["panel_archer"].ToString();
-                QuestInfo_panel_cane.Text = dr["panel_cane"].ToString();
-                QuestInfo_panel_heart.Text = dr["panel_heart"].ToString();
-                QuestInfo_panel_sp.Text = dr["panel_sp"].ToString();
-
-                if (string.IsNullOrWhiteSpace(dr["challenge0"].ToString())
-                    && string.IsNullOrWhiteSpace(dr["challenge1"].ToString())
-                    && string.IsNullOrWhiteSpace(dr["challenge2"].ToString()))
-                {
-                    QuestInfo_challenge.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    QuestInfo_challenge.Visibility = Visibility.Visible;
-                    QuestInfo_challenge_gold.Document = Utility.ParseTextToDocument(dr["challenge2"].ToString());
-                    QuestInfo_challenge_silver.Document = Utility.ParseTextToDocument(dr["challenge1"].ToString());
-                    QuestInfo_challenge_bronze.Document = Utility.ParseTextToDocument(dr["challenge0"].ToString());
-                }
-
-                QuestInfo_present_type.Text = Utility.ParsePresenttype(dr["present_type"].ToString());
-                QuestInfo_present_param.Text = dr["present_param_name"].ToString();
-                QuestInfo_present_param_1.Text = dr["present_param_1"].ToString();
-            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
-            task.Start();
-            taskParse.Start();
+            QuestInfo_present_type.Text = Utility.ParsePresentType(quest.present_type);
+            QuestInfo_present_param.Text = quest.present_param_name;
+            QuestInfo_present_param_1.Text = quest.present_param_1.ToString();
         }
 
         private void QuestTypeRadio_Event_Checked(object sender, RoutedEventArgs e)
@@ -297,20 +291,16 @@ ORDER BY id DESC";
             string sql = @"SELECT id,name,stamina,
 (select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name
 FROM QUEST_MASTER WHERE ";
-            if (String.IsNullOrWhiteSpace(QuestSearch_id.Text) == false)
-            {
+            if (String.IsNullOrWhiteSpace(QuestSearch_id.Text) == false) {
                 sql += "id=" + QuestSearch_id.Text + " AND ";
             }
-            if (String.IsNullOrWhiteSpace(QuestSearch_name.Text) == false)
-            {
+            if (String.IsNullOrWhiteSpace(QuestSearch_name.Text) == false) {
                 sql += "name LIKE '%" + QuestSearch_name.Text.Trim() + "%' AND ";
             }
-            if (String.IsNullOrWhiteSpace(QuestSearch_parent_area_id.Text) == false)
-            {
+            if (String.IsNullOrWhiteSpace(QuestSearch_parent_area_id.Text) == false) {
                 sql += "parent_area_id=" + QuestSearch_parent_area_id.Text + " AND ";
             }
-            if (String.IsNullOrWhiteSpace(QuestSearch_parent_area_name.Text) == false)
-            {
+            if (String.IsNullOrWhiteSpace(QuestSearch_parent_area_name.Text) == false) {
                 sql += "parent_area_name LIKE '%" + QuestSearch_parent_area_name.Text.Trim() + "%' AND ";
             }
             sql += " 1=1 ORDER BY id DESC";
