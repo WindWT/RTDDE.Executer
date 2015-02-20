@@ -75,40 +75,40 @@ namespace RTDDE.Executer.Func
         }
         private List<string> InitModelFile(ModelInfo info)
         {
-            if (AssetBundleDefine.m_BasicBundles.Any(o => o.fileName == modelInfo.GetFileName()) == false) {
+            //if (AssetBundleDefine.m_BasicBundles.Any(o => o.fileName == modelInfo.GetFileName()) == false) {
                 return new List<string>();
-            }
-            AssetBundleDefine.AssetBundleInfo abi = AssetBundleDefine.m_BasicBundles.First(o => o.fileName == modelInfo.GetFileName());
-            if (Directory.Exists("model") == false) {
-                Directory.CreateDirectory("model");
-            }
-            //first find exist model file
-            List<string> fileList = GetUnpackFile(modelInfo);
-            if (fileList.Count > 0) {
-                return fileList;
-            }
-            else if (string.IsNullOrEmpty(Settings.Config.Model.DisunityPath)) {
-                //disable unpack & download if no disunity
-                return fileList;
-            }
-            else if (File.Exists(info.GetUnity3DFilePath())) {
-                //find unity3d file, then extract
-                UnpackFile(modelInfo);
-                return GetUnpackFile(modelInfo);
-            }
-            else {
-                //download,extract,return
-                using (WebClient client = new WebClient()) {
-                    //client.DownloadFileCompleted += (sender, e) =>
-                    //{
-                    //    UnpackFile(modelInfo);
-                    //    fileList = GetUnpackFile(modelInfo);
-                    //};
-                    client.DownloadFile(new Uri(abi.GetURL()), modelInfo.GetUnity3DFilePath());
-                    UnpackFile(modelInfo);
-                    return GetUnpackFile(modelInfo);
-                }
-            }
+            //}
+            //AssetBundleDefine.AssetBundleInfo abi = AssetBundleDefine.m_BasicBundles.First(o => o.fileName == modelInfo.GetFileName());
+            //if (Directory.Exists("model") == false) {
+            //    Directory.CreateDirectory("model");
+            //}
+            ////first find exist model file
+            //List<string> fileList = GetUnpackFile(modelInfo);
+            //if (fileList.Count > 0) {
+            //    return fileList;
+            //}
+            //else if (string.IsNullOrEmpty(Settings.Config.Model.DisunityPath)) {
+            //    //disable unpack & download if no disunity
+            //    return fileList;
+            //}
+            //else if (File.Exists(info.GetUnity3DFilePath())) {
+            //    //find unity3d file, then extract
+            //    UnpackFile(modelInfo);
+            //    return GetUnpackFile(modelInfo);
+            //}
+            //else {
+            //    //download,extract,return
+            //    using (WebClient client = new WebClient()) {
+            //        //client.DownloadFileCompleted += (sender, e) =>
+            //        //{
+            //        //    UnpackFile(modelInfo);
+            //        //    fileList = GetUnpackFile(modelInfo);
+            //        //};
+            //        client.DownloadFile(new Uri(abi.GetURL()), modelInfo.GetUnity3DFilePath());
+            //        UnpackFile(modelInfo);
+            //        return GetUnpackFile(modelInfo);
+            //    }
+            //}
         }
         private void UnpackFile(ModelInfo info)
         {
