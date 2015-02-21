@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:RTDDE="clr-namespace:RTDDE.Executer.Func"
              mc:Ignorable="d" >
     <Grid Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Initialized="UnitTab_Initialized">
         <Grid.ColumnDefinitions>
@@ -105,60 +104,6 @@
                 <TextBox Grid.Column="3" Name="UnitInfo_attribute"></TextBox>
                 <TextBox Grid.Column="4" Name="UnitInfo_sub_a1"></TextBox>
             </Grid>
-            <!--<Grid>
-                <Button Name="Unit_ShowModelButton" Width="360" HorizontalAlignment="Left" Content="Show Model">
-                    <Button.Triggers>
-                        <EventTrigger RoutedEvent="Button.Click">
-                            <BeginStoryboard>
-                                <Storyboard Name="SB_ShowModel" Completed="SB_ShowModel_Completed">
-                                    <DoubleAnimation
-                                    Storyboard.TargetName="Model" 
-                                    Storyboard.TargetProperty="Width"
-                                    To="360" Duration="0:0:0.300">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                    <DoubleAnimation
-                                    Storyboard.TargetName="Unit_HideModelButton" 
-                                    Storyboard.TargetProperty="Width"
-                                    To="360" Duration="0:0:0.300">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Button.Triggers>
-                </Button>
-                <Button Name="Unit_HideModelButton" Width="0" Panel.ZIndex="256" HorizontalAlignment="Right" Content="Hide Model">
-                    <Button.Triggers>
-                        <EventTrigger RoutedEvent="Button.Click">
-                            <BeginStoryboard>
-                                <Storyboard Name="SB_HideModel" Completed="SB_HideModel_Completed">
-                                    <DoubleAnimation
-                                    Storyboard.TargetName="Model" 
-                                    Storyboard.TargetProperty="Width"
-                                    To="0" Duration="0:0:0.300">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                    <DoubleAnimation
-                                    Storyboard.TargetName="Unit_HideModelButton" 
-                                    Storyboard.TargetProperty="Width"
-                                    To="0" Duration="0:0:0.300">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Button.Triggers>
-                </Button>
-            </Grid>-->
         </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
             <StackPanel>
@@ -549,6 +494,5 @@
                 </Expander>
             </StackPanel>
         </ScrollViewer>
-        <RTDDE:Model x:Name="Model" HorizontalAlignment="Right" Width="0" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Panel.ZIndex="512"></RTDDE:Model>
     </Grid>
 </UserControl>

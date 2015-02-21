@@ -84,14 +84,6 @@
     <Reference Include="DDSReader">
       <HintPath>..\packages\DDSReader\DDSReader.dll</HintPath>
     </Reference>
-    <Reference Include="HelixToolkit, Version=2015.1.453.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\HelixToolkit.2015.1.453\lib\portable-net4+sl4+wp71+win8\HelixToolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="HelixToolkit.Wpf, Version=2015.1.453.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\HelixToolkit.Wpf.2015.1.453\lib\net45\HelixToolkit.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationUI, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="ReachFramework" />
     <Reference Include="RTDDE.Provider">
@@ -162,9 +154,6 @@
     <Compile Include="Func\Map.xaml.cs">
       <DependentUpon>Map.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Func\Model.xaml.cs">
-      <DependentUpon>Model.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Func\Quest.xaml.cs">
       <DependentUpon>Quest.xaml</DependentUpon>
     </Compile>
@@ -229,10 +218,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Func\Model.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Func\Quest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -273,7 +258,6 @@
     </Compile>
     <AppDesigner Include="Properties\" />
     <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
