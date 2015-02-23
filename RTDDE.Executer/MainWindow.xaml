@@ -107,18 +107,23 @@
                     </Style>
                 </DockPanel.Resources>
                 <!-- MenuItem_Bottom -->
-                <Button Name="MenuItem_About" Click="MenuItem_Checked" DockPanel.Dock="Bottom">About</Button>
-                <Button Name="MenuItem_Config" Click="MenuItem_Checked" DockPanel.Dock="Bottom">Config</Button>
+                <UniformGrid  DockPanel.Dock="Bottom" Rows="1" Columns="2">
+                    <Button Name="MenuItem_Config" Click="MenuItem_Checked">Config</Button>
+                    <Button Name="MenuItem_About" Click="MenuItem_Checked">About</Button>
+                </UniformGrid>
                 <Button Name="MenuItem_Common" Click="MenuItem_Checked" DockPanel.Dock="Bottom">Common</Button>
                 <Button Name="MenuItem_Diff" Click="MenuItem_Checked" DockPanel.Dock="Bottom" Visibility="Collapsed">Diff</Button>
                 <!-- MenuItem -->
                 <Button Name="MenuItem_World" Click="MenuItem_Checked">World</Button>
                 <Button Name="MenuItem_QuestArea" Click="MenuItem_Checked">Area</Button>
-                <Button Name="MenuItem_Quest" Click="MenuItem_Checked">Quest</Button>
-                <Button Name="MenuItem_Unit" Click="MenuItem_Checked">Unit</Button>
-                <Button Name="MenuItem_Enemy" Click="MenuItem_Checked">Enemy</Button>
-                <Button Name="MenuItem_Skill" Click="MenuItem_Checked">Skill</Button>
-                <Button Name="MenuItem_Accessory" Click="MenuItem_Checked">Accessory</Button>
+                <UniformGrid DockPanel.Dock="Top" Rows="2" Columns="2">
+                    <Button Name="MenuItem_Quest" Click="MenuItem_Checked">Quest</Button>
+                    <Button Name="MenuItem_Event" Click="MenuItem_Checked">Event</Button>
+                    <Button Name="MenuItem_Unit" Click="MenuItem_Checked">Unit</Button>
+                    <Button Name="MenuItem_Enemy" Click="MenuItem_Checked">Enemy</Button>
+                    <Button Name="MenuItem_Skill" Click="MenuItem_Checked">Skill</Button>
+                    <Button Name="MenuItem_Accessory" Click="MenuItem_Checked">Accessory</Button>
+                </UniformGrid>
                 <Button Name="MenuItem_Guide" Click="MenuItem_Checked">Guide</Button>
                 <TextBlock></TextBlock>
             </DockPanel>

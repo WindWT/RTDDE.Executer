@@ -163,7 +163,7 @@
                 <TextBox Grid.Column="4" Name="QuestInfo_h_lv"></TextBox>
             </Grid>
         </StackPanel>
-        <ScrollViewer Grid.Column="1" Grid.Row="2" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+        <ScrollViewer Grid.Column="1" Grid.Row="2" Style="{StaticResource VerticalScrollViewer}">
             <StackPanel>
                 <Grid>
                     <Grid.ColumnDefinitions>

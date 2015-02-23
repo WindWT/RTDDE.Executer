@@ -1,0 +1,173 @@
+﻿<UserControl x:Class="RTDDE.Executer.Func.Event"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:RTDDE="clr-namespace:RTDDE.Executer"
+             mc:Ignorable="d" >
+    <Grid Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Initialized="EventTab_Initialized">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="360"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="EventDataGrid" AutoGenerateColumns="True" SelectionChanged="EventDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
+        <StackPanel Grid.Column="1" Grid.Row="0">
+            <!--<Expander BorderThickness="0" Name="EventSearchExpander" IsExpanded="False">
+                <Expander.Header>
+                    <Label Content="Search"></Label>
+                </Expander.Header>
+                <Expander.Content>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                                    <Setter Property="IsReadOnly" Value="False"></Setter>
+                                    <EventSetter Event="TextChanged" Handler="EventSearch_TextChanged"/>
+                                </Style>
+                            </Grid.Resources>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="id" />
+                            <TextBox Grid.Row="0" Grid.Column="1" Name="EventSearch_id"></TextBox>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="name"/>
+                            <TextBox Grid.Row="0" Grid.Column="3" Name="EventSearch_name"></TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                    <EventSetter Event="SelectionChanged" Handler="EventSearch_SelectionChanged"/>
+                                </Style>
+                            </Grid.Resources>
+                            <ComboBox Grid.Row="0" Grid.Column="0" Name="EventSearch_chara_symbol"></ComboBox>
+                            <ComboBox Grid.Row="0" Grid.Column="1" Name="EventSearch_chara_kind"></ComboBox>
+                            <ComboBox Grid.Row="0" Grid.Column="2" Name="EventSearch_type"></ComboBox>
+                            <ComboBox Grid.Row="0" Grid.Column="3" Name="EventSearch_attribute"></ComboBox>
+                            <ComboBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Name="EventSearch_pattern"></ComboBox>
+                            --><!--<ComboBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Name="EventSearch_pattern2"></ComboBox>--><!--
+                            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Name="EventSearchClear" Click="EventSearchClear_Click">Clear</Button>
+                        </Grid>
+                    </StackPanel>
+                </Expander.Content>
+            </Expander>-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Name="EventInfo_id"></TextBox>
+                <TextBox Grid.Column="1" Name="EventInfo_chara_flag_no"></TextBox>
+                <TextBox Grid.Column="2" Name="EventInfo_chara_symbol"></TextBox>
+                <TextBox Grid.Column="3" Name="EventInfo_name"></TextBox>
+                <TextBox Grid.Column="4" Name="EventInfo_attribute"></TextBox>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Name="EventInfo_type"></TextBox>
+                <TextBox Grid.Column="1" Name="EventInfo_chara_kind"></TextBox>
+            </Grid>
+        </StackPanel>
+        <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="lv"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="EventInfo_lv" IsReadOnly="False" LostFocus="EventInfo_lv_LostFocus"></TextBox>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="soul"/>
+                    <TextBox Grid.Row="0" Grid.Column="3" Name="EventInfo_soul_pt"></TextBox>
+                    <TextBlock Grid.Row="0" Grid.Column="4" Text="gold"/>
+                    <TextBox Grid.Row="0" Grid.Column="5" Name="EventInfo_gold_pt"></TextBox>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="HP"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Name="EventInfo_HP" Width="250"></TextBox>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="ATK"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Name="EventInfo_ATK" Width="250"></TextBox>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="DEF"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Name="EventInfo_DEF" Width="250"></TextBox>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Dragon"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" Name="EventInfo_flag"></TextBox>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="Unit"/>
+                    <TextBox Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" Name="EventInfo_isUnit"></TextBox>
+                    
+                    <TextBlock Grid.Row="3" Grid.Column="2" Text="turn"/>
+                    <TextBox Grid.Row="3" Grid.Column="3" Name="EventInfo_turn"></TextBox>
+                    <TextBlock Grid.Row="3" Grid.Column="4" Text="ui"/>
+                    <TextBox Grid.Row="3" Grid.Column="5" Name="EventInfo_ui"></TextBox>
+                </Grid>
+                <Expander BorderThickness="0" Name="EventAdvancedExpander" IsExpanded="False">
+                    <Expander.Header>
+                        <Label Content="Advanced"></Label>
+                    </Expander.Header>
+                    <Expander.Content>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="model"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="EventInfo_model"></TextBox>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="texture"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="EventInfo_texture"></TextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="icon"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Name="EventInfo_icon"></TextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="shadow"/>
+                            <TextBox Grid.Row="2" Grid.Column="3" Name="EventInfo_shadow"></TextBox>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="up"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Name="EventInfo_up"></TextBox>
+                            <TextBlock Grid.Row="3" Grid.Column="2" Text="atk_ef_id"/>
+                            <TextBox Grid.Row="3" Grid.Column="3" Name="EventInfo_atk_ef_id"></TextBox>
+                        </Grid>
+                    </Expander.Content>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -125,6 +125,9 @@
     <Compile Include="Func\Area.xaml.cs">
       <DependentUpon>Area.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Func\Event.xaml.cs">
+      <DependentUpon>Event.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Func\Field.xaml.cs">
       <DependentUpon>Field.xaml</DependentUpon>
     </Compile>
@@ -180,6 +183,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Func\Area.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Func\Event.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
