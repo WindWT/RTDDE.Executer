@@ -3,132 +3,121 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:RTDDE="clr-namespace:RTDDE.Executer.Func"
         Title="RTDDE.Executer"  MinWidth="640" MinHeight="480" Width="720" Height="540"
-        Icon="Resources/Icon256.ico" WindowStyle="None" ResizeMode="NoResize">
+        Icon="Resources/Icon256.ico" WindowStyle="None" ResizeMode="CanResizeWithGrip">
     <Window.Resources>
 
     </Window.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="5" />
+            <RowDefinition Height="36" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="5" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="5" />
-        </Grid.ColumnDefinitions>
-        <Grid Grid.RowSpan="3" Grid.ColumnSpan="3">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="36" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <StatusBar Grid.Row="2" Height="20" VerticalAlignment="Bottom" 
+        <StatusBar Grid.Row="2" Height="20" VerticalAlignment="Bottom" 
                        Background="{StaticResource HighlightBrush}">
-                <StatusBarItem Padding="0" Margin="0">
-                    <TextBox Name="StatusBarExceptionMessage"
+            <StatusBarItem Padding="0" Margin="0">
+                <TextBox Name="StatusBarExceptionMessage"
                              VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True" 
                              TextChanged="StatusBarExceptionMessage_TextChanged" Visibility="Visible"
                              Background="Transparent" BorderThickness="0"/>
-                </StatusBarItem>
-            </StatusBar>
-            <Grid Name="TabGrid" Grid.Row="0" Height="36">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <!--MoveBar-->
-                <ContentControl Grid.ColumnSpan="512" Name="MoveBar"
+            </StatusBarItem>
+        </StatusBar>
+        <Grid Name="TabGrid" Grid.Row="0" Height="36">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <!--MoveBar-->
+            <ContentControl Grid.ColumnSpan="512" Name="MoveBar"
                                 MouseDown="MoveBar_MouseDown" MouseDoubleClick="MoveBar_MouseDoubleClick">
-                    <Rectangle Fill="Transparent"/>
-                </ContentControl>
-                <!--Button-->
-                <ToggleButton Grid.Column="0" Name="MenuButton" Content="MENU" Style="{StaticResource MenuStyle}" Checked="MenuButton_OnChecked" Unchecked="MenuButton_OnUnchecked">
-                    <ToggleButton.Triggers>
-                        <EventTrigger RoutedEvent="ToggleButton.Checked">
-                            <BeginStoryboard>
-                                <Storyboard Name="SB_ShowMenu" Completed="SB_ShowMenu_Completed">
-                                    <DoubleAnimation
+                <Rectangle Fill="Transparent"/>
+            </ContentControl>
+            <!--Button-->
+            <ToggleButton Grid.Column="0" Name="MenuButton" Content="MENU" Style="{StaticResource MenuStyle}" Checked="MenuButton_OnChecked" Unchecked="MenuButton_OnUnchecked">
+                <ToggleButton.Triggers>
+                    <EventTrigger RoutedEvent="ToggleButton.Checked">
+                        <BeginStoryboard>
+                            <Storyboard Name="SB_ShowMenu" Completed="SB_ShowMenu_Completed">
+                                <DoubleAnimation
                                     Storyboard.TargetName="MenuStack" 
                                     Storyboard.TargetProperty="Width"
                                     To="200" Duration="0:0:0.300">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                    <DoubleAnimation
+                                    <DoubleAnimation.EasingFunction>
+                                        <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation
                                     Storyboard.TargetName="MenuMask" 
                                     Storyboard.TargetProperty="Opacity"
                                     To="0.5" Duration="0:0:0.300">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                            <BeginStoryboard>
-                                <Storyboard Name="SB_HideMenu" Completed="SB_HideMenu_Completed">
-                                    <DoubleAnimation
+                                    <DoubleAnimation.EasingFunction>
+                                        <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                        <BeginStoryboard>
+                            <Storyboard Name="SB_HideMenu" Completed="SB_HideMenu_Completed">
+                                <DoubleAnimation
                                     Storyboard.TargetName="MenuStack" 
                                     Storyboard.TargetProperty="Width"
                                     To="0" Duration="0:0:0.300">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                    <DoubleAnimation
+                                    <DoubleAnimation.EasingFunction>
+                                        <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation
                                     Storyboard.TargetName="MenuMask" 
                                     Storyboard.TargetProperty="Opacity"
                                     To="0" Duration="0:0:0.300">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </ToggleButton.Triggers>
-                </ToggleButton>
-                <Button Grid.Column="2" Name="MinimizedButton" Width="36" Click="MinimizedButton_Click"></Button>
-                <Button Grid.Column="3" Name="CloseButton" Width="36" Style="{StaticResource CloseButton}" Click="CloseButton_Click"></Button>
-            </Grid>
-            <Rectangle Panel.ZIndex="1023" Grid.ColumnSpan="3" Grid.Row="1" Name="MenuMask" Opacity="0" HorizontalAlignment="Stretch" Fill="Black" MouseUp="MenuMask_MouseUp" IsHitTestVisible="False"/>
-            <DockPanel Panel.ZIndex="1024" Grid.Row="1" Name="MenuStack" Width="0" HorizontalAlignment="Left" Background="{StaticResource DefaultBrush}">
-                <DockPanel.Resources>
-                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                        <Setter Property="FontSize" Value="18"></Setter>
-                        <Setter Property="FontFamily" Value="Segoe UI"></Setter>
-                        <Setter Property="DockPanel.Dock" Value="Top"></Setter>
-                    </Style>
-                </DockPanel.Resources>
-                <!-- MenuItem_Bottom -->
-                <UniformGrid  DockPanel.Dock="Bottom" Rows="1" Columns="2">
-                    <Button Name="MenuItem_Config" Click="MenuItem_Checked">Config</Button>
-                    <Button Name="MenuItem_About" Click="MenuItem_Checked">About</Button>
-                </UniformGrid>
-                <Button Name="MenuItem_Common" Click="MenuItem_Checked" DockPanel.Dock="Bottom">Common</Button>
-                <Button Name="MenuItem_Diff" Click="MenuItem_Checked" DockPanel.Dock="Bottom" Visibility="Collapsed">Diff</Button>
-                <!-- MenuItem -->
-                <Button Name="MenuItem_World" Click="MenuItem_Checked">World</Button>
-                <Button Name="MenuItem_QuestArea" Click="MenuItem_Checked">Area</Button>
-                <UniformGrid DockPanel.Dock="Top" Rows="2" Columns="2">
-                    <Button Name="MenuItem_Quest" Click="MenuItem_Checked">Quest</Button>
-                    <Button Name="MenuItem_Event" Click="MenuItem_Checked">Event</Button>
-                    <Button Name="MenuItem_Unit" Click="MenuItem_Checked">Unit</Button>
-                    <Button Name="MenuItem_Enemy" Click="MenuItem_Checked">Enemy</Button>
-                    <Button Name="MenuItem_Skill" Click="MenuItem_Checked">Skill</Button>
-                    <Button Name="MenuItem_Accessory" Click="MenuItem_Checked">Accessory</Button>
-                </UniformGrid>
-                <Button Name="MenuItem_Guide" Click="MenuItem_Checked">Guide</Button>
-                <TextBlock></TextBlock>
-            </DockPanel>
-            <Grid Grid.Row="1" Name="MainGrid">
-                <!--<RTDDE:World x:Name="World"/>
+                                    <DoubleAnimation.EasingFunction>
+                                        <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </ToggleButton.Triggers>
+            </ToggleButton>
+            <Button Grid.Column="2" Name="MinimizedButton" Width="36" Click="MinimizedButton_Click"></Button>
+            <Button Grid.Column="3" Name="CloseButton" Width="36" Style="{StaticResource CloseButton}" Click="CloseButton_Click"></Button>
+        </Grid>
+        <Rectangle Panel.ZIndex="1023" Grid.ColumnSpan="3" Grid.Row="1" Name="MenuMask" Opacity="0" HorizontalAlignment="Stretch" Fill="Black" MouseUp="MenuMask_MouseUp" IsHitTestVisible="False"/>
+        <DockPanel Panel.ZIndex="1024" Grid.Row="1" Name="MenuStack" Width="0" HorizontalAlignment="Left" Background="{StaticResource DefaultBrush}">
+            <DockPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="FontSize" Value="18"></Setter>
+                    <Setter Property="FontFamily" Value="Segoe UI"></Setter>
+                    <Setter Property="DockPanel.Dock" Value="Top"></Setter>
+                </Style>
+            </DockPanel.Resources>
+            <!-- MenuItem_Bottom -->
+            <UniformGrid  DockPanel.Dock="Bottom" Rows="1" Columns="2">
+                <Button Name="MenuItem_Config" Click="MenuItem_Checked">Config</Button>
+                <Button Name="MenuItem_About" Click="MenuItem_Checked">About</Button>
+            </UniformGrid>
+            <Button Name="MenuItem_Common" Click="MenuItem_Checked" DockPanel.Dock="Bottom">Common</Button>
+            <Button Name="MenuItem_Diff" Click="MenuItem_Checked" DockPanel.Dock="Bottom" Visibility="Collapsed">Diff</Button>
+            <!-- MenuItem -->
+            <Button Name="MenuItem_World" Click="MenuItem_Checked">World</Button>
+            <Button Name="MenuItem_QuestArea" Click="MenuItem_Checked">Area</Button>
+            <UniformGrid DockPanel.Dock="Top" Rows="2" Columns="2">
+                <Button Name="MenuItem_Quest" Click="MenuItem_Checked">Quest</Button>
+                <Button Name="MenuItem_Event" Click="MenuItem_Checked">Event</Button>
+                <Button Name="MenuItem_Unit" Click="MenuItem_Checked">Unit</Button>
+                <Button Name="MenuItem_Enemy" Click="MenuItem_Checked">Enemy</Button>
+                <Button Name="MenuItem_Skill" Click="MenuItem_Checked">Skill</Button>
+                <Button Name="MenuItem_Accessory" Click="MenuItem_Checked">Accessory</Button>
+            </UniformGrid>
+            <Button Name="MenuItem_Guide" Click="MenuItem_Checked">Guide</Button>
+            <TextBlock></TextBlock>
+        </DockPanel>
+        <Grid Grid.Row="1" Name="MainGrid">
+            <!--<RTDDE:World x:Name="World"/>
                 <RTDDE:Quest x:Name="Quest"/>
                 <RTDDE:QuestArea x:Name="QuestArea"/>
                 <RTDDE:Unit x:Name="Unit"/>
@@ -137,18 +126,11 @@
                 <RTDDE:Accessory x:Name="Accessory" />
                 <RTDDE:Guide x:Name="Guide" />
                 <RTDDE:Config x:Name="Config" />
-                --><!--<RTDDE:Diff x:Name="Diff" />--><!--
+                -->
+            <!--<RTDDE:Diff x:Name="Diff" />-->
+            <!--
                 <RTDDE:Common x:Name="Common" />
                 <RTDDE:About x:Name="About" />-->
-            </Grid>
         </Grid>
-        <Rectangle Name="topLeft" Fill="Transparent" Grid.Column="0" Grid.Row="0" />
-        <Rectangle Name="top" Fill="Transparent" Grid.Column="1" Grid.Row="0" />
-        <Rectangle Name="topRight" Fill="Transparent" Grid.Column="2" Grid.Row="0" />
-        <Rectangle Name="left" Fill="Transparent" Grid.Column="0" Grid.Row="1" />
-        <Rectangle Name="right" Fill="Transparent" Grid.Column="2" Grid.Row="1"  />
-        <Rectangle Name="bottomLeft" Fill="Transparent" Grid.Column="0" Grid.Row="2" />
-        <Rectangle Name="bottom" Fill="Transparent" Grid.Column="1" Grid.Row="2"  />
-        <Rectangle Name="bottomRight" Fill="Transparent" Grid.Column="2" Grid.Row="2" />
     </Grid>
 </Window>

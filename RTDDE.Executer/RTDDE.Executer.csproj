@@ -176,8 +176,6 @@
     <Compile Include="Util\Skills.cs" />
     <Compile Include="Util\UnitInfo.cs" />
     <Compile Include="Util\Utility.cs" />
-    <Compile Include="Util\WindowBorder.cs" />
-    <Compile Include="Util\WindowResizer.cs" />
     <Page Include="Func\Accessory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

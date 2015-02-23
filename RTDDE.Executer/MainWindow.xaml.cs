@@ -22,6 +22,7 @@ using System.Windows.Threading;
 using System.Configuration;
 using System.Windows.Controls.Primitives;
 using System.ComponentModel;
+using System.Windows.Shell;
 using RTDDE.Executer.Func;
 
 namespace RTDDE.Executer
@@ -34,15 +35,11 @@ namespace RTDDE.Executer
         public MainWindow()
         {
             InitializeComponent();
-            new WindowResizer(this,
-                new WindowBorder(BorderPosition.TopLeft, topLeft),
-                new WindowBorder(BorderPosition.Top, top),
-                new WindowBorder(BorderPosition.TopRight, topRight),
-                new WindowBorder(BorderPosition.Right, right),
-                new WindowBorder(BorderPosition.BottomRight, bottomRight),
-                new WindowBorder(BorderPosition.Bottom, bottom),
-                new WindowBorder(BorderPosition.BottomLeft, bottomLeft),
-                new WindowBorder(BorderPosition.Left, left));
+            WindowChrome.SetWindowChrome(this, new WindowChrome()
+            {
+                CornerRadius = new CornerRadius(0),
+                CaptionHeight = 0
+            });
             ChangeTab("Quest");
         }
         [Obsolete("use async and await instead")]
