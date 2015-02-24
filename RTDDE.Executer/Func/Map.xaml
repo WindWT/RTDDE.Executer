@@ -34,7 +34,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0" Name="MapMarkGrid"></Grid>
-                <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" DockPanel.Dock="Top">
+                <ScrollViewer Grid.Column="1" Style="{StaticResource HorizontalScrollViewer}" DockPanel.Dock="Top">
                     <Grid Name="MapGrid"></Grid>
                 </ScrollViewer>
             </Grid>
@@ -56,7 +56,7 @@
                         <TextBox Name="MapEnemyInfo_name" Width="175"></TextBox>
                         <Separator Width="300"/>
                     </WrapPanel>
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+                    <ScrollViewer Grid.Row="1" Style="{StaticResource VerticalScrollViewer}">
                         <WrapPanel>
                             <TextBlock Text="id" Width="50"/>
                             <TextBox Name="MapEnemyInfo_id" Width="50"></TextBox>

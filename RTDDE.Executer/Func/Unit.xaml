@@ -105,7 +105,7 @@
                 <TextBox Grid.Column="4" Name="UnitInfo_sub_a1"></TextBox>
             </Grid>
         </StackPanel>
-        <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+        <ScrollViewer Grid.Column="1" Grid.Row="1" Style="{StaticResource VerticalScrollViewer}">
             <StackPanel>
                 <Grid>
                     <Grid.ColumnDefinitions>

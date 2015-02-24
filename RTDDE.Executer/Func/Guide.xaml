@@ -7,7 +7,7 @@
     <Grid Name="GuideTab" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Initialized="GuideTab_Initialized">
         <DockPanel >
             <DataGrid Name="GuideDataGrid" AutoGenerateColumns="True" DockPanel.Dock="Left" Width="150" SelectionChanged="GuideDataGrid_SelectionChanged"/>
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer Style="{StaticResource VerticalScrollViewer}">
                 <WrapPanel Name="GuideTalk"></WrapPanel>
             </ScrollViewer>
         </DockPanel>

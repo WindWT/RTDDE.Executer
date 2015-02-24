@@ -89,7 +89,7 @@
                 <!--<Image Name="QuestAreaInfo_banner_texture_image" Grid.ColumnSpan="4" Grid.Row="1"></Image>-->
             </Grid>
         </StackPanel>
-        <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+        <ScrollViewer Grid.Column="1" Grid.Row="1" Style="{StaticResource VerticalScrollViewer}">
             <StackPanel>
                 <Expander Name="QuestAreaExpander_Area" BorderThickness="0" IsExpanded="False">
                     <Expander.Header>

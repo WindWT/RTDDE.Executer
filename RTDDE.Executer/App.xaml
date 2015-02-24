@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
   mc:Ignorable="PresentationOptions"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
@@ -253,10 +254,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
         <ControlTemplate x:Key="VerticalScrollBar" TargetType="{x:Type ScrollBar}">
             <Grid >
                 <Track Name="PART_Track" IsDirectionReversed="true">
+                    <Track.Resources>
+                        <!-- Set the Thumb's minimum height to 30-->
+                        <system:Double x:Key="{x:Static SystemParameters.VerticalScrollBarButtonHeightKey}">60</system:Double>
+                    </Track.Resources>
                     <Track.DecreaseRepeatButton>
                         <RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageUpCommand" />
                     </Track.DecreaseRepeatButton>
@@ -273,11 +277,15 @@
         <ControlTemplate x:Key="HorizontalScrollBar" TargetType="{x:Type ScrollBar}">
             <Grid >
                 <Track Name="PART_Track" IsDirectionReversed="False">
+                    <Track.Resources>
+                        <!-- Set the Thumb's minimum height to 30-->
+                        <system:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}">60</system:Double>
+                    </Track.Resources>
                     <Track.DecreaseRepeatButton>
                         <RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageLeftCommand" />
                     </Track.DecreaseRepeatButton>
                     <Track.Thumb>
-                        <Thumb Style="{StaticResource ScrollBarThumb}" Margin="0" Background="{StaticResource PressedBrush}"/>
+                        <Thumb Style="{StaticResource ScrollBarThumb}" Margin="3" Background="{StaticResource PressedBrush}"/>
                     </Track.Thumb>
                     <Track.IncreaseRepeatButton>
                         <RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageRightCommand" />
@@ -303,7 +311,7 @@
             </Style.Triggers>
         </Style>
 
-        <Style TargetType="ScrollViewer">
+        <Style x:Key="BaseScrollViewer" TargetType="ScrollViewer">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -329,7 +337,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="HorizontalScrollViewer" BasedOn="{StaticResource {x:Type ScrollViewer}}" TargetType="ScrollViewer">
+        <Style x:Key="HorizontalScrollViewer" BasedOn="{StaticResource BaseScrollViewer}" TargetType="ScrollViewer">
+            <Setter Property="VerticalScrollBarVisibility" Value="Disabled"></Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="HorizontalScrollBarVisibility" Value="Visible" />
@@ -339,7 +348,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="VerticalScrollViewer" BasedOn="{StaticResource {x:Type ScrollViewer}}" TargetType="ScrollViewer">
+        <Style x:Key="VerticalScrollViewer" BasedOn="{StaticResource BaseScrollViewer}" TargetType="ScrollViewer">
             <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"></Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">

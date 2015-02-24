@@ -230,7 +230,7 @@
                 </Grid>
             </Grid>
         </StackPanel>
-        <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+        <ScrollViewer Grid.Column="1" Grid.Row="1" Style="{StaticResource VerticalScrollViewer}">
             <StackPanel>
                 <Grid Name="SkillInfo_LimitSkill">
                     <Grid.ColumnDefinitions>
