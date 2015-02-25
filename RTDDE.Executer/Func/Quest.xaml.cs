@@ -64,6 +64,7 @@ namespace RTDDE.Executer.Func
                 opentypeList.RemoveAll(o => string.IsNullOrEmpty(o.Type));
                 return opentypeList;
             });
+            Task<MapEventMaster> mapEventTask = Task.Run(() => DAL.ToSingle<MapEventMaster>("SELECT * FROM MAP_EVENT_MASTER WHERE id=" + quest.parent_map_event_id));
 
             string questDiff = string.Empty;
             for (int i = 0; i < 8; i++) {
@@ -86,6 +87,16 @@ namespace RTDDE.Executer.Func
             QuestInfo_parent_area_name.Text = quest.parent_area_name;
             QuestInfo_parent_area_text.Text = Utility.ParseText(quest.parent_area_text);
 
+            QuestInfo_parent_map_event_id.Text = quest.parent_map_event_id.ToString();
+            try {
+                MapEventMaster mapEvent = await mapEventTask;
+                if (mapEvent != null) {
+                    QuestInfo_parent_map_event_name.Text = mapEvent.name;
+                }
+            }
+            catch (Exception ex) {
+                Utility.ShowException(ex.Message);
+            }
             QuestInfo_display_order.Text = quest.display_order.ToString();
             QuestInfo_sp_guide_id.Text = quest.sp_guide_id.ToString();
             QuestInfo_event_effect_flag.Text = quest.event_effect_flag.ToString();
@@ -178,6 +189,20 @@ namespace RTDDE.Executer.Func
             QuestInfo_present_type.Text = Utility.ParsePresentType(quest.present_type);
             QuestInfo_present_param.Text = quest.present_param_name;
             QuestInfo_present_param_1.Text = quest.present_param_1.ToString();
+
+            //advanced
+            UnitInfo_event_cutin_id.Text = quest.event_cutin_id.ToString();
+            UnitInfo_enemy_table_id.Text = quest.enemy_table_id.ToString();
+            UnitInfo_banner.Text = quest.banner;
+            UnitInfo_tflg_cmd_0.Text = quest.tflg_cmd_0.ToString();
+            UnitInfo_tflg_idx_0.Text = quest.tflg_idx_0.ToString();
+            UnitInfo_tflg_cmd_1.Text = quest.tflg_cmd_1.ToString();
+            UnitInfo_tflg_idx_1.Text = quest.tflg_idx_1.ToString();
+            UnitInfo_text.Text = quest.text;
+            UnitInfo_map.Text = quest.map.ToString();
+            UnitInfo_division.Text = quest.division.ToString();
+            UnitInfo_kpi_class.Text = quest.kpi_class.ToString();
+            UnitInfo_flag_no.Text = quest.flag_no.ToString();
         }
 
         private void QuestTypeRadio_Event_Checked(object sender, RoutedEventArgs e)
