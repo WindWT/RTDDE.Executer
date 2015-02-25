@@ -75,65 +75,54 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Name="EventInfo_id"></TextBox>
-                <TextBox Grid.Column="1" Name="EventInfo_chara_flag_no"></TextBox>
-                <TextBox Grid.Column="2" Name="EventInfo_chara_symbol"></TextBox>
-                <TextBox Grid.Column="3" Name="EventInfo_name"></TextBox>
-                <TextBox Grid.Column="4" Name="EventInfo_attribute"></TextBox>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" Grid.Column="0" Name="EventInfo_id"></TextBox>
+                <TextBox Grid.Row="0" Grid.Column="1" Name="EventInfo_name"></TextBox>
+                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Name="EventInfo_text"></TextBox>
+                <TextBox Grid.Row="2" Grid.ColumnSpan="2" Name="EventInfo_dialog_text"></TextBox>
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Name="EventInfo_type"></TextBox>
-                <TextBox Grid.Column="1" Name="EventInfo_chara_kind"></TextBox>
+                <TextBlock Grid.Column="0" Text="type"></TextBlock>
+                <TextBox Grid.Column="1" Name="EventInfo_event_type"></TextBox>
+                <TextBlock Grid.Column="2" Text="count"></TextBlock>
+                <TextBox Grid.Column="3" Name="EventInfo_max_count"></TextBox>
             </Grid>
         </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" Style="{StaticResource VerticalScrollViewer}">
             <StackPanel>
-                <Grid>
+                <Grid Name="EventInfo_opentype">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="60"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="lv"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" Name="EventInfo_lv" IsReadOnly="False" LostFocus="EventInfo_lv_LostFocus"></TextBox>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="soul"/>
-                    <TextBox Grid.Row="0" Grid.Column="3" Name="EventInfo_soul_pt"></TextBox>
-                    <TextBlock Grid.Row="0" Grid.Column="4" Text="gold"/>
-                    <TextBox Grid.Row="0" Grid.Column="5" Name="EventInfo_gold_pt"></TextBox>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="HP"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Name="EventInfo_HP" Width="250"></TextBox>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="ATK"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Name="EventInfo_ATK" Width="250"></TextBox>
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="DEF"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" Name="EventInfo_DEF" Width="250"></TextBox>
-                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Dragon"/>
-                    <TextBox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" Name="EventInfo_flag"></TextBox>
-                    <TextBlock Grid.Row="2" Grid.Column="2" Text="Unit"/>
-                    <TextBox Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" Name="EventInfo_isUnit"></TextBox>
-                    
-                    <TextBlock Grid.Row="3" Grid.Column="2" Text="turn"/>
-                    <TextBox Grid.Row="3" Grid.Column="3" Name="EventInfo_turn"></TextBox>
-                    <TextBlock Grid.Row="3" Grid.Column="4" Text="ui"/>
-                    <TextBox Grid.Row="3" Grid.Column="5" Name="EventInfo_ui"></TextBox>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="opentype"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="param"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="group"/>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Name="EventInfo_opentype_content"/>
                 </Grid>
+                <UniformGrid Columns="2" Rows="2">
+                    <TextBlock Name="EventInfo_post_type"></TextBlock>
+                    <TextBlock Name="EventInfo_post_message_id"></TextBlock>
+                    <TextBlock Name="EventInfo_post_param_01"></TextBlock>
+                    <TextBlock Name="EventInfo_post_param_02"></TextBlock>
+                </UniformGrid>
                 <Expander BorderThickness="0" Name="EventAdvancedExpander" IsExpanded="False">
                     <Expander.Header>
                         <Label Content="Advanced"></Label>
@@ -151,19 +140,22 @@
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="model"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="EventInfo_model"></TextBox>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="texture"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="EventInfo_texture"></TextBox>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="icon"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Name="EventInfo_icon"></TextBox>
-                            <TextBlock Grid.Row="2" Grid.Column="2" Text="shadow"/>
-                            <TextBox Grid.Row="2" Grid.Column="3" Name="EventInfo_shadow"></TextBox>
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="up"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" Name="EventInfo_up"></TextBox>
-                            <TextBlock Grid.Row="3" Grid.Column="2" Text="atk_ef_id"/>
-                            <TextBox Grid.Row="3" Grid.Column="3" Name="EventInfo_atk_ef_id"></TextBox>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="banner_bg_texture"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="EventInfo_banner_bg_texture"></TextBox>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="icon_texture"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="EventInfo_icon_texture"></TextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="dialog_banner"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Name="EventInfo_dialog_banner"></TextBox>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="icon"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Name="EventInfo_icon"></TextBox>
+                            <TextBlock Grid.Row="3" Grid.Column="2" Text="icon_type"/>
+                            <TextBox Grid.Row="3" Grid.Column="3" Name="EventInfo_icon_type"></TextBox>
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="icon_pos_x"/>
+                            <TextBox Grid.Row="4" Grid.Column="1" Name="EventInfo_icon_pos_x"></TextBox>
+                            <TextBlock Grid.Row="4" Grid.Column="2" Text="icon_pos_y"/>
+                            <TextBox Grid.Row="4" Grid.Column="3" Name="EventInfo_icon_pos_y"></TextBox>
                         </Grid>
                     </Expander.Content>
                 </Expander>

@@ -54,7 +54,7 @@ namespace RTDDE.Executer.Func
             Task<List<OpenType>> taskOpenType = Task.Run(() =>
             {
                 List<OpenType> opentypeList = new List<OpenType>();
-                if (questTask.Result == null) {
+                if (quest == null) {
                     return null;
                 }
                 for (int i = 1; i <= 8; i++) {

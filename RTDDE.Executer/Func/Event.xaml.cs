@@ -25,7 +25,7 @@ namespace RTDDE.Executer.Func
             Utility.BindData(EventDataGrid, "SELECT id,name FROM MAP_EVENT_Master order by id");
         }
 
-        private void EventDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        async private void EventDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (EventDataGrid.SelectedItem == null) {
                 //avoid Exception
@@ -33,36 +33,70 @@ namespace RTDDE.Executer.Func
             }
             string Eventid = ((DataRowView)EventDataGrid.SelectedItem).Row["id"].ToString();
             EventInfo_id.Text = Eventid;
-            EventInfo_lv.Text = "1";
-            EventInfo_BindData(Eventid);
-        }
-        private void EventInfo_lv_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(EventInfo_lv.Text)) {
-                EventInfo_lv.Text = "";
-            }
-            Regex r = new Regex("[^0-9]");
-            if (r.Match(EventInfo_lv.Text).Success) {
-                EventInfo_lv.Text = "1";
-                return;
-            }
-            EventInfo_BindData(EventInfo_id.Text);
-        }
-
-        public void EventInfo_BindData(string Eventid)
-        {
-            if (string.IsNullOrWhiteSpace(EventInfo_lv.Text)) {
-                return;
-            }
-            int thislevel = Convert.ToInt32(EventInfo_lv.Text);
-
-            Task<MapEventMaster> task = new Task<MapEventMaster>(() =>
+            Task<MapEventMaster> task = Task.Run(() =>
             {
                 string sql = @"Select * from MAP_EVENT_Master WHERE id={0}";
                 return DAL.ToSingle<MapEventMaster>(String.Format(sql, Eventid));
             });
-            
-            task.Start();
+
+            MapEventMaster mapEvent = await task;
+            Task<List<OpenType>> taskOpenType = Task.Run(() =>
+            {
+                List<OpenType> opentypeList = new List<OpenType>();
+                if (mapEvent == null) {
+                    return null;
+                }
+                opentypeList.Add(Utility.ParseOpentype(mapEvent.open_type_01, (int)mapEvent.open_param_01, 0));
+                opentypeList.Add(Utility.ParseOpentype(mapEvent.open_type_02, (int)mapEvent.open_param_02, 0));
+                opentypeList.Add(Utility.ParseOpentype(mapEvent.open_type_03, (int)mapEvent.open_param_03, 0));
+                opentypeList.Add(Utility.ParseOpentype(mapEvent.open_type_04, (int)mapEvent.open_param_04, 0));
+                opentypeList.Add(Utility.ParseOpentype(100, (int)mapEvent.open_timezone, (int)mapEvent.close_timezone));
+                opentypeList.RemoveAll(o => string.IsNullOrEmpty(o.Type));
+                return opentypeList;
+            });
+
+            EventInfo_name.Text = mapEvent.name;
+            EventInfo_text.Text = mapEvent.text;
+            EventInfo_dialog_text.Text = mapEvent.dialog_text;
+
+            EventInfo_event_type.Text = mapEvent.event_type.ToString();
+            EventInfo_max_count.Text = mapEvent.max_count.ToString();
+
+            List<OpenType> opentypes = await taskOpenType;
+            if (opentypes.Count == 0) {
+                EventInfo_opentype.Visibility = Visibility.Collapsed;
+            }
+            else {
+                EventInfo_opentype.Visibility = Visibility.Visible;
+                foreach (OpenType type in opentypes) {
+                    var grid = new Grid();
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(60) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                    TextBox typeTextBox = new TextBox() { Text = type.Type };
+                    typeTextBox.SetValue(Grid.ColumnProperty, 0);
+                    grid.Children.Add(typeTextBox);
+                    TextBox paramTextBox = new TextBox() { Text = type.Param };
+                    paramTextBox.SetValue(Grid.ColumnProperty, 1);
+                    grid.Children.Add(paramTextBox);
+                    TextBox groupTextBox = new TextBox() { Text = type.Group.ToString() };
+                    groupTextBox.SetValue(Grid.ColumnProperty, 2);
+                    grid.Children.Add(groupTextBox);
+                    EventInfo_opentype_content.Children.Add(grid);
+                }
+            }
+            EventInfo_post_type.Text = mapEvent.post_type.ToString();
+            EventInfo_post_message_id.Text = mapEvent.post_message_id.ToString();
+            EventInfo_post_param_01.Text = mapEvent.post_param_01.ToString();
+            EventInfo_post_param_02.Text = mapEvent.post_param_02.ToString();
+            //advanced
+            EventInfo_banner_bg_texture.Text = mapEvent.banner_bg_texture;
+            EventInfo_icon_texture.Text = mapEvent.icon_texture;
+            EventInfo_dialog_banner.Text = mapEvent.dialog_banner;
+            EventInfo_icon.Text = mapEvent.icon;
+            EventInfo_icon_pos_x.Text = mapEvent.icon_pos_x.ToString();
+            EventInfo_icon_pos_y.Text = mapEvent.icon_pos_y.ToString();
+            EventInfo_icon_type.Text = mapEvent.icon_type.ToString();
         }
     }
 }
