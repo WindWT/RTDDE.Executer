@@ -57,7 +57,7 @@ namespace RTDDE.Executer.Func
                 if (quest == null) {
                     return null;
                 }
-                for (int i = 1; i <= 8; i++) {
+                for (int i = 0; i < 8; i++) {
                     opentypeList.Add(Utility.ParseOpentype(quest.GetOpenType(i), quest.GetOpenParam(i), quest.GetGroupParam(i)));
                 }
                 opentypeList.Add(new OpenType(quest.open_sp_event_name, quest.open_sp_event_point.ToString(), 0));
