@@ -12,23 +12,22 @@ namespace RTDDE.Executer
         private static readonly string CONFIG_FILENAME = "config.xml";
         public static ConfigData Config;
         private static readonly XmlSerializer Serializer = new XmlSerializer(typeof(ConfigData));
-        static Settings()
+        /// <summary>
+        /// Init Settings
+        /// </summary>
+        public static void Init()
         {
-            if (File.Exists(CONFIG_FILENAME) == false)
-            {
+            if (File.Exists(CONFIG_FILENAME) == false) {
                 Config = new ConfigData();
                 Settings.Save();
                 return;
             }
-            try
-            {
-                using (TextReader tr = new StreamReader(CONFIG_FILENAME))
-                {
+            try {
+                using (TextReader tr = new StreamReader(CONFIG_FILENAME)) {
                     Config = (ConfigData)Serializer.Deserialize(tr);
                 }
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 //config file read error
                 Config = new ConfigData();
                 Settings.Save();
@@ -37,8 +36,7 @@ namespace RTDDE.Executer
         }
         public static void Save()
         {
-            using (TextWriter tw = new StreamWriter(CONFIG_FILENAME, false))
-            {
+            using (TextWriter tw = new StreamWriter(CONFIG_FILENAME, false)) {
                 Serializer.Serialize(tw, Config);
             }
         }

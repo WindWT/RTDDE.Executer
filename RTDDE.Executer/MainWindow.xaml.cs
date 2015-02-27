@@ -40,6 +40,7 @@ namespace RTDDE.Executer
                 CornerRadius = new CornerRadius(0),
                 CaptionHeight = 0
             });
+            Settings.Init();    //init settings here
             ChangeTab("Quest");
         }
         [Obsolete("use async and await instead")]
