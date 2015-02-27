@@ -16,61 +16,56 @@
         </Grid.RowDefinitions>
         <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="EnemyDataGrid" AutoGenerateColumns="True" SelectionChanged="EnemyDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="0">
-            <Expander BorderThickness="0" Name="EnemySearchExpander" IsExpanded="False">
-                <Expander.Header>
-                    <Label Content="Search"></Label>
-                </Expander.Header>
-                <Expander.Content>
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid.Resources>
-                                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                                    <Setter Property="IsReadOnly" Value="False"></Setter>
-                                    <EventSetter Event="TextChanged" Handler="EnemySearch_TextChanged"/>
-                                </Style>
-                            </Grid.Resources>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="id" />
-                            <TextBox Grid.Row="0" Grid.Column="1" Name="EnemySearch_id"></TextBox>
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="name"/>
-                            <TextBox Grid.Row="0" Grid.Column="3" Name="EnemySearch_name"></TextBox>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid.Resources>
-                                <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
-                                    <EventSetter Event="SelectionChanged" Handler="EnemySearch_SelectionChanged"/>
-                                </Style>
-                            </Grid.Resources>
-                            <ComboBox Grid.Row="0" Grid.Column="0" Name="EnemySearch_chara_symbol"></ComboBox>
-                            <ComboBox Grid.Row="0" Grid.Column="1" Name="EnemySearch_chara_kind"></ComboBox>
-                            <ComboBox Grid.Row="0" Grid.Column="2" Name="EnemySearch_type"></ComboBox>
-                            <ComboBox Grid.Row="0" Grid.Column="3" Name="EnemySearch_attribute"></ComboBox>
-                            <ComboBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Name="EnemySearch_pattern"></ComboBox>
-                            <!--<ComboBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Name="EnemySearch_pattern2"></ComboBox>-->
-                            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Name="EnemySearchClear" Click="EnemySearchClear_Click">Clear</Button>
-                        </Grid>
-                    </StackPanel>
-                </Expander.Content>
+            <Expander Header="Search" Name="EnemySearchExpander" IsExpanded="False">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Setter Property="IsReadOnly" Value="False"></Setter>
+                                <EventSetter Event="TextChanged" Handler="EnemySearch_TextChanged"/>
+                            </Style>
+                        </Grid.Resources>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="id" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Name="EnemySearch_id"></TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="name"/>
+                        <TextBox Grid.Row="0" Grid.Column="3" Name="EnemySearch_name"></TextBox>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                <EventSetter Event="SelectionChanged" Handler="EnemySearch_SelectionChanged"/>
+                            </Style>
+                        </Grid.Resources>
+                        <ComboBox Grid.Row="0" Grid.Column="0" Name="EnemySearch_chara_symbol"></ComboBox>
+                        <ComboBox Grid.Row="0" Grid.Column="1" Name="EnemySearch_chara_kind"></ComboBox>
+                        <ComboBox Grid.Row="0" Grid.Column="2" Name="EnemySearch_type"></ComboBox>
+                        <ComboBox Grid.Row="0" Grid.Column="3" Name="EnemySearch_attribute"></ComboBox>
+                        <ComboBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Name="EnemySearch_pattern"></ComboBox>
+                        <!--<ComboBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Name="EnemySearch_pattern2"></ComboBox>-->
+                        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Name="EnemySearchClear" Click="EnemySearchClear_Click">Clear</Button>
+                    </Grid>
+                </StackPanel>
             </Expander>
             <Separator/>
             <Grid>
@@ -183,7 +178,7 @@
                     <TextBox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" Name="EnemyInfo_flag"></TextBox>
                     <TextBlock Grid.Row="2" Grid.Column="2" Text="Unit"/>
                     <TextBox Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" Name="EnemyInfo_isUnit"></TextBox>
-                    
+
                     <TextBlock Grid.Row="3" Grid.Column="2" Text="turn"/>
                     <TextBox Grid.Row="3" Grid.Column="3" Name="EnemyInfo_turn"></TextBox>
                     <TextBlock Grid.Row="3" Grid.Column="4" Text="ui"/>
@@ -209,38 +204,33 @@
                     <TextBox Grid.Row="1" Grid.Column="2" Name="EnemyInfo_p0_01"></TextBox>
                     <TextBox Grid.Row="1" Grid.Column="3" Name="EnemyInfo_p1_01"></TextBox>
                 </Grid>
-                <Expander BorderThickness="0" Name="EnemyAdvancedExpander" IsExpanded="False">
-                    <Expander.Header>
-                        <Label Content="Advanced"></Label>
-                    </Expander.Header>
-                    <Expander.Content>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="model"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="EnemyInfo_model"></TextBox>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="texture"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="EnemyInfo_texture"></TextBox>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="icon"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Name="EnemyInfo_icon"></TextBox>
-                            <TextBlock Grid.Row="2" Grid.Column="2" Text="shadow"/>
-                            <TextBox Grid.Row="2" Grid.Column="3" Name="EnemyInfo_shadow"></TextBox>
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="up"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" Name="EnemyInfo_up"></TextBox>
-                            <TextBlock Grid.Row="3" Grid.Column="2" Text="atk_ef_id"/>
-                            <TextBox Grid.Row="3" Grid.Column="3" Name="EnemyInfo_atk_ef_id"></TextBox>
-                        </Grid>
-                    </Expander.Content>
+                <Expander Header="Advanced" Name="EnemyAdvancedExpander" IsExpanded="False">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="model"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="EnemyInfo_model"></TextBox>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="texture"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="EnemyInfo_texture"></TextBox>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="icon"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Name="EnemyInfo_icon"></TextBox>
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="shadow"/>
+                        <TextBox Grid.Row="2" Grid.Column="3" Name="EnemyInfo_shadow"></TextBox>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="up"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Name="EnemyInfo_up"></TextBox>
+                        <TextBlock Grid.Row="3" Grid.Column="2" Text="atk_ef_id"/>
+                        <TextBox Grid.Row="3" Grid.Column="3" Name="EnemyInfo_atk_ef_id"></TextBox>
+                    </Grid>
                 </Expander>
             </StackPanel>
         </ScrollViewer>

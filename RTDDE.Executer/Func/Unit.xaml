@@ -15,65 +15,60 @@
         </Grid.RowDefinitions>
         <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="UnitDataGrid" AutoGenerateColumns="True" SelectionChanged="UnitDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="0">
-            <Expander BorderThickness="0" Name="UnitSearchExpander" IsExpanded="False">
-                <Expander.Header>
-                    <Label Content="Search"></Label>
-                </Expander.Header>
-                <Expander.Content>
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid.Resources>
-                                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                                    <Setter Property="IsReadOnly" Value="False"></Setter>
-                                    <EventSetter Event="TextChanged" Handler="UnitSearch_TextChanged"/>
-                                </Style>
-                            </Grid.Resources>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="id" />
-                            <TextBox Grid.Row="0" Grid.Column="1" Name="UnitSearch_id"></TextBox>
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="g_id"/>
-                            <TextBox Grid.Row="0" Grid.Column="3" Name="UnitSearch_g_id"></TextBox>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="name"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="UnitSearch_name"></TextBox>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="story"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Name="UnitSearch_story"></TextBox>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid.Resources>
-                                <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
-                                    <EventSetter Event="SelectionChanged" Handler="UnitSearch_SelectionChanged"/>
-                                </Style>
-                            </Grid.Resources>
-                            <ComboBox Grid.Row="0" Grid.Column="0" Name="UnitSearch_category"></ComboBox>
-                            <ComboBox Grid.Row="0" Grid.Column="1" Name="UnitSearch_style"></ComboBox>
-                            <ComboBox Grid.Row="0" Grid.Column="2" Name="UnitSearch_kind"></ComboBox>
-                            <ComboBox Grid.Row="0" Grid.Column="3" Name="UnitSearch_attribute"></ComboBox>
-                            <ComboBox Grid.Row="0" Grid.Column="4" Name="UnitSearch_sub_a1"></ComboBox>
-                            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Name="UnitSearchClear" Click="UnitSearchClear_Click">Clear</Button>
-                        </Grid>
-                    </StackPanel>
-                </Expander.Content>
+            <Expander Header="Search" Name="UnitSearchExpander" IsExpanded="False">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Setter Property="IsReadOnly" Value="False"></Setter>
+                                <EventSetter Event="TextChanged" Handler="UnitSearch_TextChanged"/>
+                            </Style>
+                        </Grid.Resources>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="id" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Name="UnitSearch_id"></TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="g_id"/>
+                        <TextBox Grid.Row="0" Grid.Column="3" Name="UnitSearch_g_id"></TextBox>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="name"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="UnitSearch_name"></TextBox>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="story"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Name="UnitSearch_story"></TextBox>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                <EventSetter Event="SelectionChanged" Handler="UnitSearch_SelectionChanged"/>
+                            </Style>
+                        </Grid.Resources>
+                        <ComboBox Grid.Row="0" Grid.Column="0" Name="UnitSearch_category"></ComboBox>
+                        <ComboBox Grid.Row="0" Grid.Column="1" Name="UnitSearch_style"></ComboBox>
+                        <ComboBox Grid.Row="0" Grid.Column="2" Name="UnitSearch_kind"></ComboBox>
+                        <ComboBox Grid.Row="0" Grid.Column="3" Name="UnitSearch_attribute"></ComboBox>
+                        <ComboBox Grid.Row="0" Grid.Column="4" Name="UnitSearch_sub_a1"></ComboBox>
+                        <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Name="UnitSearchClear" Click="UnitSearchClear_Click">Clear</Button>
+                    </Grid>
+                </StackPanel>
             </Expander>
             <Separator/>
             <Grid>
@@ -163,295 +158,83 @@
                         <TextBox Grid.Column="4" Name="UnitInfo_rev_unit_name"></TextBox>
                     </Grid>-->
                 </StackPanel>
-                <Expander BorderThickness="0" Name="UnitStoryExpander" IsExpanded="False">
-                    <Expander.Header>
-                        <Label Content="Story"></Label>
-                    </Expander.Header>
-                    <Expander.Content>
-                        <StackPanel>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="75"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <RichTextBox Grid.Row="0" Grid.ColumnSpan="2" Name="UnitInfo_story"></RichTextBox>
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="ct_text"/>
-                                <TextBox Grid.Row="1" Grid.Column="1" Name="UnitInfo_ct_text"></TextBox>
-                                <TextBlock Grid.Row="2" Grid.Column="0" Text="sct_text"/>
-                                <TextBox Grid.Row="2" Grid.Column="1" Name="UnitInfo_sct_text"></TextBox>
-                                <TextBlock Grid.Row="3" Grid.Column="0" Text="sct6_text"/>
-                                <TextBox Grid.Row="3" Grid.Column="1" Name="UnitInfo_sct6_text"></TextBox>
-                                <TextBlock Grid.Row="4" Grid.Column="0" Text="a_skill_text"/>
-                                <TextBox Grid.Row="4" Grid.Column="1" Name="UnitInfo_a_skill_text"></TextBox>
-                            </Grid>
-                        </StackPanel>
-                    </Expander.Content>
-                </Expander>
-                <Expander BorderThickness="0" Name="UnitSkillExpander" IsExpanded="False">
-                    <Expander.Header>
-                        <Label Content="Skill"></Label>
-                    </Expander.Header>
-                    <Expander.Content>
-                        <StackPanel>
-                            <Grid Name="UnitInfo_PartySkill">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="PARTY"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" Name="partySkill_id"></TextBox>
-                                <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="partySkill_name"></TextBox>
-                                <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="partySkill_text"></RichTextBox>
-                                <TextBlock Grid.Row="2" Grid.Column="0" Text="type"/>
-                                <TextBox Grid.Row="2" Grid.Column="1" Name="partySkill_type_id"></TextBox>
-                                <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="partySkill_type"></TextBox>
-                                <TextBlock Grid.Row="3" Grid.Column="0" Text="attribute"/>
-                                <TextBox Grid.Row="3" Grid.Column="1" Name="partySkill_attribute"></TextBox>
-                                <TextBox Grid.Row="3" Grid.Column="2" Name="partySkill_sub_attr"></TextBox>
-                                <Grid Grid.Row="3" Grid.Column="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="style"/>
-                                    <TextBox Grid.Column="1" Name="partySkill_style"></TextBox>
-                                </Grid>
-                                <Grid Grid.Row="4" Grid.ColumnSpan="4">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Name="partySkill_num"></TextBox>
-                                    <TextBox Grid.Column="1" Name="partySkill_num_01"></TextBox>
-                                    <TextBox Grid.Column="2" Name="partySkill_num_02"></TextBox>
-                                    <TextBox Grid.Column="3" Name="partySkill_num_03"></TextBox>
-                                </Grid>
-                            </Grid>
-                            <Grid Name="UnitInfo_ActiveSkill">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="ACTIVE"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" Name="activeSkill_id"></TextBox>
-                                <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="activeSkill_name"></TextBox>
-                                <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="activeSkill_text"></RichTextBox>
-                                <TextBlock Grid.Row="2" Grid.Column="0" Text="type"/>
-                                <TextBox Grid.Row="2" Grid.Column="1" Name="activeSkill_type_id"></TextBox>
-                                <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="activeSkill_type"></TextBox>
-                                <TextBlock Grid.Row="3" Grid.Column="0" Text="attribute"/>
-                                <TextBox Grid.Row="3" Grid.Column="1" Name="activeSkill_attribute"></TextBox>
-                                <TextBox Grid.Row="3" Grid.Column="2" Name="activeSkill_sub_attr"></TextBox>
-                                <Grid Grid.Row="3" Grid.Column="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="style"/>
-                                    <TextBox Grid.Column="1" Name="activeSkill_style"></TextBox>
-                                </Grid>
-                                <Grid Grid.Row="4" Grid.ColumnSpan="4">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="phase"/>
-                                    <TextBox Grid.Column="1" Name="activeSkill_phase"></TextBox>
-                                    <TextBlock Grid.Column="2" Text="soul"/>
-                                    <TextBox Grid.Column="3" Name="activeSkill_soul"></TextBox>
-                                    <TextBlock Grid.Column="4" Text="limit_num"/>
-                                    <TextBox Grid.Column="5" Name="activeSkill_limit_num"></TextBox>
-                                </Grid>
-                                <Grid Grid.Row="5" Grid.ColumnSpan="4">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Name="activeSkill_num"></TextBox>
-                                    <TextBox Grid.Column="1" Name="activeSkill_num_01"></TextBox>
-                                    <TextBox Grid.Column="2" Name="activeSkill_num_02"></TextBox>
-                                    <TextBox Grid.Column="3" Name="activeSkill_num_03"></TextBox>
-                                </Grid>
-                            </Grid>
-                            <Grid Name="UnitInfo_PanelSkill">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="PANEL"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" Name="panelSkill_id"></TextBox>
-                                <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="panelSkill_name"></TextBox>
-                                <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="panelSkill_text"></RichTextBox>
-                                <TextBlock Grid.Row="2" Grid.Column="0" Text="type"/>
-                                <TextBox Grid.Row="2" Grid.Column="1" Name="panelSkill_type_id"></TextBox>
-                                <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="panelSkill_type"></TextBox>
-                                <TextBlock Grid.Row="3" Grid.Column="0" Text="attribute"/>
-                                <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Name="panelSkill_attribute"></TextBox>
-                                <Grid Grid.Row="3" Grid.Column="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="style"/>
-                                    <TextBox Grid.Column="1" Name="panelSkill_style"></TextBox>
-                                </Grid>
-                                <Grid Grid.Row="4" Grid.ColumnSpan="4">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="phase"/>
-                                    <TextBox Grid.Column="1" Name="panelSkill_phase"></TextBox>
-                                    <TextBlock Grid.Column="2" Text="duplication"/>
-                                    <TextBox Grid.Column="3" Name="panelSkill_duplication"></TextBox>
-                                </Grid>
-                                <Grid Grid.Row="5" Grid.ColumnSpan="4">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Name="panelSkill_num"></TextBox>
-                                    <TextBox Grid.Column="1" Name="panelSkill_num_01"></TextBox>
-                                    <TextBox Grid.Column="2" Name="panelSkill_num_02"></TextBox>
-                                    <TextBox Grid.Column="3" Name="panelSkill_num_03"></TextBox>
-                                </Grid>
-                            </Grid>
-                            <Grid Name="UnitInfo_LimitSkill">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="LIMIT"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" Name="limitSkill_id"></TextBox>
-                                <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="limitSkill_name"></TextBox>
-                                <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="limitSkill_general_text"></RichTextBox>
-                                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="coefficient"/>
-                                <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="limitSkill_coefficient"></TextBox>
-                                <Expander Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" BorderThickness="0" IsExpanded="False">
-                                    <Expander.Header>
-                                        <Label Content="LimitAS"></Label>
-                                    </Expander.Header>
-                                    <Expander.Content>
-                                        <StackPanel Name="UnitInfo_LimitSkill_AS">
-                                        </StackPanel>
-                                    </Expander.Content>
-                                </Expander>
-                            </Grid>
-                        </StackPanel>
-                    </Expander.Content>
-                </Expander>
-                <Expander BorderThickness="0" Name="UnitAccessoryExpander" IsExpanded="False">
-                    <Expander.Header>
-                        <Label Content="Accessory"></Label>
-                    </Expander.Header>
-                    <Expander.Content>
+                <Expander Header="Story" Name="UnitStoryExpander" IsExpanded="False">
+                    <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="75"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <TextBox Grid.Row="0" Grid.Column="0" Name="accessory_id"></TextBox>
-                            <TextBox Grid.Row="0" Grid.Column="1" Name="accessory_name"></TextBox>
-                            <TextBox Grid.Row="0" Grid.Column="2" Name="accessory_attribute"></TextBox>
-                            <TextBox Grid.Row="0" Grid.Column="3" Name="accessory_su_a1"></TextBox>
-                            <TextBox Grid.Row="1" Grid.ColumnSpan="4" Name="accessory_type"></TextBox>
-                            <RichTextBox Grid.Row="2" Grid.ColumnSpan="4" Name="accessory_detail"></RichTextBox>
-                            <Grid Grid.Row="3" Grid.ColumnSpan="4">
+                            <RichTextBox Grid.Row="0" Grid.ColumnSpan="2" Name="UnitInfo_story"></RichTextBox>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="ct_text"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Name="UnitInfo_ct_text"></TextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="sct_text"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Name="UnitInfo_sct_text"></TextBox>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="sct6_text"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Name="UnitInfo_sct6_text"></TextBox>
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="a_skill_text"/>
+                            <TextBox Grid.Row="4" Grid.Column="1" Name="UnitInfo_a_skill_text"></TextBox>
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+                <Expander Header="Skill" Name="UnitSkillExpander" IsExpanded="False">
+                    <StackPanel>
+                        <Grid Name="UnitInfo_PartySkill">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="PARTY"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Name="partySkill_id"></TextBox>
+                            <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="partySkill_name"></TextBox>
+                            <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="partySkill_text"></RichTextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="type"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Name="partySkill_type_id"></TextBox>
+                            <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="partySkill_type"></TextBox>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="attribute"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Name="partySkill_attribute"></TextBox>
+                            <TextBox Grid.Row="3" Grid.Column="2" Name="partySkill_sub_attr"></TextBox>
+                            <Grid Grid.Row="3" Grid.Column="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="style"/>
+                                <TextBox Grid.Column="1" Name="partySkill_style"></TextBox>
+                            </Grid>
+                            <Grid Grid.Row="4" Grid.ColumnSpan="4">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="conv_money"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" Name="accessory_conv_money"></TextBox>
-                                <TextBlock Grid.Row="0" Grid.Column="2" Text="style"/>
-                                <TextBox Grid.Row="0" Grid.Column="3" Name="accessory_style"></TextBox>
-                                <TextBox Grid.Row="1" Grid.Column="0" Name="accessory_num_01"></TextBox>
-                                <TextBox Grid.Row="1" Grid.Column="1" Name="accessory_num_02"></TextBox>
-                                <TextBox Grid.Row="1" Grid.Column="2" Name="accessory_num_03" ></TextBox>
-                                <TextBox Grid.Row="1" Grid.Column="3" Name="accessory_num_04" ></TextBox>
+                                <TextBox Grid.Column="0" Name="partySkill_num"></TextBox>
+                                <TextBox Grid.Column="1" Name="partySkill_num_01"></TextBox>
+                                <TextBox Grid.Column="2" Name="partySkill_num_02"></TextBox>
+                                <TextBox Grid.Column="3" Name="partySkill_num_03"></TextBox>
                             </Grid>
                         </Grid>
-                    </Expander.Content>
-                </Expander>
-                <Expander BorderThickness="0" Name="UnitAdvancedExpander" IsExpanded="False">
-                    <Expander.Header>
-                        <Label Content="Advanced"></Label>
-                    </Expander.Header>
-                    <Expander.Content>
-                        <Grid>
+                        <Grid Name="UnitInfo_ActiveSkill">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
@@ -462,35 +245,221 @@
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="ACTIVE"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Name="activeSkill_id"></TextBox>
+                            <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="activeSkill_name"></TextBox>
+                            <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="activeSkill_text"></RichTextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="type"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Name="activeSkill_type_id"></TextBox>
+                            <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="activeSkill_type"></TextBox>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="attribute"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Name="activeSkill_attribute"></TextBox>
+                            <TextBox Grid.Row="3" Grid.Column="2" Name="activeSkill_sub_attr"></TextBox>
+                            <Grid Grid.Row="3" Grid.Column="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="style"/>
+                                <TextBox Grid.Column="1" Name="activeSkill_style"></TextBox>
+                            </Grid>
+                            <Grid Grid.Row="4" Grid.ColumnSpan="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="phase"/>
+                                <TextBox Grid.Column="1" Name="activeSkill_phase"></TextBox>
+                                <TextBlock Grid.Column="2" Text="soul"/>
+                                <TextBox Grid.Column="3" Name="activeSkill_soul"></TextBox>
+                                <TextBlock Grid.Column="4" Text="limit_num"/>
+                                <TextBox Grid.Column="5" Name="activeSkill_limit_num"></TextBox>
+                            </Grid>
+                            <Grid Grid.Row="5" Grid.ColumnSpan="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Name="activeSkill_num"></TextBox>
+                                <TextBox Grid.Column="1" Name="activeSkill_num_01"></TextBox>
+                                <TextBox Grid.Column="2" Name="activeSkill_num_02"></TextBox>
+                                <TextBox Grid.Column="3" Name="activeSkill_num_03"></TextBox>
+                            </Grid>
+                        </Grid>
+                        <Grid Name="UnitInfo_PanelSkill">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="ui_id"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Name="UnitInfo_ui_id"></TextBox>
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="flag_no"/>
-                            <TextBox Grid.Row="0" Grid.Column="3" Name="UnitInfo_flag_no"></TextBox>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="model"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="UnitInfo_model"></TextBox>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="sub_c1"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Name="UnitInfo_sub_c1"></TextBox>
-                            <TextBlock Grid.Row="2" Grid.Column="2" Text="sub_c2"/>
-                            <TextBox Grid.Row="2" Grid.Column="3" Name="UnitInfo_sub_c2"></TextBox>
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="sub_c3"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" Name="UnitInfo_sub_c3"></TextBox>
-                            <TextBlock Grid.Row="3" Grid.Column="2" Text="sub_c4"/>
-                            <TextBox Grid.Row="3" Grid.Column="3" Name="UnitInfo_sub_c4"></TextBox>
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="shadow"/>
-                            <TextBox Grid.Row="4" Grid.Column="1" Name="UnitInfo_shadow"></TextBox>
-                            <TextBlock Grid.Row="4" Grid.Column="2" Text="ap_rec_val"/>
-                            <TextBox Grid.Row="4" Grid.Column="3" Name="UnitInfo_ap_rec_val"></TextBox>
-                            <TextBlock Grid.Row="5" Grid.Column="0" Text="yorisiro"/>
-                            <TextBox Grid.Row="5" Grid.Column="1" Name="UnitInfo_yorisiro"></TextBox>
-                            <TextBlock Grid.Row="5" Grid.Column="2" Text="present"/>
-                            <TextBox Grid.Row="5" Grid.Column="3" Name="UnitInfo_present"></TextBox>
-                            <TextBlock Grid.Row="6" Grid.Column="0" Text="material_type"/>
-                            <TextBox Grid.Row="6" Grid.Column="1" Name="UnitInfo_material_type"></TextBox>
+                            <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="PANEL"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Name="panelSkill_id"></TextBox>
+                            <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="panelSkill_name"></TextBox>
+                            <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="panelSkill_text"></RichTextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="type"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Name="panelSkill_type_id"></TextBox>
+                            <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="panelSkill_type"></TextBox>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="attribute"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Name="panelSkill_attribute"></TextBox>
+                            <Grid Grid.Row="3" Grid.Column="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="style"/>
+                                <TextBox Grid.Column="1" Name="panelSkill_style"></TextBox>
+                            </Grid>
+                            <Grid Grid.Row="4" Grid.ColumnSpan="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="phase"/>
+                                <TextBox Grid.Column="1" Name="panelSkill_phase"></TextBox>
+                                <TextBlock Grid.Column="2" Text="duplication"/>
+                                <TextBox Grid.Column="3" Name="panelSkill_duplication"></TextBox>
+                            </Grid>
+                            <Grid Grid.Row="5" Grid.ColumnSpan="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Name="panelSkill_num"></TextBox>
+                                <TextBox Grid.Column="1" Name="panelSkill_num_01"></TextBox>
+                                <TextBox Grid.Column="2" Name="panelSkill_num_02"></TextBox>
+                                <TextBox Grid.Column="3" Name="panelSkill_num_03"></TextBox>
+                            </Grid>
                         </Grid>
-                    </Expander.Content>
+                        <Grid Name="UnitInfo_LimitSkill">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="LIMIT"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Name="limitSkill_id"></TextBox>
+                            <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="limitSkill_name"></TextBox>
+                            <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="limitSkill_general_text"></RichTextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="coefficient"/>
+                            <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="limitSkill_coefficient"></TextBox>
+                            <Expander Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Header="LimitAS" IsExpanded="False">
+                                <StackPanel Name="UnitInfo_LimitSkill_AS"></StackPanel>
+                            </Expander>
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+                <Expander Header="Accessory" Name="UnitAccessoryExpander" IsExpanded="False">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBox Grid.Row="0" Grid.Column="0" Name="accessory_id"></TextBox>
+                        <TextBox Grid.Row="0" Grid.Column="1" Name="accessory_name"></TextBox>
+                        <TextBox Grid.Row="0" Grid.Column="2" Name="accessory_attribute"></TextBox>
+                        <TextBox Grid.Row="0" Grid.Column="3" Name="accessory_su_a1"></TextBox>
+                        <TextBox Grid.Row="1" Grid.ColumnSpan="4" Name="accessory_type"></TextBox>
+                        <RichTextBox Grid.Row="2" Grid.ColumnSpan="4" Name="accessory_detail"></RichTextBox>
+                        <Grid Grid.Row="3" Grid.ColumnSpan="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="conv_money"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Name="accessory_conv_money"></TextBox>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="style"/>
+                            <TextBox Grid.Row="0" Grid.Column="3" Name="accessory_style"></TextBox>
+                            <TextBox Grid.Row="1" Grid.Column="0" Name="accessory_num_01"></TextBox>
+                            <TextBox Grid.Row="1" Grid.Column="1" Name="accessory_num_02"></TextBox>
+                            <TextBox Grid.Row="1" Grid.Column="2" Name="accessory_num_03" ></TextBox>
+                            <TextBox Grid.Row="1" Grid.Column="3" Name="accessory_num_04" ></TextBox>
+                        </Grid>
+                    </Grid>
+                </Expander>
+                <Expander Header="Advanced" Name="UnitAdvancedExpander" IsExpanded="False">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="ui_id"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Name="UnitInfo_ui_id"></TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="flag_no"/>
+                        <TextBox Grid.Row="0" Grid.Column="3" Name="UnitInfo_flag_no"></TextBox>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="model"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="UnitInfo_model"></TextBox>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="sub_c1"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Name="UnitInfo_sub_c1"></TextBox>
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="sub_c2"/>
+                        <TextBox Grid.Row="2" Grid.Column="3" Name="UnitInfo_sub_c2"></TextBox>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="sub_c3"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Name="UnitInfo_sub_c3"></TextBox>
+                        <TextBlock Grid.Row="3" Grid.Column="2" Text="sub_c4"/>
+                        <TextBox Grid.Row="3" Grid.Column="3" Name="UnitInfo_sub_c4"></TextBox>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="shadow"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Name="UnitInfo_shadow"></TextBox>
+                        <TextBlock Grid.Row="4" Grid.Column="2" Text="ap_rec_val"/>
+                        <TextBox Grid.Row="4" Grid.Column="3" Name="UnitInfo_ap_rec_val"></TextBox>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="yorisiro"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Name="UnitInfo_yorisiro"></TextBox>
+                        <TextBlock Grid.Row="5" Grid.Column="2" Text="present"/>
+                        <TextBox Grid.Row="5" Grid.Column="3" Name="UnitInfo_present"></TextBox>
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="material_type"/>
+                        <TextBox Grid.Row="6" Grid.Column="1" Name="UnitInfo_material_type"></TextBox>
+                    </Grid>
                 </Expander>
             </StackPanel>
         </ScrollViewer>

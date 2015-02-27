@@ -28,42 +28,37 @@
                 <RadioButton Grid.Column="3" GroupName="SkillType" Content="Limit" Name="SkillTypeRadio_Limit" Checked="SkillTypeRadio_Limit_Checked"></RadioButton>
             </Grid>
             <Separator/>
-            <Expander BorderThickness="0" Name="SkillSearchExpander" IsExpanded="False">
-                <Expander.Header>
-                    <Label Content="Search"></Label>
-                </Expander.Header>
-                <Expander.Content>
-                    <Grid>
-                        <Grid.Resources>
-                            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
-                                <EventSetter Event="SelectionChanged" Handler="SkillSearch_SelectionChanged"/>
-                            </Style>
-                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                                <Setter Property="IsReadOnly" Value="False"></Setter>
-                                <EventSetter Event="TextChanged" Handler="SkillSearch_TextChanged"/>
-                            </Style>
-                        </Grid.Resources>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="50"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="name"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="SkillSearch_name"></TextBox>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="type"/>
-                        <ComboBox Grid.Row="1" Grid.Column="1" Name="SkillSearch_type"></ComboBox>
-                        <TextBlock Grid.Row="1" Grid.Column="2" Text="attribute"/>
-                        <ComboBox Grid.Row="1" Grid.Column="3" Name="SkillSearch_attribute"></ComboBox>
-                        <!--<ComboBox Name="SkillSearch_sub_attr"></ComboBox>-->
-                        <Button Grid.Row="2" Grid.ColumnSpan="4" Name="SkillSearchClear" Click="SkillSearchClear_Click">Clear</Button>
-                    </Grid>
-                </Expander.Content>
+            <Expander Header="Search" Name="SkillSearchExpander" IsExpanded="False">
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+                            <EventSetter Event="SelectionChanged" Handler="SkillSearch_SelectionChanged"/>
+                        </Style>
+                        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                            <Setter Property="IsReadOnly" Value="False"></Setter>
+                            <EventSetter Event="TextChanged" Handler="SkillSearch_TextChanged"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="name"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="SkillSearch_name"></TextBox>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="type"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Name="SkillSearch_type"></ComboBox>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="attribute"/>
+                    <ComboBox Grid.Row="1" Grid.Column="3" Name="SkillSearch_attribute"></ComboBox>
+                    <!--<ComboBox Name="SkillSearch_sub_attr"></ComboBox>-->
+                    <Button Grid.Row="2" Grid.ColumnSpan="4" Name="SkillSearchClear" Click="SkillSearchClear_Click">Clear</Button>
+                </Grid>
             </Expander>
             <Grid Name="SkillInfo_PartySkill">
                 <Grid.ColumnDefinitions>
@@ -251,14 +246,8 @@
                     <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="limitSkill_general_text"></RichTextBox>
                     <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="coefficient"/>
                     <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="limitSkill_coefficient"></TextBox>
-                    <Expander Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" BorderThickness="0" IsExpanded="False">
-                        <Expander.Header>
-                            <Label Content="LimitAS"></Label>
-                        </Expander.Header>
-                        <Expander.Content>
-                            <StackPanel Name="SkillInfo_LimitSkill_AS">
-                            </StackPanel>
-                        </Expander.Content>
+                    <Expander Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Header="LimitAS" IsExpanded="False">
+                        <StackPanel Name="SkillInfo_LimitSkill_AS"></StackPanel>
                     </Expander>
                 </Grid>
                 <Grid Name="SkillUnitRankInfo">

@@ -12,16 +12,10 @@
         <Canvas Grid.Row="0" Name="AreaCanvas">
 
         </Canvas>
-        <Expander Grid.Row="1" Background="White" ExpandDirection="Up"
-                  IsExpanded="False">
-            <Expander.Header>
-                <Label Content="AreaInfo"></Label>
-            </Expander.Header>
-            <Expander.Content>
-                <Grid>
-                    <TextBox Name="AreaInfo_Name"></TextBox>               
-                </Grid>
-            </Expander.Content>
+        <Expander Header="AreaInfo" Grid.Row="1" Background="White" ExpandDirection="Up" IsExpanded="False">
+            <Grid>
+                <TextBox Name="AreaInfo_Name"></TextBox>
+            </Grid>
         </Expander>
     </Grid>
 </UserControl>

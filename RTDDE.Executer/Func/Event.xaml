@@ -19,8 +19,8 @@
             <!--<Expander BorderThickness="0" Name="EventSearchExpander" IsExpanded="False">
                 <Expander.Header>
                     <Label Content="Search"></Label>
-                </Expander.Header>
-                <Expander.Content>
+                
+                
                     <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -70,7 +70,7 @@
                             <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Name="EventSearchClear" Click="EventSearchClear_Click">Clear</Button>
                         </Grid>
                     </StackPanel>
-                </Expander.Content>
+                
             </Expander>-->
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -123,11 +123,7 @@
                     <TextBlock Name="EventInfo_post_param_01"></TextBlock>
                     <TextBlock Name="EventInfo_post_param_02"></TextBlock>
                 </UniformGrid>
-                <Expander BorderThickness="0" Name="EventAdvancedExpander" IsExpanded="False">
-                    <Expander.Header>
-                        <Label Content="Advanced"></Label>
-                    </Expander.Header>
-                    <Expander.Content>
+                <Expander Header="Advanced" Name="EventAdvancedExpander" IsExpanded="False">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
@@ -157,7 +153,6 @@
                             <TextBlock Grid.Row="4" Grid.Column="2" Text="icon_pos_y"/>
                             <TextBox Grid.Row="4" Grid.Column="3" Name="EventInfo_icon_pos_y"></TextBox>
                         </Grid>
-                    </Expander.Content>
                 </Expander>
             </StackPanel>
         </ScrollViewer>

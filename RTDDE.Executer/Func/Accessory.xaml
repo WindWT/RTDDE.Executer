@@ -15,31 +15,26 @@
         </Grid.RowDefinitions>
         <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="AccessoryDataGrid" AutoGenerateColumns="True" SelectionChanged="AccessoryDataGrid_SelectionChanged"  FrozenColumnCount="1" ></DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="0">
-            <Expander Width="300" BorderThickness="0" Name="AccessorySearchExpander" IsExpanded="False">
-                <Expander.Header>
-                    <Label Content="Search"></Label>
-                </Expander.Header>
-                <Expander.Content>
-                    <WrapPanel>
-                        <WrapPanel.Resources>
-                            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
-                                <EventSetter Event="SelectionChanged" Handler="AccessorySearch_SelectionChanged"/>
-                            </Style>
-                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                                <Setter Property="IsReadOnly" Value="False"></Setter>
-                                <EventSetter Event="TextChanged" Handler="AccessorySearch_TextChanged"/>
-                            </Style>
-                        </WrapPanel.Resources>
-                        <TextBlock Text="name" Width="50"/>
-                        <TextBox Name="AccessorySearch_name" Width="250"></TextBox>
-                        <TextBlock Text="type" Width="50"/>
-                        <ComboBox Name="AccessorySearch_type" Width="100"></ComboBox>
-                        <TextBlock Text="attribute" Width="50"/>
-                        <ComboBox Name="AccessorySearch_attribute" Width="100"></ComboBox>
-                        <!--<ComboBox Name="AccessorySearch_sub_attr" Width="75"></ComboBox>-->
-                        <Button Name="AccessorySearchClear" Width="300" Click="AccessorySearchClear_Click">Clear</Button>
-                    </WrapPanel>
-                </Expander.Content>
+            <Expander Header="Search"  Width="300" Name="AccessorySearchExpander" IsExpanded="False">
+                <WrapPanel>
+                    <WrapPanel.Resources>
+                        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+                            <EventSetter Event="SelectionChanged" Handler="AccessorySearch_SelectionChanged"/>
+                        </Style>
+                        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                            <Setter Property="IsReadOnly" Value="False"></Setter>
+                            <EventSetter Event="TextChanged" Handler="AccessorySearch_TextChanged"/>
+                        </Style>
+                    </WrapPanel.Resources>
+                    <TextBlock Text="name" Width="50"/>
+                    <TextBox Name="AccessorySearch_name" Width="250"></TextBox>
+                    <TextBlock Text="type" Width="50"/>
+                    <ComboBox Name="AccessorySearch_type" Width="100"></ComboBox>
+                    <TextBlock Text="attribute" Width="50"/>
+                    <ComboBox Name="AccessorySearch_attribute" Width="100"></ComboBox>
+                    <!--<ComboBox Name="AccessorySearch_sub_attr" Width="75"></ComboBox>-->
+                    <Button Name="AccessorySearchClear" Width="300" Click="AccessorySearchClear_Click">Clear</Button>
+                </WrapPanel>
             </Expander>
             <WrapPanel Name="AccessoryInfo">
                 <TextBlock Text="id" Width="50"/>

@@ -220,10 +220,15 @@
         <Style TargetType="GroupBox">
             <Setter Property="BorderThickness" Value="0"></Setter>
         </Style>
+        
+        <!--Expander-->
+        <DataTemplate x:Key="ExpanderHeaderDataTemplate">
+            <Label Content="{Binding}"></Label>
+        </DataTemplate>
         <Style TargetType="Expander">
             <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="HeaderTemplate" Value="{StaticResource ExpanderHeaderDataTemplate}"></Setter>
         </Style>
-
 
         <!-- SrollViewer ScrollBar Repeat Buttons (The part in the middle, not the thumb the long area between the buttons ) -->
        <Style x:Key="ScrollBarPageButton" TargetType="{x:Type RepeatButton}">

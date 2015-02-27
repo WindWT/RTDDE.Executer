@@ -18,18 +18,12 @@
             <Canvas Grid.Row="0" Name="FieldCanvas">
 
             </Canvas>
-            <Expander Grid.Row="1" Background="White" ExpandDirection="Up"
-                  IsExpanded="False">
-                <Expander.Header>
-                    <Label Content="FieldInfo"></Label>
-                </Expander.Header>
-                <Expander.Content>
-                    <StackPanel>
-                        <Button>x</Button>
-                        <Button>x</Button>
-                        <Button>x</Button>
-                    </StackPanel>
-                </Expander.Content>
+            <Expander Grid.Row="1" Background="White" ExpandDirection="Up" Header="FieldInfo" IsExpanded="False">
+                <StackPanel>
+                    <Button>x</Button>
+                    <Button>x</Button>
+                    <Button>x</Button>
+                </StackPanel>
             </Expander>
         </Grid>
         <RTDDE:Area x:Name="Area" Grid.Column="1"></RTDDE:Area>

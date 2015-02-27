@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using RTDDE.Provider;
 using RTDDE.Provider.MasterData;
 
@@ -23,9 +26,6 @@ namespace RTDDE.Executer.Func
             public string sp_event_name { get; set; }
             public string open_sp_event_name { get; set; }
             public string present_param_name { get; set; }
-            public string challenge0 { get; set; }
-            public string challenge1 { get; set; }
-            public string challenge2 { get; set; }
         }
         async private void QuestDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -42,10 +42,7 @@ namespace RTDDE.Executer.Func
 (select text from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_text,
 (SELECT target_name FROM SP_EVENT_MASTER where SP_EVENT_MASTER.sp_event_id=quest_master.sp_event_id) as sp_event_name,
 (SELECT target_name FROM SP_EVENT_MASTER where SP_EVENT_MASTER.sp_event_id=quest_master.open_sp_event_id) as open_sp_event_name,
-(case when present_type=4 then (select name from unit_master where unit_master.id=quest_master.present_param) else present_param end) as present_param_name,
-(SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_0) as challenge0,
-(SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_1) as challenge1,
-(SELECT text from QUEST_CHALLENGE_MASTER where id=challenge_id_2) as challenge2
+(case when present_type=4 then (select name from unit_master where unit_master.id=quest_master.present_param) else present_param end) as present_param_name
   FROM quest_master WHERE id={0}";
                 return DAL.ToSingle<QuestMasterExtend>(String.Format(sql, eqInfo_id));
             });
@@ -114,16 +111,49 @@ namespace RTDDE.Executer.Func
             QuestInfo_h_name.Text = Utility.ParseUnitName(quest.h_id);
             QuestInfo_h_lv.Text = quest.h_lv.ToString();
 
-            if (string.IsNullOrWhiteSpace(quest.challenge0)
-                && string.IsNullOrWhiteSpace(quest.challenge1)
-                && string.IsNullOrWhiteSpace(quest.challenge2)) {
-                QuestInfo_challenge.Visibility = Visibility.Collapsed;
-            }
-            else {
-                QuestInfo_challenge.Visibility = Visibility.Visible;
-                QuestInfo_challenge_gold.Document = Utility.ParseTextToDocument(quest.challenge2);
-                QuestInfo_challenge_silver.Document = Utility.ParseTextToDocument(quest.challenge1);
-                QuestInfo_challenge_bronze.Document = Utility.ParseTextToDocument(quest.challenge0);
+            //if (quest.challenge_id_0==0
+            //    && string.IsNullOrWhiteSpace(quest.challenge1)
+            //    && string.IsNullOrWhiteSpace(quest.challenge2)) {
+            //    QuestInfo_challenge.Visibility = Visibility.Collapsed;
+            //}
+            //else {
+            //    QuestInfo_challenge.Visibility = Visibility.Visible;
+            //    QuestInfo_challenge_gold.Document = Utility.ParseTextToDocument(quest.challenge2);
+            //    QuestInfo_challenge_silver.Document = Utility.ParseTextToDocument(quest.challenge1);
+            //    QuestInfo_challenge_bronze.Document = Utility.ParseTextToDocument(quest.challenge0);
+            //}
+            QuestInfo_challenge.Children.Clear();
+            int[] challengeIds = new[] { quest.challenge_id_2, quest.challenge_id_1, quest.challenge_id_0 };
+            foreach (var challengeId in challengeIds) {
+                if (challengeId == 0) {
+                    continue;
+                }
+                QuestChallengeMaster challenge = await ChallengeTask(challengeId);
+                if (challenge == null) {
+                    continue;
+                }
+                SolidColorBrush gradeBrush = new SolidColorBrush(challenge.grade == 2 ? Colors.Gold : (challenge.grade == 1 ? Colors.Silver : Colors.Brown));
+                gradeBrush.Freeze();
+                Grid grid = new Grid();
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                TextBlock textBlock = new TextBlock() { Text = challenge.grade == 2 ? "Gold" : (challenge.grade == 1 ? "Silver" : "Brown"), Foreground = gradeBrush };
+                textBlock.SetValue(Grid.ColumnProperty, 0);
+                grid.Children.Add(textBlock);
+                TextBox textBox = new TextBox() { Text = Utility.ParseChallengeType(challenge.type), BorderBrush = gradeBrush };
+                textBox.SetValue(Grid.ColumnProperty, 1);
+                grid.Children.Add(textBox);
+                QuestInfo_challenge.Children.Add(grid);
+
+                RichTextBox richText = new RichTextBox(Utility.ParseTextToDocument(challenge.text)) { BorderBrush = gradeBrush };
+                QuestInfo_challenge.Children.Add(richText);
+
+                UniformGrid uniformGrid = new UniformGrid() { Rows = 1, Columns = 4 };
+                uniformGrid.Children.Add(new TextBox() { Text = challenge.param_0.ToString(), BorderBrush = gradeBrush });
+                uniformGrid.Children.Add(new TextBox() { Text = challenge.param_1.ToString(), BorderBrush = gradeBrush });
+                uniformGrid.Children.Add(new TextBox() { Text = challenge.param_2.ToString(), BorderBrush = gradeBrush });
+                uniformGrid.Children.Add(new TextBox() { Text = challenge.param_3.ToString(), BorderBrush = gradeBrush });
+                QuestInfo_challenge.Children.Add(uniformGrid);
             }
 
             var openDate = Utility.ParseRTDDate(quest.open_date, true);
@@ -203,6 +233,10 @@ namespace RTDDE.Executer.Func
             UnitInfo_division.Text = quest.division.ToString();
             UnitInfo_kpi_class.Text = quest.kpi_class.ToString();
             UnitInfo_flag_no.Text = quest.flag_no.ToString();
+        }
+        async private Task<QuestChallengeMaster> ChallengeTask(int id)
+        {
+            return DAL.ToSingle<QuestChallengeMaster>("SELECT * FROM QUEST_CHALLENGE_MASTER WHERE id=" + id);
         }
 
         private void QuestTypeRadio_Event_Checked(object sender, RoutedEventArgs e)

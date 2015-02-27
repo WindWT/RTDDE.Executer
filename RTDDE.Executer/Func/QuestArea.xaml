@@ -29,35 +29,30 @@
                 <RadioButton Grid.Column="0" GroupName="QuestAreaType" Content="Main" IsChecked="True" Name="QuestAreaTypeRadio_Main" Checked="QuestAreaTypeRadio_Main_Checked"></RadioButton>
                 <RadioButton Grid.Column="1" GroupName="QuestAreaType" Content="Event" Name="QuestAreaTypeRadio_Event" Checked="QuestAreaTypeRadio_Event_Checked"></RadioButton>
             </Grid>
-            <Expander BorderThickness="0" Name="QuestAreaSearchExpander" IsExpanded="False">
-                <Expander.Header>
-                    <Label Content="Search"></Label>
-                </Expander.Header>
-                <Expander.Content>
-                    <Grid>
-                        <Grid.Resources>
-                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                                <Setter Property="IsReadOnly" Value="False"></Setter>
-                                <EventSetter Event="TextChanged" Handler="QuestAreaSearch_TextChanged"/>
-                            </Style>
-                        </Grid.Resources>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50"></ColumnDefinition>
-                            <ColumnDefinition Width="50"></ColumnDefinition>
-                            <ColumnDefinition Width="50"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="id"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" Name="QuestAreaSearch_id"></TextBox>
-                        <TextBlock Grid.Row="0" Grid.Column="2" Text="name"/>
-                        <TextBox Grid.Row="0" Grid.Column="3" Name="QuestAreaSearch_name"></TextBox>
-                        <Button Grid.Row="1" Grid.ColumnSpan="4" Name="QuestAreaSearchClear" Click="QuestAreaSearchClear_Click">Clear</Button>
-                    </Grid>
-                </Expander.Content>
+            <Expander Header="Search" Name="QuestAreaSearchExpander" IsExpanded="False">
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                            <Setter Property="IsReadOnly" Value="False"></Setter>
+                            <EventSetter Event="TextChanged" Handler="QuestAreaSearch_TextChanged"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="id"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="QuestAreaSearch_id"></TextBox>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="name"/>
+                    <TextBox Grid.Row="0" Grid.Column="3" Name="QuestAreaSearch_name"></TextBox>
+                    <Button Grid.Row="1" Grid.ColumnSpan="4" Name="QuestAreaSearchClear" Click="QuestAreaSearchClear_Click">Clear</Button>
+                </Grid>
             </Expander>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -91,130 +86,109 @@
         </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" Style="{StaticResource VerticalScrollViewer}">
             <StackPanel>
-                <Expander Name="QuestAreaExpander_Area" BorderThickness="0" IsExpanded="False">
-                    <Expander.Header>
-                        <Label Content="Area"></Label>
-                    </Expander.Header>
-                    <Expander.Content>
-                        <StackPanel>
-                            <Grid Name="QuestAreaInfo_parent">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="parent" Grid.Column="0"/>
-                                <TextBox Name="QuestAreaInfo_parent_field_id" Grid.Column="1" ></TextBox>
-                                <TextBox Name="QuestAreaInfo_parent_field_name" Grid.Column="2" Grid.ColumnSpan="2"></TextBox>
-                            </Grid>
-                            <Grid Name="QuestAreaInfo_move">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="move" Grid.Column="0"/>
-                                <TextBox Name="QuestAreaInfo_move_field_id" Grid.Column="1" ></TextBox>
-                                <TextBox Name="QuestAreaInfo_move_field_name" Grid.Column="2" Grid.ColumnSpan="2"></TextBox>
-                            </Grid>
-                            <Grid Name="QuestAreaInfo_connect">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="connect" Grid.Column="0"/>
-                                <TextBox Name="QuestAreaInfo_connect_area_id" Grid.Column="1" ></TextBox>
-                                <TextBox Name="QuestAreaInfo_connect_area_name" Grid.Column="2" Grid.ColumnSpan="2"></TextBox>
-                            </Grid>
-                            <Grid Name="QuestAreaInfo_lock">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="lock" Grid.Column="0"/>
-                                <TextBox Name="QuestAreaInfo_lock_value" Grid.Column="1" ></TextBox>
-                                <TextBox Name="QuestAreaInfo_lock_name" Grid.Column="2" Grid.ColumnSpan="2"></TextBox>
-                                <RichTextBox Name="QuestAreaInfo_lock_dialog_msg" Grid.Row="1" Grid.ColumnSpan="3"></RichTextBox>
-                            </Grid>
-                        </StackPanel>
-                    </Expander.Content>
-                </Expander>
-                <Expander Name="QuestAreaExpander_Quest" BorderThickness="0" IsExpanded="False">
-                    <Expander.Header>
-                        <Label Content="Quest"></Label>
-                    </Expander.Header>
-                    <Expander.Content>
-                        <StackPanel Name="QuestAreaInfo_Quest">
-                        </StackPanel>
-                    </Expander.Content>
-                </Expander>
-                <Expander Name="QuestAreaExpander_Reward" BorderThickness="0" IsExpanded="False">
-                    <Expander.Header>
-                        <Label Content="Reward"></Label>
-                    </Expander.Header>
-                    <Expander.Content>
-                        <StackPanel Name="QuestAreaInfo_Reward">
-                        </StackPanel>
-                    </Expander.Content>
-                </Expander>
-                <Expander BorderThickness="0" IsExpanded="False">
-                    <Expander.Header>
-                        <Label Content="Advanced"></Label>
-                    </Expander.Header>
-                    <Expander.Content>
-                        <Grid>
+                <Expander Name="QuestAreaExpander_Area" Header="Area" IsExpanded="False">
+                    <StackPanel>
+                        <Grid Name="QuestAreaInfo_parent">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="75"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="75"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="parent" Grid.Column="0"/>
+                            <TextBox Name="QuestAreaInfo_parent_field_id" Grid.Column="1" ></TextBox>
+                            <TextBox Name="QuestAreaInfo_parent_field_name" Grid.Column="2" Grid.ColumnSpan="2"></TextBox>
+                        </Grid>
+                        <Grid Name="QuestAreaInfo_move">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="move" Grid.Column="0"/>
+                            <TextBox Name="QuestAreaInfo_move_field_id" Grid.Column="1" ></TextBox>
+                            <TextBox Name="QuestAreaInfo_move_field_name" Grid.Column="2" Grid.ColumnSpan="2"></TextBox>
+                        </Grid>
+                        <Grid Name="QuestAreaInfo_connect">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="connect" Grid.Column="0"/>
+                            <TextBox Name="QuestAreaInfo_connect_area_id" Grid.Column="1" ></TextBox>
+                            <TextBox Name="QuestAreaInfo_connect_area_name" Grid.Column="2" Grid.ColumnSpan="2"></TextBox>
+                        </Grid>
+                        <Grid Name="QuestAreaInfo_lock">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="flag_no"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Name="QuestAreaInfo_flag_no"></TextBox>
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="name_short"/>
-                            <TextBox Grid.Row="0" Grid.Column="3" Name="QuestAreaInfo_name_short"></TextBox>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="banner_bg_texture"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="QuestAreaInfo_banner_bg_texture"></TextBox>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="icon_texture"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Name="QuestAreaInfo_icon_texture"></TextBox>
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="banner_texture"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Name="QuestAreaInfo_banner_texture"></TextBox>
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="icon_pos_x"/>
-                            <TextBox Grid.Row="4" Grid.Column="1" Name="QuestAreaInfo_icon_pos_x"></TextBox>
-                            <TextBlock Grid.Row="4" Grid.Column="2" Text="icon_pos_y"/>
-                            <TextBox Grid.Row="4" Grid.Column="3" Name="QuestAreaInfo_icon_pos_y"></TextBox>
-                            <TextBlock Grid.Row="5" Grid.Column="0" Text="icon_col_ofs_x"/>
-                            <TextBox Grid.Row="5" Grid.Column="1" Name="QuestAreaInfo_icon_col_ofs_x"></TextBox>
-                            <TextBlock Grid.Row="5" Grid.Column="2" Text="icon_col_ofs_y"/>
-                            <TextBox Grid.Row="5" Grid.Column="3" Name="QuestAreaInfo_icon_col_ofs_y"></TextBox>
-                            <TextBlock Grid.Row="6" Grid.Column="0" Text="icon_col_w"/>
-                            <TextBox Grid.Row="6" Grid.Column="1" Name="QuestAreaInfo_icon_col_w"></TextBox>
-                            <TextBlock Grid.Row="6" Grid.Column="2" Text="icon_col_h"/>
-                            <TextBox Grid.Row="6" Grid.Column="3" Name="QuestAreaInfo_icon_col_h"></TextBox>
-                            <TextBlock Grid.Row="7" Grid.Column="0" Text="banner_url"/>
-                            <TextBox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Name="QuestAreaInfo_banner_texture_url"></TextBox>
+                            <TextBlock Text="lock" Grid.Column="0"/>
+                            <TextBox Name="QuestAreaInfo_lock_value" Grid.Column="1" ></TextBox>
+                            <TextBox Name="QuestAreaInfo_lock_name" Grid.Column="2" Grid.ColumnSpan="2"></TextBox>
+                            <RichTextBox Name="QuestAreaInfo_lock_dialog_msg" Grid.Row="1" Grid.ColumnSpan="3"></RichTextBox>
                         </Grid>
-                    </Expander.Content>
+                    </StackPanel>
+                </Expander>
+                <Expander Name="QuestAreaExpander_Quest" Header="Quest" IsExpanded="False">
+                    <StackPanel Name="QuestAreaInfo_Quest"></StackPanel>
+                </Expander>
+                <Expander Name="QuestAreaExpander_Reward" Header="Reward" IsExpanded="False">
+                    <StackPanel Name="QuestAreaInfo_Reward"></StackPanel>
+                </Expander>
+                <Expander Header="Advanced" IsExpanded="False">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="75"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="flag_no"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Name="QuestAreaInfo_flag_no"></TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="name_short"/>
+                        <TextBox Grid.Row="0" Grid.Column="3" Name="QuestAreaInfo_name_short"></TextBox>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="banner_bg_texture"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="QuestAreaInfo_banner_bg_texture"></TextBox>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="icon_texture"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Name="QuestAreaInfo_icon_texture"></TextBox>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="banner_texture"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Name="QuestAreaInfo_banner_texture"></TextBox>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="icon_pos_x"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Name="QuestAreaInfo_icon_pos_x"></TextBox>
+                        <TextBlock Grid.Row="4" Grid.Column="2" Text="icon_pos_y"/>
+                        <TextBox Grid.Row="4" Grid.Column="3" Name="QuestAreaInfo_icon_pos_y"></TextBox>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="icon_col_ofs_x"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Name="QuestAreaInfo_icon_col_ofs_x"></TextBox>
+                        <TextBlock Grid.Row="5" Grid.Column="2" Text="icon_col_ofs_y"/>
+                        <TextBox Grid.Row="5" Grid.Column="3" Name="QuestAreaInfo_icon_col_ofs_y"></TextBox>
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="icon_col_w"/>
+                        <TextBox Grid.Row="6" Grid.Column="1" Name="QuestAreaInfo_icon_col_w"></TextBox>
+                        <TextBlock Grid.Row="6" Grid.Column="2" Text="icon_col_h"/>
+                        <TextBox Grid.Row="6" Grid.Column="3" Name="QuestAreaInfo_icon_col_h"></TextBox>
+                        <TextBlock Grid.Row="7" Grid.Column="0" Text="banner_url"/>
+                        <TextBox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Name="QuestAreaInfo_banner_texture_url"></TextBox>
+                    </Grid>
+
                 </Expander>
             </StackPanel>
         </ScrollViewer>
