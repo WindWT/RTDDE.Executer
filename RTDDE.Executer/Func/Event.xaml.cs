@@ -62,7 +62,39 @@ namespace RTDDE.Executer.Func
             EventInfo_event_type.Text = mapEvent.event_type.ToString();
             EventInfo_max_count.Text = mapEvent.max_count.ToString();
 
+            //parent field
+            Task<QuestFieldMaster> mapEventParentFieldTask = Task.Run(() =>
+            {
+                const string sql = "SELECT * FROM quest_field_master WHERE id={0}";
+                return DAL.ToSingle<QuestFieldMaster>(String.Format(sql, mapEvent.parent_field_id));
+            });
+            QuestFieldMaster qfmParent = await mapEventParentFieldTask;
+            if (qfmParent == null) {
+                EventInfo_parent.Visibility = Visibility.Collapsed;
+            }
+            else {
+                EventInfo_parent.Visibility = Visibility.Visible;
+                EventInfo_parent_field_id.Text = qfmParent.id.ToString();
+                EventInfo_parent_field_name.Text = qfmParent.name;
+            }
+            //quest
+            Task<QuestMaster> mapEventQuestTask = Task.Run(() =>
+            {
+                const string sql = "SELECT * FROM quest_master WHERE parent_map_event_id={0}";
+                return DAL.ToSingle<QuestMaster>(String.Format(sql, mapEvent.id));
+            });
+            QuestMaster quest = await mapEventQuestTask;
+            if (quest == null) {
+                EventInfo_quest.Visibility = Visibility.Collapsed;
+            }
+            else {
+                EventInfo_quest.Visibility = Visibility.Visible;
+                EventInfo_quest_id.Text = quest.id.ToString();
+                EventInfo_quest_name.Text = quest.name;
+            }
+            //opentype
             List<OpenType> opentypes = await taskOpenType;
+            EventInfo_opentype_content.Children.Clear();
             if (opentypes.Count == 0) {
                 EventInfo_opentype.Visibility = Visibility.Collapsed;
             }

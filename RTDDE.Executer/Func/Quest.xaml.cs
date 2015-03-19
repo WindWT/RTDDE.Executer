@@ -341,6 +341,15 @@ ORDER BY id DESC";
             Utility.BindData(QuestDataGrid, sql);
         }
 
+        private void QuestTypeRadio_MapEvent_Checked(object sender, RoutedEventArgs e)
+        {
+            const string sql = @"SELECT id,name,stamina
+FROM QUEST_MASTER
+WHERE parent_area_id=0
+ORDER BY id DESC";
+            Utility.BindData(QuestDataGrid, sql);
+        }
+
         private void QuestSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             QuestTypeRadio_Event.IsChecked = false;
