@@ -210,19 +210,6 @@ order by point";
             //    QuestAreaInfo_banner_texture_image.Source = null;
             //}
         }
-        async private void QuestAreaDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (sender != null) {
-                DataGridRow dgr = sender as DataGridRow;
-                string id = ((DataRowView)dgr.Item).Row["id"].ToString();
-                string name = ((DataRowView)dgr.Item).Row["name"].ToString();
-                var quest = (Quest)await Utility.GetTabByName("Quest");
-                quest.QuestSearch_parent_area_id.Text = id;
-                quest.QuestSearch_parent_area_name.Text = name;
-                quest.QuestSearchExpander.IsExpanded = true;
-                Utility.ChangeTab("Quest");
-            }
-        }
 
         private void QuestAreaTypeRadio_Main_Checked(object sender, RoutedEventArgs e)
         {
@@ -257,6 +244,20 @@ order by point";
             QuestAreaSearch_id.Text = string.Empty;
             QuestAreaSearch_name.Text = string.Empty;
             QuestAreaTypeRadio_Main.IsChecked = true;
+        }
+
+        async private void QuestAreaToQuestButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            string id = QuestAreaInfo_id.Text;
+            string name = QuestAreaInfo_name.Text;
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(name)) {
+                return;
+            }
+            var quest = (Quest)await Utility.GetTabByName("Quest");
+            quest.QuestSearch_parent_area_id.Text = id;
+            quest.QuestSearch_parent_area_name.Text = name;
+            quest.QuestSearchExpander.IsExpanded = true;
+            Utility.ChangeTab("Quest");
         }
     }
 }

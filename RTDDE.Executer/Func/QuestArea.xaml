@@ -13,13 +13,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="QuestAreaDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestAreaDataGrid_SelectionChanged" FrozenColumnCount="2" >
-            <DataGrid.RowStyle>
-                <Style TargetType="{x:Type DataGridRow}">
-                    <EventSetter Event="MouseDoubleClick" Handler="QuestAreaDataGrid_MouseDoubleClick"/>
-                </Style>
-            </DataGrid.RowStyle>
-        </DataGrid>
+        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="QuestAreaDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestAreaDataGrid_SelectionChanged" FrozenColumnCount="2" />
         <StackPanel Grid.Column="1" Grid.Row="0">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -57,17 +51,16 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <TextBox Name="QuestAreaInfo_id" Grid.Column="0" ></TextBox>
-                <TextBox Name="QuestAreaInfo_name" Grid.Column="1" Grid.ColumnSpan="2"></TextBox>
+                <TextBox Name="QuestAreaInfo_name" Grid.Column="1"></TextBox>
+                <Button Name="QuestAreaToQuestButton" Style="{StaticResource InlineButton}" Grid.Column="2" Click="QuestAreaToQuestButton_OnClick">Quests</Button>
                 <TextBox Name="QuestAreaInfo_text" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"  AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
             </Grid>
             <Grid>
