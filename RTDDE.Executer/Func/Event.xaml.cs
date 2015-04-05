@@ -77,20 +77,25 @@ namespace RTDDE.Executer.Func
                 EventInfo_parent_field_id.Text = qfmParent.id.ToString();
                 EventInfo_parent_field_name.Text = qfmParent.name;
             }
-            //quest
-            Task<QuestMaster> mapEventQuestTask = Task.Run(() =>
+            //quests
+            Task<List<QuestMaster>> mapEventQuestTask = Task.Run(() =>
             {
                 const string sql = "SELECT * FROM quest_master WHERE parent_map_event_id={0}";
-                return DAL.ToSingle<QuestMaster>(String.Format(sql, mapEvent.id));
+                return DAL.ToList<QuestMaster>(String.Format(sql, mapEvent.id));
             });
-            QuestMaster quest = await mapEventQuestTask;
-            if (quest == null) {
-                EventInfo_quest.Visibility = Visibility.Collapsed;
-            }
-            else {
-                EventInfo_quest.Visibility = Visibility.Visible;
-                EventInfo_quest_id.Text = quest.id.ToString();
-                EventInfo_quest_name.Text = quest.name;
+            List<QuestMaster> quests = await mapEventQuestTask;
+            EventInfo_quests.Children.Clear();
+            foreach (QuestMaster quest in quests) {
+                var grid = new Grid();
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                TextBox typeTextBox = new TextBox() { Text = quest.id.ToString() };
+                typeTextBox.SetValue(Grid.ColumnProperty, 0);
+                grid.Children.Add(typeTextBox);
+                TextBox paramTextBox = new TextBox() { Text = quest.name };
+                paramTextBox.SetValue(Grid.ColumnProperty, 1);
+                grid.Children.Add(paramTextBox);
+                EventInfo_quests.Children.Add(grid);
             }
             //opentype
             List<OpenType> opentypes = await taskOpenType;

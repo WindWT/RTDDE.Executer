@@ -109,16 +109,7 @@
                 <TextBox Name="EventInfo_parent_field_id" Grid.Column="1"></TextBox>
                 <TextBox Name="EventInfo_parent_field_name" Grid.Column="2"></TextBox>
             </Grid>
-            <Grid Name="EventInfo_quest">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="quest" Grid.Column="0"/>
-                <TextBox Name="EventInfo_quest_id" Grid.Column="1"></TextBox>
-                <TextBox Name="EventInfo_quest_name" Grid.Column="2"></TextBox>
-            </Grid>
+            <StackPanel Name="EventInfo_quests"/>
         </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" Style="{StaticResource VerticalScrollViewer}">
             <StackPanel>
