@@ -274,7 +274,7 @@ namespace RTDDE.Executer.Func
 
         private void QuestTypeRadio_Daily_Checked(object sender, RoutedEventArgs e)
         {
-            string today = DateTime.Today.AddHours(1).ToString("yyyyMMddHH");
+            string today = Utility.ToRTDDate(DateTime.Now, false).ToString();
             string sql = @"SELECT id,name,stamina,
 (select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name,
        ( CASE
