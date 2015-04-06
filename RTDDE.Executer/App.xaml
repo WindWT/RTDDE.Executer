@@ -28,7 +28,7 @@
 
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="Padding" Value="0,1,0,1"></Setter>
+            <Setter Property="Padding" Value="1,0,1,0"></Setter>
         </Style>
         <Style TargetType="DataGrid">
             <Setter Property="HeadersVisibility" Value="Column"/>
