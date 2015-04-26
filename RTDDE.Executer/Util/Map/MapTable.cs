@@ -17,7 +17,6 @@ namespace RTDDE.Executer.Util.Map
         public int Y { get; private set; }
         public int H { get; private set; }
         public int W { get; private set; }
-        public int Distance { get; private set; }
         public string MapData { get; private set; }
         public int Repeat { get; private set; }
 
@@ -32,7 +31,7 @@ namespace RTDDE.Executer.Util.Map
         private static readonly Color DarkColor = Colors.Purple;
         #endregion
 
-        public MapTable(string mapData, int w, int h, int x, int y, int distance, int repeat = 1)
+        public MapTable(string mapData, int w, int h, int x, int y, int repeat = 1)
         {
             Rows = new List<MapRow>();
             MapData = mapData;
@@ -40,7 +39,6 @@ namespace RTDDE.Executer.Util.Map
             H = h;
             X = x;
             Y = y;
-            Distance = distance;
             Repeat = repeat;
             //freeze all brush
             FireTransBrush.Freeze();
@@ -50,6 +48,7 @@ namespace RTDDE.Executer.Util.Map
         }
         public void InitMap()
         {
+            int zeroMarkPlace = -1;
             for (int r = 0; r < Repeat; r++) {
                 for (int i = 0; i < W; i++) {
                     var mapRow = new MapRow();
@@ -84,6 +83,9 @@ namespace RTDDE.Executer.Util.Map
                                     }
                                 //AttributeTypeBossStart = 16,
                                 case 16: {
+                                        if (zeroMarkPlace == -1) {
+                                            zeroMarkPlace = j;
+                                        }
                                         mapCell.Background = Brushes.Silver;
                                         break;
                                     }
@@ -140,7 +142,7 @@ namespace RTDDE.Executer.Util.Map
             //添加底部标记
             var mapMarkRow = new MapRow();
             for (int j = 0; j < H; j++) {
-                var mapCellMark = new MapCell((Distance - j + 3).ToString());    //magic number 3!
+                var mapCellMark = new MapCell((zeroMarkPlace - j).ToString());  //Now use BossStart as zero mark, farewell 3
                 mapMarkRow.Cells.Add(mapCellMark);
             }
             this.Rows.Add(mapMarkRow);
