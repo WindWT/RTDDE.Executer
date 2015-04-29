@@ -370,6 +370,7 @@
             <Setter Property="DisplayMemberPath" Value="Key"/>
             <Setter Property="SelectedValuePath" Value="Value"/>
             <Setter Property="SelectedIndex" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
@@ -400,9 +401,9 @@
                                         <Setter Property="Template">
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                                    <Border x:Name="templateRoot" BorderBrush="Transparent" Background="Transparent" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                                                    <Border x:Name="templateRoot" BorderBrush="{StaticResource DefaultBrush}" Background="{StaticResource DefaultBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
                                                         <Border x:Name="splitBorder" BorderBrush="Transparent" BorderThickness="1" HorizontalAlignment="Right" Margin="0" SnapsToDevicePixels="True" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
-                                                            <Path x:Name="Arrow" Data="F1M0,0L2.667,2.66665 5.3334,0 5.3334,-1.78168 2.6667,0.88501 0,-1.78168 0,0z" Fill="#FF606060" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center"/>
+                                                            <Path x:Name="Arrow" Data="F1M 0,0 V 1 L 4,5 L 8,1 V 0 H 7 L 4,3 L 1,0 Z" Fill="Black" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center"/>
                                                         </Border>
                                                     </Border>
                                                     <ControlTemplate.Triggers>
@@ -418,9 +419,6 @@
                                                             <Setter Property="Background" TargetName="splitBorder" Value="Transparent"/>
                                                             <Setter Property="BorderBrush" TargetName="splitBorder" Value="Transparent"/>
                                                         </MultiDataTrigger>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Fill" TargetName="Arrow" Value="Black"/>
-                                                        </Trigger>
                                                         <MultiDataTrigger>
                                                             <MultiDataTrigger.Conditions>
                                                                 <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
@@ -516,11 +514,11 @@
                                     </Style>
                                 </ToggleButton.Style>
                             </ToggleButton>
-                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" Content="{TemplateBinding SelectionBoxItem}" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" IsHitTestVisible="False" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Content="{TemplateBinding SelectionBoxItem}" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" IsHitTestVisible="False" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="HasItems" Value="False">
-                                <Setter Property="Height" TargetName="DropDownBorder" Value="95"/>
+                                <Setter Property="Height" TargetName="DropDownBorder" Value="100"/>
                             </Trigger>
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
