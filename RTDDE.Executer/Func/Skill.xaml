@@ -27,7 +27,6 @@
                 <RadioButton Grid.Column="2" GroupName="SkillType" Content="Panel" Name="SkillTypeRadio_Panel" Checked="SkillTypeRadio_Panel_Checked"></RadioButton>
                 <RadioButton Grid.Column="3" GroupName="SkillType" Content="Limit" Name="SkillTypeRadio_Limit" Checked="SkillTypeRadio_Limit_Checked"></RadioButton>
             </Grid>
-            <Separator/>
             <Expander Header="Search" Name="SkillSearchExpander" IsExpanded="False">
                 <Grid>
                     <Grid.Resources>
