@@ -141,10 +141,12 @@ order by point";
             List<QuestMaster> questMasters = await taskQuest;
             if (questMasters == null || questMasters.Count == 0) {
                 QuestAreaExpander_Quest.Visibility = Visibility.Collapsed;
+                QuestAreaToQuestButton.IsEnabled = false;
             }
             else {
                 QuestAreaInfo_Quest.Children.Clear();
                 QuestAreaExpander_Quest.Visibility = Visibility.Visible;
+                QuestAreaToQuestButton.IsEnabled = true;
                 foreach (QuestMaster qm in questMasters) {
                     Grid grid = new Grid();
                     grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
@@ -249,14 +251,42 @@ order by point";
         async private void QuestAreaToQuestButton_OnClick(object sender, RoutedEventArgs e)
         {
             string id = QuestAreaInfo_id.Text;
-            string name = QuestAreaInfo_name.Text;
-            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(name)) {
+            if (string.IsNullOrEmpty(id)) {
                 return;
             }
             var quest = (Quest)await Utility.GetTabByName("Quest");
-            quest.QuestSearch_parent_area_id.Text = id;
-            quest.QuestSearch_parent_area_name.Text = name;
-            quest.QuestSearchExpander.IsExpanded = true;
+            Task<QuestMaster> taskFirstQuest = Task.Run(() =>
+            {
+                const string sql = "SELECT * FROM quest_master WHERE parent_area_id={0} order by display_order ASC";
+                return DAL.ToSingle<QuestMaster>(String.Format(sql, id));
+            });
+            Task<QuestMaster> taskLastQuest = Task.Run(() =>
+            {
+                const string sql = "SELECT * FROM quest_master WHERE parent_area_id={0} order by display_order DESC";
+                return DAL.ToSingle<QuestMaster>(String.Format(sql, id));
+            });
+            QuestMaster firstQuestMaster = await taskFirstQuest;
+            QuestMaster lastQuestMaster = await taskFirstQuest;
+            if(firstQuestMaster==null ||lastQuestMaster==null)
+            {
+                Utility.ShowException("NO QUEST IN AREA");
+            }
+            quest.QuestTypeRadio_Event.IsChecked = true;
+            foreach (DataRowView item in quest.QuestDataGrid.ItemsSource) {
+                if (item != null) {
+                    int itemId = Convert.ToInt32(item["id"]);
+                    if (itemId == lastQuestMaster.id) {
+                        //this first, last>first
+                        quest.QuestDataGrid.ScrollIntoView(item);
+                        quest.QuestDataGrid.SelectedItem = item;
+                    }
+                    else if (itemId == firstQuestMaster.id) {
+                        quest.QuestDataGrid.ScrollIntoView(item);
+                        quest.QuestDataGrid.SelectedItem = item;
+                        break;
+                    }
+                }
+            }
             Utility.ChangeTab("Quest");
         }
     }

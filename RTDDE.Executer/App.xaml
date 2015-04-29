@@ -154,6 +154,9 @@
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="{StaticResource PressedBrush}" />
                 </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="{StaticResource HighlightBrush}" />
+                </Trigger>
             </Style.Triggers>
         </Style>
         <Style TargetType="{x:Type Button}" x:Key="CloseButton" BasedOn="{StaticResource {x:Type Button}}">
