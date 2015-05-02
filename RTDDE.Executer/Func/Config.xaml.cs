@@ -171,8 +171,6 @@ namespace RTDDE.Executer.Func
             Settings.Config.General.IsUseLocalTime = IsUseLocalTimeCheckBox.IsChecked.GetValueOrDefault(false);
             //db
             Settings.Config.Database.AutoBackup = AutoBackupCheckBox.IsChecked.GetValueOrDefault(false);
-            //model
-            Settings.Config.Model.DisunityPath = DisunityPathTextBox.Text;
             try {
                 Settings.Save();
                 SaveSettingsButton.Content = new Run("SAVED");
@@ -196,19 +194,6 @@ namespace RTDDE.Executer.Func
             IsUseLocalTimeCheckBox.IsChecked = Settings.Config.General.IsUseLocalTime;
             //db
             AutoBackupCheckBox.IsChecked = Settings.Config.Database.AutoBackup;
-            //model
-            DisunityPathTextBox.Text = Settings.Config.Model.DisunityPath;
-        }
-        private void SelectDisunityPathButton_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog
-            {
-                DefaultExt = ".bat",
-                Filter = "Disunity Bat|disunity.bat"
-            };
-            if (ofd.ShowDialog() == true) {
-                DisunityPathTextBox.Text = ofd.FileName;
-            }
         }
     }
 }

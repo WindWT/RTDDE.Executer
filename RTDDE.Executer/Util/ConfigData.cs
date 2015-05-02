@@ -33,17 +33,12 @@ namespace RTDDE.Executer
             public bool IsShowBoxInfo { get; set; }
             public bool IsShowEnemyAttribute { get; set; }
         }
-        public class ModelClass
-        {
-            public string DisunityPath { get; set; }
-        }
         public class DatabaseClass
         {
             public bool AutoBackup { get; set; }
         }
         public GeneralClass General;
         public MapClass Map;
-        public ModelClass Model;
         public DatabaseClass Database;
 
         public ConfigData()
@@ -59,10 +54,6 @@ namespace RTDDE.Executer
                 IsShowDropInfo = false,
                 IsShowBoxInfo = true,
                 IsShowEnemyAttribute = true
-            };
-            Model = new ModelClass()
-            {
-                DisunityPath = string.Empty
             };
             Database = new DatabaseClass()
             {

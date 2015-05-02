@@ -33,12 +33,6 @@
                             <CheckBox Name="AutoBackupCheckBox" >Auto backup when import MDBS</CheckBox>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Disunity Path">
-                        <DockPanel>
-                            <Button DockPanel.Dock="Right" Name="SelectDisunityPathButton" Click="SelectDisunityPathButton_Click">...</Button>
-                            <TextBox VerticalContentAlignment="Center" Name="DisunityPathTextBox" IsReadOnly="False"></TextBox>
-                        </DockPanel>
-                    </GroupBox>
                     <Button Name="SaveSettingsButton" Click="SaveSettingsButton_Click">Save Settings</Button>
                 </StackPanel>
             </GroupBox>
