@@ -3,10 +3,29 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:RTDDE="clr-namespace:RTDDE.Executer.Func"
         Title="RTDDE.Executer"  MinWidth="640" MinHeight="480" Width="720" Height="540"
-        Icon="Resources/RTDDE.Executer.ico" WindowStyle="None" ResizeMode="CanResizeWithGrip">
+        Icon="Resources/RTDDE.Executer.ico" ResizeMode="CanResizeWithGrip">
     <Window.Resources>
 
     </Window.Resources>
+    <Window.Style>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="WindowChrome.WindowChrome">
+                <Setter.Value>
+                    <WindowChrome CaptionHeight="0" CornerRadius="0"
+                                  NonClientFrameEdges="None"
+                                  UseAeroCaptionButtons="False"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="WindowState" Value="Maximized">
+                    <Setter Property="BorderThickness" Value="8" />
+                </Trigger>
+                <!--<Trigger Property="WindowState" Value="Maximized">
+                    <Setter Property="BorderThickness" Value="{Binding Source={x:Static SystemParameters.WindowResizeBorderThickness}}"/>
+                </Trigger>-->
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="36" />

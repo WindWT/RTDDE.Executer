@@ -35,11 +35,6 @@ namespace RTDDE.Executer
         public MainWindow()
         {
             InitializeComponent();
-            WindowChrome.SetWindowChrome(this, new WindowChrome()
-            {
-                CornerRadius = new CornerRadius(0),
-                CaptionHeight = 0
-            });
             Settings.Init();    //init settings here
             ChangeTab("Quest");
         }
