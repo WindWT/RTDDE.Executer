@@ -66,7 +66,9 @@
                             <ComboBox Grid.Row="0" Grid.Column="2" Name="EventSearch_type"></ComboBox>
                             <ComboBox Grid.Row="0" Grid.Column="3" Name="EventSearch_attribute"></ComboBox>
                             <ComboBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Name="EventSearch_pattern"></ComboBox>
-                            --><!--<ComboBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Name="EventSearch_pattern2"></ComboBox>--><!--
+                            -->
+            <!--<ComboBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Name="EventSearch_pattern2"></ComboBox>-->
+            <!--
                             <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Name="EventSearchClear" Click="EventSearchClear_Click">Clear</Button>
                         </Grid>
                     </StackPanel>
@@ -135,35 +137,38 @@
                     <TextBlock Name="EventInfo_post_param_02"></TextBlock>
                 </UniformGrid>
                 <Expander Header="Advanced" Name="EventAdvancedExpander" IsExpanded="False">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="banner_bg_texture"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="EventInfo_banner_bg_texture"></TextBox>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="icon_texture"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="EventInfo_icon_texture"></TextBox>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="dialog_banner"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Name="EventInfo_dialog_banner"></TextBox>
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="icon"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" Name="EventInfo_icon"></TextBox>
-                            <TextBlock Grid.Row="3" Grid.Column="2" Text="icon_type"/>
-                            <TextBox Grid.Row="3" Grid.Column="3" Name="EventInfo_icon_type"></TextBox>
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="icon_pos_x"/>
-                            <TextBox Grid.Row="4" Grid.Column="1" Name="EventInfo_icon_pos_x"></TextBox>
-                            <TextBlock Grid.Row="4" Grid.Column="2" Text="icon_pos_y"/>
-                            <TextBox Grid.Row="4" Grid.Column="3" Name="EventInfo_icon_pos_y"></TextBox>
-                        </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="banner_bg_texture"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="EventInfo_banner_bg_texture"></TextBox>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="icon_texture"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="EventInfo_icon_texture"></TextBox>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="dialog_banner"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Name="EventInfo_dialog_banner"></TextBox>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="icon"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Name="EventInfo_icon"></TextBox>
+                        <TextBlock Grid.Row="3" Grid.Column="2" Text="icon_type"/>
+                        <TextBox Grid.Row="3" Grid.Column="3" Name="EventInfo_icon_type"></TextBox>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="icon_pos_x"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Name="EventInfo_icon_pos_x"></TextBox>
+                        <TextBlock Grid.Row="4" Grid.Column="2" Text="icon_pos_y"/>
+                        <TextBox Grid.Row="4" Grid.Column="3" Name="EventInfo_icon_pos_y"></TextBox>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="banner_bg_texture_url"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Name="EventInfo_banner_bg_texture_url"></TextBox>
+                    </Grid>
                 </Expander>
             </StackPanel>
         </ScrollViewer>

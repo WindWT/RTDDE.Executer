@@ -134,6 +134,7 @@ namespace RTDDE.Executer.Func
             EventInfo_icon_pos_x.Text = mapEvent.icon_pos_x.ToString();
             EventInfo_icon_pos_y.Text = mapEvent.icon_pos_y.ToString();
             EventInfo_icon_type.Text = mapEvent.icon_type.ToString();
+            EventInfo_banner_bg_texture_url.Text = "http://www.acquirespdl.jp/RTD/DLC/BANNER/" + mapEvent.banner_bg_texture;
         }
     }
 }
