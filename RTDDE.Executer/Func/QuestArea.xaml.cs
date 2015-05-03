@@ -19,6 +19,9 @@ namespace RTDDE.Executer.Func
         public QuestArea()
         {
             InitializeComponent();
+            QuestAreaExpander_Area.Visibility = Visibility.Collapsed;
+            QuestAreaExpander_Quest.Visibility = Visibility.Collapsed;
+            QuestAreaExpander_Reward.Visibility = Visibility.Collapsed;
         }
         public class QuestReward
         {
@@ -254,7 +257,6 @@ order by point";
             if (string.IsNullOrEmpty(id)) {
                 return;
             }
-            var quest = (Quest)await Utility.GetTabByName("Quest");
             Task<QuestMaster> taskFirstQuest = Task.Run(() =>
             {
                 const string sql = "SELECT * FROM quest_master WHERE parent_area_id={0} order by display_order ASC";
@@ -267,20 +269,32 @@ order by point";
             });
             QuestMaster firstQuestMaster = await taskFirstQuest;
             QuestMaster lastQuestMaster = await taskFirstQuest;
-            if(firstQuestMaster==null ||lastQuestMaster==null)
-            {
+            if (firstQuestMaster != null && lastQuestMaster != null) {
+                QuestAreaToQuest(firstQuestMaster.id, lastQuestMaster.id);
+            }
+            else {
                 Utility.ShowException("NO QUEST IN AREA");
             }
+        }
+
+        private void QuestAreaInfoToLockQuestButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            QuestAreaToQuest(Convert.ToInt32(QuestAreaInfo_lock_value.Text));
+        }
+
+        async private void QuestAreaToQuest(int firstId, int lastId = -1)
+        {
+            var quest = (Quest)await Utility.GetTabByName("Quest");
             quest.QuestTypeRadio_Event.IsChecked = true;
             foreach (DataRowView item in quest.QuestDataGrid.ItemsSource) {
                 if (item != null) {
                     int itemId = Convert.ToInt32(item["id"]);
-                    if (itemId == lastQuestMaster.id) {
+                    if (lastId != -1 && itemId == lastId) {
                         //this first, last>first
                         quest.QuestDataGrid.ScrollIntoView(item);
                         quest.QuestDataGrid.SelectedItem = item;
                     }
-                    else if (itemId == firstQuestMaster.id) {
+                    else if (itemId == firstId) {
                         quest.QuestDataGrid.ScrollIntoView(item);
                         quest.QuestDataGrid.SelectedItem = item;
                         break;

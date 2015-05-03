@@ -52,7 +52,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="100"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
@@ -120,6 +120,7 @@
                                 <ColumnDefinition Width="50"></ColumnDefinition>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"></RowDefinition>
@@ -127,8 +128,9 @@
                             </Grid.RowDefinitions>
                             <TextBlock Text="lock" Grid.Column="0"/>
                             <TextBox Name="QuestAreaInfo_lock_value" Grid.Column="1" ></TextBox>
-                            <TextBox Name="QuestAreaInfo_lock_name" Grid.Column="2" Grid.ColumnSpan="2"></TextBox>
-                            <RichTextBox Name="QuestAreaInfo_lock_dialog_msg" Grid.Row="1" Grid.ColumnSpan="3"></RichTextBox>
+                            <TextBox Name="QuestAreaInfo_lock_name" Grid.Column="2"></TextBox>
+                            <Button Name="QuestAreaInfoToLockQuestButton" Grid.Column="3" Style="{StaticResource InlineButton}" Click="QuestAreaInfoToLockQuestButton_OnClick">→</Button>
+                            <RichTextBox Name="QuestAreaInfo_lock_dialog_msg" Grid.Row="1" Grid.ColumnSpan="4"></RichTextBox>
                         </Grid>
                     </StackPanel>
                 </Expander>
