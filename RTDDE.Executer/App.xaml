@@ -41,6 +41,14 @@
             <Setter Property="AlternatingRowBackground" Value="{StaticResource DefaultBrush}"/>
             <Setter Property="GridLinesVisibility" Value="None"/>
         </Style>
+        <Style TargetType="{x:Type DataGridRow}">
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="Background" Value="{StaticResource PressedBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style TargetType="{x:Type DataGridColumnHeader}">
             <Setter Property="Background" Value="{StaticResource PressedBrush}" />
             <Setter Property="Padding" Value="3"/>

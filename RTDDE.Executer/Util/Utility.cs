@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.Dynamic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using RTDDE.Executer.Func;
 
 namespace RTDDE.Executer
 {
@@ -60,11 +62,7 @@ namespace RTDDE.Executer
             var w = (MainWindow)Application.Current.MainWindow;
             return await w.GetTabByName(tabName);
         }
-        public static void BindData(DataGrid dg, string sql)
-        {
-            BindData(dg, sql, null);
-        }
-        public static void BindData(DataGrid dg, string sql, List<SQLiteParameter> paras)
+        public static void BindData(DataGrid dg, string sql, List<SQLiteParameter> paras = null)
         {
             Task<DataTable> task = new Task<DataTable>(() =>
             {
@@ -99,6 +97,69 @@ namespace RTDDE.Executer
                 }
             }
             return child;
+        }
+        public static T GetLogicalChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            T child = default(T);
+            foreach (DependencyObject v in LogicalTreeHelper.GetChildren(parent)) {
+                child = v as T;
+                if (child == null) {
+                    child = GetLogicalChild<T>(v);
+                }
+                else {
+                    break;
+                }
+            }
+            return child;
+        }
+        public static void RefreshTabs(string tabName = null)
+        {
+            var w = (MainWindow)Application.Current.MainWindow;
+            foreach (UserControl child in w.MainGrid.Children) {
+                if (string.IsNullOrEmpty(tabName) && (child is Config) == false) {
+                    w.MainGrid.Children.Remove(child);
+                }
+                else if (string.Compare(child.GetType().Name, tabName, StringComparison.OrdinalIgnoreCase) == 0) {
+                    w.MainGrid.Children.Remove(child);
+                    break;
+                }
+            }
+        }
+        async public static void GoToItemById(string tabName, int firstId, int lastId = -1)
+        {
+            GoToItemById(tabName, null, firstId, lastId);
+        }
+        async public static void GoToItemById(string tabName, string dataGridName, int firstId, int lastId = -1)
+        {
+            RefreshTabs(tabName);
+            UserControl tab = await Utility.GetTabByName(tabName);
+            DataGrid dataGrid;
+            if (string.IsNullOrEmpty(dataGridName)) {
+                dataGrid = GetLogicalChild<DataGrid>(tab);
+            }
+            else {
+                dataGrid = tab.FindName(dataGridName) as DataGrid;
+            }
+            if (dataGrid == null) {
+                return;
+            }
+            ChangeTab(tabName);
+            foreach (DataRowView item in dataGrid.ItemsSource) {
+                if (item == null) {
+                    continue;
+                }
+                int itemId = Convert.ToInt32(item["id"]);
+                if (lastId != -1 && itemId == lastId) {
+                    //this first, last>first
+                    dataGrid.ScrollIntoView(item);
+                    dataGrid.SelectedItem = item;
+                }
+                else if (itemId == firstId) {
+                    dataGrid.ScrollIntoView(item);
+                    dataGrid.SelectedItem = item;
+                    break;
+                }
+            }
         }
     }
 }

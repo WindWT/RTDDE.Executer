@@ -169,7 +169,7 @@ order by point";
                     };
                     button.Click += (s, arg) =>
                     {
-                        ToQuest(id);
+                        Utility.GoToItemById("Quest", id);
                     };
                     button.SetValue(Grid.ColumnProperty, 2);
                     grid.Children.Add(button);
@@ -283,7 +283,7 @@ order by point";
             QuestMaster firstQuestMaster = await taskFirstQuest;
             QuestMaster lastQuestMaster = await taskFirstQuest;
             if (firstQuestMaster != null && lastQuestMaster != null) {
-                ToQuest(firstQuestMaster.id, lastQuestMaster.id);
+                Utility.GoToItemById("Quest", firstQuestMaster.id, lastQuestMaster.id);
             }
             else {
                 Utility.ShowException("NO QUEST IN AREA");
@@ -292,29 +292,7 @@ order by point";
 
         private void QuestAreaInfoToLockQuestButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ToQuest(Convert.ToInt32(QuestAreaInfo_lock_value.Text));
-        }
-
-        async private void ToQuest(int firstId, int lastId = -1)
-        {
-            var quest = (Quest)await Utility.GetTabByName("Quest");
-            quest.QuestTypeRadio_Event.IsChecked = true;
-            foreach (DataRowView item in quest.QuestDataGrid.ItemsSource) {
-                if (item != null) {
-                    int itemId = Convert.ToInt32(item["id"]);
-                    if (lastId != -1 && itemId == lastId) {
-                        //this first, last>first
-                        quest.QuestDataGrid.ScrollIntoView(item);
-                        quest.QuestDataGrid.SelectedItem = item;
-                    }
-                    else if (itemId == firstId) {
-                        quest.QuestDataGrid.ScrollIntoView(item);
-                        quest.QuestDataGrid.SelectedItem = item;
-                        break;
-                    }
-                }
-            }
-            Utility.ChangeTab("Quest");
+            Utility.GoToItemById("Quest", Convert.ToInt32(QuestAreaInfo_lock_value.Text));
         }
     }
 }
