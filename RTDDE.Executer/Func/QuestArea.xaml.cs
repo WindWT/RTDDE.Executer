@@ -151,15 +151,28 @@ order by point";
                 QuestAreaExpander_Quest.Visibility = Visibility.Visible;
                 QuestAreaToQuestButton.IsEnabled = true;
                 foreach (QuestMaster qm in questMasters) {
+                    int id = qm.id;
                     Grid grid = new Grid();
                     grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
                     grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                    TextBlock textBlock = new TextBlock() { Text = qm.id.ToString() };
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+                    TextBlock textBlock = new TextBlock() { Text = id.ToString() };
                     textBlock.SetValue(Grid.ColumnProperty, 0);
                     grid.Children.Add(textBlock);
                     TextBox textBox = new TextBox() { Text = qm.name };
                     textBox.SetValue(Grid.ColumnProperty, 1);
                     grid.Children.Add(textBox);
+                    Button button = new Button()
+                    {
+                        Content = "→",
+                        Style = FindResource("InlineButton") as Style
+                    };
+                    button.Click += (s, arg) =>
+                    {
+                        ToQuest(id);
+                    };
+                    button.SetValue(Grid.ColumnProperty, 2);
+                    grid.Children.Add(button);
                     QuestAreaInfo_Quest.Children.Add(grid);
                 }
             }
@@ -270,7 +283,7 @@ order by point";
             QuestMaster firstQuestMaster = await taskFirstQuest;
             QuestMaster lastQuestMaster = await taskFirstQuest;
             if (firstQuestMaster != null && lastQuestMaster != null) {
-                QuestAreaToQuest(firstQuestMaster.id, lastQuestMaster.id);
+                ToQuest(firstQuestMaster.id, lastQuestMaster.id);
             }
             else {
                 Utility.ShowException("NO QUEST IN AREA");
@@ -279,10 +292,10 @@ order by point";
 
         private void QuestAreaInfoToLockQuestButton_OnClick(object sender, RoutedEventArgs e)
         {
-            QuestAreaToQuest(Convert.ToInt32(QuestAreaInfo_lock_value.Text));
+            ToQuest(Convert.ToInt32(QuestAreaInfo_lock_value.Text));
         }
 
-        async private void QuestAreaToQuest(int firstId, int lastId = -1)
+        async private void ToQuest(int firstId, int lastId = -1)
         {
             var quest = (Quest)await Utility.GetTabByName("Quest");
             quest.QuestTypeRadio_Event.IsChecked = true;
