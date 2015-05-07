@@ -3,9 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" >
-    <Grid Name="DiffTab">
+             mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480">
+    <Grid>
         <DockPanel LastChildFill="True">
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0">OldFile</TextBlock>
+                <TextBox Grid.Column="1" Grid.Row="0" VerticalContentAlignment="Center" Name="OldFilePathTextBox" IsReadOnly="False"></TextBox>
+                <Button Grid.Column="2" Grid.Row="0" Name="SelectOldFileButton" Click="SelectOldFileButton_OnClick">...</Button>
+                <Button Grid.Column="3" Grid.Row="0" Name="AutoOldFileButton" Click="AutoOldFileButton_OnClick">Latest</Button>
+                <TextBlock Grid.Column="0" Grid.Row="1">NewFile</TextBlock>
+                <TextBox Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" Name="NewFilePathTextBox" IsReadOnly="False"></TextBox>
+                <Button Grid.Column="2" Grid.Row="1" Name="SelectNewFileButton" Click="SelectNewFileButton_OnClick">...</Button>
+                <Button Grid.Column="3" Grid.Row="1" Name="AutoNewFileButton" Click="AutoNewFileButton_OnClick">Current</Button>
+                <Button Grid.ColumnSpan="4" Grid.Column="0" Grid.Row="2" Name="CompareButton" Click="CompareButton_OnClick">Compare</Button>
+            </Grid>
             <ComboBox DockPanel.Dock="Top" Name="TableSelectComboBox" Initialized="TableSelectComboBox_Initialized" SelectionChanged="TableSelectComboBox_SelectionChanged"></ComboBox>
             <Grid DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>

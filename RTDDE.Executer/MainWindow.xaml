@@ -120,7 +120,7 @@
                 <Button Name="MenuItem_About" Click="MenuItem_Checked">About</Button>
             </UniformGrid>
             <Button Name="MenuItem_Common" Click="MenuItem_Checked" DockPanel.Dock="Bottom">Common</Button>
-            <Button Name="MenuItem_Diff" Click="MenuItem_Checked" DockPanel.Dock="Bottom" Visibility="Collapsed">Diff</Button>
+            <Button Name="MenuItem_Diff" Click="MenuItem_Checked" DockPanel.Dock="Bottom">Diff</Button>
             <!-- MenuItem -->
             <Button Name="MenuItem_World" Click="MenuItem_Checked">World</Button>
             <Button Name="MenuItem_QuestArea" Click="MenuItem_Checked">Area</Button>
