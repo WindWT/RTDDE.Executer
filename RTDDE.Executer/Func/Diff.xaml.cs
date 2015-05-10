@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,16 +21,6 @@ namespace RTDDE.Executer.Func
         {
             InitializeComponent();
         }
-
-        //private void TableSelectComboBox_Initialized(object sender, EventArgs e)
-        //{
-        //    Dictionary<string, string> dict = new Dictionary<string, string>();
-        //    dict.Add(string.Empty, string.Empty);
-        //    foreach (MASTERDB type in Enum.GetValues(typeof(MASTERDB))) {
-        //        dict.Add(type.ToString(), type.ToString());
-        //    }
-        //    TableSelectComboBox.ItemsSource = dict;
-        //}
 
         //private void TableSelectComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //{
@@ -133,7 +124,42 @@ namespace RTDDE.Executer.Func
         //}
         private void CompareButton_OnClick(object sender, RoutedEventArgs e)
         {
-            
+            //todo async with task
+            Dictionary<string, string> diffTableDictionary = new Dictionary<string, string>();
+            diffTableDictionary.Add("-----", string.Empty);
+            const string existSql = @"select count(*) from (
+SELECT name FROM main.sqlite_master WHERE type='table' AND name='{0}'
+UNION ALL
+SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
+)";
+            const string compareSql = @"SELECT * FROM main.{0} EXCEPT SELECT * FROM old.{0}
+UNION ALL
+SELECT * FROM old.{0} EXCEPT SELECT * FROM main.{0}";
+            using (SQLiteConnection connection = new SQLiteConnection(DAL.ConnectionString)) {
+                connection.Open();
+                //连接两个库
+                string attachSql = "ATTACH '" + OldFilePathTextBox.Text + "' AS old";
+                SQLiteCommand attachCommand = new SQLiteCommand(attachSql, connection);
+                attachCommand.ExecuteNonQuery();
+                //循环每个表
+                foreach (MASTERDB type in Enum.GetValues(typeof(MASTERDB))) {
+                    //检查表存在性
+                    SQLiteCommand existCommand = new SQLiteCommand(string.Format(existSql, type.ToString()), connection);
+                    int existCount = Convert.ToInt32(existCommand.ExecuteScalar());
+                    if (existCount == 1) {
+                        //只有一边存在
+                        diffTableDictionary.Add("[New]"+type.ToString(), type.ToString());
+                    }
+                    else if (existCount == 2) {
+                        //检查数据是否存在差异
+                        SQLiteCommand compareCommand = new SQLiteCommand(string.Format(compareSql, type.ToString()), connection);
+                        if (compareCommand.ExecuteScalar() != null) {
+                            diffTableDictionary.Add("[Diff]" + type.ToString(), type.ToString());
+                        }
+                    }
+                }
+            }
+            TableSelectComboBox.ItemsSource = diffTableDictionary;
         }
 
         private void svOld_ScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -185,8 +211,7 @@ namespace RTDDE.Executer.Func
         private void AutoNewFileButton_OnClick(object sender, RoutedEventArgs e)
         {
             NewFilePathTextBox.Text = string.Empty;
-            if(File.Exists("RTD.db"))
-            {
+            if (File.Exists("RTD.db")) {
                 NewFilePathTextBox.Text = new FileInfo("RTD.db").FullName;
             }
         }
