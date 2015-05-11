@@ -28,7 +28,7 @@
                 <Button Grid.Column="3" Grid.Row="1" Name="AutoNewFileButton" Click="AutoNewFileButton_OnClick">Current</Button>
                 <Button Grid.ColumnSpan="4" Grid.Column="0" Grid.Row="2" Name="CompareButton" Click="CompareButton_OnClick">Compare</Button>
             </Grid>
-            <ComboBox DockPanel.Dock="Top" Name="TableSelectComboBox"></ComboBox>
+            <ComboBox DockPanel.Dock="Top" Name="TableSelectComboBox" SelectionChanged="TableSelectComboBox_OnSelectionChanged"></ComboBox>
             <Grid DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>

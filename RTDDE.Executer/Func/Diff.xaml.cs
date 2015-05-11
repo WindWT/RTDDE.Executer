@@ -21,6 +21,12 @@ namespace RTDDE.Executer.Func
         public Diff()
         {
             InitializeComponent();
+
+            /*ScrollViewer svOld = Utility.GetVisualChild<ScrollViewer>(OldTableDataGrid);
+            ScrollViewer svNew = Utility.GetVisualChild<ScrollViewer>(NewTableDataGrid);
+            svOld.ScrollChanged += svOld_ScrollChanged;
+            svNew.ScrollChanged += svNew_ScrollChanged;
+             */
         }
 
         //private void TableSelectComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -115,10 +121,7 @@ namespace RTDDE.Executer.Func
         //        OldTableDataGrid.ItemsSource = oldDV;
         //        NewTableDataGrid.ItemsSource = newDV;
 
-        //        ScrollViewer svOld = Utility.GetVisualChild<ScrollViewer>(OldTableDataGrid);
-        //        ScrollViewer svNew = Utility.GetVisualChild<ScrollViewer>(NewTableDataGrid);
-        //        svOld.ScrollChanged += new ScrollChangedEventHandler(svOld_ScrollChanged);
-        //        svNew.ScrollChanged += new ScrollChangedEventHandler(svNew_ScrollChanged);
+
         //    }, MainWindow.UiTaskScheduler);
         //    task.Start();
         //    taskDataSet.Start();
@@ -130,12 +133,14 @@ SELECT name FROM new.sqlite_master WHERE type='table' AND name='{0}'
 UNION ALL
 SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
 )";
-            const string compareSql = @"SELECT * FROM new.{0} EXCEPT SELECT * FROM old.{0}
-UNION ALL
-SELECT * FROM old.{0} EXCEPT SELECT * FROM new.{0}";
+            const string existInNewSql = @"SELECT * FROM new.{0} EXCEPT SELECT * FROM old.{0}";
+            const string existInOldSql = @"SELECT * FROM old.{0} EXCEPT SELECT * FROM new.{0}";
 
-            string oldFile = OldFilePathTextBox.Text;
-            string newFile = NewFilePathTextBox.Text;
+            if (File.Exists(OldFilePathTextBox.Text) == false || File.Exists(NewFilePathTextBox.Text) == false) {
+                return;
+            }
+            string oldFile = new FileInfo(OldFilePathTextBox.Text).FullName;
+            string newFile = new FileInfo(NewFilePathTextBox.Text).FullName;
             CompareButton.Content = new Run("Comparing...");
             Task<Dictionary<string, string>> fastDiffTask = Task.Run(() =>
             {
@@ -158,9 +163,25 @@ SELECT * FROM old.{0} EXCEPT SELECT * FROM new.{0}";
                         }
                         else if (existCount == 2) {
                             //检查数据是否存在差异
-                            SQLiteCommand compareCommand = new SQLiteCommand(string.Format(compareSql, type.ToString()), connection);
-                            if (compareCommand.ExecuteScalar() != null) {
-                                diffTableDictionary.Add("[Diff]" + type.ToString(), type.ToString());
+                            int oldHasNew = 0, newHasNew = 0;
+                            string hasDiffMark = string.Empty;
+                            existCommand.CommandText = string.Format(existInNewSql, type.ToString());
+                            if (existCommand.ExecuteScalar() != null) {
+                                newHasNew = 1;
+                            }
+                            existCommand.CommandText = string.Format(existInOldSql, type.ToString());
+                            if (existCommand.ExecuteScalar() != null) {
+                                oldHasNew = 1;
+                            }
+                            switch ((oldHasNew << 1) | newHasNew) {
+                                case 3: { hasDiffMark = "←→"; break; }
+                                case 2: { hasDiffMark = "←　"; break; }
+                                case 1: { hasDiffMark = "　→"; break; }
+                                default: break;
+                            }
+
+                            if (string.IsNullOrEmpty(hasDiffMark) == false) {
+                                diffTableDictionary.Add("[" + hasDiffMark + "]" + type.ToString(), type.ToString());
                             }
                         }
                     }
@@ -173,6 +194,14 @@ SELECT * FROM old.{0} EXCEPT SELECT * FROM new.{0}";
 
             TableSelectComboBox.ItemsSource = await fastDiffTask;
             CompareButton.Content = new Run("Compare");
+        }
+
+        private void TableSelectComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string tableName = (string)TableSelectComboBox.SelectedValue;
+            if (string.IsNullOrWhiteSpace(tableName)) {
+                return;
+            }
         }
 
         private void svOld_ScrollChanged(object sender, ScrollChangedEventArgs e)
