@@ -211,8 +211,8 @@ WHERE uo.id={0}";
 
                 //calc exp pt
                 int num2 = ui.category - 1;
-                float expThisLevel = (float)(Math.Pow(thislevel - 1, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(ui.grow)));
-                float expNextLevel = (float)(Math.Pow(thislevel, UnitParam_NextExp_Per[num2]) * (double)(Convert.ToSingle(ui.grow)));
+                float expThisLevel = (float)(Math.Pow(thislevel - 1, Convert.ToDouble(UnitParam_NextExp_Per[num2])) * (double)(Convert.ToSingle(ui.grow)));
+                float expNextLevel = (float)(Math.Pow(thislevel, Convert.ToDouble(UnitParam_NextExp_Per[num2])) * (double)(Convert.ToSingle(ui.grow)));
                 UnitInfo_EXP.Text = expThisLevel.ToString("0");
                 UnitInfo_EXP_Next.Text = Math.Abs(thislevel - maxlevel) < 0.1 ? "MAX" : expNextLevel.ToString("0");
                 UnitInfo_cost.Text = (ui.cost * thislevel).ToString("0");
@@ -593,40 +593,36 @@ WHERE uo.id={0}";
             return sql;
         }
         #region Magic Numbers
-        private static readonly double[] UnitParam_CategoryPer = new double[]
-{
-	0.38999998569488525,
-	0.40000000596046448,
-	0.40999999642372131,
-	0.41999998688697815,
-	0.43000000715255737,
-	0.40999999642372131
-};
-        public static readonly double[] UnitParam_NextExp_Per = new double[]
-{
-	2.380000114440918,
-	2.4200000762939453,
-	2.4800000190734863,
-	2.5799999237060547,
-	2.6600000858306885,
-	2.5999999046325684
-};
-
-        private static readonly double[] UnitParam_StylePer = new double[]
-{
-	1.1000000238418579,
-	1.1000000238418579,
-	0.699999988079071,
-	0.800000011920929,
-	1.25,
-	0.85000002384185791,
-	0.949999988079071,
-	1.0,
-	0.949999988079071,
-	1.0,
-	0.60000002384185791,
-	1.2999999523162842
-};
+        private static readonly double[] UnitParam_CategoryPer = new double[]{
+	        0.38999998569488525,
+	        0.40000000596046448,
+	        0.40999999642372131,
+	        0.41999998688697815,
+	        0.43000000715255737,
+	        0.40999999642372131
+        };
+        public static readonly decimal[] UnitParam_NextExp_Per = new decimal[]{
+            2.38m,
+            2.42m,
+            2.48m,
+            2.58m,
+            2.66m,
+            2.60m
+        };
+        private static readonly double[] UnitParam_StylePer = new double[]{
+	        1.1000000238418579,
+	        1.1000000238418579,
+	        0.699999988079071,
+	        0.800000011920929,
+	        1.25,
+	        0.85000002384185791,
+	        0.949999988079071,
+	        1.0,
+	        0.949999988079071,
+	        1.0,
+	        0.60000002384185791,
+	        1.2999999523162842
+        };
         #endregion
 
         public void SelectUnitById(int id)
