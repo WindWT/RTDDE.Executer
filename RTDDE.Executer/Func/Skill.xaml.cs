@@ -532,6 +532,7 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
             Utility.BindData(SkillDataGrid, "select id,type,name from party_skill_master order by type,id");
             SkillSearch_type.ItemsSource = GetSkillTypeDict<PassiveSkillType>();
             SkillSearch_type.IsEnabled = true;
+            SkillSearch_type.SelectedIndex = 0;
         }
         private void SkillTypeRadio_Active_Checked(object sender, RoutedEventArgs e)
         {
@@ -543,6 +544,7 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
             Utility.BindData(SkillDataGrid, "select id,type,name from active_skill_master order by type,id");
             SkillSearch_type.ItemsSource = GetSkillTypeDict<ActiveSkillType>();
             SkillSearch_type.IsEnabled = true;
+            SkillSearch_type.SelectedIndex = 0;
         }
         private void SkillTypeRadio_Panel_Checked(object sender, RoutedEventArgs e)
         {
@@ -554,6 +556,7 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
             Utility.BindData(SkillDataGrid, "select id,type,name from panel_skill_master order by type,id");
             SkillSearch_type.ItemsSource = GetSkillTypeDict<PanelSkillType>();
             SkillSearch_type.IsEnabled = true;
+            SkillSearch_type.SelectedIndex = 0;
         }
         private void SkillTypeRadio_Limit_Checked(object sender, RoutedEventArgs e)
         {
@@ -563,9 +566,10 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
             SkillInfo_LimitSkill.Visibility = Visibility.Visible;
             SkillUnitRankInfo.Children.Clear();
             Utility.BindData(SkillDataGrid, "select id,name from limit_skill_master order by id");
-            //SkillSearch_type.ItemsSource = GetSkillTypeDict<PanelSkillType>();
             //Limit skill has no type
+            SkillSearch_type.ItemsSource = new Dictionary<string, string>() { { "------", "" } };
             SkillSearch_type.IsEnabled = false;
+            SkillSearch_type.SelectedIndex = 0;
         }
         private string GetSkillTableByRadioChecked()
         {
@@ -593,6 +597,7 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
         {
             SkillSearch_name.Text = string.Empty;
             SkillSearch_type.Text = string.Empty;
+            SkillSearch_type.SelectedIndex = 0;
             SkillSearch_attribute.SelectedIndex = 0;
             //SkillSearch_sub_attr.SelectedIndex = 0;
             if (SkillTypeRadio_Limit.IsChecked == true)

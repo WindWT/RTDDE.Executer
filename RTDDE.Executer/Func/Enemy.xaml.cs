@@ -166,6 +166,11 @@ namespace RTDDE.Executer.Func
         {
             EnemySearch_id.Text = string.Empty;
             EnemySearch_name.Text = string.Empty;
+            EnemySearch_chara_symbol.SelectedIndex = 0;
+            EnemySearch_chara_kind.SelectedIndex = 0;
+            EnemySearch_type.SelectedIndex = 0;
+            EnemySearch_attribute.SelectedIndex = 0;
+            EnemySearch_pattern.SelectedIndex = 0;
             Utility.BindData(EnemyDataGrid, "SELECT id,name FROM Enemy_Unit_MASTER order by id");
         }
         private void EnemySearch_TextChanged(object sender, TextChangedEventArgs e)

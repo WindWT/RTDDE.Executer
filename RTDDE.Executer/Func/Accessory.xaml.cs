@@ -91,6 +91,7 @@ namespace RTDDE.Executer.Func
         {
             AccessorySearch_name.Text = string.Empty;
             AccessorySearch_type.Text = string.Empty;
+            AccessorySearch_type.SelectedIndex = 0;
             AccessorySearch_attribute.SelectedIndex = 0;
             //AccessorySearch_sub_attr.SelectedIndex = 0;
             Utility.BindData(AccessoryDataGrid, "SELECT id,type,name FROM Accessory_MASTER order by type,id");
