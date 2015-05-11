@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using RTDDE.Provider;
 using RTDDE.Provider.Enums;
 
@@ -122,44 +123,56 @@ namespace RTDDE.Executer.Func
         //    task.Start();
         //    taskDataSet.Start();
         //}
-        private void CompareButton_OnClick(object sender, RoutedEventArgs e)
+        async private void CompareButton_OnClick(object sender, RoutedEventArgs e)
         {
-            //todo async with task
-            Dictionary<string, string> diffTableDictionary = new Dictionary<string, string>();
-            diffTableDictionary.Add("-----", string.Empty);
             const string existSql = @"select count(*) from (
-SELECT name FROM main.sqlite_master WHERE type='table' AND name='{0}'
+SELECT name FROM new.sqlite_master WHERE type='table' AND name='{0}'
 UNION ALL
 SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
 )";
-            const string compareSql = @"SELECT * FROM main.{0} EXCEPT SELECT * FROM old.{0}
+            const string compareSql = @"SELECT * FROM new.{0} EXCEPT SELECT * FROM old.{0}
 UNION ALL
-SELECT * FROM old.{0} EXCEPT SELECT * FROM main.{0}";
-            using (SQLiteConnection connection = new SQLiteConnection(DAL.ConnectionString)) {
-                connection.Open();
-                //连接两个库
-                string attachSql = "ATTACH '" + OldFilePathTextBox.Text + "' AS old";
-                SQLiteCommand attachCommand = new SQLiteCommand(attachSql, connection);
-                attachCommand.ExecuteNonQuery();
-                //循环每个表
-                foreach (MASTERDB type in Enum.GetValues(typeof(MASTERDB))) {
-                    //检查表存在性
-                    SQLiteCommand existCommand = new SQLiteCommand(string.Format(existSql, type.ToString()), connection);
-                    int existCount = Convert.ToInt32(existCommand.ExecuteScalar());
-                    if (existCount == 1) {
-                        //只有一边存在
-                        diffTableDictionary.Add("[New]"+type.ToString(), type.ToString());
-                    }
-                    else if (existCount == 2) {
-                        //检查数据是否存在差异
-                        SQLiteCommand compareCommand = new SQLiteCommand(string.Format(compareSql, type.ToString()), connection);
-                        if (compareCommand.ExecuteScalar() != null) {
-                            diffTableDictionary.Add("[Diff]" + type.ToString(), type.ToString());
+SELECT * FROM old.{0} EXCEPT SELECT * FROM new.{0}";
+
+            string oldFile = OldFilePathTextBox.Text;
+            string newFile = NewFilePathTextBox.Text;
+            CompareButton.Content = new Run("Comparing...");
+            Task<Dictionary<string, string>> fastDiffTask = Task.Run(() =>
+            {
+                Dictionary<string, string> diffTableDictionary = new Dictionary<string, string>();
+                //diffTableDictionary.Add("-----", string.Empty);
+                using (SQLiteConnection connection = new SQLiteConnection(DAL.ConnectionString)) {
+                    connection.Open();
+                    //连接两个库
+                    string attachSql = "ATTACH '" + oldFile + "' AS old;ATTACH '" + newFile + "' AS new;";
+                    SQLiteCommand attachCommand = new SQLiteCommand(attachSql, connection);
+                    attachCommand.ExecuteNonQuery();
+                    //循环每个表
+                    foreach (MASTERDB type in Enum.GetValues(typeof(MASTERDB))) {
+                        //检查表存在性
+                        SQLiteCommand existCommand = new SQLiteCommand(string.Format(existSql, type.ToString()), connection);
+                        int existCount = Convert.ToInt32(existCommand.ExecuteScalar());
+                        if (existCount == 1) {
+                            //只有一边存在
+                            diffTableDictionary.Add("[New]" + type.ToString(), type.ToString());
+                        }
+                        else if (existCount == 2) {
+                            //检查数据是否存在差异
+                            SQLiteCommand compareCommand = new SQLiteCommand(string.Format(compareSql, type.ToString()), connection);
+                            if (compareCommand.ExecuteScalar() != null) {
+                                diffTableDictionary.Add("[Diff]" + type.ToString(), type.ToString());
+                            }
                         }
                     }
                 }
-            }
-            TableSelectComboBox.ItemsSource = diffTableDictionary;
+                //trick to add to dict first
+                var reverseDict = diffTableDictionary.Reverse().ToDictionary(pair => pair.Key, pair => pair.Value);
+                reverseDict.Add("Results:" + diffTableDictionary.Count, "");
+                return reverseDict.Reverse().ToDictionary(pair => pair.Key, pair => pair.Value);
+            });
+
+            TableSelectComboBox.ItemsSource = await fastDiffTask;
+            CompareButton.Content = new Run("Compare");
         }
 
         private void svOld_ScrollChanged(object sender, ScrollChangedEventArgs e)
