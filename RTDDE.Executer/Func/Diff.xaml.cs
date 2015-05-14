@@ -51,6 +51,10 @@ SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
                     attachCommand.ExecuteNonQuery();
                     //循环每个表
                     foreach (MASTERDB type in Enum.GetValues(typeof(MASTERDB))) {
+                        if (type == MASTERDB.LEVEL_DATA_MASTER) {
+                            //地图表没啥比对价值
+                            continue;
+                        }
                         //检查表存在性
                         SQLiteCommand existCommand = new SQLiteCommand(string.Format(ExistSql, type.ToString()), connection);
                         int existCount = Convert.ToInt32(existCommand.ExecuteScalar());
