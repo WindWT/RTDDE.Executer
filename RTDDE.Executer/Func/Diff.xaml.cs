@@ -21,126 +21,23 @@ namespace RTDDE.Executer.Func
         public Diff()
         {
             InitializeComponent();
-
-            /*ScrollViewer svOld = Utility.GetVisualChild<ScrollViewer>(OldTableDataGrid);
-            ScrollViewer svNew = Utility.GetVisualChild<ScrollViewer>(NewTableDataGrid);
-            svOld.ScrollChanged += svOld_ScrollChanged;
-            svNew.ScrollChanged += svNew_ScrollChanged;
-             */
         }
-
-        //private void TableSelectComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    string tableName = (string)TableSelectComboBox.SelectedValue;
-        //    if (string.IsNullOrWhiteSpace(tableName)) {
-        //        return;
-        //    }
-        //    string tableNameOld = tableName + "_old";
-
-        //    Task<int> task = new Task<int>(() =>
-        //    {
-        //        return DAL.Get<int>("SELECT count(*) FROM sqlite_master WHERE type='table' AND name IN ('" + tableName + "','" + tableNameOld + "')");
-        //    });
-        //    Task<DataSet> taskDataSet = new Task<DataSet>(() =>
-        //    {
-        //        Task.WaitAll(task);
-        //        if (task.Exception != null) {
-        //            Utility.ShowException(task.Exception.InnerException.Message);
-        //            return null;
-        //        }
-        //        if (task.Result == 2)   //both table exists
-        //        {
-        //            DataTable oldTable = DAL.GetDataTable("SELECT * FROM " + tableNameOld);
-        //            DataTable newTable = DAL.GetDataTable("SELECT * FROM " + tableName);
-        //            DataTable oldDiffTable, newDiffTable;
-        //            var oldDiff = oldTable.AsEnumerable().Except(newTable.AsEnumerable(), DataRowComparer.Default);
-        //            var newDiff = newTable.AsEnumerable().Except(oldTable.AsEnumerable(), DataRowComparer.Default);
-        //            if (oldDiff.Count() != 0) {
-        //                oldDiffTable = oldDiff.CopyToDataTable();
-        //                oldDiffTable.TableName = "old";
-        //            }
-        //            else {
-        //                oldDiffTable = new DataTable("old");
-        //            }
-        //            if (newDiff.Count() != 0) {
-        //                newDiffTable = newDiff.CopyToDataTable();
-        //                newDiffTable.TableName = "new";
-        //            }
-        //            else {
-        //                newDiffTable = new DataTable("new");
-        //            }
-        //            foreach (DataRow dr in oldDiffTable.Rows) {
-        //                string id = dr["id"].ToString();
-        //                DataRow[] newDiffHasRow = newDiffTable.Select("id=" + id);
-        //                if (newDiffHasRow.Count() == 0)    //old table only row, add empty row to new table
-        //                {
-        //                    DataRow newDr = newDiffTable.NewRow();
-        //                    newDr["id"] = id;
-        //                    newDiffTable.Rows.Add(newDr);
-        //                }
-        //            }
-        //            foreach (DataRow dr in newDiffTable.Rows) {
-        //                string id = dr["id"].ToString();
-        //                DataRow[] oldDiffHasRow = oldDiffTable.Select("id=" + id);
-        //                if (oldDiffHasRow.Count() == 0)    //new table only row, add empty row to old table
-        //                {
-        //                    DataRow oldDr = oldDiffTable.NewRow();
-        //                    oldDr["id"] = id;
-        //                    oldDiffTable.Rows.Add(oldDr);
-        //                }
-        //            }
-        //            DataSet ds = new DataSet();
-        //            ds.Tables.Add(oldDiffTable);
-        //            ds.Tables.Add(newDiffTable);
-        //            return ds;
-        //        }
-        //        else {
-        //            DataSet ds = new DataSet();
-        //            ds.Tables.Add(new DataTable("old"));
-        //            ds.Tables.Add(new DataTable("new"));
-        //            return ds;
-        //        }
-        //    });
-        //    taskDataSet.ContinueWith(t =>
-        //    {
-        //        if (t.Exception != null) {
-        //            Utility.ShowException(t.Exception.InnerException.Message);
-        //            return;
-        //        }
-        //        if (t.Result == null) {
-        //            return;
-        //        }
-        //        var oldDV = t.Result.Tables["old"].DefaultView;
-        //        if (t.Result.Tables["old"].Columns.Contains("id")) {
-        //            oldDV.Sort = "id";
-        //        }
-        //        var newDV = t.Result.Tables["new"].DefaultView;
-        //        if (t.Result.Tables["new"].Columns.Contains("id")) {
-        //            newDV.Sort = "id";
-        //        }
-        //        OldTableDataGrid.ItemsSource = oldDV;
-        //        NewTableDataGrid.ItemsSource = newDV;
-
-
-        //    }, MainWindow.UiTaskScheduler);
-        //    task.Start();
-        //    taskDataSet.Start();
-        //}
-        async private void CompareButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            const string existSql = @"select count(*) from (
+        private const string ExistSql = @"select count(*) from (
 SELECT name FROM new.sqlite_master WHERE type='table' AND name='{0}'
 UNION ALL
 SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
 )";
-            const string existInNewSql = @"SELECT * FROM new.{0} EXCEPT SELECT * FROM old.{0}";
-            const string existInOldSql = @"SELECT * FROM old.{0} EXCEPT SELECT * FROM new.{0}";
-
+        private const string ExistInNewSql = @"SELECT * FROM new.{0} EXCEPT SELECT * FROM old.{0}";
+        private const string ExistInOldSql = @"SELECT * FROM old.{0} EXCEPT SELECT * FROM new.{0}";
+        private string OldFile { get; set; }
+        private string NewFile { get; set; }
+        async private void CompareButton_OnClick(object sender, RoutedEventArgs e)
+        {
             if (File.Exists(OldFilePathTextBox.Text) == false || File.Exists(NewFilePathTextBox.Text) == false) {
                 return;
             }
-            string oldFile = new FileInfo(OldFilePathTextBox.Text).FullName;
-            string newFile = new FileInfo(NewFilePathTextBox.Text).FullName;
+            OldFile = new FileInfo(OldFilePathTextBox.Text).FullName;
+            NewFile = new FileInfo(NewFilePathTextBox.Text).FullName;
             CompareButton.Content = new Run("Comparing...");
             Task<Dictionary<string, string>> fastDiffTask = Task.Run(() =>
             {
@@ -149,13 +46,13 @@ SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
                 using (SQLiteConnection connection = new SQLiteConnection(DAL.ConnectionString)) {
                     connection.Open();
                     //连接两个库
-                    string attachSql = "ATTACH '" + oldFile + "' AS old;ATTACH '" + newFile + "' AS new;";
+                    string attachSql = "ATTACH '" + OldFile + "' AS old;ATTACH '" + NewFile + "' AS new;";
                     SQLiteCommand attachCommand = new SQLiteCommand(attachSql, connection);
                     attachCommand.ExecuteNonQuery();
                     //循环每个表
                     foreach (MASTERDB type in Enum.GetValues(typeof(MASTERDB))) {
                         //检查表存在性
-                        SQLiteCommand existCommand = new SQLiteCommand(string.Format(existSql, type.ToString()), connection);
+                        SQLiteCommand existCommand = new SQLiteCommand(string.Format(ExistSql, type.ToString()), connection);
                         int existCount = Convert.ToInt32(existCommand.ExecuteScalar());
                         if (existCount == 1) {
                             //只有一边存在
@@ -165,11 +62,11 @@ SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
                             //检查数据是否存在差异
                             int oldHasNew = 0, newHasNew = 0;
                             string hasDiffMark = string.Empty;
-                            existCommand.CommandText = string.Format(existInNewSql, type.ToString());
+                            existCommand.CommandText = string.Format(ExistInNewSql, type.ToString());
                             if (existCommand.ExecuteScalar() != null) {
                                 newHasNew = 1;
                             }
-                            existCommand.CommandText = string.Format(existInOldSql, type.ToString());
+                            existCommand.CommandText = string.Format(ExistInOldSql, type.ToString());
                             if (existCommand.ExecuteScalar() != null) {
                                 oldHasNew = 1;
                             }
@@ -196,12 +93,74 @@ SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
             CompareButton.Content = new Run("Compare");
         }
 
-        private void TableSelectComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        async private void TableSelectComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string tableName = (string)TableSelectComboBox.SelectedValue;
             if (string.IsNullOrWhiteSpace(tableName)) {
                 return;
             }
+            Task<DataSet> getDiffResult = Task.Run(() =>
+            {
+                using (SQLiteConnection connection = new SQLiteConnection(DAL.ConnectionString)) {
+                    connection.Open();
+                    //连接两个库
+                    string attachSql = "ATTACH '" + OldFile + "' AS old;ATTACH '" + NewFile + "' AS new;";
+                    SQLiteCommand command = new SQLiteCommand(attachSql, connection);
+                    command.ExecuteNonQuery();
+                    //检查表存在性
+                    command.CommandText = string.Format(ExistSql, tableName);
+                    int existCount = Convert.ToInt32(command.ExecuteScalar());
+                    if (existCount == 2) {
+                        //两个表都存在，可以开工比对了
+                        command.CommandText = string.Format(ExistInOldSql, tableName);
+                        DataTable oldDiffTable = new DataTable("old");
+                        oldDiffTable.Load(command.ExecuteReader());
+                        command.CommandText = string.Format(ExistInNewSql, tableName);
+                        DataTable newDiffTable = new DataTable("new");
+                        newDiffTable.Load(command.ExecuteReader());
+                        foreach (DataRow dr in oldDiffTable.Rows) {
+                            string id = dr["id"].ToString();
+                            DataRow[] newDiffHasRow = newDiffTable.Select("id=" + id);
+                            if (newDiffHasRow.Any() == false) {    //old table only row, add empty row to new table
+                                DataRow newDr = newDiffTable.NewRow();
+                                newDr["id"] = id;
+                                newDiffTable.Rows.Add(newDr);
+                            }
+                        }
+                        foreach (DataRow dr in newDiffTable.Rows) {
+                            string id = dr["id"].ToString();
+                            DataRow[] oldDiffHasRow = oldDiffTable.Select("id=" + id);
+                            if (oldDiffHasRow.Any() == false) {     //new table only row, add empty row to old table
+                                DataRow oldDr = oldDiffTable.NewRow();
+                                oldDr["id"] = id;
+                                oldDiffTable.Rows.Add(oldDr);
+                            }
+                        }
+                        DataSet ds = new DataSet();
+                        ds.Tables.Add(oldDiffTable);
+                        ds.Tables.Add(newDiffTable);
+                        return ds;
+                    }
+                    return new DataSet();
+                }
+            });
+            DataSet result = await getDiffResult;
+            var oldDV = result.Tables["old"].DefaultView;
+            if (result.Tables["old"].Columns.Contains("id")) {
+                oldDV.Sort = "id";
+            }
+            var newDV = result.Tables["new"].DefaultView;
+            if (result.Tables["new"].Columns.Contains("id")) {
+                newDV.Sort = "id";
+            }
+            OldTableDataGrid.ItemsSource = oldDV;
+            NewTableDataGrid.ItemsSource = newDV;
+            ScrollViewer svOld = Utility.GetVisualChild<ScrollViewer>(OldTableDataGrid);
+            ScrollViewer svNew = Utility.GetVisualChild<ScrollViewer>(NewTableDataGrid);
+            svOld.ScrollChanged -= svOld_ScrollChanged;
+            svOld.ScrollChanged += svOld_ScrollChanged;
+            svNew.ScrollChanged -= svNew_ScrollChanged;
+            svNew.ScrollChanged += svNew_ScrollChanged;
         }
 
         private void svOld_ScrollChanged(object sender, ScrollChangedEventArgs e)
