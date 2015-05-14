@@ -299,6 +299,7 @@ WHERE uo.id={0}";
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
             TextBox tbPt = new TextBox() { Text = pt.ToString() };
             tbPt.SetValue(Grid.ColumnProperty, 0);
             grid.Children.Add(tbPt);
@@ -314,6 +315,17 @@ WHERE uo.id={0}";
             TextBox tbName = new TextBox() { Text = name };
             tbName.SetValue(Grid.ColumnProperty, 4);
             grid.Children.Add(tbName);
+            Button button = new Button()
+            {
+                Content = "→",
+                Style = FindResource("InlineButton") as Style
+            };
+            button.Click += (s, arg) =>
+            {
+                Utility.GoToItemById("Unit", id);
+            };
+            button.SetValue(Grid.ColumnProperty, 5);
+            grid.Children.Add(button);
             return grid;
         }
 

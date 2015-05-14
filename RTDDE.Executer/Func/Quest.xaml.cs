@@ -107,9 +107,15 @@ namespace RTDDE.Executer.Func
             QuestInfo_zbtn_kind.Text = Utility.ParseZBTNKind(quest.zbtn_kind);
             QuestInfo_bgm_f.Text = Utility.ParseBgmName(quest.bgm_f);
             QuestInfo_bgm_b.Text = Utility.ParseBgmName(quest.bgm_b);
-            QuestInfo_h_id.Text = quest.h_id.ToString();
-            QuestInfo_h_name.Text = Utility.ParseUnitName(quest.h_id);
-            QuestInfo_h_lv.Text = quest.h_lv.ToString();
+            if (quest.h_id == 0) {
+                QuestHelperGrid.Visibility = Visibility.Collapsed;
+            }
+            else {
+                QuestHelperGrid.Visibility = Visibility.Visible;
+                QuestInfo_h_id.Text = quest.h_id.ToString();
+                QuestInfo_h_name.Text = Utility.ParseUnitName(quest.h_id);
+                QuestInfo_h_lv.Text = quest.h_lv.ToString();
+            }
 
             //if (quest.challenge_id_0==0
             //    && string.IsNullOrWhiteSpace(quest.challenge1)
@@ -387,6 +393,11 @@ FROM QUEST_MASTER WHERE ";
         private void SB_ShowMap_Completed(object sender, EventArgs e)
         {
             Map.Load(QuestInfo_id.Text);
+        }
+
+        private void QuestInfoHelperToUnitButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Utility.GoToItemById("Unit", Convert.ToInt32(QuestInfo_h_id.Text));
         }
     }
 }
