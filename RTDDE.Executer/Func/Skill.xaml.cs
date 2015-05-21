@@ -477,7 +477,6 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                         Tag = sur.id.ToString(),
                         Text = sur.name
                     };
-                    tb.MouseDoubleClick += tb_MouseDoubleClick;
                     tb.SetValue(Grid.ColumnProperty, 1);
                     tb.SetValue(Grid.RowProperty, row);
                     SkillUnitRankInfo.Children.Add(tb);
@@ -497,16 +496,6 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                     }
                     row++;
                 }
-            }
-        }
-        async private void tb_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (sender != null)
-            {
-                var unit = (Unit)await Utility.GetTabByName("Unit");
-                string id = (sender as TextBox).Tag.ToString();
-                unit.SelectUnitById(Convert.ToInt32(id));
-                Utility.ChangeTab("Unit");
             }
         }
         private Dictionary<string, string> GetSkillTypeDict<T>() where T : struct , IConvertible

@@ -36,7 +36,7 @@ namespace RTDDE.Executer
         {
             InitializeComponent();
             Settings.Init();    //init settings here
-            ChangeTab("Quest");
+            ChangeTabByName("Quest");
         }
         [Obsolete("use async and await instead")]
         public static readonly TaskScheduler UiTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
@@ -55,11 +55,11 @@ namespace RTDDE.Executer
         {
             Button tb = sender as Button;
             if (tb != null) {
-                ChangeTab(tb.Name.Replace("MenuItem_", String.Empty));
+                ChangeTabByName(tb.Name.Replace("MenuItem_", String.Empty));
             }
         }
 
-        public async void ChangeTab(string tabName)
+        public async void ChangeTabByName(string tabName)
         {
             foreach (UserControl child in MainGrid.Children) {
                 child.Visibility = Visibility.Collapsed;

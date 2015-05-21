@@ -7,12 +7,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using RTDDE.Executer.Util;
 using RTDDE.Provider;
 using RTDDE.Provider.MasterData;
 
 namespace RTDDE.Executer.Func
 {
-    public partial class Quest : UserControl
+    public partial class Quest : UserControl, IRedirectable
     {
         public Quest()
         {
@@ -245,9 +246,15 @@ namespace RTDDE.Executer.Func
             return DAL.ToSingle<QuestChallengeMaster>("SELECT * FROM QUEST_CHALLENGE_MASTER WHERE id=" + id);
         }
 
-        private void QuestTypeRadio_Event_Checked(object sender, RoutedEventArgs e)
+        private enum QuestType
         {
-            string sql = @"SELECT id,name,stamina,
+            Event,
+            Main,
+            Daily,
+            MapEvent
+        }
+        #region DataGridSql
+        private const string EventSql = @"SELECT id,name,stamina,
 (select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name,
        ( CASE
                 WHEN open_date<>0 THEN open_date
@@ -275,13 +282,7 @@ namespace RTDDE.Executer.Func
        END ) AS [end]
   FROM quest_master
  ORDER BY start DESC,end DESC,id DESC;";
-            Utility.BindData(QuestDataGrid, sql);
-        }
-
-        private void QuestTypeRadio_Daily_Checked(object sender, RoutedEventArgs e)
-        {
-            string today = Utility.ToRTDDate(DateTime.Now, false).ToString();
-            string sql = @"SELECT id,name,stamina,
+        private const string DailySql = @"SELECT id,name,stamina,
 (select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name,
        ( CASE
                 WHEN open_type_1 = 1 THEN open_param_1 
@@ -332,28 +333,44 @@ namespace RTDDE.Executer.Func
 FROM QUEST_MASTER
 WHERE DayOfWeek>=0
 AND isDisabled=0
-AND ([end]>" + today + @" OR [end]=0)
+AND ([end]>{0} OR [end]=0)
 ORDER BY DayOfWeek,id DESC";
-            Utility.BindData(QuestDataGrid, sql);
-        }
-
-        private void QuestTypeRadio_Main_Checked(object sender, RoutedEventArgs e)
-        {
-            string sql = @"SELECT id,name,stamina,
+        private const string MainSql = @"SELECT id,name,stamina,
 (select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name
 FROM QUEST_MASTER
 WHERE (select parent_field_id from quest_area_master where quest_area_master.id=parent_area_id)>0
 ORDER BY id DESC";
-            Utility.BindData(QuestDataGrid, sql);
-        }
-
-        private void QuestTypeRadio_MapEvent_Checked(object sender, RoutedEventArgs e)
-        {
-            const string sql = @"SELECT id,name,stamina
+        private const string MapEventSql = @"SELECT id,name,stamina
 FROM QUEST_MASTER
 WHERE parent_area_id=0
 ORDER BY id DESC";
-            Utility.BindData(QuestDataGrid, sql);
+        #endregion
+        async private Task<QuestType> QuestTypeSwitch(QuestType type)
+        {
+            switch (type) {
+                case QuestType.Event: await Utility.BindData(QuestDataGrid, EventSql); break;
+                case QuestType.Daily: await Utility.BindData(QuestDataGrid, string.Format(DailySql, Utility.ToRTDDate(DateTime.Now, false).ToString())); break;
+                case QuestType.Main: await Utility.BindData(QuestDataGrid, MainSql); break;
+                case QuestType.MapEvent: await Utility.BindData(QuestDataGrid, MapEventSql); break;
+                default: break;
+            }
+            return type;
+        }
+        async private void QuestTypeRadio_Event_Checked(object sender, RoutedEventArgs e)
+        {
+            await QuestTypeSwitch(QuestType.Event);
+        }
+        async private void QuestTypeRadio_Daily_Checked(object sender, RoutedEventArgs e)
+        {
+            await QuestTypeSwitch(QuestType.Daily);
+        }
+        async private void QuestTypeRadio_Main_Checked(object sender, RoutedEventArgs e)
+        {
+            await QuestTypeSwitch(QuestType.Main);
+        }
+        async private void QuestTypeRadio_MapEvent_Checked(object sender, RoutedEventArgs e)
+        {
+            await QuestTypeSwitch(QuestType.MapEvent);
         }
 
         private void QuestSearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -361,6 +378,7 @@ ORDER BY id DESC";
             QuestTypeRadio_Event.IsChecked = false;
             QuestTypeRadio_Daily.IsChecked = false;
             QuestTypeRadio_Main.IsChecked = false;
+            QuestTypeRadio_MapEvent.IsChecked = false;
 
             string sql = @"SELECT id,name,stamina,
 (select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name
@@ -395,9 +413,16 @@ FROM QUEST_MASTER WHERE ";
             Map.Load(QuestInfo_id.Text);
         }
 
-        private void QuestInfoHelperToUnitButton_OnClick(object sender, RoutedEventArgs e)
+        async private void QuestInfoHelperToUnitButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Utility.GoToItemById("Unit", Convert.ToInt32(QuestInfo_h_id.Text));
+            Unit unit = (Unit)await Utility.GetTab<Unit>();
+            unit.GoToItemById(Convert.ToInt32(QuestInfo_h_id.Text));
+        }
+        async public void GoToItemById(int firstId, int lastId = -1)
+        {
+            await QuestTypeSwitch(QuestType.Event);
+            Utility.ChangeTab<Quest>();
+            Utility.GoToItemById(QuestDataGrid, firstId, lastId);
         }
     }
 }

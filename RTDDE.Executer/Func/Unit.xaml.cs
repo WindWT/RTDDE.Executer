@@ -9,10 +9,11 @@ using System.Windows.Controls;
 using RTDDE.Provider;
 using RTDDE.Provider.Enums;
 using RTDDE.Provider.MasterData;
+using RTDDE.Executer.Util;
 
 namespace RTDDE.Executer.Func
 {
-    public partial class Unit : UserControl
+    public partial class Unit : UserControl, IRedirectable
     {
         public Unit()
         {
@@ -54,10 +55,8 @@ namespace RTDDE.Executer.Func
             {
                 {"------",""},
             };
-            foreach (AssignID kind in Enum.GetValues(typeof(AssignID)))
-            {
-                if (kind.ToString().StartsWith("MS0") == false)
-                {
+            foreach (AssignID kind in Enum.GetValues(typeof(AssignID))) {
+                if (kind.ToString().StartsWith("MS0") == false) {
                     string id = Utility.ParseAssignID(kind).ToString();
                     kindDict.Add(string.Format("{0}_{1}", id, kind.ToString()), id);
                 }
@@ -67,20 +66,17 @@ namespace RTDDE.Executer.Func
 
         private void UnitDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (UnitDataGrid.SelectedItem == null)
-            {
+            if (UnitDataGrid.SelectedItem == null) {
                 //avoid Exception
                 return;
             }
             string unitid = ((DataRowView)UnitDataGrid.SelectedItem).Row["id"].ToString();
             UnitInfo_id.Text = unitid;
 
-            if (Settings.Config.General.IsDefaultLvMax)
-            {
+            if (Settings.Config.General.IsDefaultLvMax) {
                 UnitInfo_lv.Text = "99";
             }
-            else
-            {
+            else {
                 UnitInfo_lv.Text = "1";
             }
 
@@ -88,20 +84,16 @@ namespace RTDDE.Executer.Func
         }
         private void UnitInfo_lv_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(UnitInfo_lv.Text))
-            {
+            if (string.IsNullOrWhiteSpace(UnitInfo_lv.Text)) {
                 UnitInfo_lv.Text = "";
             }
             Regex r = new Regex("[^0-9]");
-            if (r.Match(UnitInfo_lv.Text).Success)
-            {
-                if (Settings.Config.General.IsDefaultLvMax)
-                {
+            if (r.Match(UnitInfo_lv.Text).Success) {
+                if (Settings.Config.General.IsDefaultLvMax) {
                     UnitInfo_lv.Text = "99";     //This will trigger itself again
                     return;
                 }
-                else
-                {
+                else {
                     UnitInfo_lv.Text = "1";
                     return;
                 }
@@ -111,8 +103,7 @@ namespace RTDDE.Executer.Func
 
         public void UnitInfo_BindData(string unitid)
         {
-            if (string.IsNullOrWhiteSpace(UnitInfo_lv.Text))
-            {
+            if (string.IsNullOrWhiteSpace(UnitInfo_lv.Text)) {
                 return;
             }
             double thislevel = Convert.ToDouble(Convert.ToInt32(UnitInfo_lv.Text));
@@ -138,15 +129,13 @@ WHERE uo.id={0}";
             Task<Skills> taskSkills = new Task<Skills>(() =>
             {
                 Task.WaitAll(task);
-                if (task.Result == null)
-                {
+                if (task.Result == null) {
                     return null;
                 }
                 UnitInfo ui = task.Result;
 
                 double maxlevel = ui.lv_max;
-                if (Settings.Config.General.IsEnableLevelLimiter && (thislevel > maxlevel))
-                {
+                if (Settings.Config.General.IsEnableLevelLimiter && (thislevel > maxlevel)) {
                     thislevel = maxlevel;
                 }
 
@@ -159,21 +148,18 @@ WHERE uo.id={0}";
             });
             taskSkills.ContinueWith(t =>
             {
-                if (t.Exception != null)
-                {
+                if (t.Exception != null) {
                     Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
-                if (task.Result == null)
-                {
+                if (task.Result == null) {
                     return;
                 }
                 UnitInfo ui = task.Result;
                 UnitInfo_g_id.Text = ui.g_id.ToString();
                 UnitInfo_name.Text = ui.name;
                 string rare = string.Empty;
-                for (int i = 0; i < ui.category; i++)
-                {
+                for (int i = 0; i < ui.category; i++) {
                     rare += "★";
                 }
                 UnitInfo_category.Text = rare;
@@ -185,11 +171,11 @@ WHERE uo.id={0}";
 
                 //Rev
                 UnitRevStackPanel.Children.Clear();
-                UnitRevStackPanel.Children.Add(createRevGrid(ui.need_pt, ui.rev_unit_id, ui.rev_unit_g_id, ui.rev_unit_name, "Rev"));
-                UnitRevStackPanel.Children.Add(createRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_fire, ui.ultimate_rev_unit_g_id_fire, ui.ultimate_rev_unit_name_fire, "UltFire"));
-                UnitRevStackPanel.Children.Add(createRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_water, ui.ultimate_rev_unit_g_id_water, ui.ultimate_rev_unit_name_water, "UltWater"));
-                UnitRevStackPanel.Children.Add(createRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_shine, ui.ultimate_rev_unit_g_id_shine, ui.ultimate_rev_unit_name_shine, "UltShine"));
-                UnitRevStackPanel.Children.Add(createRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_dark, ui.ultimate_rev_unit_g_id_dark, ui.ultimate_rev_unit_name_dark, "UltDark"));
+                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.need_pt, ui.rev_unit_id, ui.rev_unit_g_id, ui.rev_unit_name, "Rev"));
+                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_fire, ui.ultimate_rev_unit_g_id_fire, ui.ultimate_rev_unit_name_fire, "UltFire"));
+                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_water, ui.ultimate_rev_unit_g_id_water, ui.ultimate_rev_unit_name_water, "UltWater"));
+                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_shine, ui.ultimate_rev_unit_g_id_shine, ui.ultimate_rev_unit_name_shine, "UltShine"));
+                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_dark, ui.ultimate_rev_unit_g_id_dark, ui.ultimate_rev_unit_name_dark, "UltDark"));
 
                 double maxlevel = ui.lv_max;
                 UnitInfo_lv_max.Text = maxlevel.ToString("0");
@@ -232,12 +218,10 @@ WHERE uo.id={0}";
                 UnitInfo_sct6_text.Text = ui.sct6_text;
                 UnitInfo_a_skill_text.Text = ui.a_skill_text;
                 //skill
-                if (ui.p_skill_id == 0 && ui.a_skill_id == 0 && ui.panel_skill_id == 0 && ui.limit_skill_id == 0)
-                {
+                if (ui.p_skill_id == 0 && ui.a_skill_id == 0 && ui.panel_skill_id == 0 && ui.limit_skill_id == 0) {
                     UnitSkillExpander.Visibility = Visibility.Collapsed;
                 }
-                else
-                {
+                else {
                     UnitSkillExpander.Visibility = Visibility.Visible;
                     partySkill_BindData(t.Result.partySkill);
                     activeSkill_BindData(t.Result.activeSkill);
@@ -246,12 +230,10 @@ WHERE uo.id={0}";
                 }
                 //Accessory
                 Task.WaitAll(taskAccessory);
-                if (taskAccessory.Result == null)
-                {
+                if (taskAccessory.Result == null) {
                     UnitAccessoryExpander.Visibility = Visibility.Collapsed;
                 }
-                else
-                {
+                else {
                     UnitAccessoryExpander.Visibility = Visibility.Visible;
                     AccessoryMaster acce = taskAccessory.Result;
                     accessory_id.Text = acce.id.ToString();
@@ -287,11 +269,10 @@ WHERE uo.id={0}";
             taskAccessory.Start();
         }
 
-        private Grid createRevGrid(int pt, int id, int g_id, string name, string type)
+        private Grid CreateRevGrid(int pt, int id, int g_id, string name, string type)
         {
             Grid grid = new Grid();
-            if (id == 0)
-            {
+            if (id == 0) {
                 return grid;
             }
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
@@ -320,9 +301,10 @@ WHERE uo.id={0}";
                 Content = "→",
                 Style = FindResource("InlineButton") as Style
             };
-            button.Click += (s, arg) =>
+            button.Click += async (s, arg) =>
             {
-                Utility.GoToItemById("Unit", id);
+                Unit unit = (Unit)await Utility.GetTab<Unit>();
+                unit.GoToItemById(id);
             };
             button.SetValue(Grid.ColumnProperty, 5);
             grid.Children.Add(button);
@@ -331,8 +313,7 @@ WHERE uo.id={0}";
 
         private void partySkill_BindData(PartySkillMaster skill)
         {
-            if (skill == null || skill.id == 0)
-            {
+            if (skill == null || skill.id == 0) {
                 UnitInfo_PartySkill.Visibility = Visibility.Collapsed;
                 return;
             }
@@ -353,8 +334,7 @@ WHERE uo.id={0}";
         }
         private void activeSkill_BindData(ActiveSkillMaster skill)
         {
-            if (skill == null || skill.id == 0)
-            {
+            if (skill == null || skill.id == 0) {
                 UnitInfo_ActiveSkill.Visibility = Visibility.Collapsed;
                 return;
             }
@@ -378,8 +358,7 @@ WHERE uo.id={0}";
         }
         private void panelSkill_BindData(PanelSkillMaster skill)
         {
-            if (skill == null || skill.id == 0)
-            {
+            if (skill == null || skill.id == 0) {
                 UnitInfo_PanelSkill.Visibility = Visibility.Collapsed;
                 return;
             }
@@ -401,8 +380,7 @@ WHERE uo.id={0}";
         }
         private void limitSkill_BindData(LimitSkillMaster skill, ActiveSkillMaster[] laSkill)
         {
-            if (skill == null || skill.id == 0)
-            {
+            if (skill == null || skill.id == 0) {
                 UnitInfo_LimitSkill.Visibility = Visibility.Collapsed;
                 return;
             }
@@ -414,12 +392,10 @@ WHERE uo.id={0}";
             limitSkill_coefficient.Text = skill.coefficient.ToString();
 
             UnitInfo_LimitSkill_AS.Children.Clear();
-            for (int i = 0; i < 3; i++)
-            {
+            for (int i = 0; i < 3; i++) {
                 ActiveSkillMaster askill = laSkill[i];
                 Grid grid = new Grid();
-                if (askill.id == 0)
-                {
+                if (askill.id == 0) {
                     continue;
                 }
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
@@ -566,39 +542,31 @@ WHERE uo.id={0}";
         private string UnitSearch_BuildSQL()
         {
             string sql = @"SELECT id,g_id,name FROM UNIT_MASTER WHERE ";
-            if (String.IsNullOrWhiteSpace(UnitSearch_id.Text) == false)
-            {
+            if (String.IsNullOrWhiteSpace(UnitSearch_id.Text) == false) {
                 sql += "id=" + UnitSearch_id.Text + " AND ";
             }
-            if (String.IsNullOrWhiteSpace(UnitSearch_g_id.Text) == false)
-            {
+            if (String.IsNullOrWhiteSpace(UnitSearch_g_id.Text) == false) {
                 sql += "g_id=" + UnitSearch_g_id.Text + " AND ";
             }
-            if (String.IsNullOrWhiteSpace(UnitSearch_name.Text) == false)
-            {
+            if (String.IsNullOrWhiteSpace(UnitSearch_name.Text) == false) {
                 sql += "name LIKE '%" + UnitSearch_name.Text.Trim() + "%' AND ";
             }
             if (String.IsNullOrWhiteSpace(UnitSearch_story.Text) == false) {
                 sql += "story LIKE '%" + UnitSearch_story.Text.Trim() + "%' AND ";
             }
-            if (String.IsNullOrWhiteSpace((string)UnitSearch_category.SelectedValue) == false)
-            {
+            if (String.IsNullOrWhiteSpace((string)UnitSearch_category.SelectedValue) == false) {
                 sql += "category=" + UnitSearch_category.SelectedValue.ToString() + " AND ";
             }
-            if (String.IsNullOrWhiteSpace((string)UnitSearch_kind.SelectedValue) == false)
-            {
+            if (String.IsNullOrWhiteSpace((string)UnitSearch_kind.SelectedValue) == false) {
                 sql += "kind=" + UnitSearch_kind.SelectedValue.ToString() + " AND ";
             }
-            if (String.IsNullOrWhiteSpace((string)UnitSearch_style.SelectedValue) == false)
-            {
+            if (String.IsNullOrWhiteSpace((string)UnitSearch_style.SelectedValue) == false) {
                 sql += "style=" + UnitSearch_style.SelectedValue.ToString() + " AND ";
             }
-            if (String.IsNullOrWhiteSpace((string)UnitSearch_attribute.SelectedValue) == false)
-            {
+            if (String.IsNullOrWhiteSpace((string)UnitSearch_attribute.SelectedValue) == false) {
                 sql += "attribute=" + UnitSearch_attribute.SelectedValue.ToString() + " AND ";
             }
-            if (String.IsNullOrWhiteSpace((string)UnitSearch_sub_a1.SelectedValue) == false)
-            {
+            if (String.IsNullOrWhiteSpace((string)UnitSearch_sub_a1.SelectedValue) == false) {
                 sql += "sub_a1=" + UnitSearch_sub_a1.SelectedValue.ToString() + " AND ";
             }
             sql += " 1=1 ORDER BY g_id";
@@ -639,15 +607,19 @@ WHERE uo.id={0}";
 
         public void SelectUnitById(int id)
         {
-            foreach (var item in UnitDataGrid.Items)
-            {
-                if ((item as DataRowView).Row["id"].ToString() == id.ToString())
-                {
+            foreach (var item in UnitDataGrid.Items) {
+                if ((item as DataRowView).Row["id"].ToString() == id.ToString()) {
                     UnitDataGrid.SelectedItem = item;
                     UnitDataGrid.ScrollIntoView(item);
                     break;
                 }
             }
+        }
+
+        public void GoToItemById(int firstId, int lastId = -1)
+        {
+            Utility.ChangeTab<Unit>();
+            Utility.GoToItemById(UnitDataGrid, firstId, lastId);
         }
     }
 }

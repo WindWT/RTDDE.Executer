@@ -52,35 +52,25 @@ namespace RTDDE.Executer
             var w = (MainWindow)Application.Current.MainWindow;
             w.StatusBarExceptionMessage.Text = message;
         }
-        public static void ChangeTab(string tabName)
+        public static void ChangeTab<T>() where T : UserControl
         {
             var w = (MainWindow)Application.Current.MainWindow;
-            w.ChangeTab(tabName);
+            w.ChangeTabByName(typeof(T).Name);
         }
-        async public static Task<UserControl> GetTabByName(string tabName)
+        async public static Task<T> GetTab<T>() where T : UserControl
         {
             var w = (MainWindow)Application.Current.MainWindow;
-            return await w.GetTabByName(tabName);
+            return (T)await w.GetTabByName(typeof(T).Name);
         }
-        public static void BindData(DataGrid dg, string sql, List<SQLiteParameter> paras = null)
+        async public static Task<bool> BindData(DataGrid dg, string sql, List<SQLiteParameter> paras = null)
         {
-            Task<DataTable> task = new Task<DataTable>(() =>
-            {
-                return DAL.GetDataTable(sql, paras);
-            });
-            task.ContinueWith(t =>
-            {
-                if (t.Exception != null) {
-                    Utility.ShowException(t.Exception.InnerException.Message);
-                    return;
-                }
-                dg.ItemsSource = t.Result.DefaultView;
-                ScrollViewer scrollViewer = GetVisualChild<ScrollViewer>(dg);
-                if (scrollViewer != null) {
-                    scrollViewer.ScrollToTop();
-                }
-            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
-            task.Start();
+            Task<DataTable> task = Task.Run(() => DAL.GetDataTable(sql, paras));
+            dg.ItemsSource = (await task).DefaultView;
+            ScrollViewer scrollViewer = GetVisualChild<ScrollViewer>(dg);
+            if (scrollViewer != null) {
+                scrollViewer.ScrollToTop();
+            }
+            return true;
         }
         public static T GetVisualChild<T>(DependencyObject parent) where T : DependencyObject
         {
@@ -112,38 +102,27 @@ namespace RTDDE.Executer
             }
             return child;
         }
-        public static void RefreshTabs(string tabName = null)
+        public static void RefreshTabs()
         {
             var w = (MainWindow)Application.Current.MainWindow;
             foreach (UserControl child in w.MainGrid.Children) {
-                if (string.IsNullOrEmpty(tabName) && (child is Config) == false) {
+                if ((child is Config) == false) {
                     w.MainGrid.Children.Remove(child);
                 }
-                else if (string.Compare(child.GetType().Name, tabName, StringComparison.OrdinalIgnoreCase) == 0) {
+            }
+        }
+        public static void RefreshTabs<T>() where T : UserControl
+        {
+            var w = (MainWindow)Application.Current.MainWindow;
+            foreach (UserControl child in w.MainGrid.Children) {
+                if (child is T) {
                     w.MainGrid.Children.Remove(child);
                     break;
                 }
             }
         }
-        async public static void GoToItemById(string tabName, int firstId, int lastId = -1)
+        public static void GoToItemById(DataGrid dataGrid, int firstId, int lastId = -1)
         {
-            GoToItemById(tabName, null, firstId, lastId);
-        }
-        async public static void GoToItemById(string tabName, string dataGridName, int firstId, int lastId = -1)
-        {
-            RefreshTabs(tabName);
-            UserControl tab = await Utility.GetTabByName(tabName);
-            DataGrid dataGrid;
-            if (string.IsNullOrEmpty(dataGridName)) {
-                dataGrid = GetLogicalChild<DataGrid>(tab);
-            }
-            else {
-                dataGrid = tab.FindName(dataGridName) as DataGrid;
-            }
-            if (dataGrid == null) {
-                return;
-            }
-            ChangeTab(tabName);
             foreach (DataRowView item in dataGrid.ItemsSource) {
                 if (item == null) {
                     continue;

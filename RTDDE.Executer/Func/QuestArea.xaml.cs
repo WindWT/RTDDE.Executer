@@ -167,9 +167,10 @@ order by point";
                         Content = "→",
                         Style = FindResource("InlineButton") as Style
                     };
-                    button.Click += (s, arg) =>
+                    button.Click += async (s, arg) =>
                     {
-                        Utility.GoToItemById("Quest", id);
+                        Quest quest = await Utility.GetTab<Quest>();
+                        quest.GoToItemById(id);
                     };
                     button.SetValue(Grid.ColumnProperty, 2);
                     grid.Children.Add(button);
@@ -283,16 +284,18 @@ order by point";
             QuestMaster firstQuestMaster = await taskFirstQuest;
             QuestMaster lastQuestMaster = await taskFirstQuest;
             if (firstQuestMaster != null && lastQuestMaster != null) {
-                Utility.GoToItemById("Quest", firstQuestMaster.id, lastQuestMaster.id);
+                Quest quest = await Utility.GetTab<Quest>();
+                quest.GoToItemById(firstQuestMaster.id, lastQuestMaster.id);
             }
             else {
                 Utility.ShowException("NO QUEST IN AREA");
             }
         }
 
-        private void QuestAreaInfoToLockQuestButton_OnClick(object sender, RoutedEventArgs e)
+        async private void QuestAreaInfoToLockQuestButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Utility.GoToItemById("Quest", Convert.ToInt32(QuestAreaInfo_lock_value.Text));
+            Quest quest = (Quest)await Utility.GetTab<Quest>();
+            quest.GoToItemById(Convert.ToInt32(QuestAreaInfo_lock_value.Text)); ;
         }
     }
 }
