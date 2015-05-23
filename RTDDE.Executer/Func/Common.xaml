@@ -11,13 +11,13 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Name="CommonSQLTextBox" IsReadOnly="False"
+                <TextBox Grid.Column="0" Name="CommonSQLTextBox" IsReadOnly="False" MaxLines="10"
                                      AcceptsReturn="True" AcceptsTab="True" 
                                      VerticalScrollBarVisibility="Auto"
                                      Text="{Binding ElementName=CommonSQLComboBox,Path=SelectedValue,Mode=OneWay}"/>
                 <StackPanel Grid.Column="1">
                     <ComboBox Name="CommonSQLComboBox" SelectionChanged="CommonSQLComboBox_SelectionChanged"/>
-                    <Button Name="CommonRunSQL" Grid.Column="1" Click="CommonRunSQL_Click">
+                    <Button Name="CommonRunSQL" Click="CommonRunSQL_Click">
                         <TextBlock Text="RunSQL" HorizontalAlignment="Center"/>
                     </Button>
                 </StackPanel>
