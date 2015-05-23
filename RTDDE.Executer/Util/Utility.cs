@@ -8,12 +8,14 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using RTDDE.Executer.Func;
+using RTDDE.Executer.Util;
 
 namespace RTDDE.Executer
 {
@@ -57,12 +59,15 @@ namespace RTDDE.Executer
             var w = (MainWindow)Application.Current.MainWindow;
             w.ChangeTabByName(typeof(T).Name);
         }
-        async public static Task<T> GetTab<T>() where T : UserControl
+        async public static Task<T> GetTab<T>(bool newTab = false) where T : UserControl
         {
+            if (newTab) {
+                Utility.RefreshTabs<T>();
+            }
             var w = (MainWindow)Application.Current.MainWindow;
             return (T)await w.GetTabByName(typeof(T).Name);
         }
-        async public static Task<bool> BindData(DataGrid dg, string sql, List<SQLiteParameter> paras = null)
+        async public static void BindData(DataGrid dg, string sql, List<SQLiteParameter> paras = null)
         {
             Task<DataTable> task = Task.Run(() => DAL.GetDataTable(sql, paras));
             dg.ItemsSource = (await task).DefaultView;
@@ -70,8 +75,10 @@ namespace RTDDE.Executer
             if (scrollViewer != null) {
                 scrollViewer.ScrollToTop();
             }
-            return true;
+            AfterBindDataEvent();
         }
+        public delegate void AfterBindDataEventHandler();
+        public static event AfterBindDataEventHandler AfterBindDataEvent = () => { };
         public static T GetVisualChild<T>(DependencyObject parent) where T : DependencyObject
         {
             T child = default(T);
@@ -121,24 +128,36 @@ namespace RTDDE.Executer
                 }
             }
         }
-        public static void GoToItemById(DataGrid dataGrid, int firstId, int lastId = -1)
+        async public static void GoToItemById<T>(int firstId, int lastId = -1, string type = null) where T : UserControl
         {
-            foreach (DataRowView item in dataGrid.ItemsSource) {
-                if (item == null) {
-                    continue;
-                }
-                int itemId = Convert.ToInt32(item["id"]);
-                if (lastId != -1 && itemId == lastId) {
-                    //this first, last>first
-                    dataGrid.ScrollIntoView(item);
-                    dataGrid.SelectedItem = item;
-                }
-                else if (itemId == firstId) {
-                    dataGrid.ScrollIntoView(item);
-                    dataGrid.SelectedItem = item;
-                    break;
-                }
+            T tab = await GetTab<T>(true);
+            if ((tab is IRedirectable) == false) {
+                return;
             }
+            DataGrid dataGrid = ((IRedirectable)tab).GetTargetDataGrid(type);
+            AfterBindDataEventHandler afterBindDataEventHandler = null;
+            afterBindDataEventHandler = () =>
+            {
+                Utility.AfterBindDataEvent -= afterBindDataEventHandler;
+                foreach (DataRowView item in dataGrid.ItemsSource) {
+                    if (item == null) {
+                        continue;
+                    }
+                    int itemId = Convert.ToInt32(item["id"]);
+                    if (lastId != -1 && itemId == lastId) {
+                        //this first, last>first
+                        dataGrid.ScrollIntoView(item);
+                        dataGrid.SelectedItem = item;
+                    }
+                    else if (itemId == firstId) {
+                        dataGrid.ScrollIntoView(item);
+                        dataGrid.SelectedItem = item;
+                        break;
+                    }
+                }
+            };
+            Utility.AfterBindDataEvent += afterBindDataEventHandler;
+            ChangeTab<T>();
         }
     }
 }

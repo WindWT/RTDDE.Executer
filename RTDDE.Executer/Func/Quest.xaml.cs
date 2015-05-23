@@ -348,10 +348,10 @@ ORDER BY id DESC";
         async private Task<QuestType> QuestTypeSwitch(QuestType type)
         {
             switch (type) {
-                case QuestType.Event: await Utility.BindData(QuestDataGrid, EventSql); break;
-                case QuestType.Daily: await Utility.BindData(QuestDataGrid, string.Format(DailySql, Utility.ToRTDDate(DateTime.Now, false).ToString())); break;
-                case QuestType.Main: await Utility.BindData(QuestDataGrid, MainSql); break;
-                case QuestType.MapEvent: await Utility.BindData(QuestDataGrid, MapEventSql); break;
+                case QuestType.Event: Utility.BindData(QuestDataGrid, EventSql); break;
+                case QuestType.Daily: Utility.BindData(QuestDataGrid, string.Format(DailySql, Utility.ToRTDDate(DateTime.Now, false).ToString())); break;
+                case QuestType.Main: Utility.BindData(QuestDataGrid, MainSql); break;
+                case QuestType.MapEvent: Utility.BindData(QuestDataGrid, MapEventSql); break;
                 default: break;
             }
             return type;
@@ -415,14 +415,11 @@ FROM QUEST_MASTER WHERE ";
 
         async private void QuestInfoHelperToUnitButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Unit unit = (Unit)await Utility.GetTab<Unit>();
-            unit.GoToItemById(Convert.ToInt32(QuestInfo_h_id.Text));
+            Utility.GoToItemById<Unit>(Convert.ToInt32(QuestInfo_h_id.Text));
         }
-        async public void GoToItemById(int firstId, int lastId = -1)
+        public DataGrid GetTargetDataGrid(string type = null)
         {
-            await QuestTypeSwitch(QuestType.Event);
-            Utility.ChangeTab<Quest>();
-            Utility.GoToItemById(QuestDataGrid, firstId, lastId);
+            return QuestDataGrid;
         }
     }
 }

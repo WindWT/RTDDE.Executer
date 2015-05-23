@@ -19,9 +19,9 @@ namespace RTDDE.Executer.Func
         {
             InitializeComponent();
         }
+        private const string UnitSql = "SELECT id,g_id,name FROM UNIT_MASTER order by g_id";
         private void UnitTab_Initialized(object sender, EventArgs e)
         {
-            Utility.BindData(UnitDataGrid, "SELECT id,g_id,name FROM UNIT_MASTER order by g_id");
             UnitSearch_category.ItemsSource = new Dictionary<string, string>()
             {
                 {"------",""},
@@ -62,6 +62,7 @@ namespace RTDDE.Executer.Func
                 }
             }
             UnitSearch_kind.ItemsSource = kindDict;
+            Utility.BindData(UnitDataGrid, UnitSql);
         }
 
         private void UnitDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -303,8 +304,7 @@ WHERE uo.id={0}";
             };
             button.Click += async (s, arg) =>
             {
-                Unit unit = (Unit)await Utility.GetTab<Unit>();
-                unit.GoToItemById(id);
+                Utility.GoToItemById<Unit>(id);
             };
             button.SetValue(Grid.ColumnProperty, 5);
             grid.Children.Add(button);
@@ -518,7 +518,7 @@ WHERE uo.id={0}";
             }
         }
 
-        private void UnitSearchClear_Click(object sender, RoutedEventArgs e)
+        async private void UnitSearchClear_Click(object sender, RoutedEventArgs e)
         {
             UnitSearch_id.Text = string.Empty;
             UnitSearch_g_id.Text = string.Empty;
@@ -529,13 +529,13 @@ WHERE uo.id={0}";
             UnitSearch_kind.SelectedIndex = 0;
             UnitSearch_attribute.SelectedIndex = 0;
             UnitSearch_sub_a1.SelectedIndex = 0;
-            Utility.BindData(UnitDataGrid, "SELECT id,g_id,name FROM UNIT_MASTER order by g_id");
+            Utility.BindData(UnitDataGrid, UnitSql);
         }
-        private void UnitSearch_TextChanged(object sender, TextChangedEventArgs e)
+        async private void UnitSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             Utility.BindData(UnitDataGrid, UnitSearch_BuildSQL());
         }
-        private void UnitSearch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        async private void UnitSearch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Utility.BindData(UnitDataGrid, UnitSearch_BuildSQL());
         }
@@ -572,6 +572,11 @@ WHERE uo.id={0}";
             sql += " 1=1 ORDER BY g_id";
             return sql;
         }
+        public DataGrid GetTargetDataGrid(string type = null)
+        {
+            return UnitDataGrid;
+        }
+
         #region Magic Numbers
         private static readonly double[] UnitParam_CategoryPer = new double[]{
 	        0.38999998569488525,
@@ -605,21 +610,5 @@ WHERE uo.id={0}";
         };
         #endregion
 
-        public void SelectUnitById(int id)
-        {
-            foreach (var item in UnitDataGrid.Items) {
-                if ((item as DataRowView).Row["id"].ToString() == id.ToString()) {
-                    UnitDataGrid.SelectedItem = item;
-                    UnitDataGrid.ScrollIntoView(item);
-                    break;
-                }
-            }
-        }
-
-        public void GoToItemById(int firstId, int lastId = -1)
-        {
-            Utility.ChangeTab<Unit>();
-            Utility.GoToItemById(UnitDataGrid, firstId, lastId);
-        }
     }
 }

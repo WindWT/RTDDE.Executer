@@ -10,6 +10,13 @@ namespace RTDDE.Executer.Util
 {
     interface IRedirectable
     {
-        void GoToItemById(int firstId, int lastId = -1);
+        /// <summary>
+        /// 获取目标DataGrid接口
+        /// 接口调用前tab为初始状态
+        /// 接口内部需要切换type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        DataGrid GetTargetDataGrid(string type = null);
     }
 }
