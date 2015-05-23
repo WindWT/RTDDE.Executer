@@ -22,6 +22,7 @@ namespace RTDDE.Executer.Func
         private const string UnitSql = "SELECT id,g_id,name FROM UNIT_MASTER order by g_id";
         private void UnitTab_Initialized(object sender, EventArgs e)
         {
+            Utility.DisableBindData = true;
             UnitSearch_category.ItemsSource = new Dictionary<string, string>()
             {
                 {"------",""},
@@ -62,6 +63,7 @@ namespace RTDDE.Executer.Func
                 }
             }
             UnitSearch_kind.ItemsSource = kindDict;
+            Utility.DisableBindData = false;
             Utility.BindData(UnitDataGrid, UnitSql);
         }
 

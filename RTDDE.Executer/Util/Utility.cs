@@ -67,14 +67,20 @@ namespace RTDDE.Executer
             var w = (MainWindow)Application.Current.MainWindow;
             return (T)await w.GetTabByName(typeof(T).Name);
         }
+        public static bool DisableBindData { get; set; }
         async public static void BindData(DataGrid dg, string sql, List<SQLiteParameter> paras = null)
         {
+            if (DisableBindData) {
+                return;
+            }
             Task<DataTable> task = Task.Run(() => DAL.GetDataTable(sql, paras));
             dg.ItemsSource = (await task).DefaultView;
             ScrollViewer scrollViewer = GetVisualChild<ScrollViewer>(dg);
             if (scrollViewer != null) {
                 scrollViewer.ScrollToTop();
             }
+            //todo remove this line
+            System.Diagnostics.Trace.WriteLine("bind");
             AfterBindDataEvent();
         }
         public delegate void AfterBindDataEventHandler();
