@@ -91,7 +91,7 @@ namespace RTDDE.Executer.Func
 
             QuestInfo_parent_area_id.Text = quest.parent_area_id.ToString();
             QuestInfo_parent_area_name.Text = quest.parent_area_name;
-            QuestInfo_parent_area_text.Text = Utility.ParseText(quest.parent_area_text);
+            QuestInfo_parent_area_text.Document = Utility.ParseTextToDocument(quest.parent_area_text);
 
             QuestInfo_parent_map_event_id.Text = quest.parent_map_event_id.ToString();
             try {
@@ -419,7 +419,6 @@ END";
         #endregion
         private void QuestTypeSwitch(QuestType type)
         {
-            System.Diagnostics.Trace.WriteLine(type);
             switch (type) {
                 case QuestType.Event: Utility.BindData(QuestDataGrid, EventSql); break;
                 case QuestType.Daily: Utility.BindData(QuestDataGrid, string.Format(DailySql, Utility.ToRTDDate(DateTime.Now, false).ToString())); break;
@@ -427,7 +426,6 @@ END";
                 case QuestType.MapEvent: Utility.BindData(QuestDataGrid, MapEventSql); break;
                 default: break;
             }
-            System.Diagnostics.Trace.WriteLine("afterbind" + type);
         }
         private void QuestTypeRadio_Event_OnClick(object sender, RoutedEventArgs e)
         {

@@ -61,7 +61,7 @@
                 <TextBox Name="QuestAreaInfo_id" Grid.Column="0" ></TextBox>
                 <TextBox Name="QuestAreaInfo_name" Grid.Column="1"></TextBox>
                 <Button Name="QuestAreaToQuestButton" Style="{StaticResource InlineButton}" Grid.Column="2" Click="QuestAreaToQuestButton_OnClick">Quests</Button>
-                <TextBox Name="QuestAreaInfo_text" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"  AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+                <RichTextBox Name="QuestAreaInfo_text" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"/>
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>

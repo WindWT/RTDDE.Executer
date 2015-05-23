@@ -223,7 +223,7 @@
                                 <TextBox Grid.Column="0" Name="QuestInfo_parent_area_name"/>
                                 <Button Grid.Column="1" Name="QuestToQuestAreaButton" Style="{StaticResource InlineButton}" Click="QuestToQuestAreaButton_OnClick">→</Button>
                             </Grid>
-                            <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Name="QuestInfo_parent_area_text" AcceptsReturn="True" TextWrapping="Wrap"/>
+                            <RichTextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Name="QuestInfo_parent_area_text"/>
                             <TextBlock Grid.Row="2" Grid.Column="0" Text="MapEvent"/>
                             <TextBox Grid.Row="2" Grid.Column="1" Name="QuestInfo_parent_map_event_id"/>
                             <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="4" Name="QuestInfo_parent_map_event_name"/>

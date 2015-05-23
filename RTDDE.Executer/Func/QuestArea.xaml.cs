@@ -72,7 +72,7 @@ order by point";
             QuestAreaInfo_name.Text = qam.name;
             QuestAreaInfo_display_order.Text = qam.display_order.ToString();
             QuestAreaInfo_lock_type.Text = qam.lock_type.ToString();
-            QuestAreaInfo_text.Text = Utility.ParseText(qam.text);
+            QuestAreaInfo_text.Document = Utility.ParseTextToDocument(qam.text);
 
             //parent field
             Task<QuestFieldMaster> questParentFieldTask = Task.Run(() =>
