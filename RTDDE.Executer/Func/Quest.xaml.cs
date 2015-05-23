@@ -223,8 +223,16 @@ namespace RTDDE.Executer.Func
             QuestInfo_panel_heart.Text = quest.panel_heart.ToString();
             QuestInfo_panel_sp.Text = quest.panel_sp.ToString();
 
+            string presentType = Utility.ParsePresentType(quest.present_type);
+            if (string.Compare(presentType, "UNIT", StringComparison.OrdinalIgnoreCase) == 0) {
+                QuestInfoPresentToUnitButton.Visibility = Visibility.Visible;
+            }
+            else {
+                QuestInfoPresentToUnitButton.Visibility = Visibility.Collapsed;
+            }
             QuestInfo_present_type.Text = Utility.ParsePresentType(quest.present_type);
-            QuestInfo_present_param.Text = quest.present_param_name;
+            QuestInfo_present_param_name.Text = quest.present_param_name;
+            QuestInfo_present_param.Text = quest.present_param.ToString();
             QuestInfo_present_param_1.Text = quest.present_param_1.ToString();
 
             //advanced
@@ -413,13 +421,18 @@ FROM QUEST_MASTER WHERE ";
             Map.Load(QuestInfo_id.Text);
         }
 
-        async private void QuestInfoHelperToUnitButton_OnClick(object sender, RoutedEventArgs e)
+        private void QuestInfoHelperToUnitButton_OnClick(object sender, RoutedEventArgs e)
         {
             Utility.GoToItemById<Unit>(Convert.ToInt32(QuestInfo_h_id.Text));
         }
         public DataGrid GetTargetDataGrid(string type = null)
         {
             return QuestDataGrid;
+        }
+
+        private void QuestInfoPresentToUnitButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Utility.GoToItemById<Unit>(Convert.ToInt32(QuestInfo_present_param.Text));
         }
     }
 }

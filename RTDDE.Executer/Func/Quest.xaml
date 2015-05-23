@@ -301,12 +301,15 @@
                                 <ColumnDefinition Width="50"></ColumnDefinition>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="present" />
                             <TextBox Grid.Column="1" Name="QuestInfo_present_type" />
                             <TextBox Grid.Column="2" Name="QuestInfo_present_param"/>
-                            <TextBox Grid.Column="3" Name="QuestInfo_present_param_1" />
+                            <TextBox Grid.Column="2" Name="QuestInfo_present_param_name"/>
+                            <Button Grid.Column="3" Name="QuestInfoPresentToUnitButton" Style="{StaticResource InlineButton}" Click="QuestInfoPresentToUnitButton_OnClick">→</Button>
+                            <TextBox Grid.Column="4" Name="QuestInfo_present_param_1" />
                         </Grid>
                         <Grid Name="QuestInfo_opentype">
                             <Grid.ColumnDefinitions>
