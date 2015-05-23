@@ -524,5 +524,17 @@ FROM QUEST_MASTER WHERE ";
             QuestTypeSwitch(task.Result);
             return QuestDataGrid;
         }
+
+        private void QuestToMapEventButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(QuestInfo_parent_map_event_id.Text)) {
+                return;
+            }
+            int id = Convert.ToInt32(QuestInfo_parent_map_event_id.Text);
+            if (id == 0) {
+                return;
+            }
+            Utility.GoToItemById<Event>(id);
+        }
     }
 }

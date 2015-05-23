@@ -199,6 +199,28 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="area"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Name="QuestInfo_parent_area_id"/>
+                            <TextBox Grid.Row="0" Grid.Column="2" Name="QuestInfo_parent_area_name"/>
+                            <Button Grid.Row="0" Grid.Column="3" Name="QuestToQuestAreaButton" Style="{StaticResource InlineButton}" Click="QuestToQuestAreaButton_OnClick">→</Button>
+                            <RichTextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Name="QuestInfo_parent_area_text"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="MapEvent"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Name="QuestInfo_parent_map_event_id"/>
+                            <TextBox Grid.Row="2" Grid.Column="2" Name="QuestInfo_parent_map_event_name"/>
+                            <Button Grid.Row="2" Grid.Column="3" Name="QuestToMapEventButton" Style="{StaticResource InlineButton}" Click="QuestToMapEventButton_OnClick">→</Button>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -209,42 +231,25 @@
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="area"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Name="QuestInfo_parent_area_id"/>
-                            <Grid Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBox Grid.Column="0" Name="QuestInfo_parent_area_name"/>
-                                <Button Grid.Column="1" Name="QuestToQuestAreaButton" Style="{StaticResource InlineButton}" Click="QuestToQuestAreaButton_OnClick">→</Button>
-                            </Grid>
-                            <RichTextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Name="QuestInfo_parent_area_text"/>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="MapEvent"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Name="QuestInfo_parent_map_event_id"/>
-                            <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="4" Name="QuestInfo_parent_map_event_name"/>
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="order"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" Name="QuestInfo_display_order"/>
-                            <TextBlock Grid.Row="3" Grid.Column="2" Text="sp_guide_id"/>
-                            <TextBox Grid.Row="3" Grid.Column="3" Name="QuestInfo_sp_guide_id"/>
-                            <TextBlock Grid.Row="3" Grid.Column="4" Text="event_effect_flag"/>
-                            <TextBox Grid.Row="3" Grid.Column="5" Name="QuestInfo_event_effect_flag"/>
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="money_limit"/>
-                            <TextBox Grid.Row="4" Grid.Column="1" Name="QuestInfo_reward_money_limit"/>
-                            <TextBlock Grid.Row="4" Grid.Column="2" Text="exp_limit"/>
-                            <TextBox Grid.Row="4" Grid.Column="3" Name="QuestInfo_reward_exp_limit"/>
-                            <TextBlock Grid.Row="4" Grid.Column="4" Text="soul"/>
-                            <TextBox Grid.Row="4" Grid.Column="5" Name="QuestInfo_soul"/>
-                            <TextBlock Grid.Row="5" Grid.Column="0" Text="reward_money"/>
-                            <TextBox Grid.Row="5" Grid.Column="1" Name="QuestInfo_reward_money"/>
-                            <TextBlock Grid.Row="5" Grid.Column="2" Text="reward_exp"/>
-                            <TextBox Grid.Row="5" Grid.Column="3" Name="QuestInfo_reward_exp"/>
-                            <TextBlock Grid.Row="5" Grid.Column="4" Text="reward_soul"/>
-                            <TextBox Grid.Row="5" Grid.Column="5" Name="QuestInfo_reward_soul"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="order"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Name="QuestInfo_display_order"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="sp_guide_id"/>
+                            <TextBox Grid.Row="0" Grid.Column="3" Name="QuestInfo_sp_guide_id"/>
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="event_effect_flag"/>
+                            <TextBox Grid.Row="0" Grid.Column="5" Name="QuestInfo_event_effect_flag"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="money_limit"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Name="QuestInfo_reward_money_limit"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="exp_limit"/>
+                            <TextBox Grid.Row="1" Grid.Column="3" Name="QuestInfo_reward_exp_limit"/>
+                            <TextBlock Grid.Row="1" Grid.Column="4" Text="soul"/>
+                            <TextBox Grid.Row="1" Grid.Column="5" Name="QuestInfo_soul"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="reward_money"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Name="QuestInfo_reward_money"/>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="reward_exp"/>
+                            <TextBox Grid.Row="2" Grid.Column="3" Name="QuestInfo_reward_exp"/>
+                            <TextBlock Grid.Row="2" Grid.Column="4" Text="reward_soul"/>
+                            <TextBox Grid.Row="2" Grid.Column="5" Name="QuestInfo_reward_soul"/>
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:RTDDE="clr-namespace:RTDDE.Executer"
              mc:Ignorable="d" >
-    <Grid Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Initialized="EventTab_Initialized">
+    <Grid Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="360"/>

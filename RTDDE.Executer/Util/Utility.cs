@@ -144,7 +144,6 @@ namespace RTDDE.Executer
             AfterBindDataEventHandler afterBindDataEventHandler = null;
             afterBindDataEventHandler = () =>
             {
-                System.Diagnostics.Trace.WriteLine("useHandler");
                 Utility.AfterBindDataEvent -= afterBindDataEventHandler;
                 foreach (DataRowView item in dataGrid.ItemsSource) {
                     if (item == null) {
@@ -164,7 +163,6 @@ namespace RTDDE.Executer
                 }
             };
             Utility.AfterBindDataEvent += afterBindDataEventHandler;
-            System.Diagnostics.Trace.WriteLine("addHandler");
             ChangeTab<T>();
         }
     }

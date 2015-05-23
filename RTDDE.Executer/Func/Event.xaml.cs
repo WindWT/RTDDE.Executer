@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using RTDDE.Executer.Util;
 using RTDDE.Provider;
 using RTDDE.Provider.Enums;
 using RTDDE.Provider.MasterData;
@@ -14,15 +15,18 @@ namespace RTDDE.Executer.Func
     /// <summary>
     /// Event.xaml 的交互逻辑
     /// </summary>
-    public partial class Event : UserControl
+    public partial class Event : UserControl, IRedirectable
     {
         public Event()
+            : this(false)
+        {
+        }
+        public Event(bool disableAutoLoad)
         {
             InitializeComponent();
-        }
-        private void EventTab_Initialized(object sender, EventArgs e)
-        {
-            Utility.BindData(EventDataGrid, "SELECT id,name FROM MAP_EVENT_Master order by id");
+            if (disableAutoLoad == false) {
+                Utility.BindData(EventDataGrid, "SELECT id,name FROM MAP_EVENT_Master order by id");
+            }
         }
 
         async private void EventDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -86,15 +90,28 @@ namespace RTDDE.Executer.Func
             List<QuestMaster> quests = await mapEventQuestTask;
             EventInfo_quests.Children.Clear();
             foreach (QuestMaster quest in quests) {
+                int id = quest.id;
                 var grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
                 TextBox typeTextBox = new TextBox() { Text = quest.id.ToString() };
                 typeTextBox.SetValue(Grid.ColumnProperty, 0);
                 grid.Children.Add(typeTextBox);
                 TextBox paramTextBox = new TextBox() { Text = quest.name };
                 paramTextBox.SetValue(Grid.ColumnProperty, 1);
                 grid.Children.Add(paramTextBox);
+                Button button = new Button()
+                {
+                    Content = "→",
+                    Style = FindResource("InlineButton") as Style
+                };
+                button.Click += (s, arg) =>
+                {
+                    Utility.GoToItemById<Quest>(id);
+                };
+                button.SetValue(Grid.ColumnProperty, 2);
+                grid.Children.Add(button);
                 EventInfo_quests.Children.Add(grid);
             }
             //opentype
@@ -135,6 +152,12 @@ namespace RTDDE.Executer.Func
             EventInfo_icon_pos_y.Text = mapEvent.icon_pos_y.ToString();
             EventInfo_icon_type.Text = mapEvent.icon_type.ToString();
             EventInfo_banner_bg_texture_url.Text = "http://www.acquirespdl.jp/RTD/DLC/BANNER/" + mapEvent.banner_bg_texture;
+        }
+
+        public DataGrid GetTargetDataGrid(int firstId, int lastId = -1, string type = null)
+        {
+            Utility.BindData(EventDataGrid, "SELECT id,name FROM MAP_EVENT_Master order by id");
+            return EventDataGrid;
         }
     }
 }
