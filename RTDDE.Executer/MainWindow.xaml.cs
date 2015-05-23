@@ -68,6 +68,7 @@ namespace RTDDE.Executer
             if (tab != null) {
                 tab.Visibility = Visibility.Visible;
                 LastTabName = tab.GetType().Name;
+                MenuButton.Content = LastTabName;
             }
             MenuButton.IsChecked = false;
         }
