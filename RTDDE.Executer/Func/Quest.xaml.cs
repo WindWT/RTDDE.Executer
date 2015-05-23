@@ -16,8 +16,16 @@ namespace RTDDE.Executer.Func
     public partial class Quest : UserControl, IRedirectable
     {
         public Quest()
+            : this(false)
+        {
+        }
+        public Quest(bool disableAutoLoad)
         {
             InitializeComponent();
+            if (disableAutoLoad == false) {
+                QuestTypeRadio_Event.IsChecked = true;
+                QuestTypeSwitch(QuestType.Event);
+            }
         }
         [DAL(UseProperty = true)]
         public class QuestMasterExtend : QuestMaster
@@ -353,8 +361,9 @@ FROM QUEST_MASTER
 WHERE parent_area_id=0
 ORDER BY id DESC";
         #endregion
-        async private Task<QuestType> QuestTypeSwitch(QuestType type)
+        private void QuestTypeSwitch(QuestType type)
         {
+            System.Diagnostics.Trace.WriteLine(type);
             switch (type) {
                 case QuestType.Event: Utility.BindData(QuestDataGrid, EventSql); break;
                 case QuestType.Daily: Utility.BindData(QuestDataGrid, string.Format(DailySql, Utility.ToRTDDate(DateTime.Now, false).ToString())); break;
@@ -362,23 +371,23 @@ ORDER BY id DESC";
                 case QuestType.MapEvent: Utility.BindData(QuestDataGrid, MapEventSql); break;
                 default: break;
             }
-            return type;
+            System.Diagnostics.Trace.WriteLine("afterbind" + type);
         }
-        async private void QuestTypeRadio_Event_Checked(object sender, RoutedEventArgs e)
+        private void QuestTypeRadio_Event_OnClick(object sender, RoutedEventArgs e)
         {
-            await QuestTypeSwitch(QuestType.Event);
+            QuestTypeSwitch(QuestType.Event);
         }
-        async private void QuestTypeRadio_Daily_Checked(object sender, RoutedEventArgs e)
+        private void QuestTypeRadio_Daily_OnClick(object sender, RoutedEventArgs e)
         {
-            await QuestTypeSwitch(QuestType.Daily);
+            QuestTypeSwitch(QuestType.Daily);
         }
-        async private void QuestTypeRadio_Main_Checked(object sender, RoutedEventArgs e)
+        private void QuestTypeRadio_Main_OnClick(object sender, RoutedEventArgs e)
         {
-            await QuestTypeSwitch(QuestType.Main);
+            QuestTypeSwitch(QuestType.Main);
         }
-        async private void QuestTypeRadio_MapEvent_Checked(object sender, RoutedEventArgs e)
+        private void QuestTypeRadio_MapEvent_OnClick(object sender, RoutedEventArgs e)
         {
-            await QuestTypeSwitch(QuestType.MapEvent);
+            QuestTypeSwitch(QuestType.MapEvent);
         }
 
         private void QuestSearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -425,14 +434,80 @@ FROM QUEST_MASTER WHERE ";
         {
             Utility.GoToItemById<Unit>(Convert.ToInt32(QuestInfo_h_id.Text));
         }
-        public DataGrid GetTargetDataGrid(string type = null)
-        {
-            return QuestDataGrid;
-        }
-
         private void QuestInfoPresentToUnitButton_OnClick(object sender, RoutedEventArgs e)
         {
             Utility.GoToItemById<Unit>(Convert.ToInt32(QuestInfo_present_param.Text));
         }
+        public DataGrid GetTargetDataGrid(int firstId, int lastId = -1, string type = null)
+        {
+            Task<QuestType> task = Task.Run(() => (QuestType)DAL.Get<int>(string.Format(getQuestTypeSql, firstId, Utility.ToRTDDate(DateTime.Now, false).ToString())));
+            switch(task.Result)
+            {
+                case QuestType.Event: QuestTypeRadio_Event.IsChecked = true; break;
+                case QuestType.Main: QuestTypeRadio_Main.IsChecked = true; break;
+                case QuestType.Daily: QuestTypeRadio_Daily.IsChecked = true; break;
+                case QuestType.MapEvent: QuestTypeRadio_MapEvent.IsChecked = true; break;
+                default: break;
+            }
+            QuestTypeSwitch(task.Result);
+            return QuestDataGrid;
+        }
+
+        private const string getQuestTypeSql = @"SELECT CASE 
+WHEN {0} IN (SELECT id FROM QUEST_MASTER WHERE (select parent_field_id from quest_area_master where quest_area_master.id=parent_area_id)>0) 
+THEN 1 
+WHEN {0} IN (SELECT ID FROM (SELECT id,name,stamina,
+       ( CASE
+                WHEN open_type_1 = 1 THEN open_param_1 
+                WHEN open_type_2 = 1 THEN open_param_2 
+                WHEN open_type_3 = 1 THEN open_param_3 
+                WHEN open_type_4 = 1 THEN open_param_4 
+                WHEN open_type_5 = 1 THEN open_param_5 
+                WHEN open_type_6 = 1 THEN open_param_6 
+                WHEN open_type_7 = 1 THEN open_param_7
+                WHEN open_type_8 = 1 THEN open_param_8
+                ELSE -1
+       END ) AS DayOfWeek,
+       ( CASE
+                WHEN open_date<>0 THEN open_date
+                WHEN open_type_1 = 4 THEN open_param_1 
+                WHEN open_type_2 = 4 THEN open_param_2 
+                WHEN open_type_3 = 4 THEN open_param_3 
+                WHEN open_type_4 = 4 THEN open_param_4 
+                WHEN open_type_5 = 4 THEN open_param_5 
+                WHEN open_type_6 = 4 THEN open_param_6 
+                WHEN open_type_7 = 4 THEN open_param_7
+                WHEN open_type_8 = 4 THEN open_param_8
+                ELSE 0 
+       END ) AS start,
+       ( CASE
+                WHEN close_date<>0 THEN close_date
+                WHEN open_type_1 = 5 THEN open_param_1 
+                WHEN open_type_2 = 5 THEN open_param_2 
+                WHEN open_type_3 = 5 THEN open_param_3 
+                WHEN open_type_4 = 5 THEN open_param_4 
+                WHEN open_type_5 = 5 THEN open_param_5 
+                WHEN open_type_6 = 5 THEN open_param_6 
+                WHEN open_type_7 = 5 THEN open_param_7
+                WHEN open_type_8 = 5 THEN open_param_8
+                ELSE 0 
+       END ) AS [end],
+       ( CASE
+                WHEN open_type_1 = 6 THEN open_param_1 
+                WHEN open_type_2 = 6 THEN open_param_2 
+                WHEN open_type_3 = 6 THEN open_param_3 
+                WHEN open_type_4 = 6 THEN open_param_4 
+                WHEN open_type_5 = 6 THEN open_param_5 
+                WHEN open_type_6 = 6 THEN open_param_6 
+                WHEN open_type_7 = 6 THEN open_param_7
+                WHEN open_type_8 = 6 THEN open_param_8
+                ELSE 0 
+       END ) AS isDisabled
+FROM QUEST_MASTER WHERE DayOfWeek>=0 AND isDisabled=0 AND ([end]>{1} OR [end]=0)))
+THEN 2
+WHEN {0} IN (SELECT id FROM QUEST_MASTER WHERE parent_area_id=0)
+THEN 3
+ELSE 0
+END";
     }
 }

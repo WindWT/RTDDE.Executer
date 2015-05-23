@@ -574,7 +574,7 @@ WHERE uo.id={0}";
             sql += " 1=1 ORDER BY g_id";
             return sql;
         }
-        public DataGrid GetTargetDataGrid(string type = null)
+        public DataGrid GetTargetDataGrid(int firstId, int lastId = -1, string type = null)
         {
             return UnitDataGrid;
         }

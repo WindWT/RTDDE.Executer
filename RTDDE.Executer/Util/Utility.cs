@@ -59,13 +59,13 @@ namespace RTDDE.Executer
             var w = (MainWindow)Application.Current.MainWindow;
             w.ChangeTabByName(typeof(T).Name);
         }
-        async public static Task<T> GetTab<T>(bool newTab = false) where T : UserControl
+        public static T GetTab<T>(bool newTab = false, bool disableAutoLoad = false) where T : UserControl
         {
             if (newTab) {
                 Utility.RefreshTabs<T>();
             }
             var w = (MainWindow)Application.Current.MainWindow;
-            return (T)await w.GetTabByName(typeof(T).Name);
+            return (T)w.GetTabByName(typeof(T).Name, disableAutoLoad);
         }
         public static bool DisableBindData { get; set; }
         async public static void BindData(DataGrid dg, string sql, List<SQLiteParameter> paras = null)
@@ -134,16 +134,17 @@ namespace RTDDE.Executer
                 }
             }
         }
-        async public static void GoToItemById<T>(int firstId, int lastId = -1, string type = null) where T : UserControl
+        public static void GoToItemById<T>(int firstId, int lastId = -1, string type = null) where T : UserControl
         {
-            T tab = await GetTab<T>(true);
+            T tab = GetTab<T>(true, true);
             if ((tab is IRedirectable) == false) {
                 return;
             }
-            DataGrid dataGrid = ((IRedirectable)tab).GetTargetDataGrid(type);
+            DataGrid dataGrid = ((IRedirectable)tab).GetTargetDataGrid(firstId, lastId, type);
             AfterBindDataEventHandler afterBindDataEventHandler = null;
             afterBindDataEventHandler = () =>
             {
+                System.Diagnostics.Trace.WriteLine("useHandler");
                 Utility.AfterBindDataEvent -= afterBindDataEventHandler;
                 foreach (DataRowView item in dataGrid.ItemsSource) {
                     if (item == null) {
@@ -163,6 +164,7 @@ namespace RTDDE.Executer
                 }
             };
             Utility.AfterBindDataEvent += afterBindDataEventHandler;
+            System.Diagnostics.Trace.WriteLine("addHandler");
             ChangeTab<T>();
         }
     }

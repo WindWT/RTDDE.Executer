@@ -18,10 +18,10 @@
         <DataGrid Grid.Column="0" Grid.RowSpan="3" Name="QuestDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="0">
             <UniformGrid Columns="4">
-                <RadioButton GroupName="QuestType" Content="Event" IsChecked="True" Name="QuestTypeRadio_Event" Checked="QuestTypeRadio_Event_Checked"></RadioButton>
-                <RadioButton GroupName="QuestType" Content="MapEvent" Name="QuestTypeRadio_MapEvent" Checked="QuestTypeRadio_MapEvent_Checked"></RadioButton>
-                <RadioButton GroupName="QuestType" Content="Daily" Name="QuestTypeRadio_Daily" Checked="QuestTypeRadio_Daily_Checked"></RadioButton>
-                <RadioButton GroupName="QuestType" Content="Main" Name="QuestTypeRadio_Main" Checked="QuestTypeRadio_Main_Checked"></RadioButton>
+                <RadioButton GroupName="QuestType" Content="Event" Name="QuestTypeRadio_Event" Click="QuestTypeRadio_Event_OnClick"></RadioButton>
+                <RadioButton GroupName="QuestType" Content="MapEvent" Name="QuestTypeRadio_MapEvent" Click="QuestTypeRadio_MapEvent_OnClick"></RadioButton>
+                <RadioButton GroupName="QuestType" Content="Daily" Name="QuestTypeRadio_Daily" Click="QuestTypeRadio_Daily_OnClick"></RadioButton>
+                <RadioButton GroupName="QuestType" Content="Main" Name="QuestTypeRadio_Main" Click="QuestTypeRadio_Main_OnClick"></RadioButton>
             </UniformGrid>
             <Expander Header="Search" Name="QuestSearchExpander">
                 <Grid>

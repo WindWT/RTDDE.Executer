@@ -59,12 +59,12 @@ namespace RTDDE.Executer
             }
         }
 
-        public async void ChangeTabByName(string tabName)
+        public void ChangeTabByName(string tabName)
         {
             foreach (UserControl child in MainGrid.Children) {
                 child.Visibility = Visibility.Collapsed;
             }
-            var tab = await GetTabByName(tabName);
+            var tab = GetTabByName(tabName);
             if (tab != null) {
                 tab.Visibility = Visibility.Visible;
                 LastTabName = tab.GetType().Name;
@@ -72,7 +72,7 @@ namespace RTDDE.Executer
             }
             MenuButton.IsChecked = false;
         }
-        public async Task<UserControl> GetTabByName(string tabName)
+        public UserControl GetTabByName(string tabName, bool disableAutoLoad = false)
         {
             foreach (UserControl child in MainGrid.Children) {
                 if (string.Compare(child.GetType().Name, tabName, StringComparison.OrdinalIgnoreCase) == 0) {
@@ -83,14 +83,8 @@ namespace RTDDE.Executer
             string tabFullName = string.Format("RTDDE.Executer.Func.{0}", tabName);
             var tabType = Type.GetType(tabFullName);
             if (tabType != null) {
-                //long time loading, avoid UI lag
-                Task<UserControl> taskCreate = Task.Factory.StartNew(
-                    () => (UserControl)Activator.CreateInstance(tabType),
-                    CancellationToken.None,
-                    TaskCreationOptions.None,
-                    TaskScheduler.FromCurrentSynchronizationContext()
-                    );
-                UserControl tab = await taskCreate;
+                UserControl tab = (UserControl)Activator.CreateInstance(tabType,
+                    tabType.GetConstructor(new Type[] { typeof(bool) }) == null ? null : new object[] { disableAutoLoad });
                 if (tab != null) {
                     MainGrid.Children.Add(tab);
                     return tab;

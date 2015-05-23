@@ -13,10 +13,9 @@ namespace RTDDE.Executer.Util
         /// <summary>
         /// 获取目标DataGrid接口
         /// 接口调用前tab为初始状态
-        /// 接口内部需要切换type
+        /// 接口内部需要设置DataGrid的数据
         /// </summary>
-        /// <param name="type"></param>
         /// <returns></returns>
-        DataGrid GetTargetDataGrid(string type = null);
+        DataGrid GetTargetDataGrid(int firstId, int lastId = -1, string type = null);
     }
 }
