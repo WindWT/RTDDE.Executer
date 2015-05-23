@@ -9,19 +9,28 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using RTDDE.Executer.Util;
 using RTDDE.Provider;
 using RTDDE.Provider.MasterData;
 
 namespace RTDDE.Executer.Func
 {
-    public partial class QuestArea : UserControl
+    public partial class QuestArea : UserControl, IRedirectable
     {
         public QuestArea()
+            : this(false)
+        {
+        }
+        public QuestArea(bool disableAutoLoad)
         {
             InitializeComponent();
             QuestAreaExpander_Area.Visibility = Visibility.Collapsed;
             QuestAreaExpander_Quest.Visibility = Visibility.Collapsed;
             QuestAreaExpander_Reward.Visibility = Visibility.Collapsed;
+            if (disableAutoLoad == false) {
+                QuestAreaTypeRadio_Main.IsChecked = true;
+                Utility.BindData(QuestAreaDataGrid, MainSql);
+            }
         }
         public class QuestReward
         {
@@ -229,17 +238,19 @@ order by point";
             //}
         }
 
-        private void QuestAreaTypeRadio_Main_Checked(object sender, RoutedEventArgs e)
+        #region DataGridSql
+        private const string MainSql = "SELECT id,name,text FROM quest_area_master WHERE parent_field_id>0 order by id DESC";
+        private const string EventSql = "SELECT id,name,text FROM quest_area_master WHERE parent_field_id=0 order by id DESC";
+        private const string GetTypeSql = "SELECT parent_field_id>0 from quest_area_master WHERE id={0}";
+        #endregion
+        private void QuestAreaTypeRadio_Main_OnClick(object sender, RoutedEventArgs e)
         {
-            string sql = "SELECT id,name,text FROM quest_area_master WHERE parent_field_id>0 order by id DESC";
-            Utility.BindData(QuestAreaDataGrid, sql);
+            Utility.BindData(QuestAreaDataGrid, MainSql);
         }
-        private void QuestAreaTypeRadio_Event_Checked(object sender, RoutedEventArgs e)
+        private void QuestAreaTypeRadio_Event_OnClick(object sender, RoutedEventArgs e)
         {
-            string sql = "SELECT id,name,text FROM quest_area_master WHERE parent_field_id=0 order by id DESC";
-            Utility.BindData(QuestAreaDataGrid, sql);
+            Utility.BindData(QuestAreaDataGrid, EventSql);
         }
-
         private void QuestAreaSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             Utility.BindData(QuestAreaDataGrid, QuestAreaSearch_BuildSQL());
@@ -262,6 +273,7 @@ order by point";
             QuestAreaSearch_id.Text = string.Empty;
             QuestAreaSearch_name.Text = string.Empty;
             QuestAreaTypeRadio_Main.IsChecked = true;
+            Utility.BindData(QuestAreaDataGrid, MainSql);
         }
 
         async private void QuestAreaToQuestButton_OnClick(object sender, RoutedEventArgs e)
@@ -292,7 +304,26 @@ order by point";
 
         private void QuestAreaInfoToLockQuestButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Utility.GoToItemById<Quest>(Convert.ToInt32(QuestAreaInfo_lock_value.Text)); ;
+            Utility.GoToItemById<Quest>(Convert.ToInt32(QuestAreaInfo_lock_value.Text));
+        }
+
+        public DataGrid GetTargetDataGrid(int firstId, int lastId = -1, string type = null)
+        {
+            Task<int> task = Task.Run(() => DAL.Get<int>(string.Format(GetTypeSql, firstId)));
+            switch (task.Result) {
+                case 0: {
+                        QuestAreaTypeRadio_Event.IsChecked = true;
+                        Utility.BindData(QuestAreaDataGrid, EventSql);
+                        break;
+                    }
+                case 1: {
+                        QuestAreaTypeRadio_Main.IsChecked = true;
+                        Utility.BindData(QuestAreaDataGrid, MainSql);
+                        break;
+                    }
+                default: break;
+            }
+            return QuestAreaDataGrid;
         }
     }
 }

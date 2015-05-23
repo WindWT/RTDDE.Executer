@@ -215,7 +215,14 @@
                             </Grid.RowDefinitions>
                             <TextBlock Text="area"/>
                             <TextBox Grid.Row="0" Grid.Column="1" Name="QuestInfo_parent_area_id"/>
-                            <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4" Name="QuestInfo_parent_area_name"/>
+                            <Grid Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Name="QuestInfo_parent_area_name"/>
+                                <Button Grid.Column="1" Name="QuestToQuestAreaButton" Style="{StaticResource InlineButton}" Click="QuestToQuestAreaButton_OnClick">→</Button>
+                            </Grid>
                             <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Name="QuestInfo_parent_area_text" AcceptsReturn="True" TextWrapping="Wrap"/>
                             <TextBlock Grid.Row="2" Grid.Column="0" Text="MapEvent"/>
                             <TextBox Grid.Row="2" Grid.Column="1" Name="QuestInfo_parent_map_event_id"/>

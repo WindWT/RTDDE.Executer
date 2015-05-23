@@ -20,8 +20,8 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <RadioButton Grid.Column="0" GroupName="QuestAreaType" Content="Main" IsChecked="True" Name="QuestAreaTypeRadio_Main" Checked="QuestAreaTypeRadio_Main_Checked"></RadioButton>
-                <RadioButton Grid.Column="1" GroupName="QuestAreaType" Content="Event" Name="QuestAreaTypeRadio_Event" Checked="QuestAreaTypeRadio_Event_Checked"></RadioButton>
+                <RadioButton Grid.Column="0" GroupName="QuestAreaType" Content="Main" Name="QuestAreaTypeRadio_Main" Click="QuestAreaTypeRadio_Main_OnClick"></RadioButton>
+                <RadioButton Grid.Column="1" GroupName="QuestAreaType" Content="Event" Name="QuestAreaTypeRadio_Event" Click="QuestAreaTypeRadio_Event_OnClick"></RadioButton>
             </Grid>
             <Expander Header="Search" Name="QuestAreaSearchExpander" IsExpanded="False">
                 <Grid>

@@ -360,6 +360,62 @@ ORDER BY id DESC";
 FROM QUEST_MASTER
 WHERE parent_area_id=0
 ORDER BY id DESC";
+        private const string GetQuestTypeSql = @"SELECT CASE 
+WHEN {0} IN (SELECT id FROM QUEST_MASTER WHERE (select parent_field_id from quest_area_master where quest_area_master.id=parent_area_id)>0) 
+THEN 1 
+WHEN {0} IN (SELECT ID FROM (SELECT id,name,stamina,
+       ( CASE
+                WHEN open_type_1 = 1 THEN open_param_1 
+                WHEN open_type_2 = 1 THEN open_param_2 
+                WHEN open_type_3 = 1 THEN open_param_3 
+                WHEN open_type_4 = 1 THEN open_param_4 
+                WHEN open_type_5 = 1 THEN open_param_5 
+                WHEN open_type_6 = 1 THEN open_param_6 
+                WHEN open_type_7 = 1 THEN open_param_7
+                WHEN open_type_8 = 1 THEN open_param_8
+                ELSE -1
+       END ) AS DayOfWeek,
+       ( CASE
+                WHEN open_date<>0 THEN open_date
+                WHEN open_type_1 = 4 THEN open_param_1 
+                WHEN open_type_2 = 4 THEN open_param_2 
+                WHEN open_type_3 = 4 THEN open_param_3 
+                WHEN open_type_4 = 4 THEN open_param_4 
+                WHEN open_type_5 = 4 THEN open_param_5 
+                WHEN open_type_6 = 4 THEN open_param_6 
+                WHEN open_type_7 = 4 THEN open_param_7
+                WHEN open_type_8 = 4 THEN open_param_8
+                ELSE 0 
+       END ) AS start,
+       ( CASE
+                WHEN close_date<>0 THEN close_date
+                WHEN open_type_1 = 5 THEN open_param_1 
+                WHEN open_type_2 = 5 THEN open_param_2 
+                WHEN open_type_3 = 5 THEN open_param_3 
+                WHEN open_type_4 = 5 THEN open_param_4 
+                WHEN open_type_5 = 5 THEN open_param_5 
+                WHEN open_type_6 = 5 THEN open_param_6 
+                WHEN open_type_7 = 5 THEN open_param_7
+                WHEN open_type_8 = 5 THEN open_param_8
+                ELSE 0 
+       END ) AS [end],
+       ( CASE
+                WHEN open_type_1 = 6 THEN open_param_1 
+                WHEN open_type_2 = 6 THEN open_param_2 
+                WHEN open_type_3 = 6 THEN open_param_3 
+                WHEN open_type_4 = 6 THEN open_param_4 
+                WHEN open_type_5 = 6 THEN open_param_5 
+                WHEN open_type_6 = 6 THEN open_param_6 
+                WHEN open_type_7 = 6 THEN open_param_7
+                WHEN open_type_8 = 6 THEN open_param_8
+                ELSE 0 
+       END ) AS isDisabled
+FROM QUEST_MASTER WHERE DayOfWeek>=0 AND isDisabled=0 AND ([end]>{1} OR [end]=0)))
+THEN 2
+WHEN {0} IN (SELECT id FROM QUEST_MASTER WHERE parent_area_id=0)
+THEN 3
+ELSE 0
+END";
         #endregion
         private void QuestTypeSwitch(QuestType type)
         {
@@ -423,6 +479,7 @@ FROM QUEST_MASTER WHERE ";
             QuestSearch_parent_area_id.Text = String.Empty;
             QuestSearch_parent_area_name.Text = String.Empty;
             QuestTypeRadio_Event.IsChecked = true;
+            QuestTypeSwitch(QuestType.Event);
         }
 
         private void SB_ShowMap_Completed(object sender, EventArgs e)
@@ -438,9 +495,13 @@ FROM QUEST_MASTER WHERE ";
         {
             Utility.GoToItemById<Unit>(Convert.ToInt32(QuestInfo_present_param.Text));
         }
+        private void QuestToQuestAreaButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Utility.GoToItemById<QuestArea>(Convert.ToInt32(QuestInfo_parent_area_id.Text));
+        }
         public DataGrid GetTargetDataGrid(int firstId, int lastId = -1, string type = null)
         {
-            Task<QuestType> task = Task.Run(() => (QuestType)DAL.Get<int>(string.Format(getQuestTypeSql, firstId, Utility.ToRTDDate(DateTime.Now, false).ToString())));
+            Task<QuestType> task = Task.Run(() => (QuestType)DAL.Get<int>(string.Format(GetQuestTypeSql, firstId, Utility.ToRTDDate(DateTime.Now, false).ToString())));
             switch(task.Result)
             {
                 case QuestType.Event: QuestTypeRadio_Event.IsChecked = true; break;
@@ -452,62 +513,5 @@ FROM QUEST_MASTER WHERE ";
             QuestTypeSwitch(task.Result);
             return QuestDataGrid;
         }
-
-        private const string getQuestTypeSql = @"SELECT CASE 
-WHEN {0} IN (SELECT id FROM QUEST_MASTER WHERE (select parent_field_id from quest_area_master where quest_area_master.id=parent_area_id)>0) 
-THEN 1 
-WHEN {0} IN (SELECT ID FROM (SELECT id,name,stamina,
-       ( CASE
-                WHEN open_type_1 = 1 THEN open_param_1 
-                WHEN open_type_2 = 1 THEN open_param_2 
-                WHEN open_type_3 = 1 THEN open_param_3 
-                WHEN open_type_4 = 1 THEN open_param_4 
-                WHEN open_type_5 = 1 THEN open_param_5 
-                WHEN open_type_6 = 1 THEN open_param_6 
-                WHEN open_type_7 = 1 THEN open_param_7
-                WHEN open_type_8 = 1 THEN open_param_8
-                ELSE -1
-       END ) AS DayOfWeek,
-       ( CASE
-                WHEN open_date<>0 THEN open_date
-                WHEN open_type_1 = 4 THEN open_param_1 
-                WHEN open_type_2 = 4 THEN open_param_2 
-                WHEN open_type_3 = 4 THEN open_param_3 
-                WHEN open_type_4 = 4 THEN open_param_4 
-                WHEN open_type_5 = 4 THEN open_param_5 
-                WHEN open_type_6 = 4 THEN open_param_6 
-                WHEN open_type_7 = 4 THEN open_param_7
-                WHEN open_type_8 = 4 THEN open_param_8
-                ELSE 0 
-       END ) AS start,
-       ( CASE
-                WHEN close_date<>0 THEN close_date
-                WHEN open_type_1 = 5 THEN open_param_1 
-                WHEN open_type_2 = 5 THEN open_param_2 
-                WHEN open_type_3 = 5 THEN open_param_3 
-                WHEN open_type_4 = 5 THEN open_param_4 
-                WHEN open_type_5 = 5 THEN open_param_5 
-                WHEN open_type_6 = 5 THEN open_param_6 
-                WHEN open_type_7 = 5 THEN open_param_7
-                WHEN open_type_8 = 5 THEN open_param_8
-                ELSE 0 
-       END ) AS [end],
-       ( CASE
-                WHEN open_type_1 = 6 THEN open_param_1 
-                WHEN open_type_2 = 6 THEN open_param_2 
-                WHEN open_type_3 = 6 THEN open_param_3 
-                WHEN open_type_4 = 6 THEN open_param_4 
-                WHEN open_type_5 = 6 THEN open_param_5 
-                WHEN open_type_6 = 6 THEN open_param_6 
-                WHEN open_type_7 = 6 THEN open_param_7
-                WHEN open_type_8 = 6 THEN open_param_8
-                ELSE 0 
-       END ) AS isDisabled
-FROM QUEST_MASTER WHERE DayOfWeek>=0 AND isDisabled=0 AND ([end]>{1} OR [end]=0)))
-THEN 2
-WHEN {0} IN (SELECT id FROM QUEST_MASTER WHERE parent_area_id=0)
-THEN 3
-ELSE 0
-END";
     }
 }
