@@ -304,7 +304,7 @@ WHERE uo.id={0}";
                 Content = "→",
                 Style = FindResource("InlineButton") as Style
             };
-            button.Click += async (s, arg) =>
+            button.Click += (s, arg) =>
             {
                 Utility.GoToItemById<Unit>(id);
             };
@@ -520,7 +520,7 @@ WHERE uo.id={0}";
             }
         }
 
-        async private void UnitSearchClear_Click(object sender, RoutedEventArgs e)
+        private void UnitSearchClear_Click(object sender, RoutedEventArgs e)
         {
             UnitSearch_id.Text = string.Empty;
             UnitSearch_g_id.Text = string.Empty;
@@ -533,11 +533,11 @@ WHERE uo.id={0}";
             UnitSearch_sub_a1.SelectedIndex = 0;
             Utility.BindData(UnitDataGrid, UnitSql);
         }
-        async private void UnitSearch_TextChanged(object sender, TextChangedEventArgs e)
+        private void UnitSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             Utility.BindData(UnitDataGrid, UnitSearch_BuildSQL());
         }
-        async private void UnitSearch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void UnitSearch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Utility.BindData(UnitDataGrid, UnitSearch_BuildSQL());
         }

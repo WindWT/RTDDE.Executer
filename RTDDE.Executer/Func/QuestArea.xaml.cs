@@ -176,7 +176,7 @@ order by point";
                         Content = "→",
                         Style = FindResource("InlineButton") as Style
                     };
-                    button.Click += async (s, arg) =>
+                    button.Click += (s, arg) =>
                     {
                         Utility.GoToItemById<Quest>(id);
                     };

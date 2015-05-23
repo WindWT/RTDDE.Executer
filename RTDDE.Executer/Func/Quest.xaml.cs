@@ -493,17 +493,30 @@ FROM QUEST_MASTER WHERE ";
         }
         private void QuestInfoPresentToUnitButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Utility.GoToItemById<Unit>(Convert.ToInt32(QuestInfo_present_param.Text));
+            if (string.IsNullOrEmpty(QuestInfo_present_param.Text)) {
+                return;
+            }
+            int id = Convert.ToInt32(QuestInfo_present_param.Text);
+            if (id == 0) {
+                return;
+            }
+            Utility.GoToItemById<Unit>(id);
         }
         private void QuestToQuestAreaButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Utility.GoToItemById<QuestArea>(Convert.ToInt32(QuestInfo_parent_area_id.Text));
+            if (string.IsNullOrEmpty(QuestInfo_parent_area_id.Text)) {
+                return;
+            }
+            int id = Convert.ToInt32(QuestInfo_parent_area_id.Text);
+            if (id == 0) {
+                return;
+            }
+            Utility.GoToItemById<QuestArea>(id);
         }
         public DataGrid GetTargetDataGrid(int firstId, int lastId = -1, string type = null)
         {
             Task<QuestType> task = Task.Run(() => (QuestType)DAL.Get<int>(string.Format(GetQuestTypeSql, firstId, Utility.ToRTDDate(DateTime.Now, false).ToString())));
-            switch(task.Result)
-            {
+            switch (task.Result) {
                 case QuestType.Event: QuestTypeRadio_Event.IsChecked = true; break;
                 case QuestType.Main: QuestTypeRadio_Main.IsChecked = true; break;
                 case QuestType.Daily: QuestTypeRadio_Daily.IsChecked = true; break;
