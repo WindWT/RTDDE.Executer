@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
+using System.Windows.Media;
 using RTDDE.Provider;
 using System.Xml;
 using System.Xml.Serialization;
@@ -67,11 +69,11 @@ namespace RTDDE.Executer
             private bool _isShowBoxInfo;
             private bool _isShowEnemyAttribute;
             private int _expValue;
-            private string _expColor;
+            private string _expColorValue;
             private int _ptValue;
-            private string _ptColor;
+            private string _ptColorValue;
             private int _saleValue;
-            private string _saleColor;
+            private string _saleColorValue;
             private string _customDrop;
 
             public bool IsShowDropInfo
@@ -114,13 +116,21 @@ namespace RTDDE.Executer
                 }
             }
 
-            public string ExpColor
+            public string ExpColorValue
             {
-                get { return _expColor; }
+                get { return _expColorValue; }
                 set
                 {
-                    _expColor = value;
-                    OnPropertyChanged("ExpColor");
+                    _expColorValue = value;
+                    OnPropertyChanged("ExpColorValue");
+                }
+            }
+
+            public Color ExpColor
+            {
+                get
+                {
+                    return (Color)(ColorConverter.ConvertFromString(ExpColorValue) ?? Colors.Transparent);
                 }
             }
 
@@ -134,13 +144,21 @@ namespace RTDDE.Executer
                 }
             }
 
-            public string PtColor
+            public string PtColorValue
             {
-                get { return _ptColor; }
+                get { return _ptColorValue; }
                 set
                 {
-                    _ptColor = value;
-                    OnPropertyChanged("PtColor");
+                    _ptColorValue = value;
+                    OnPropertyChanged("PtColorValue");
+                }
+            }
+
+            public Color PtColor
+            {
+                get
+                {
+                    return (Color)(ColorConverter.ConvertFromString(PtColorValue) ?? Colors.Transparent);
                 }
             }
 
@@ -154,13 +172,21 @@ namespace RTDDE.Executer
                 }
             }
 
-            public string SaleColor
+            public string SaleColorValue
             {
-                get { return _saleColor; }
+                get { return _saleColorValue; }
                 set
                 {
-                    _saleColor = value;
-                    OnPropertyChanged("SaleColor");
+                    _saleColorValue = value;
+                    OnPropertyChanged("SaleColorValue");
+                }
+            }
+
+            public Color SaleColor
+            {
+                get
+                {
+                    return (Color)(ColorConverter.ConvertFromString(SaleColorValue) ?? Colors.Transparent);
                 }
             }
 
@@ -174,14 +200,45 @@ namespace RTDDE.Executer
                 }
             }
 
+            [XmlIgnore]
+            public Dictionary<int, Color> CustomDropColors
+            {
+                get
+                {
+                    Dictionary<int, Color> customDropColors = new Dictionary<int, Color>();
+                    string[] customs = CustomDrop.Split(';');
+                    foreach (var custom in customs) {
+                        string[] split = custom.Split(':');
+                        if (split.Length != 2) {
+                            //异常数据
+                            return null;
+                        }
+                        string colorString = split[1];
+                        var colorObj = ColorConverter.ConvertFromString(colorString);
+                        if (colorObj == null) {
+                            return null;
+                        }
+                        Color color = (Color)colorObj;
+                        foreach (string idString in split[0].Split(',')) {
+                            int id;
+                            if (int.TryParse(idString, out id) == false) {
+                                return null;
+                            }
+                            customDropColors.Add(id, color);
+                        }
+                    }
+                    return customDropColors;
+                }
+            }
+
             public void Reset()
             {
                 ExpValue = 30000;
-                ExpColor = "#FF9898";
+                ExpColorValue = "#FF9898";
                 PtValue = 250;
-                PtColor = "#9898FF";
+                PtColorValue = "#9898FF";
                 SaleValue = 20000;
-                SaleColor = "Silver";
+                SaleColorValue = "Silver";
                 CustomDrop = "15022,16027:Black";
             }
 
@@ -260,11 +317,11 @@ namespace RTDDE.Executer
                 IsShowBoxInfo = true,
                 IsShowEnemyAttribute = true,
                 ExpValue = 30000,
-                ExpColor = "#FF9898",
+                ExpColorValue = "#FF9898",
                 PtValue = 250,
-                PtColor = "#9898FF",
+                PtColorValue = "#9898FF",
                 SaleValue = 20000,
-                SaleColor = "Silver",
+                SaleColorValue = "Silver",
                 CustomDrop = "15022,16027:Black"
             };
             Database = new DatabaseClass()

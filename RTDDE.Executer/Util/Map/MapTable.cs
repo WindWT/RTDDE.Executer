@@ -276,58 +276,47 @@ namespace RTDDE.Executer.Util.Map
             EnemyInfo deathInfo = dropData.Find(o => o.enemy_id == 99);
             foreach (MapRow r in this.Rows) {
                 foreach (MapCell c in r.Cells) {
+                    EnemyInfo ei = dropData.Find(o => o.x == c.x && o.y == c.y && !(o.x == 0 && o.y == 0));
                     if (c.RawCellData == 192) {
                         c.drop_unit = DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + bossInfo.drop_unit_id.ToString());
                         c.add_attribute_exp = bossInfo.add_attribute_exp;
                         c.unit_exp = bossInfo.unit_exp;
                         c.HasDropInfo = true;
-                        continue;
                     }
-                    if (c.RawCellData == 160) {
+                    else if (c.RawCellData == 160) {
                         c.drop_unit = DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + deathInfo.drop_unit_id.ToString());
                         c.add_attribute_exp = deathInfo.add_attribute_exp;
                         c.unit_exp = deathInfo.unit_exp;
                         c.HasDropInfo = true;
-                        continue;
                     }
-                    EnemyInfo ei = dropData.Find(o => o.x == c.x && o.y == c.y && !(o.x == 0 && o.y == 0));
-                    if (ei != null && ei.flag) {
-                        c.HasDropInfo = true;
-                        c.drop_unit =
-                            DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + ei.drop_unit_id.ToString());
+                    else if (ei != null && ei.flag) {
+                        c.drop_unit = DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + ei.drop_unit_id.ToString());
                         c.add_attribute_exp = ei.add_attribute_exp;
                         c.unit_exp = ei.unit_exp;
-                        if (c.drop_unit == null) {
-                            continue;
-                        }
-                        //if (c.drop_unit.kind != 311) {   //not yorishiro, skip
-                        //    continue;
-                        //}
-                        if (c.drop_unit.id == 15022 || c.drop_unit.id == 16027) {
-                            //very bad yorishiro
-                            c.YorishiroColor = Colors.Black;
-                        }
-                        else if (c.drop_unit.mix > 30000) {
-                            //many exp
-                            c.YorishiroColor = Color.FromRgb(98, 255, 98);
-                        }
-                        else if (c.drop_unit.mix >= 25000) {
-                            //exp
-                            c.YorishiroColor = Color.FromRgb(255, 98, 98);
-                        }
-                        else if (c.drop_unit.set_pt >= 250) {
-                            //pt
-                            c.YorishiroColor = Color.FromRgb(98, 98, 255);
-                        }
-                        else if (c.drop_unit.sale >= 20000) {
-                            //sale
-                            c.YorishiroColor = Colors.Silver;
-                        }
+                        c.HasDropInfo = true;
                     }
-                    else {
-                        if (string.IsNullOrEmpty(c.CellData) == false && c.CellData.StartsWith("E")) {
-                            c.Foreground = Brushes.LightGray;
-                        }
+                    else if (string.IsNullOrEmpty(c.CellData) == false && c.CellData.StartsWith("E")) {
+                        c.Foreground = Brushes.LightGray;
+                    }
+                    //set drop mark
+                    if (c.drop_unit == null) {
+                        continue;   //no enemy, no need to set drop mark
+                    }
+                    if (c.drop_unit.mix >= Settings.Config.Map.ExpValue) {
+                        //exp
+                        c.YorishiroColor = Settings.Config.Map.ExpColor;
+                    }
+                    else if (c.drop_unit.set_pt >= Settings.Config.Map.PtValue) {
+                        //pt
+                        c.YorishiroColor = Settings.Config.Map.PtColor;
+                    }
+                    else if (c.drop_unit.sale >= Settings.Config.Map.SaleValue) {
+                        //sale
+                        c.YorishiroColor = Settings.Config.Map.SaleColor;
+                    }
+                    var customColors = Settings.Config.Map.CustomDropColors;
+                    if (customColors != null && customColors.ContainsKey(c.drop_unit.id)) {
+                        c.YorishiroColor = customColors[c.drop_unit.id];
                     }
                 }
             }

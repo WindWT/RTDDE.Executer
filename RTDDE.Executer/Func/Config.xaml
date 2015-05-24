@@ -29,6 +29,9 @@
                         <StackPanel>
                             <CheckBox Name="IsShowDropInfoCheckBox" IsChecked="{Binding Path=Map.IsShowDropInfo,Mode=TwoWay}">Show drop &amp; exp info</CheckBox>
                             <GroupBox>
+                                <GroupBox.Header>
+                                    <Button Width="125" Style="{StaticResource InlineButton}" Name="ResetDropSettingButton" Click="ResetDropSettingButton_OnClick">Reset Drop</Button>
+                                </GroupBox.Header>
                                 <StackPanel>
                                     <Grid>
                                         <Grid.Resources>
@@ -37,7 +40,7 @@
                                             </Style>
                                         </Grid.Resources>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="125" />
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="5*" />
                                             <ColumnDefinition Width="*" />
@@ -59,19 +62,19 @@
                                         <TextBlock Grid.Row="0" Grid.Column="0">Predefine Drop</TextBlock>
                                         <TextBlock Grid.Row="0" Grid.Column="1">exp>=</TextBlock>
                                         <TextBox Grid.Row="0" Grid.Column="2" Name="ExpValueTextBox" PreviewTextInput="ExpValueTextBox_OnPreviewTextInput" MaxLength="7" Text="{Binding Path=Map.ExpValue,Mode=TwoWay}"></TextBox>
-                                        <Rectangle Grid.Row="0" Grid.Column="3" Fill="{Binding ElementName=ExpColorTextBox,Path=Text,Converter={StaticResource HexcolorConverter}}"></Rectangle>
-                                        <TextBox Grid.Row="0" Grid.Column="4" Name="ExpColorTextBox" Text="{Binding Path=Map.ExpColor,Mode=TwoWay}"></TextBox>
+                                        <Rectangle Grid.Row="0" Grid.Column="3" Fill="{Binding ElementName=ExpColorValueTextBox,Path=Text,Converter={StaticResource HexcolorConverter}}"></Rectangle>
+                                        <TextBox Grid.Row="0" Grid.Column="4" Name="ExpColorValueTextBox" Text="{Binding Path=Map.ExpColorValue,Mode=TwoWay}"></TextBox>
                                         <TextBlock Grid.Row="0" Grid.Column="5">pt>=</TextBlock>
                                         <TextBox Grid.Row="0" Grid.Column="6" Name="PtValueTextBox" PreviewTextInput="PtValueTextBox_OnPreviewTextInput" MaxLength="7" Text="{Binding Path=Map.PtValue,Mode=TwoWay}"></TextBox>
-                                        <Rectangle Grid.Row="0" Grid.Column="7" Fill="{Binding ElementName=PtColorTextBox,Path=Text,Converter={StaticResource HexcolorConverter}}"></Rectangle>
-                                        <TextBox Grid.Row="0" Grid.Column="8" Name="PtColorTextBox" Text="{Binding Path=Map.PtColor,Mode=TwoWay}"></TextBox>
+                                        <Rectangle Grid.Row="0" Grid.Column="7" Fill="{Binding ElementName=PtColorValueTextBox,Path=Text,Converter={StaticResource HexcolorConverter}}"></Rectangle>
+                                        <TextBox Grid.Row="0" Grid.Column="8" Name="PtColorValueTextBox" Text="{Binding Path=Map.PtColorValue,Mode=TwoWay}"></TextBox>
                                         <TextBlock Grid.Row="0" Grid.Column="9">sale>=</TextBlock>
                                         <TextBox Grid.Row="0" Grid.Column="10" Name="SaleValueTextBox" PreviewTextInput="SaleValueTextBox_OnPreviewTextInput" MaxLength="7" Text="{Binding Path=Map.SaleValue,Mode=TwoWay}"></TextBox>
-                                        <Rectangle Grid.Row="0" Grid.Column="11" Fill="{Binding ElementName=SaleColorTextBox,Path=Text,Converter={StaticResource HexcolorConverter}}"></Rectangle>
-                                        <TextBox Grid.Row="0" Grid.Column="12" Name="SaleColorTextBox" Text="{Binding Path=Map.SaleColor,Mode=TwoWay}"></TextBox>
+                                        <Rectangle Grid.Row="0" Grid.Column="11" Fill="{Binding ElementName=SaleColorValueTextBox,Path=Text,Converter={StaticResource HexcolorConverter}}"></Rectangle>
+                                        <TextBox Grid.Row="0" Grid.Column="12" Name="SaleColorValueTextBox" Text="{Binding Path=Map.SaleColorValue,Mode=TwoWay}"></TextBox>
                                         <TextBlock Grid.Row="1" Grid.Column="0" Name="CustomDropTextBlock">Custom Drop</TextBlock>
                                         <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="12" Text="{Binding Path=Map.CustomDrop,Mode=TwoWay}"></TextBox>
-                                        <Button Grid.Row="2" Grid.Column="0" Name="ResetDropSettingButton" Click="ResetDropSettingButton_OnClick">Reset Drop</Button>
+                                        <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource InlineButton}" Name="ValidateCustomDropSettingButton" Click="ValidateCustomDropSettingButton_OnClick">Validate Custom</Button>
                                         <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="12">[Custom Drop Format]id,id,id:color;id:#hexcolor [Example]15022:Black,16027:#000</TextBlock>
                                     </Grid>
                                 </StackPanel>

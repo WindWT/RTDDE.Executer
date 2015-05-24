@@ -157,9 +157,9 @@ namespace RTDDE.Executer.Func
             try {
                 Settings.Save();
                 SaveSettingsButton.Content = new Run("SAVED");
-                Task task = Task.Run(()=>
+                Task task = Task.Run(() =>
                 {
-                    System.Threading.Thread.Sleep(5000);
+                    System.Threading.Thread.Sleep(3000);
                 });
                 await task;
                 SaveSettingsButton.Content = new Run("Save Settings");
@@ -191,6 +191,22 @@ namespace RTDDE.Executer.Func
         private void ResetDropSettingButton_OnClick(object sender, RoutedEventArgs e)
         {
             Settings.Config.Map.Reset();
+        }
+
+        async private void ValidateCustomDropSettingButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (Settings.Config.Map.CustomDropColors == null) {
+                ValidateCustomDropSettingButton.Content = new Run("ERROR");
+            }
+            else {
+                ValidateCustomDropSettingButton.Content = new Run("Success");
+            }
+            Task task = Task.Run(() =>
+            {
+                System.Threading.Thread.Sleep(1000);
+            });
+            await task;
+            ValidateCustomDropSettingButton.Content = new Run("Validate Custom");
         }
     }
 }

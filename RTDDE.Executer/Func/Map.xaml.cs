@@ -164,14 +164,14 @@ namespace RTDDE.Executer.Func
 
                     StringBuilder sb = new StringBuilder();
                     if (c.HasDropInfo) {
-                        sb.AppendLine("觉醒pt:" + c.add_attribute_exp);
+                        sb.AppendLine("evo_pt:" + c.add_attribute_exp);
                         sb.AppendLine("exp:" + c.unit_exp);
                         if (c.drop_unit != null) {
-                            sb.AppendLine(string.Format("掉落:[{0}]{1}", c.drop_unit.g_id, c.drop_unit.name));
+                            sb.AppendLine(string.Format("drop:[{0}]{1}", c.drop_unit.g_id, c.drop_unit.name));
                         }
                     }
                     if (c.drop_id != 0) {
-                        sb.AppendLine("掉落表id:" + c.drop_id);
+                        sb.AppendLine("drop_id:" + c.drop_id);
                     }
                     if (string.IsNullOrWhiteSpace(sb.ToString().Trim()) == false) {
                         rec.ToolTip = new Run(sb.ToString().Trim());
