@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Xml;
 using RTDDE.Provider;
 using RTDDE.Provider.Enums;
@@ -20,8 +22,8 @@ namespace RTDDE.Executer.Func
     {
         public Config()
         {
+            this.DataContext = Settings.Config;
             InitializeComponent();
-            InitSettings();
         }
         private void ConfigTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -150,41 +152,45 @@ namespace RTDDE.Executer.Func
             }
         }
 
-        private void SaveSettingsButton_Click(object sender, RoutedEventArgs e)
+        async private void SaveSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            //map
-            Settings.Config.Map.IsShowDropInfo = IsShowDropInfoCheckBox.IsChecked.GetValueOrDefault(false);
-            Settings.Config.Map.IsShowBoxInfo = IsShowBoxInfoCheckBox.IsChecked.GetValueOrDefault(false);
-            Settings.Config.Map.IsShowEnemyAttribute = IsShowEnemyAttributeCheckBox.IsChecked.GetValueOrDefault(false);
-            //general
-            Settings.Config.General.IsEnableLevelLimiter = IsEnableLevelLimiterCheckBox.IsChecked.GetValueOrDefault(false);
-            Settings.Config.General.IsDefaultLvMax = IsDefaultLvMaxCheckBox.IsChecked.GetValueOrDefault(false);
-            Settings.Config.General.IsUseLocalTime = IsUseLocalTimeCheckBox.IsChecked.GetValueOrDefault(false);
-            //db
-            Settings.Config.Database.AutoBackup = AutoBackupCheckBox.IsChecked.GetValueOrDefault(false);
             try {
                 Settings.Save();
                 SaveSettingsButton.Content = new Run("SAVED");
+                Task task = Task.Run(()=>
+                {
+                    System.Threading.Thread.Sleep(5000);
+                });
+                await task;
+                SaveSettingsButton.Content = new Run("Save Settings");
             }
             catch (Exception ex) {
                 Utility.ShowException(ex.Message);
                 SaveSettingsButton.Content = new Run("FAILED, click to retry.");
             }
         }
-        private void InitSettings()
+
+        private static readonly Regex CheckOnlyNumberRegex = new Regex("[^0-9]+", RegexOptions.Compiled); //regex that matches disallowed text
+        private bool IsTextAllowed(string text)
         {
-            //fake for designer
-            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this)) return;
-            //map
-            IsShowDropInfoCheckBox.IsChecked = Settings.Config.Map.IsShowDropInfo;
-            IsShowBoxInfoCheckBox.IsChecked = Settings.Config.Map.IsShowBoxInfo;
-            IsShowEnemyAttributeCheckBox.IsChecked = Settings.Config.Map.IsShowEnemyAttribute;
-            //general
-            IsEnableLevelLimiterCheckBox.IsChecked = Settings.Config.General.IsEnableLevelLimiter;
-            IsDefaultLvMaxCheckBox.IsChecked = Settings.Config.General.IsDefaultLvMax;
-            IsUseLocalTimeCheckBox.IsChecked = Settings.Config.General.IsUseLocalTime;
-            //db
-            AutoBackupCheckBox.IsChecked = Settings.Config.Database.AutoBackup;
+            return (CheckOnlyNumberRegex.IsMatch(text) == false);
+        }
+        private void ExpValueTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = IsTextAllowed(e.Text) == false;
+        }
+        private void PtValueTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = IsTextAllowed(e.Text) == false;
+        }
+        private void SaleValueTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = IsTextAllowed(e.Text) == false;
+        }
+
+        private void ResetDropSettingButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Settings.Config.Map.Reset();
         }
     }
 }

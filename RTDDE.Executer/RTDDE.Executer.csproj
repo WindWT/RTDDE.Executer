@@ -167,6 +167,7 @@
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\ConfigData.cs" />
+    <Compile Include="Util\HexcolorConverter.cs" />
     <Compile Include="Util\IRedirectable.cs" />
     <Compile Include="Util\Map\MapCell.cs" />
     <Compile Include="Util\Map\MapRow.cs" />

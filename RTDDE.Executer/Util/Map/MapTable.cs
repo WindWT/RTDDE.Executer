@@ -303,7 +303,7 @@ namespace RTDDE.Executer.Util.Map
                         //if (c.drop_unit.kind != 311) {   //not yorishiro, skip
                         //    continue;
                         //}
-                        if (c.drop_unit.id == 15022) {
+                        if (c.drop_unit.id == 15022 || c.drop_unit.id == 16027) {
                             //very bad yorishiro
                             c.YorishiroColor = Colors.Black;
                         }

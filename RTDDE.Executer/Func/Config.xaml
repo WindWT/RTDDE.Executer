@@ -3,7 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:util="clr-namespace:RTDDE.Executer.Util"
              mc:Ignorable="d" >
+    <UserControl.Resources>
+        <util:HexcolorConverter x:Key="HexcolorConverter" />
+    </UserControl.Resources>
     <Grid Name="ConfigTab" IsVisibleChanged="ConfigTab_IsVisibleChanged">
         <DockPanel Background="{StaticResource HighlightBrush}">
             <GroupBox DockPanel.Dock="Top" Header="Import">
@@ -16,21 +20,69 @@
                 <StackPanel>
                     <GroupBox Header="General">
                         <StackPanel>
-                            <CheckBox Name="IsEnableLevelLimiterCheckBox"  >Enable level limiter</CheckBox>
-                            <CheckBox Name="IsDefaultLvMaxCheckBox"  >Set LV to max by default</CheckBox>
-                            <CheckBox Name="IsUseLocalTimeCheckBox"  >Show local time instead of GMT+9</CheckBox>
+                            <CheckBox Name="IsEnableLevelLimiterCheckBox" IsChecked="{Binding Path=General.IsEnableLevelLimiter,Mode=TwoWay}">Enable level limiter</CheckBox>
+                            <CheckBox Name="IsDefaultLvMaxCheckBox" IsChecked="{Binding Path=General.IsDefaultLvMax,Mode=TwoWay}">Set LV to max by default</CheckBox>
+                            <CheckBox Name="IsUseLocalTimeCheckBox" IsChecked="{Binding Path=General.IsUseLocalTime,Mode=TwoWay}">Show local time instead of GMT+9</CheckBox>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Map">
                         <StackPanel>
-                            <CheckBox Name="IsShowDropInfoCheckBox" >Show drop &amp; exp info</CheckBox>
-                            <CheckBox Name="IsShowBoxInfoCheckBox">Show box info</CheckBox>
-                            <CheckBox Name="IsShowEnemyAttributeCheckBox">Show enemy attribute on topright</CheckBox>
+                            <CheckBox Name="IsShowDropInfoCheckBox" IsChecked="{Binding Path=Map.IsShowDropInfo,Mode=TwoWay}">Show drop &amp; exp info</CheckBox>
+                            <GroupBox>
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.Resources>
+                                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                                                <Setter Property="IsReadOnly" Value="False"></Setter>
+                                            </Style>
+                                        </Grid.Resources>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="5*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="5*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="5*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="5*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="5*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="5*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0">Predefine Drop</TextBlock>
+                                        <TextBlock Grid.Row="0" Grid.Column="1">exp>=</TextBlock>
+                                        <TextBox Grid.Row="0" Grid.Column="2" Name="ExpValueTextBox" PreviewTextInput="ExpValueTextBox_OnPreviewTextInput" MaxLength="7" Text="{Binding Path=Map.ExpValue,Mode=TwoWay}"></TextBox>
+                                        <Rectangle Grid.Row="0" Grid.Column="3" Fill="{Binding ElementName=ExpColorTextBox,Path=Text,Converter={StaticResource HexcolorConverter}}"></Rectangle>
+                                        <TextBox Grid.Row="0" Grid.Column="4" Name="ExpColorTextBox" Text="{Binding Path=Map.ExpColor,Mode=TwoWay}"></TextBox>
+                                        <TextBlock Grid.Row="0" Grid.Column="5">pt>=</TextBlock>
+                                        <TextBox Grid.Row="0" Grid.Column="6" Name="PtValueTextBox" PreviewTextInput="PtValueTextBox_OnPreviewTextInput" MaxLength="7" Text="{Binding Path=Map.PtValue,Mode=TwoWay}"></TextBox>
+                                        <Rectangle Grid.Row="0" Grid.Column="7" Fill="{Binding ElementName=PtColorTextBox,Path=Text,Converter={StaticResource HexcolorConverter}}"></Rectangle>
+                                        <TextBox Grid.Row="0" Grid.Column="8" Name="PtColorTextBox" Text="{Binding Path=Map.PtColor,Mode=TwoWay}"></TextBox>
+                                        <TextBlock Grid.Row="0" Grid.Column="9">sale>=</TextBlock>
+                                        <TextBox Grid.Row="0" Grid.Column="10" Name="SaleValueTextBox" PreviewTextInput="SaleValueTextBox_OnPreviewTextInput" MaxLength="7" Text="{Binding Path=Map.SaleValue,Mode=TwoWay}"></TextBox>
+                                        <Rectangle Grid.Row="0" Grid.Column="11" Fill="{Binding ElementName=SaleColorTextBox,Path=Text,Converter={StaticResource HexcolorConverter}}"></Rectangle>
+                                        <TextBox Grid.Row="0" Grid.Column="12" Name="SaleColorTextBox" Text="{Binding Path=Map.SaleColor,Mode=TwoWay}"></TextBox>
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Name="CustomDropTextBlock">Custom Drop</TextBlock>
+                                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="12" Text="{Binding Path=Map.CustomDrop,Mode=TwoWay}"></TextBox>
+                                        <Button Grid.Row="2" Grid.Column="0" Name="ResetDropSettingButton" Click="ResetDropSettingButton_OnClick">Reset Drop</Button>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="12">[Custom Drop Format]id,id,id:color;id:#hexcolor [Example]15022:Black,16027:#000</TextBlock>
+                                    </Grid>
+                                </StackPanel>
+                            </GroupBox>
+                            <CheckBox Name="IsShowBoxInfoCheckBox" IsChecked="{Binding Path=Map.IsShowBoxInfo,Mode=TwoWay}">Show box info</CheckBox>
+                            <CheckBox Name="IsShowEnemyAttributeCheckBox" IsChecked="{Binding Path=Map.IsShowEnemyAttribute,Mode=TwoWay}">Show enemy attribute on topright</CheckBox>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="DataBase">
                         <StackPanel>
-                            <CheckBox Name="AutoBackupCheckBox" >Auto backup when import MDBS</CheckBox>
+                            <CheckBox Name="AutoBackupCheckBox" IsChecked="{Binding Path=Database.AutoBackup,Mode=TwoWay}">Auto backup when import MDBS</CheckBox>
                         </StackPanel>
                     </GroupBox>
                     <Button Name="SaveSettingsButton" Click="SaveSettingsButton_Click">Save Settings</Button>
