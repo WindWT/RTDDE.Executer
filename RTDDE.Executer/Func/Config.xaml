@@ -27,7 +27,7 @@
                     </GroupBox>
                     <GroupBox Header="Map">
                         <StackPanel>
-                            <CheckBox Name="IsShowDropInfoCheckBox" IsChecked="{Binding Path=Map.IsShowDropInfo,Mode=TwoWay}">Show drop &amp; exp info</CheckBox>
+                            <CheckBox Name="IsShowDropInfoCheckBox" IsChecked="{Binding Path=Map.IsShowDropInfo,Mode=TwoWay}">Show drop &amp; exp info(not recommend for iOS user)</CheckBox>
                             <GroupBox>
                                 <GroupBox.Header>
                                     <Button Width="125" Style="{StaticResource InlineButton}" Name="ResetDropSettingButton" Click="ResetDropSettingButton_OnClick">Reset Drop</Button>
