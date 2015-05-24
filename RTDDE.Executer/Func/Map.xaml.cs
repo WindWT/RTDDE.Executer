@@ -172,6 +172,7 @@ namespace RTDDE.Executer.Func
                     }
                     if (c.drop_id != 0) {
                         sb.AppendLine("drop_id:" + c.drop_id);
+                        sb.AppendLine("gold:" + c.gold_pt);
                     }
                     if (string.IsNullOrWhiteSpace(sb.ToString().Trim()) == false) {
                         rec.ToolTip = new Run(sb.ToString().Trim());

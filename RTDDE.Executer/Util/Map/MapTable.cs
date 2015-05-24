@@ -160,6 +160,7 @@ namespace RTDDE.Executer.Util.Map
                     string enemyId = foundRow[0]["id"].ToString();
                     EnemyUnitMaster eum =
                         DAL.ToSingle<EnemyUnitMaster>("SELECT * FROM ENEMY_UNIT_MASTER WHERE id=" + enemyId);
+                    c.gold_pt = eum.gold_pt;
                     if (Settings.Config.Map.IsShowEnemyAttribute) {
                         switch (Utility.ParseAttributetype(eum.attribute)) {
                             case "FIRE": {
