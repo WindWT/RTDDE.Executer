@@ -1,5 +1,6 @@
 ﻿using RTDDE.Provider;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -28,21 +29,26 @@ namespace RTDDE.Executer
             text = text.Replace("\n", @"\n");   //fix split issue
             Paragraph pr = new Paragraph { Margin = new Thickness(0) }; //prprpr
             var textParts = RegColor.Split(text);
-            var currentTextColor = Brushes.Black;
+            Stack<Brush> brushStack=new Stack<Brush>();
+            brushStack.Push(Brushes.Black);
             foreach (string textPart in textParts) {
                 if (RegColor.Match(textPart).Success) {
                     string color = textPart.Trim(new char[] { '[', ']' });
                     var convertFromString = ColorConverter.ConvertFromString("#" + color);
                     if (convertFromString != null) {
-                        currentTextColor = new SolidColorBrush((Color)convertFromString);
+                        brushStack.Push(new SolidColorBrush((Color)convertFromString));
                     }
                 }
                 else {
+                    bool colorEnd = false;
                     foreach (string part in textPart.Split(new[] { @"[-]" }, StringSplitOptions.None)) {
-                        Span span = new Span { Foreground = currentTextColor };
+                        if (colorEnd && brushStack.Count > 1) {
+                            brushStack.Pop();
+                        }
+                        Span span = new Span { Foreground = brushStack.Peek() };
                         span.Inlines.Add(new Run(part.Replace(@"\n", "\n")));
                         pr.Inlines.Add(span);
-                        currentTextColor = Brushes.Black;
+                        colorEnd = true;
                     }
                 }
             }
