@@ -74,7 +74,13 @@ namespace RTDDE.Executer
                 return;
             }
             Task<DataTable> task = Task.Run(() => DAL.GetDataTable(sql, paras));
-            dg.ItemsSource = (await task).DefaultView;
+            try {
+                dg.ItemsSource = (await task).DefaultView;
+            }
+            catch (Exception ex) {
+                Utility.ShowException(ex.Message);
+                return;
+            }
             ScrollViewer scrollViewer = GetVisualChild<ScrollViewer>(dg);
             if (scrollViewer != null) {
                 scrollViewer.ScrollToTop();
