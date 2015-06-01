@@ -103,6 +103,11 @@ SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
             if (string.IsNullOrWhiteSpace(tableName)) {
                 return;
             }
+            MASTERDB tableEnum;
+            if (Enum.TryParse(tableName, true, out tableEnum) == false) {
+                return;
+            }
+            string pkName = DAL.GetColumnPKName(Converter.Enum2Type(tableEnum));
             Task<DataSet> getDiffResult = Task.Run(() =>
             {
                 using (SQLiteConnection connection = new SQLiteConnection(DAL.ConnectionString)) {
@@ -123,20 +128,20 @@ SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
                         DataTable newDiffTable = new DataTable("new");
                         newDiffTable.Load(command.ExecuteReader());
                         foreach (DataRow dr in oldDiffTable.Rows) {
-                            string id = dr["id"].ToString();
-                            DataRow[] newDiffHasRow = newDiffTable.Select("id=" + id);
+                            string id = dr[pkName].ToString();
+                            DataRow[] newDiffHasRow = newDiffTable.Select(pkName + "=" + id);
                             if (newDiffHasRow.Any() == false) {    //old table only row, add empty row to new table
                                 DataRow newDr = newDiffTable.NewRow();
-                                newDr["id"] = id;
+                                newDr[pkName] = id;
                                 newDiffTable.Rows.Add(newDr);
                             }
                         }
                         foreach (DataRow dr in newDiffTable.Rows) {
-                            string id = dr["id"].ToString();
+                            string id = dr[pkName].ToString();
                             DataRow[] oldDiffHasRow = oldDiffTable.Select("id=" + id);
                             if (oldDiffHasRow.Any() == false) {     //new table only row, add empty row to old table
                                 DataRow oldDr = oldDiffTable.NewRow();
-                                oldDr["id"] = id;
+                                oldDr[pkName] = id;
                                 oldDiffTable.Rows.Add(oldDr);
                             }
                         }
@@ -149,16 +154,21 @@ SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
                 }
             });
             DataSet result = await getDiffResult;
-            var oldDV = result.Tables["old"].DefaultView;
-            if (result.Tables["old"].Columns.Contains("id")) {
-                oldDV.Sort = "id";
+            if (result.Tables.Contains("old")) {
+                var oldDV = result.Tables["old"].DefaultView;
+                if (result.Tables["old"].Columns.Contains(pkName)) {
+                    oldDV.Sort = pkName;
+                }
+                OldTableDataGrid.ItemsSource = oldDV;
             }
-            var newDV = result.Tables["new"].DefaultView;
-            if (result.Tables["new"].Columns.Contains("id")) {
-                newDV.Sort = "id";
+            if (result.Tables.Contains("new")) {
+                var newDV = result.Tables["new"].DefaultView;
+                if (result.Tables["new"].Columns.Contains(pkName)) {
+                    newDV.Sort = pkName;
+                }
+                NewTableDataGrid.ItemsSource = newDV;
             }
-            OldTableDataGrid.ItemsSource = oldDV;
-            NewTableDataGrid.ItemsSource = newDV;
+
             ScrollViewer svOld = Utility.GetVisualChild<ScrollViewer>(OldTableDataGrid);
             ScrollViewer svNew = Utility.GetVisualChild<ScrollViewer>(NewTableDataGrid);
             svOld.ScrollChanged -= svOld_ScrollChanged;
