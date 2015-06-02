@@ -214,8 +214,12 @@ namespace RTDDE.Executer
                             return null;
                         }
                         string colorString = split[1];
-                        var colorObj = ColorConverter.ConvertFromString(colorString);
-                        if (colorObj == null) {
+                        object colorObj;
+                        try {
+                            colorObj = ColorConverter.ConvertFromString(colorString);
+                        }
+                        catch (Exception)
+                        {
                             return null;
                         }
                         Color color = (Color)colorObj;
