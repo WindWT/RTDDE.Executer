@@ -333,6 +333,8 @@ WHERE uo.id={0}";
             partySkill_num_01.Text = skill.num_01.ToString();
             partySkill_num_02.Text = skill.num_02.ToString();
             partySkill_num_03.Text = skill.num_03.ToString();
+            partySkill_num_04.Text = skill.num_04.ToString();
+            partySkill_num_05.Text = skill.num_05.ToString();
         }
         private void activeSkill_BindData(ActiveSkillMaster skill)
         {

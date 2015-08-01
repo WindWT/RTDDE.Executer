@@ -159,6 +159,8 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                 partySkill_num_01.Text = skill.num_01.ToString();
                 partySkill_num_02.Text = skill.num_02.ToString();
                 partySkill_num_03.Text = skill.num_03.ToString();
+                partySkill_num_04.Text = skill.num_04.ToString();
+                partySkill_num_05.Text = skill.num_05.ToString();
 
                 SetSkillUnitRankInfo(tUSR.Result, Convert.ToInt32(skillId));
 
