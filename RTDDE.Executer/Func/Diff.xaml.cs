@@ -66,20 +66,28 @@ SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
                             //检查数据是否存在差异
                             int oldHasNew = 0, newHasNew = 0;
                             string hasDiffMark = string.Empty;
-                            existCommand.CommandText = string.Format(ExistInNewSql, type.ToString());
-                            if (existCommand.ExecuteScalar() != null) {
-                                newHasNew = 1;
+                            try {
+                                existCommand.CommandText = string.Format(ExistInNewSql, type.ToString());
+                                if (existCommand.ExecuteScalar() != null) {
+                                    newHasNew = 1;
+                                }
+                                existCommand.CommandText = string.Format(ExistInOldSql, type.ToString());
+                                if (existCommand.ExecuteScalar() != null) {
+                                    oldHasNew = 1;
+                                }
+                                switch ((oldHasNew << 1) | newHasNew) {
+                                    case 3: { hasDiffMark = "←→"; break; }
+                                    case 2: { hasDiffMark = "←　"; break; }
+                                    case 1: { hasDiffMark = "　→"; break; }
+                                    default: break;
+                                }
                             }
-                            existCommand.CommandText = string.Format(ExistInOldSql, type.ToString());
-                            if (existCommand.ExecuteScalar() != null) {
-                                oldHasNew = 1;
+                            catch (Exception) {
+                                //表结构发生变化
+                                //todo 不出异常的解决方案
+                                hasDiffMark = "Cng";
                             }
-                            switch ((oldHasNew << 1) | newHasNew) {
-                                case 3: { hasDiffMark = "←→"; break; }
-                                case 2: { hasDiffMark = "←　"; break; }
-                                case 1: { hasDiffMark = "　→"; break; }
-                                default: break;
-                            }
+
 
                             if (string.IsNullOrEmpty(hasDiffMark) == false) {
                                 diffTableDictionary.Add("[" + hasDiffMark + "]" + type.ToString(), type.ToString());
@@ -94,6 +102,7 @@ SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
             });
 
             TableSelectComboBox.ItemsSource = await fastDiffTask;
+            TableSelectComboBox.SelectedIndex = 0;
             CompareButton.Content = new Run("Compare");
         }
 
@@ -121,12 +130,18 @@ SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
                     int existCount = Convert.ToInt32(command.ExecuteScalar());
                     if (existCount == 2) {
                         //两个表都存在，可以开工比对了
-                        command.CommandText = string.Format(ExistInOldSql, tableName);
                         DataTable oldDiffTable = new DataTable("old");
-                        oldDiffTable.Load(command.ExecuteReader());
-                        command.CommandText = string.Format(ExistInNewSql, tableName);
                         DataTable newDiffTable = new DataTable("new");
-                        newDiffTable.Load(command.ExecuteReader());
+                        try {
+                            command.CommandText = string.Format(ExistInOldSql, tableName);
+                            oldDiffTable.Load(command.ExecuteReader());
+                            command.CommandText = string.Format(ExistInNewSql, tableName);
+                            newDiffTable.Load(command.ExecuteReader());
+                        }
+                        catch (Exception) {
+                            return new DataSet();
+                        }
+
                         foreach (DataRow dr in oldDiffTable.Rows) {
                             string id = dr[pkName].ToString();
                             DataRow[] newDiffHasRow = newDiffTable.Select(pkName + "=" + id);
