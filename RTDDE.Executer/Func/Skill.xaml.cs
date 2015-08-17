@@ -168,38 +168,40 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
             task.Start();
             taskSkillUnitRank.Start();
         }
-        private void FillActiveSkillInfo(string skillId)
-        {
-            Task<ActiveSkillMaster> task = new Task<ActiveSkillMaster>(() =>
-            {
-                return DAL.ToSingle<ActiveSkillMaster>(string.Format("select * from active_skill_master where id={0}", skillId));
-            });
-            Task<List<SkillUnitRank>> taskSkillUnitRank = new Task<List<SkillUnitRank>>(() =>
-            {
-                return DAL.ToList<SkillUnitRank>(@"Select um.id,um.g_id,um.name,
+
+        private void FillActiveSkillInfo(string skillId) {
+            Task<ActiveSkillMaster> task =
+                Task.Run(() => DAL.ToSingle<ActiveSkillMaster>($"select * from active_skill_master where id={skillId}"));
+            Task<List<LimitSkillMaster>> taskAsLimit = Task.Run(() =>
+                DAL.ToList<LimitSkillMaster>(
+                    string.Format(
+                        "select * from limit_skill_master where skill_id_00={0} or skill_id_01={0} or skill_id_02={0}",
+                        skillId))
+                );
+            Task<List<SkillUnitRank>> taskSkillUnitRank =
+                Task.Run(() => DAL.ToList<SkillUnitRank>(@"Select um.id,um.g_id,um.name,
 IFNULL(skill_01_09,0) as skill_01_09,IFNULL(skill_10_19,0) as skill_10_19,
 IFNULL(skill_20_29,0) as skill_20_29,IFNULL(skill_30_39,0) as skill_30_39,IFNULL(skill_40_49,0) as skill_40_49,
 IFNULL(skill_50_59,0) as skill_50_59,IFNULL(skill_60_69,0) as skill_60_69,IFNULL(skill_70_79,0) as skill_70_79,
 IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL(skill_100,0) as skill_100
         From Unit_master as um
         LEFT JOIN active_skill_rank_master AS srm on um.a_skill_id=srm.id
-        ORDER BY um.g_id");
-            });
-            taskSkillUnitRank.ContinueWith(tUSR =>
-            {
-                Task.WaitAll(task);
-                if (tUSR.Exception != null)
-                {
-                    Utility.ShowException(tUSR.Exception.InnerException.Message);
+        ORDER BY um.g_id"));
+            taskSkillUnitRank.ContinueWith(tSur => {
+                Task.WaitAll(task, taskAsLimit);
+                if (tSur.Exception != null) {
+                    Utility.ShowException(tSur.Exception.InnerException.Message);
                     return;
                 }
-                if (task.Exception != null)
-                {
+                if (task.Exception != null) {
                     Utility.ShowException(task.Exception.InnerException.Message);
                     return;
                 }
-                if (tUSR.Result == null || tUSR.Result.Count == 0)
-                {
+                if (taskAsLimit.Exception != null) {
+                    Utility.ShowException(taskAsLimit.Exception.InnerException.Message);
+                    return;
+                }
+                if (tSur.Result == null || tSur.Result.Count == 0) {
                     return;
                 }
                 ActiveSkillMaster skill = task.Result;
@@ -210,21 +212,40 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                 activeSkill_attribute.Text = Utility.ParseAttributetype(skill.attribute);
                 activeSkill_sub_attr.Text = Utility.ParseAttributetype(skill.sub_attr);
                 activeSkill_style.Text = Utility.ParseStyletype(skill.style);
-                activeSkill_type.Text = Utility.ParseSkillType((ActiveSkillType)skill.type);
+                activeSkill_type.Text = Utility.ParseSkillType((ActiveSkillType) skill.type);
                 activeSkill_type_id.Text = skill.type.ToString();
                 activeSkill_num.Text = skill.num.ToString();
                 activeSkill_num_01.Text = skill.num_01.ToString();
                 activeSkill_num_02.Text = skill.num_02.ToString();
                 activeSkill_num_03.Text = skill.num_03.ToString();
                 activeSkill_soul.Text = skill.soul.ToString();
-                activeSkill_phase.Text = ((SkillPhase)skill.phase).ToString();
+                activeSkill_phase.Text = ((SkillPhase) skill.phase).ToString();
                 activeSkill_limit_num.Text = skill.limit_num.ToString();
 
-                SetSkillUnitRankInfo(tUSR.Result, Convert.ToInt32(skillId));
+                SkillInfo_ActiveSkill_Limit.Children.Clear();
+                for (int i = 0; i < taskAsLimit.Result.Count; i++) {
+                    LimitSkillMaster limit = taskAsLimit.Result[i];
+                    SkillInfo_ActiveSkill_Limit.RowDefinitions.Add(new RowDefinition() {
+                        Height = new GridLength(1, GridUnitType.Star)
+                    });
+                    TextBlock tblTitle = new TextBlock() {Text = "limit"};
+                    tblTitle.SetValue(Grid.ColumnProperty, 0);
+                    tblTitle.SetValue(Grid.RowProperty, i);
+                    SkillInfo_ActiveSkill_Limit.Children.Add(tblTitle);
+                    TextBox tbId = new TextBox() { Text = limit.id.ToString() };
+                    tbId.SetValue(Grid.ColumnProperty, 1);
+                    tbId.SetValue(Grid.RowProperty, i);
+                    SkillInfo_ActiveSkill_Limit.Children.Add(tbId);
+                    TextBox tbName = new TextBox() { Text = limit.name };
+                    tbName.SetValue(Grid.ColumnProperty, 2);
+                    tbName.SetValue(Grid.RowProperty, i);
+                    //tbName.SetValue(Grid.ColumnSpanProperty, 2);
+                    SkillInfo_ActiveSkill_Limit.Children.Add(tbName);
+                }
 
-            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
-            task.Start();
-            taskSkillUnitRank.Start();
+                SetSkillUnitRankInfo(tSur.Result, Convert.ToInt32(skillId));
+
+            }, MainWindow.UiTaskScheduler); //this Task work on ui thread
         }
         private void FillPanelSkillInfo(string skillId)
         {
@@ -517,8 +538,10 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
         {
             SkillInfo_PartySkill.Visibility = Visibility.Visible;
             SkillInfo_ActiveSkill.Visibility = Visibility.Collapsed;
+            SkillInfo_ActiveSkill_Limit.Visibility = Visibility.Collapsed;
             SkillInfo_PanelSkill.Visibility = Visibility.Collapsed;
             SkillInfo_LimitSkill.Visibility = Visibility.Collapsed;
+            SkillInfo_LimitSkill_LimitAS.Visibility=Visibility.Collapsed;
             SkillUnitRankInfo.Children.Clear();
             Utility.BindData(SkillDataGrid, "select id,type,name from party_skill_master order by type,id");
             SkillSearch_type.ItemsSource = GetSkillTypeDict<PassiveSkillType>();
@@ -529,8 +552,10 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
         {
             SkillInfo_PartySkill.Visibility = Visibility.Collapsed;
             SkillInfo_ActiveSkill.Visibility = Visibility.Visible;
+            SkillInfo_ActiveSkill_Limit.Visibility = Visibility.Visible;
             SkillInfo_PanelSkill.Visibility = Visibility.Collapsed;
             SkillInfo_LimitSkill.Visibility = Visibility.Collapsed;
+            SkillInfo_LimitSkill_LimitAS.Visibility = Visibility.Collapsed;
             SkillUnitRankInfo.Children.Clear();
             Utility.BindData(SkillDataGrid, "select id,type,name from active_skill_master order by type,id");
             SkillSearch_type.ItemsSource = GetSkillTypeDict<ActiveSkillType>();
@@ -541,8 +566,10 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
         {
             SkillInfo_PartySkill.Visibility = Visibility.Collapsed;
             SkillInfo_ActiveSkill.Visibility = Visibility.Collapsed;
+            SkillInfo_ActiveSkill_Limit.Visibility = Visibility.Collapsed;
             SkillInfo_PanelSkill.Visibility = Visibility.Visible;
             SkillInfo_LimitSkill.Visibility = Visibility.Collapsed;
+            SkillInfo_LimitSkill_LimitAS.Visibility = Visibility.Collapsed;
             SkillUnitRankInfo.Children.Clear();
             Utility.BindData(SkillDataGrid, "select id,type,name from panel_skill_master order by type,id");
             SkillSearch_type.ItemsSource = GetSkillTypeDict<PanelSkillType>();
@@ -553,8 +580,10 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
         {
             SkillInfo_PartySkill.Visibility = Visibility.Collapsed;
             SkillInfo_ActiveSkill.Visibility = Visibility.Collapsed;
+            SkillInfo_ActiveSkill_Limit.Visibility = Visibility.Collapsed;
             SkillInfo_PanelSkill.Visibility = Visibility.Collapsed;
             SkillInfo_LimitSkill.Visibility = Visibility.Visible;
+            SkillInfo_LimitSkill_LimitAS.Visibility = Visibility.Visible;
             SkillUnitRankInfo.Children.Clear();
             Utility.BindData(SkillDataGrid, "select id,name from limit_skill_master order by id");
             //Limit skill has no type
@@ -565,20 +594,16 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
         private string GetSkillTableByRadioChecked()
         {
             string tableName = string.Empty;
-            if (SkillTypeRadio_Party.IsChecked == true)
-            {
+            if (SkillTypeRadio_Party.IsChecked == true) {
                 tableName = "party_skill_master";
             }
-            else if (SkillTypeRadio_Active.IsChecked == true)
-            {
+            else if (SkillTypeRadio_Active.IsChecked == true) {
                 tableName = "active_skill_master";
             }
-            else if (SkillTypeRadio_Panel.IsChecked == true)
-            {
+            else if (SkillTypeRadio_Panel.IsChecked == true) {
                 tableName = "panel_skill_master";
             }
-            else if (SkillTypeRadio_Limit.IsChecked == true)
-            {
+            else if (SkillTypeRadio_Limit.IsChecked == true) {
                 tableName = "limit_skill_master";
             }
             return tableName;

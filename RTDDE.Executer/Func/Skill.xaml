@@ -227,29 +227,41 @@
                     <TextBox Grid.Column="3" Name="panelSkill_num_03"></TextBox>
                 </Grid>
             </Grid>
+            <Grid Name="SkillInfo_LimitSkill">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="LIMIT"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Name="limitSkill_id"></TextBox>
+                <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="limitSkill_name"></TextBox>
+                <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="limitSkill_general_text"></RichTextBox>
+                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="coefficient"/>
+                <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="limitSkill_coefficient"></TextBox>
+            </Grid>
         </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" Style="{StaticResource VerticalScrollViewer}">
             <StackPanel>
-                <Grid Name="SkillInfo_LimitSkill">
+                <Grid Name="SkillInfo_ActiveSkill_Limit">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
                         <ColumnDefinition Width="50"></ColumnDefinition>
                         <ColumnDefinition Width="50"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="LIMIT"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" Name="limitSkill_id"></TextBox>
-                    <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Name="limitSkill_name"></TextBox>
-                    <RichTextBox Grid.Row="1" Grid.ColumnSpan="4" Name="limitSkill_general_text"></RichTextBox>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="coefficient"/>
-                    <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="limitSkill_coefficient"></TextBox>
-                    <Expander Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Header="LimitAS" IsExpanded="False">
+                </Grid>
+                <Grid Name="SkillInfo_LimitSkill_LimitAS">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Expander Grid.Column="1" Header="LimitAS" IsExpanded="False">
                         <StackPanel Name="SkillInfo_LimitSkill_AS"></StackPanel>
                     </Expander>
                 </Grid>
