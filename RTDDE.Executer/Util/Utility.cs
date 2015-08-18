@@ -29,7 +29,7 @@ namespace RTDDE.Executer
             text = text.Replace("\n", @"\n");   //fix split issue
             Paragraph pr = new Paragraph { Margin = new Thickness(0) }; //prprpr
             var textParts = RegColor.Split(text);
-            Stack<Brush> brushStack=new Stack<Brush>();
+            Stack<SolidColorBrush> brushStack=new Stack<SolidColorBrush>();
             brushStack.Push(Brushes.Black);
             foreach (string textPart in textParts) {
                 if (RegColor.Match(textPart).Success) {
@@ -45,7 +45,11 @@ namespace RTDDE.Executer
                         if (colorEnd && brushStack.Count > 1) {
                             brushStack.Pop();
                         }
-                        Span span = new Span { Foreground = brushStack.Peek() };
+                        SolidColorBrush foreground = brushStack.Peek();
+                        FontWeight fontWeight = foreground.Color == Brushes.Black.Color
+                            ? FontWeights.Normal
+                            : FontWeights.Bold;
+                        Span span = new Span {Foreground = foreground, FontWeight = fontWeight };
                         span.Inlines.Add(new Run(part.Replace(@"\n", "\n")));
                         pr.Inlines.Add(span);
                         colorEnd = true;
