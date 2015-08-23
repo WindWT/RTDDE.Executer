@@ -23,7 +23,7 @@
                 <RadioButton GroupName="QuestType" Content="Daily" Name="QuestTypeRadio_Daily" Click="QuestTypeRadio_Daily_OnClick"></RadioButton>
                 <RadioButton GroupName="QuestType" Content="Main" Name="QuestTypeRadio_Main" Click="QuestTypeRadio_Main_OnClick"></RadioButton>
             </UniformGrid>
-            <Expander Header="Search" Name="QuestSearchExpander">
+            <Expander Header="{DynamicResource General_Search}" Name="QuestSearchExpander">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50"/>
@@ -136,7 +136,7 @@
                 <TextBox Grid.Row="0" Grid.Column="5" Name="QuestInfo_pt_num"/>
                 <TextBlock Grid.Row="1" Text="distance" ></TextBlock>
                 <TextBox Grid.Row="1" Grid.Column="1" Name="QuestInfo_distance"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" Text="stamina"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{DynamicResource Quest_stamina}"/>
                 <TextBox Grid.Row="1" Grid.Column="3" Name="QuestInfo_stamina"/>
                 <TextBlock Grid.Row="1" Grid.Column="4" Text="difficulty"/>
                 <TextBox Grid.Row="1" Grid.Column="5" Name="QuestInfo_difficulty"/>

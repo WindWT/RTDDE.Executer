@@ -22,6 +22,7 @@ using System.Windows.Threading;
 using System.Configuration;
 using System.Windows.Controls.Primitives;
 using System.ComponentModel;
+using System.Windows.Markup;
 using System.Windows.Shell;
 using RTDDE.Executer.Func;
 
@@ -34,9 +35,24 @@ namespace RTDDE.Executer
     {
         public MainWindow()
         {
-            InitializeComponent();
             Settings.Init();    //init settings here
+            InitLanguageDictionary();
+            InitializeComponent();
             ChangeTabByName("Quest");
+        }
+
+        private void InitLanguageDictionary()
+        {
+            //ResourceDictionary dict = new ResourceDictionary();
+            string filepath = $"Lang\\{Thread.CurrentThread.CurrentCulture.ToString()}.xaml";
+            if (File.Exists(filepath) == false) {
+                return;
+            }
+            using (var fs = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read)) {
+                var dic = (ResourceDictionary)XamlReader.Load(fs);
+                Resources.MergedDictionaries.Clear();
+                Resources.MergedDictionaries.Add(dic);
+            }
         }
         [Obsolete("use async and await instead")]
         public static readonly TaskScheduler UiTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
