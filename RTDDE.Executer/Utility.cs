@@ -58,6 +58,11 @@ namespace RTDDE.Executer
             var w = (MainWindow)Application.Current.MainWindow;
             w.StatusBarExceptionMessage.Text = message;
         }
+
+        public static string GetUiText(string key) {
+            return Application.Current.Resources[key].ToString();
+        }
+
         public static void ChangeTab<T>() where T : UserControl
         {
             var w = (MainWindow)Application.Current.MainWindow;

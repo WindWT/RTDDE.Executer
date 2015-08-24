@@ -5,5 +5,11 @@
     <system:String x:Key="Quest_stamina">stamina</system:String>
     <!--Config-->
     <system:String x:Key="Config_Import">Import</system:String>
+    <system:String x:Key="Config_ImportMDBS">Import MDBS MsgPack</system:String>
+    <system:String x:Key="Config_ImportingMDBS">Importing MDBS MsgPack...</system:String>
+    <system:String x:Key="Config_ImportLDBS">Import MAP</system:String>
+    <system:String x:Key="Config_LDBSFilter">LDBS File</system:String>
+
     <system:String x:Key="Config_Settings">Settings</system:String>
+    <system:String x:Key="Config_SaveSettings">Save Settings</system:String>
 </ResourceDictionary>

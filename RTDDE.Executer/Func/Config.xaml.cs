@@ -28,14 +28,14 @@ namespace RTDDE.Executer.Func
         }
         private void ConfigTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ImportMsgPackButton.Content = new Run("Import MDBS MsgPack");
-            ImportLdbsButton.Content = new Run("Import MAP");
-            SaveSettingsButton.Content = new Run("Save Settings");
+            ImportMsgPackButton.SetResourceReference(Button.ContentProperty, "Config_ImportMDBS");
+            ImportLdbsButton.SetResourceReference(Button.ContentProperty, "Config_ImportLDBS");
+            SaveSettingsButton.SetResourceReference(Button.ContentProperty, "Config_SaveSettings");
         }
         private void ImportLdbsButton_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            ofd.Filter = "LDBS File|LDBS*_Msg.bytes";
+            ofd.Filter = Utility.GetUiText("Config_LDBSFilter") + "|LDBS*_Msg.bytes";
             if (ofd.ShowDialog() == true) {
                 ImportLdbsButton.Content = new Run("Importing MAP Data...");
                 string filename = ofd.FileName;
@@ -77,7 +77,7 @@ namespace RTDDE.Executer.Func
                 Title = "Browse Folder Then Press Open"
             };
             if (ofd.ShowDialog() == true) {
-                ImportMsgPackButton.Content = new Run("Importing MDBS MsgPack...");
+                ImportMsgPackButton.SetResourceReference(Button.ContentProperty, "Config_ImportingMDBS");
                 string path = System.IO.Path.GetDirectoryName(ofd.FileName);
                 var stopwatch = new Stopwatch();
                 long importTime = 0, backupTime = 0;

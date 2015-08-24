@@ -10,7 +10,7 @@
     </UserControl.Resources>
     <Grid Name="ConfigTab" IsVisibleChanged="ConfigTab_IsVisibleChanged">
         <DockPanel Background="{StaticResource HighlightBrush}">
-            <GroupBox DockPanel.Dock="Top" Header="Import">
+            <GroupBox DockPanel.Dock="Top" Header="{DynamicResource Config_Import}">
                 <StackPanel>
                     <Button Name="ImportMsgPackButton" Click="ImportMsgPackButton_Click">MsgPack</Button>
                     <Button Name="ImportLdbsButton" Click="ImportLdbsButton_Click">LDBS</Button>
