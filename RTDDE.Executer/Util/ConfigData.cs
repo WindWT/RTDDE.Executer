@@ -8,7 +8,7 @@ using RTDDE.Provider;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace RTDDE.Executer
+namespace RTDDE.Executer.Util
 {
     public class ConfigData : INotifyPropertyChanged
     {

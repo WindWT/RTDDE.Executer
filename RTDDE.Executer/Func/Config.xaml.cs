@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Xml;
+using RTDDE.Executer.Util;
 using RTDDE.Provider;
 using RTDDE.Provider.Enums;
 

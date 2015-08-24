@@ -25,6 +25,7 @@ using System.ComponentModel;
 using System.Windows.Markup;
 using System.Windows.Shell;
 using RTDDE.Executer.Func;
+using RTDDE.Executer.Util;
 
 namespace RTDDE.Executer
 {
@@ -43,14 +44,18 @@ namespace RTDDE.Executer
 
         private void InitLanguageDictionary()
         {
-            //ResourceDictionary dict = new ResourceDictionary();
+            //load base language file
+            var baseDict = new ResourceDictionary();
+            baseDict.Source = new Uri("..\\Lang\\en-US.xaml", UriKind.Relative);
+            Resources.MergedDictionaries.Clear();
+            Resources.MergedDictionaries.Add(baseDict);
+            //load external language file
             string filepath = $"Lang\\{Thread.CurrentThread.CurrentCulture.ToString()}.xaml";
             if (File.Exists(filepath) == false) {
                 return;
             }
             using (var fs = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read)) {
                 var dic = (ResourceDictionary)XamlReader.Load(fs);
-                Resources.MergedDictionaries.Clear();
                 Resources.MergedDictionaries.Add(dic);
             }
         }
