@@ -3,4 +3,7 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="General_Search">Search</system:String>
     <system:String x:Key="Quest_stamina">stamina</system:String>
+    <!--Config-->
+    <system:String x:Key="Config_Import">Import</system:String>
+    <system:String x:Key="Config_Settings">Settings</system:String>
 </ResourceDictionary>

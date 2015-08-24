@@ -37,18 +37,18 @@ namespace RTDDE.Executer
         public MainWindow()
         {
             Settings.Init();    //init settings here
-            InitLanguageDictionary();
             InitializeComponent();
+            InitLanguageDictionary();
             ChangeTabByName("Quest");
         }
 
         private void InitLanguageDictionary()
         {
             //load base language file
-            var baseDict = new ResourceDictionary();
-            baseDict.Source = new Uri("..\\Lang\\en-US.xaml", UriKind.Relative);
-            Resources.MergedDictionaries.Clear();
-            Resources.MergedDictionaries.Add(baseDict);
+            //var baseDict = new ResourceDictionary();
+            //baseDict.Source = new Uri("..\\Lang\\en-US.xaml", UriKind.Relative);
+            //Resources.MergedDictionaries.Clear();
+            //Resources.MergedDictionaries.Add(baseDict);
             //load external language file
             string filepath = $"Lang\\{Thread.CurrentThread.CurrentCulture.ToString()}.xaml";
             if (File.Exists(filepath) == false) {
