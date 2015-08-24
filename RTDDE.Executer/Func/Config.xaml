@@ -16,16 +16,16 @@
                     <Button Name="ImportLdbsButton" Click="ImportLdbsButton_Click">LDBS</Button>
                 </StackPanel>
             </GroupBox>
-            <GroupBox DockPanel.Dock="Top" Header="Settings">
+            <GroupBox DockPanel.Dock="Top" Header="{DynamicResource Config_Settings}">
                 <StackPanel>
-                    <GroupBox Header="General">
+                    <GroupBox Header="{DynamicResource Config_SettingsGeneral}">
                         <StackPanel>
-                            <CheckBox Name="IsEnableLevelLimiterCheckBox" IsChecked="{Binding Path=General.IsEnableLevelLimiter,Mode=TwoWay}">Enable level limiter</CheckBox>
-                            <CheckBox Name="IsDefaultLvMaxCheckBox" IsChecked="{Binding Path=General.IsDefaultLvMax,Mode=TwoWay}">Set LV to max by default</CheckBox>
-                            <CheckBox Name="IsUseLocalTimeCheckBox" IsChecked="{Binding Path=General.IsUseLocalTime,Mode=TwoWay}">Show local time instead of GMT+9</CheckBox>
+                            <CheckBox Name="IsEnableLevelLimiterCheckBox" IsChecked="{Binding Path=General.IsEnableLevelLimiter,Mode=TwoWay}" Content="{DynamicResource Config_IsEnableLevelLimiter}" />
+                            <CheckBox Name="IsDefaultLvMaxCheckBox" IsChecked="{Binding Path=General.IsDefaultLvMax,Mode=TwoWay}" Content="{DynamicResource Config_IsDefaultLvMax}" />
+                            <CheckBox Name="IsUseLocalTimeCheckBox" IsChecked="{Binding Path=General.IsUseLocalTime,Mode=TwoWay}" Content="{DynamicResource Config_IsUseLocalTime}" />
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Map">
+                    <GroupBox Header="{DynamicResource Config_SettingsMap}">
                         <StackPanel>
                             <CheckBox Name="IsShowDropInfoCheckBox" IsChecked="{Binding Path=Map.IsShowDropInfo,Mode=TwoWay}">Show drop &amp; exp info(not recommend for iOS user)</CheckBox>
                             <GroupBox>
@@ -74,7 +74,7 @@
                                         <TextBox Grid.Row="0" Grid.Column="12" Name="SaleColorValueTextBox" Text="{Binding Path=Map.SaleColorValue,Mode=TwoWay}"></TextBox>
                                         <TextBlock Grid.Row="1" Grid.Column="0" Name="CustomDropTextBlock">Custom Drop</TextBlock>
                                         <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="12" Text="{Binding Path=Map.CustomDrop,Mode=TwoWay}"></TextBox>
-                                        <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource InlineButton}" Name="ValidateCustomDropSettingButton" Click="ValidateCustomDropSettingButton_OnClick">Validate Custom</Button>
+                                        <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource InlineButton}" Name="ValidateCustomDropSettingButton" Click="ValidateCustomDropSettingButton_OnClick" Content="{DynamicResource Config_Validate}"></Button>
                                         <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="12">[Custom Drop Format]id,id,id:color;id:#hexcolor [Example]15022:Black,16027:#000</TextBlock>
                                     </Grid>
                                 </StackPanel>
