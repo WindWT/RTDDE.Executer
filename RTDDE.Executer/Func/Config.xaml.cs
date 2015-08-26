@@ -168,23 +168,17 @@ namespace RTDDE.Executer.Func
                 SaveSettingsButton.SetResourceReference(Button.ContentProperty, "Config_SaveSettingsFail");
             }
         }
-
-        private static readonly Regex CheckOnlyNumberRegex = new Regex("[^0-9]+", RegexOptions.Compiled); //regex that matches disallowed text
-        private bool IsTextAllowed(string text)
-        {
-            return (CheckOnlyNumberRegex.IsMatch(text) == false);
-        }
         private void ExpValueTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = IsTextAllowed(e.Text) == false;
+            e.Handled = Utility.IsOnlyNumber(e.Text) == false;
         }
         private void PtValueTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = IsTextAllowed(e.Text) == false;
+            e.Handled = Utility.IsOnlyNumber(e.Text) == false;
         }
         private void SaleValueTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = IsTextAllowed(e.Text) == false;
+            e.Handled = Utility.IsOnlyNumber(e.Text) == false;
         }
 
         private void ResetDropSettingButton_OnClick(object sender, RoutedEventArgs e)

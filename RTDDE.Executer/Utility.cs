@@ -53,6 +53,12 @@ namespace RTDDE.Executer
             flowDoc.Blocks.Add(pr);
             return flowDoc;
         }
+        public static readonly Regex CheckOnlyNumberRegex = new Regex("[^0-9]+", RegexOptions.Compiled); //regex that matches disallowed text
+
+        public static bool IsOnlyNumber(string text) {
+            return (CheckOnlyNumberRegex.IsMatch(text) == false);
+        }
+
         public static void ShowException(string message)
         {
             var w = (MainWindow)Application.Current.MainWindow;
