@@ -44,12 +44,10 @@ namespace RTDDE.Executer
 
         private void InitLanguageDictionary()
         {
-            //load base language file
-            //var baseDict = new ResourceDictionary();
-            //baseDict.Source = new Uri("..\\Lang\\en-US.xaml", UriKind.Relative);
-            //Resources.MergedDictionaries.Clear();
-            //Resources.MergedDictionaries.Add(baseDict);
             //load external language file
+            if (Settings.Config.General.IsForceEnglish) {
+                return;
+            }
             string filepath = $"Lang\\{Thread.CurrentThread.CurrentCulture.ToString()}.xaml";
             if (File.Exists(filepath) == false) {
                 return;

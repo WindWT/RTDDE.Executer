@@ -23,6 +23,8 @@
                             <CheckBox Name="IsEnableLevelLimiterCheckBox" IsChecked="{Binding Path=General.IsEnableLevelLimiter,Mode=TwoWay}" Content="{DynamicResource Config_IsEnableLevelLimiter}" />
                             <CheckBox Name="IsDefaultLvMaxCheckBox" IsChecked="{Binding Path=General.IsDefaultLvMax,Mode=TwoWay}" Content="{DynamicResource Config_IsDefaultLvMax}" />
                             <CheckBox Name="IsUseLocalTimeCheckBox" IsChecked="{Binding Path=General.IsUseLocalTime,Mode=TwoWay}" Content="{DynamicResource Config_IsUseLocalTime}" />
+                            <CheckBox Name="IsForceEnglish" IsChecked="{Binding Path=General.IsForceEnglish,Mode=TwoWay}" Content="{DynamicResource Config_IsForceEnglish}" />
+                            <TextBlock Name="CurrentSystemLanguage"/>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="{DynamicResource Config_SettingsMap}">

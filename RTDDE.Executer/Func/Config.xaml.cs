@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,6 +26,8 @@ namespace RTDDE.Executer.Func
         {
             this.DataContext = Settings.Config;
             InitializeComponent();
+            CurrentSystemLanguage.Text = string.Format(Utility.GetUiText("Config_CurrentSystemLanguage"),
+                Thread.CurrentThread.CurrentCulture.ToString());
         }
         private void ConfigTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
