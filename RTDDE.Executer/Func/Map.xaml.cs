@@ -346,7 +346,9 @@ namespace RTDDE.Executer.Func
                     MapEnemyInfo_lv.Text = lv.ToString("0");
                 }
                 MapEnemyInfo_life.Text = Utility.RealCalc(eum.life, eum.up_life, lv).ToString();
-                MapEnemyInfo_atk.Text = Utility.RealCalc(eum.attack, eum.up_attack, lv).ToString();
+                int atk = Utility.RealCalc(eum.attack, eum.up_attack, lv);
+                MapEnemyInfo_atk.Text = atk.ToString();
+                MapEnemyInfo_atk.ToolTip = $"{(int) (atk*0.8)}~{(int) (atk*1.1)}";
                 MapEnemyInfo_def.Text = Utility.RealCalc(eum.defense, eum.up_defense, lv).ToString();
 
                 MapEnemyInfo_pat.Text = Utility.ParseAttackPattern(eum.pat);
