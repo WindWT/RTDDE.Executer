@@ -480,8 +480,8 @@ FROM QUEST_MASTER WHERE ";
             QuestTypeSwitch(QuestType.Event);
         }
 
-        private void SB_ShowMap_Completed(object sender, EventArgs e)
-        {
+        private void SB_ShowMap_Completed(object sender, EventArgs e) {
+            MapGrid.Width = UnitGrid.ActualWidth;
             Map.Load(QuestInfo_id.Text);
         }
 
@@ -535,6 +535,12 @@ FROM QUEST_MASTER WHERE ";
                 return;
             }
             Utility.GoToItemById<Event>(id);
+        }
+
+        private void UnitGrid_OnSizeChanged(object sender, SizeChangedEventArgs e) {
+            if (MapGrid.Width > 0) {
+                MapGrid.Width = UnitGrid.ActualWidth;
+            }
         }
     }
 }

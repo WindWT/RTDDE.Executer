@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:RTDDE="clr-namespace:RTDDE.Executer.Func"
              mc:Ignorable="d">
-    <Grid Name="UnitGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid Name="UnitGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SizeChanged="UnitGrid_OnSizeChanged">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="360"/>
@@ -61,6 +61,7 @@
                                     <DoubleAnimation
                                     Storyboard.TargetName="MapGrid" 
                                     Storyboard.TargetProperty="Width"
+                                    FillBehavior="Stop"
                                     To="{Binding ElementName=UnitGrid, Path=ActualWidth}" Duration="0:0:0.360">
                                         <DoubleAnimation.EasingFunction>
                                             <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
