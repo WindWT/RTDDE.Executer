@@ -22,7 +22,13 @@
     <system:String x:Key="Config_IsDefaultLvMax">Set LV to max by default</system:String>
     <system:String x:Key="Config_IsUseLocalTime">Show local time instead of GMT+9</system:String>
     <system:String x:Key="Config_SettingsMap">Map</system:String>
-    
+    <system:String x:Key="Config_IsShowDropInfo">Show drop &amp; exp info(not recommend for iOS user)</system:String>
+    <system:String x:Key="Config_IsShowBoxInfo">Show box info</system:String>
+    <system:String x:Key="Config_IsShowEnemyAttribute">Show enemy attribute on topright</system:String>
+
+    <system:String x:Key="Config_SettingsDatabase">Database</system:String>
+    <system:String x:Key="Config_AutoBackup">Auto backup when import MDBS</system:String>
+
     <system:String x:Key="Config_SaveSettings">Save Settings</system:String>
     <system:String x:Key="Config_SaveSettingsSuccess">SAVED</system:String>
     <system:String x:Key="Config_SaveSettingsFail">FAILED, click to retry.</system:String>

@@ -27,7 +27,7 @@
                     </GroupBox>
                     <GroupBox Header="{DynamicResource Config_SettingsMap}">
                         <StackPanel>
-                            <CheckBox Name="IsShowDropInfoCheckBox" IsChecked="{Binding Path=Map.IsShowDropInfo,Mode=TwoWay}">Show drop &amp; exp info(not recommend for iOS user)</CheckBox>
+                            <CheckBox Name="IsShowDropInfoCheckBox" IsChecked="{Binding Path=Map.IsShowDropInfo,Mode=TwoWay}" Content="{DynamicResource Config_IsShowDropInfo}" />
                             <GroupBox>
                                 <GroupBox.Header>
                                     <Button Width="125" Style="{StaticResource InlineButton}" Name="ResetDropSettingButton" Click="ResetDropSettingButton_OnClick">Reset Drop</Button>
@@ -79,16 +79,16 @@
                                     </Grid>
                                 </StackPanel>
                             </GroupBox>
-                            <CheckBox Name="IsShowBoxInfoCheckBox" IsChecked="{Binding Path=Map.IsShowBoxInfo,Mode=TwoWay}">Show box info</CheckBox>
-                            <CheckBox Name="IsShowEnemyAttributeCheckBox" IsChecked="{Binding Path=Map.IsShowEnemyAttribute,Mode=TwoWay}">Show enemy attribute on topright</CheckBox>
+                            <CheckBox Name="IsShowBoxInfoCheckBox" IsChecked="{Binding Path=Map.IsShowBoxInfo,Mode=TwoWay}" Content="{DynamicResource Config_IsShowBoxInfo}"/>
+                            <CheckBox Name="IsShowEnemyAttributeCheckBox" IsChecked="{Binding Path=Map.IsShowEnemyAttribute,Mode=TwoWay}" Content="{DynamicResource Config_IsShowEnemyAttribute}"/>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="DataBase">
+                    <GroupBox Header="{DynamicResource Config_SettingsDatabase}">
                         <StackPanel>
-                            <CheckBox Name="AutoBackupCheckBox" IsChecked="{Binding Path=Database.AutoBackup,Mode=TwoWay}">Auto backup when import MDBS</CheckBox>
+                            <CheckBox Name="AutoBackupCheckBox" IsChecked="{Binding Path=Database.AutoBackup,Mode=TwoWay}" Content="{DynamicResource Config_AutoBackup}"/>
                         </StackPanel>
                     </GroupBox>
-                    <Button Name="SaveSettingsButton" Click="SaveSettingsButton_Click">Save Settings</Button>
+                    <Button Name="SaveSettingsButton" Click="SaveSettingsButton_Click" Content="{DynamicResource Config_SaveSettings}"/>
                 </StackPanel>
             </GroupBox>
         </DockPanel>
