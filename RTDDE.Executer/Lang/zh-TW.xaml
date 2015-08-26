@@ -1,0 +1,38 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="General_Search">Search</system:String>
+    <system:String x:Key="Quest_stamina">stamina</system:String>
+    <!--Config-->
+    <system:String x:Key="Config_Import">Import</system:String>
+    <system:String x:Key="Config_ImportSelectFolder">Browse Folder Then Press Open</system:String>
+    <system:String x:Key="Config_ImportMDBS">Import MDBS MsgPack</system:String>
+    <system:String x:Key="Config_ImportingMDBS">Importing MDBS MsgPack...</system:String>
+    <system:String x:Key="Config_ImportMDBSFail">MDBS MsgPack Import Failed.</system:String>
+    <system:String x:Key="Config_ImportMDBSSuccess">MDBS MsgPack Successfully Imported. ({0}ms)</system:String>
+    <system:String x:Key="Config_ImportMDBSSuccessWithBackup">MDBS MsgPack Successfully Backuped &amp; Imported . (B:{1}ms I:{0}ms)</system:String>
+    <system:String x:Key="Config_ImportLDBS">Import MAP</system:String>
+    <system:String x:Key="Config_ImportingLDBS">Importing MAP Data...</system:String>
+    <system:String x:Key="Config_ImportLDBSFail">MAP Data Import Failed.</system:String>
+    <system:String x:Key="Config_ImportLDBSSuccess">MAP Data Successfully Imported.</system:String>
+    <system:String x:Key="Config_LDBSFilter">LDBS File</system:String>
+    <system:String x:Key="Config_Settings">Settings</system:String>
+    <system:String x:Key="Config_SettingsGeneral">General</system:String>
+    <system:String x:Key="Config_IsEnableLevelLimiter">Enable level limiter</system:String>
+    <system:String x:Key="Config_IsDefaultLvMax">Set LV to max by default</system:String>
+    <system:String x:Key="Config_IsUseLocalTime">Show local time instead of GMT+9</system:String>
+    <system:String x:Key="Config_SettingsMap">Map</system:String>
+    <system:String x:Key="Config_IsShowDropInfo">Show drop &amp; exp info(not recommend for iOS user)</system:String>
+    <system:String x:Key="Config_IsShowBoxInfo">Show box info</system:String>
+    <system:String x:Key="Config_IsShowEnemyAttribute">Show enemy attribute on topright</system:String>
+
+    <system:String x:Key="Config_SettingsDatabase">Database</system:String>
+    <system:String x:Key="Config_AutoBackup">Auto backup when import MDBS</system:String>
+
+    <system:String x:Key="Config_SaveSettings">Save Settings</system:String>
+    <system:String x:Key="Config_SaveSettingsSuccess">SAVED</system:String>
+    <system:String x:Key="Config_SaveSettingsFail">FAILED, click to retry.</system:String>
+    <system:String x:Key="Config_Validate">Validate Custom</system:String>
+    <system:String x:Key="Config_ValidateSuccess">Success</system:String>
+    <system:String x:Key="Config_ValidateFail">ERROR</system:String>
+</ResourceDictionary>
