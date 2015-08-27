@@ -38,6 +38,14 @@
                     <Grid Name="MapGrid"></Grid>
                 </ScrollViewer>
             </Grid>
+            <UniformGrid DockPanel.Dock="Top" Rows="1" Columns="6">
+                <Button>UP</Button>
+                <TextBox></TextBox>
+                <Button>DOWN</Button>
+                <Button>LOAD</Button>
+                <Button>TryLoad</Button>
+                <ToggleButton>Drop</ToggleButton>
+            </UniformGrid>
             <Grid  DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -82,6 +90,8 @@
                             <TextBox Name="MapEnemyInfo_gold_pt" Width="50"></TextBox>
                             <TextBlock Text="turn" Width="50"/>
                             <TextBox Name="MapEnemyInfo_turn" Width="50"></TextBox>
+                            <TextBlock Text="BGM" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_bgm" Width="250"></TextBox>
                             <Separator Width="300"/>
                             <TextBlock Text="lv" Width="50"/>
                             <TextBox Name="MapEnemyInfo_lv" Width="50" IsReadOnly="False" TextChanged="MapEnemyInfo_lv_TextChanged"></TextBox>

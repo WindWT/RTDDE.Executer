@@ -206,8 +206,7 @@ namespace RTDDE.Executer.Func
             }
         }
 
-        private DataTable GetMonsterData(object param)
-        {
+        private DataTable GetMonsterData(object param) {
             string levelID = param.ToString();
 
             DataTable monsterData = new DataTable();
@@ -217,48 +216,76 @@ namespace RTDDE.Executer.Func
             monsterData.Columns.Add("lv_max", typeof(int));
             monsterData.Columns.Add("rate", typeof(int));
             monsterData.Columns.Add("drop_id", typeof(int));
+            monsterData.Columns.Add("bgm_id", typeof(int));
 
             QuestMaster qm = DAL.ToSingle<QuestMaster>("SELECT * FROM quest_master WHERE id=" + levelID);
             if (qm == null) {
                 return monsterData;
             }
-            DataTable enemyTableData = DAL.GetDataTable("SELECT * FROM enemy_table_master WHERE id=" + qm.enemy_table_id.ToString());
+            DataTable enemyTableData =
+                DAL.GetDataTable("SELECT * FROM enemy_table_master WHERE id=" + qm.enemy_table_id.ToString());
             if (enemyTableData.Rows.Count == 0) {
                 //throw new Exception("NO ENEMY TABLE DATA.");
                 return monsterData;
             }
             for (int i = 1; i <= 18; i++) {
-                if (enemyTableData.Rows[0]["enemy" + i + "_set_id"].ToString() != "0") {
+                int setId = Convert.ToInt32(enemyTableData.Rows[0]["enemy" + i + "_set_id"]);
+                if (setId != 0) {
                     monsterData.Rows.Add(
-                    new object[]{
-                        "E"+enemyTableData.Rows[0]["enemy"+i+"_id"],
-                        enemyTableData.Rows[0]["enemy"+i+"_set_id"],
-                        enemyTableData.Rows[0]["enemy"+i+"_lv_min"],
-                        enemyTableData.Rows[0]["enemy"+i+"_lv_max"],
-                        enemyTableData.Rows[0]["enemy"+i+"_rate"],
-                        enemyTableData.Rows[0]["enemy"+i+"_drop_id"]
-                    });
+                        new object[] {
+                            "E" + enemyTableData.Rows[0]["enemy"+i+"_id"],
+                            setId,
+                            enemyTableData.Rows[0]["enemy" + i + "_lv_min"],
+                            enemyTableData.Rows[0]["enemy" + i + "_lv_max"],
+                            enemyTableData.Rows[0]["enemy" + i + "_rate"],
+                            enemyTableData.Rows[0]["enemy" + i + "_drop_id"]
+                        });
                 }
             }
             monsterData.Rows.Add(
-               new object[]{
-                "DEATH",//实际上应该是DEATH，不知道为什么表名是boss
-                enemyTableData.Rows[0]["boss_set_id"],
-                enemyTableData.Rows[0]["boss_lv_min"],
-                enemyTableData.Rows[0]["boss_lv_max"],
-                enemyTableData.Rows[0]["boss_rate"],
-                enemyTableData.Rows[0]["boss_drop_id"]
+                new object[] {
+                    "DEATH", //实际上应该是DEATH，不知道为什么表名是boss
+                    enemyTableData.Rows[0]["boss_set_id"],
+                    enemyTableData.Rows[0]["boss_lv_min"],
+                    enemyTableData.Rows[0]["boss_lv_max"],
+                    enemyTableData.Rows[0]["boss_rate"],
+                    enemyTableData.Rows[0]["boss_drop_id"]
                 });
             monsterData.Rows.Add(
-               new object[]{
-                "BOSS",//实际上应该是BOSS，不知道为什么表名是death
-                enemyTableData.Rows[0]["death_set_id"],
-                enemyTableData.Rows[0]["death_lv_min"],
-                enemyTableData.Rows[0]["death_lv_max"],
-                enemyTableData.Rows[0]["death_rate"],
-                enemyTableData.Rows[0]["death_drop_id"]
+                new object[] {
+                    "BOSS", //实际上应该是BOSS，不知道为什么表名是death
+                    enemyTableData.Rows[0]["death_set_id"],
+                    enemyTableData.Rows[0]["death_lv_min"],
+                    enemyTableData.Rows[0]["death_lv_max"],
+                    enemyTableData.Rows[0]["death_rate"],
+                    enemyTableData.Rows[0]["death_drop_id"]
                 });
-
+            int boss01SetId = Convert.ToInt32(enemyTableData.Rows[0]["boss01_set_id"]);
+            if (boss01SetId != 0) {
+                monsterData.Rows.Add(
+                    new object[] {
+                        "BOSS01",
+                        boss01SetId,
+                        enemyTableData.Rows[0]["boss01_lv_min"],
+                        enemyTableData.Rows[0]["boss01_lv_max"],
+                        enemyTableData.Rows[0]["boss01_rate"],
+                        enemyTableData.Rows[0]["boss01_drop_id"],
+                        enemyTableData.Rows[0]["boss01_bgm_id"]
+                    });
+            }
+            int boss02SetId = Convert.ToInt32(enemyTableData.Rows[0]["boss02_set_id"]);
+            if (boss02SetId != 0) {
+                monsterData.Rows.Add(
+                    new object[] {
+                        "BOSS02",
+                        enemyTableData.Rows[0]["boss02_set_id"],
+                        enemyTableData.Rows[0]["boss02_lv_min"],
+                        enemyTableData.Rows[0]["boss02_lv_max"],
+                        enemyTableData.Rows[0]["boss02_rate"],
+                        enemyTableData.Rows[0]["boss02_drop_id"],
+                        enemyTableData.Rows[0]["boss02_bgm_id"]
+                    });
+            }
             return monsterData;
         }
 
@@ -275,6 +302,10 @@ namespace RTDDE.Executer.Func
             MapEnemyInfo_lv_min.Text = mmInfoRow["lv_min"].ToString();
             MapEnemyInfo_lv_max.Text = mmInfoRow["lv_max"].ToString();
             MapEnemyInfo_drop_id.Text = mmInfoRow["drop_id"].ToString();
+            string bgmId = mmInfoRow["bgm_id"].ToString();
+            if (string.IsNullOrEmpty(bgmId) == false) {
+                MapEnemyInfo_bgm.Text = Utility.ParseBgmName(Convert.ToInt32(bgmId));
+            }
 
             if (Settings.Config.General.IsDefaultLvMax) {
                 MapEnemyInfo_lv.Text = "99";
