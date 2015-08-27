@@ -188,14 +188,13 @@ namespace RTDDE.Executer.Func
             {
                 Width = new GridLength(25)
             });
-            for (int i = 0; i < row; i++) {
-                MapMarkGrid.RowDefinitions.Add(new RowDefinition()
-                {
+            for (int i = 0; i < row - 1; i++) {
+                MapMarkGrid.RowDefinitions.Add(new RowDefinition() {
                     Height = new GridLength(25)
                 });
-                TextBlock tb = new TextBlock()
-                {
-                    Text = (i == (row - 1)) ? string.Empty : ((map.Y - i) % map.H).ToString()
+                TextBlock tb = new TextBlock() {
+                    //Text = (i == (row - 1)) ? string.Empty : ((map.Y - i) % map.H).ToString()
+                    Text = ((map.Y - i)%map.H).ToString()
                 };
                 Border b = new Border();
                 b.Child = tb;
