@@ -274,24 +274,62 @@ namespace RTDDE.Executer.Util.Map
                 return;
             }
             EnemyInfo bossInfo = dropData.Find(o => o.enemy_id == 0);
+            EnemyInfo boss01Info = dropData.Find(o => o.enemy_id == 100);
+            EnemyInfo boss02Info = dropData.Find(o => o.enemy_id == 101);
             EnemyInfo deathInfo = dropData.Find(o => o.enemy_id == 99);
             foreach (MapRow r in this.Rows) {
                 foreach (MapCell c in r.Cells) {
                     EnemyInfo ei = dropData.Find(o => o.x == c.x && o.y == c.y && !(o.x == 0 && o.y == 0));
                     if (c.RawCellData == 192) {
-                        c.drop_unit = DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + bossInfo.drop_unit_id.ToString());
-                        c.add_attribute_exp = bossInfo.add_attribute_exp;
-                        c.unit_exp = bossInfo.unit_exp;
-                        c.HasDropInfo = true;
+                        switch (c.x) {
+                            case 0: {
+                                c.drop_unit =
+                                    DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" +
+                                                             bossInfo.drop_unit_id.ToString());
+                                c.add_attribute_exp = bossInfo.add_attribute_exp;
+                                c.unit_exp = bossInfo.unit_exp;
+                                c.HasDropInfo = true;
+                                break;
+                            }
+                            case 1: {
+                                if (boss01Info == null) {
+                                    continue;
+                                }
+                                c.drop_unit =
+                                    DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" +
+                                                             boss01Info.drop_unit_id.ToString());
+                                c.add_attribute_exp = boss01Info.add_attribute_exp;
+                                c.unit_exp = boss01Info.unit_exp;
+                                c.HasDropInfo = true;
+                                break;
+                            }
+                            case 2: {
+                                if (boss02Info == null) {
+                                    continue;
+                                }
+                                c.drop_unit =
+                                    DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" +
+                                                             boss02Info.drop_unit_id.ToString());
+                                c.add_attribute_exp = boss02Info.add_attribute_exp;
+                                c.unit_exp = boss02Info.unit_exp;
+                                c.HasDropInfo = true;
+                                break;
+                            }
+                            default:
+                                break;
+                        }
                     }
                     else if (c.RawCellData == 160) {
-                        c.drop_unit = DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + deathInfo.drop_unit_id.ToString());
+                        c.drop_unit =
+                            DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" +
+                                                     deathInfo.drop_unit_id.ToString());
                         c.add_attribute_exp = deathInfo.add_attribute_exp;
                         c.unit_exp = deathInfo.unit_exp;
                         c.HasDropInfo = true;
                     }
                     else if (ei != null && ei.flag) {
-                        c.drop_unit = DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + ei.drop_unit_id.ToString());
+                        c.drop_unit =
+                            DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + ei.drop_unit_id.ToString());
                         c.add_attribute_exp = ei.add_attribute_exp;
                         c.unit_exp = ei.unit_exp;
                         c.HasDropInfo = true;
