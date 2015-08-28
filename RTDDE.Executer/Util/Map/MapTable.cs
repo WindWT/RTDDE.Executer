@@ -262,6 +262,12 @@ namespace RTDDE.Executer.Util.Map
                                 c.Background = Brushes.Black;
                                 break;
                             }
+                        case ENEMY_TYPE.EVENT_EXP_N:
+                        case ENEMY_TYPE.EVENT_EXP_SP:
+                            {
+                                c.Foreground = Brushes.Gold;
+                                break;
+                            }
                         default:
                             break;
                     }
