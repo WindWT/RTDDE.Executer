@@ -54,7 +54,7 @@ namespace RTDDE.Executer
             }
             using (var fs = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read)) {
                 var dic = (ResourceDictionary)XamlReader.Load(fs);
-                Resources.MergedDictionaries.Add(dic);
+                Application.Current.Resources.MergedDictionaries.Add(dic);
             }
         }
         [Obsolete("use async and await instead")]
