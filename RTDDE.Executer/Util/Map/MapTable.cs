@@ -22,6 +22,7 @@ namespace RTDDE.Executer.Util.Map
         public int H { get; private set; }
         public int W { get; private set; }
         public string MapData { get; private set; }
+        public int ZeroMarkPlace { get; private set; }
 
         #region brush
         private static readonly Brush FireTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.9f, 0.4f, 0.3f));
@@ -47,7 +48,6 @@ namespace RTDDE.Executer.Util.Map
             WaterTransBrush.Freeze();
             LightTransBrush.Freeze();
             DarkTransBrush.Freeze();
-            int zeroMarkPlace = -1;
             for (int i = 0; i < W; i++) {
                 var mapRow = new MapRow();
                 for (int j = 0; j < H; j++) {
@@ -80,9 +80,7 @@ namespace RTDDE.Executer.Util.Map
                             }
                             //AttributeTypeBossStart = 16,
                             case 16: {
-                                if (zeroMarkPlace == -1) {
-                                    zeroMarkPlace = j;
-                                }
+                                ZeroMarkPlace = j;
                                 mapCell.Background = Brushes.Silver;
                                 break;
                             }
@@ -148,14 +146,6 @@ namespace RTDDE.Executer.Util.Map
                 }
                 this.Rows.Add(mapRow);
             }
-
-            //添加底部标记
-            var mapMarkRow = new MapRow();
-            for (int j = 0; j < H; j++) {
-                var mapCellMark = new MapCell((zeroMarkPlace - j).ToString());  //Now use BossStart as zero mark, farewell 3
-                mapMarkRow.Cells.Add(mapCellMark);
-            }
-            this.Rows.Add(mapMarkRow);
         }
         public void BindMonsterData(DataTable monsterTable)
         {

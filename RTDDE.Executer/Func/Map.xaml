@@ -48,7 +48,7 @@
                                 <Storyboard>
                                     <DoubleAnimation Storyboard.TargetName="MapOperateGrid" 
                                     Storyboard.TargetProperty="Width"
-                                    To="300" Duration="0:0:0.360">
+                                    To="360" Duration="0:0:0.360">
                                         <DoubleAnimation.EasingFunction>
                                             <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
                                         </DoubleAnimation.EasingFunction>
@@ -72,13 +72,33 @@
                     </ToggleButton.Triggers>
                     <Path HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="Black" Data="M 0,0 H 15 M 0,6 H 15 M 0,12 H 15"></Path>
                 </ToggleButton>
-                <UniformGrid Name="MapOperateGrid" Grid.Column="1" Grid.Row="1" Columns="5" Width="0" HorizontalAlignment="Left">
-                    <Button>UP</Button>
-                    <Button>DOWN</Button>
-                    <Button>LOAD</Button>
-                    <Button>TryLoad</Button>
-                    <ToggleButton>Drop</ToggleButton>
-                </UniformGrid>
+                <Grid Name="MapOperateGrid" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Width="360">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <UniformGrid Grid.Column="0" Columns="2">
+                        <UniformGrid.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                <Setter Property="Padding" Value="0"></Setter>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                            </Style>
+                        </UniformGrid.Resources>
+                        <Button Name="MapOffsetUpButton" Click="MapOffsetUpButton_OnClick">
+                            <Path HorizontalAlignment="Center" Stroke="Black" Fill="Black"
+                              Data="M 0,6 H 12 L 6,0 Z"/>
+                        </Button>
+                        <Button Name="MapOffsetDownButton" Click="MapOffsetDownButton_OnClick">
+                            <Path HorizontalAlignment="Center" Stroke="Black" Fill="Black"
+                              Data="M 0,0 H 12 L 6,6 Z"/>
+                        </Button>
+                    </UniformGrid>
+                    <DockPanel Grid.Column="1" LastChildFill="True">
+                        <Button Name="ImportLdbsButton" Click="ImportLdbsButton_Click" Content="{DynamicResource Config_ImportLDBS}"/>
+                        <Button Name="MapLoadSimilarButton" Click="MapLoadSimilarButton_OnClick">Load Similar Map</Button>
+                        <ToggleButton Name="MapShowDropToggleButton" Click="MapShowDropToggleButton_OnClick">Drop</ToggleButton>
+                    </DockPanel>
+                </Grid>
             </Grid>
             <Grid DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>

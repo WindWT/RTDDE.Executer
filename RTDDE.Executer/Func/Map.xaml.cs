@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -25,22 +26,33 @@ namespace RTDDE.Executer.Func
         public Map()
         {
             InitializeComponent();
+            if (Settings.Config.Map.IsShowDropInfo) {
+                ShowDrop = true;
+                MapShowDropToggleButton.IsChecked = true;
+            }
         }
         private int Offset { get; set; }
         private MapTable CurrentMapTable { get; set; }
-        public void Load(string levelId = "-1")
+        private string CurrentLevelId { get; set; }
+        private string CurrentQuestId { get; set; }
+        private bool ShowDrop { get; set; }
+        public void Load(string levelId = "-1",string dropId=null)
         {
             Unload();
             //add loading text
-            MapGrid.Children.Add(new TextBlock()
-            {
+            MapGrid.Children.Add(new TextBlock() {
                 Text = "Loading...",
                 FontWeight = FontWeights.Bold,
-                Padding = new Thickness(24)
+                HorizontalAlignment = HorizontalAlignment.Right
             });
             if (string.IsNullOrEmpty(levelId)) {
                 levelId = "-1";
             }
+            if (string.IsNullOrEmpty(dropId)) {
+                dropId = levelId;
+            }
+            CurrentLevelId = levelId;
+            CurrentQuestId = dropId;
             Task<DataTable> initMonsterTask = new Task<DataTable>(GetMonsterData, levelId);
             initMonsterTask.ContinueWith(t =>
             {
@@ -65,8 +77,8 @@ namespace RTDDE.Executer.Func
                 Convert.ToInt32(levelData["start_x"]),
                 Convert.ToInt32(levelData["start_y"]));
                 CurrentMapTable.BindMonsterData(initMonsterTask.Result);
-                if(Settings.Config.Map.IsShowDropInfo) {
-                    CurrentMapTable.BindDropData(MapData.GetEnemyInfo(levelId));
+                if(ShowDrop) {
+                    CurrentMapTable.BindDropData(MapData.GetEnemyInfo(dropId));
                 }
             });
             task.ContinueWith(t =>
@@ -105,12 +117,15 @@ namespace RTDDE.Executer.Func
                 {
                     Text = "No map data, import GAME first.",
                     FontWeight = FontWeights.Bold,
-                    Padding = new Thickness(24)
+                    HorizontalAlignment = HorizontalAlignment.Right
                 });
                 return;
             }
+            //make offset to 0~CurrentMapTable.W, always positive
+            int offsetRemain = (Offset%CurrentMapTable.W + CurrentMapTable.W)%CurrentMapTable.W;
             for (int row = 0; row < CurrentMapTable.Rows.Count; row++) {
-                MapRow r = CurrentMapTable[row];
+                int offsetedRowIndex = (row + offsetRemain) %CurrentMapTable.W;
+                MapRow r = CurrentMapTable[offsetedRowIndex];
                 MapGrid.RowDefinitions.Add(new RowDefinition() {
                     Height = new GridLength(25)
                 });
@@ -170,17 +185,33 @@ namespace RTDDE.Executer.Func
                     }
                 }
             }
-            //绘制冻结行标记
+            //绘制底部标记
+            MapGrid.RowDefinitions.Add(new RowDefinition() {
+                Height = new GridLength(25)
+            });
+            for (int j = 0; j < CurrentMapTable.H; j++) {
+                TextBlock tb = new TextBlock() {
+                    Text = (CurrentMapTable.ZeroMarkPlace - j).ToString()   //Now use BossStart as zero mark, farewell 3
+                };
+                Border b = new Border {Child = tb};
+                MapGrid.Children.Add(b);
+
+                b.SetValue(Grid.RowProperty, CurrentMapTable.W);
+                b.SetValue(Grid.ColumnProperty, j);
+            }
+            //绘制左侧冻结行标记
             MapMarkGrid.ColumnDefinitions.Add(new ColumnDefinition()
             {
                 Width = new GridLength(25)
             });
-            for (int i = 0; i < CurrentMapTable.Rows.Count - 1; i++) {
+            for (int i = 0; i < CurrentMapTable.Rows.Count; i++) {
                 MapMarkGrid.RowDefinitions.Add(new RowDefinition() {
                     Height = new GridLength(25)
                 });
                 TextBlock tb = new TextBlock() {
-                    Text = ((CurrentMapTable.Y - i)%CurrentMapTable.H).ToString()
+                    Text = CurrentMapTable.W-i > offsetRemain
+                        ? (CurrentMapTable.Y - i - offsetRemain).ToString()
+                        : ((CurrentMapTable.Y - i - offsetRemain + CurrentMapTable.W) % CurrentMapTable.W).ToString()
                 };
                 Border b = new Border {Child = tb};
                 MapMarkGrid.Children.Add(b);
@@ -375,6 +406,61 @@ namespace RTDDE.Executer.Func
 
             }, MainWindow.UiTaskScheduler);
             task.Start();
+        }
+
+        private void MapOffsetUpButton_OnClick(object sender, RoutedEventArgs e) {
+            Offset++;
+            ClearMap();
+            DrawMap();
+        }
+
+        private void MapOffsetDownButton_OnClick(object sender, RoutedEventArgs e) {
+            Offset--;
+            ClearMap();
+            DrawMap();
+        }
+
+        private void ImportLdbsButton_Click(object sender, RoutedEventArgs e) {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.Filter = Utility.GetUiText("Config_LDBSFilter") + "|LDBS*_Msg.bytes";
+            if (ofd.ShowDialog() == true) {
+                ImportLdbsButton.SetResourceReference(Button.ContentProperty, "Config_ImportingLDBS");
+                string filename = ofd.FileName;
+                Task task = Task.Run(() => {
+                    using (StreamReader sr = new StreamReader(filename)) {
+                        var game = new MapData(sr.BaseStream);
+                        DAL.FromSingle(game.LDM);
+                        DAL.FromSingle(game.LDM.enemy_table_master);
+                        DAL.FromSingle(game.LDM.unit_talk_master);
+                        //foreach (var ecm in game.LDM.event_cutin_master)
+                        //{
+                        //    DAL.FromSingle(ecm);
+                        //}
+                    }
+                });
+                task.ContinueWith(t => {
+                    if (t.Exception != null) {
+                        Utility.ShowException(t.Exception.InnerException.Message);
+                        ImportLdbsButton.SetResourceReference(Button.ContentProperty, "Config_ImportLDBSFail");
+                    }
+                    else {
+                        ImportLdbsButton.SetResourceReference(Button.ContentProperty, "Config_ImportLDBSSuccess");
+                        Utility.RefreshTabs();
+                    }
+                }, MainWindow.UiTaskScheduler);
+            }
+        }
+
+        private void MapLoadSimilarButton_OnClick(object sender, RoutedEventArgs e) {
+            string SimilarQuestId = DAL.Get<string>($@"select level_data_id from level_data_master 
+left join quest_master on level_data_master.level_data_id==quest_master.id 
+where quest_master.name=(select name from quest_master where id = {CurrentQuestId})");
+            Load(SimilarQuestId, CurrentQuestId);
+        }
+
+        private void MapShowDropToggleButton_OnClick(object sender, RoutedEventArgs e) {
+            ShowDrop = MapShowDropToggleButton.IsChecked.GetValueOrDefault();
+            Load(CurrentLevelId, CurrentQuestId);
         }
     }
 }
