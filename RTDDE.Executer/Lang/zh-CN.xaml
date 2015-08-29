@@ -21,8 +21,10 @@
     <system:String x:Key="Config_IsEnableLevelLimiter">限制角色等级不可超过最大等级</system:String>
     <system:String x:Key="Config_IsDefaultLvMax">查看角色时自动设置为最大等级</system:String>
     <system:String x:Key="Config_IsUseLocalTime">使用本地时区（假定源数据均为GMT+9时区）</system:String>
+    <system:String x:Key="Config_IsForceEnglish">强制界面使用英语(需要重启RTDDE)</system:String>
+    <system:String x:Key="Config_CurrentSystemLanguage">当前系统语言:{0}</system:String>
     <system:String x:Key="Config_SettingsMap">地图</system:String>
-    <system:String x:Key="Config_IsShowDropInfo">显示掉落及经验信息（不推荐iOS用户开启）</system:String>
+    <system:String x:Key="Config_IsShowDropInfo">默认显示掉落及经验信息（不推荐iOS用户开启）</system:String>
     <system:String x:Key="Config_IsShowBoxInfo">显示箱子信息</system:String>
     <system:String x:Key="Config_IsShowEnemyAttribute">在右上角显示敌人属性</system:String>
 
