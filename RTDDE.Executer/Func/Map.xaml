@@ -70,10 +70,10 @@
                             </BeginStoryboard>
                         </EventTrigger>
                     </ToggleButton.Triggers>
-                    <Path Data="M 0,0 H 15 M 0,6 H 15 M 0,12 H 15"></Path>
+                    <Path HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="Black" Data="M 0,0 H 15 M 0,6 H 15 M 0,12 H 15"></Path>
                 </ToggleButton>
                 <UniformGrid Name="MapOperateGrid" Grid.Column="1" Grid.Row="1" Columns="5" Width="0" HorizontalAlignment="Left">
-                    <Button><Path></Path></Button>
+                    <Button>UP</Button>
                     <Button>DOWN</Button>
                     <Button>LOAD</Button>
                     <Button>TryLoad</Button>
