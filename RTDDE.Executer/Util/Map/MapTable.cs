@@ -13,12 +13,15 @@ namespace RTDDE.Executer.Util.Map
     public class MapTable
     {
         public List<MapRow> Rows { get; private set; }
+        public MapRow this[int i] {
+            get { return Rows[i]; }
+            set { Rows[i] = value; }
+        }
         public int X { get; private set; }
         public int Y { get; private set; }
         public int H { get; private set; }
         public int W { get; private set; }
         public string MapData { get; private set; }
-        public int Repeat { get; private set; }
 
         #region brush
         private static readonly Brush FireTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.9f, 0.4f, 0.3f));
@@ -31,7 +34,7 @@ namespace RTDDE.Executer.Util.Map
         private static readonly Color DarkColor = Colors.Purple;
         #endregion
 
-        public MapTable(string mapData, int w, int h, int x, int y, int repeat = 1)
+        public MapTable(string mapData, int w, int h, int x, int y)
         {
             Rows = new List<MapRow>();
             MapData = mapData;
@@ -39,104 +42,111 @@ namespace RTDDE.Executer.Util.Map
             H = h;
             X = x;
             Y = y;
-            Repeat = repeat;
             //freeze all brush
             FireTransBrush.Freeze();
             WaterTransBrush.Freeze();
             LightTransBrush.Freeze();
             DarkTransBrush.Freeze();
-        }
-        public void InitMap()
-        {
             int zeroMarkPlace = -1;
-            for (int r = 0; r < Repeat; r++) {
-                for (int i = 0; i < W; i++) {
-                    var mapRow = new MapRow();
-                    for (int j = 0; j < H; j++) {
-                        var mapCell = new MapCell();
-
-                        string cellData = MapData.Substring((j * W + i) * 2, 2);
-                        int cellDataInt = int.Parse(cellData, System.Globalization.NumberStyles.HexNumber);
-                        mapCell.RawCellData = cellDataInt;
-                        int num = 7 & cellDataInt >> 5;
-                        if (num > 0) {
-                            switch (1 << (num - 1)) {
-                                //AttributeTypeLight,
-                                case 1: {
-                                        mapCell.Background = LightTransBrush;
-                                        break;
-                                    }
-                                //AttributeTypeDark,
-                                case 2: {
-                                        mapCell.Background = DarkTransBrush;
-                                        break;
-                                    }
-                                //AttributeTypeFire = 4,
-                                case 4: {
-                                        mapCell.Background = FireTransBrush;
-                                        break;
-                                    }
-                                //AttributeTypeWater = 8,
-                                case 8: {
-                                        mapCell.Background = WaterTransBrush;
-                                        break;
-                                    }
-                                //AttributeTypeBossStart = 16,
-                                case 16: {
-                                        if (zeroMarkPlace == -1) {
-                                            zeroMarkPlace = j;
-                                        }
-                                        mapCell.Background = Brushes.Silver;
-                                        break;
-                                    }
-                                //AttributeTypeBoss = 32,
-                                case 32: {
-                                        mapCell.Background = Brushes.Black;
-                                        break;
-                                    }
+            for (int i = 0; i < W; i++) {
+                var mapRow = new MapRow();
+                for (int j = 0; j < H; j++) {
+                    var mapCell = new MapCell();
+                    string cellData = MapData.Substring((j*W + i)*2, 2);
+                    int cellDataInt = int.Parse(cellData, System.Globalization.NumberStyles.HexNumber);
+                    mapCell.RawCellData = cellDataInt;
+                    int num = 7 & cellDataInt >> 5;
+                    if (num > 0) {
+                        switch (1 << (num - 1)) {
+                            //AttributeTypeLight,
+                            case 1: {
+                                mapCell.Background = LightTransBrush;
+                                break;
+                            }
+                            //AttributeTypeDark,
+                            case 2: {
+                                mapCell.Background = DarkTransBrush;
+                                break;
+                            }
+                            //AttributeTypeFire = 4,
+                            case 4: {
+                                mapCell.Background = FireTransBrush;
+                                break;
+                            }
+                            //AttributeTypeWater = 8,
+                            case 8: {
+                                mapCell.Background = WaterTransBrush;
+                                break;
+                            }
+                            //AttributeTypeBossStart = 16,
+                            case 16: {
+                                if (zeroMarkPlace == -1) {
+                                    zeroMarkPlace = j;
+                                }
+                                mapCell.Background = Brushes.Silver;
+                                break;
+                            }
+                            //AttributeTypeBoss = 32,
+                            case 32: {
+                                mapCell.Background = Brushes.Black;
+                                break;
                             }
                         }
+                    }
 
-                        var num2 = 31 & cellDataInt;
-                        if (num2 >= 24) {
-                            if (Settings.Config.Map.IsShowBoxInfo) {
-                                switch (num2 - 23) {
-                                    case 1: cellData = "?"; break;
-                                    case 2: cellData = "?$"; break;
-                                    case 3: cellData = "♥"; break;
-                                    case 4: cellData = "魂"; break;
-                                    case 5: cellData = "+1"; break;
-                                    case 6: cellData = "$"; break;
-                                    default: cellData = "箱" + (num2 - 23).ToString(); break;
-                                }
-                                mapCell.fontWeight = FontWeights.Bold;
+                    var num2 = 31 & cellDataInt;
+                    if (num2 >= 24) {
+                        if (Settings.Config.Map.IsShowBoxInfo) {
+                            switch (num2 - 23) {
+                                case 1:
+                                    cellData = "?";
+                                    break;
+                                case 2:
+                                    cellData = "?$";
+                                    break;
+                                case 3:
+                                    cellData = "♥";
+                                    break;
+                                case 4:
+                                    cellData = "魂";
+                                    break;
+                                case 5:
+                                    cellData = "+1";
+                                    break;
+                                case 6:
+                                    cellData = "$";
+                                    break;
+                                default:
+                                    cellData = "箱" + (num2 - 23).ToString();
+                                    break;
                             }
-                            else {
-                                cellData = "箱";
-                            }
+                            mapCell.fontWeight = FontWeights.Bold;
                         }
                         else {
-                            //this.EnemyUnitID = num2;
-                            //this.TreasureID = 0;
-                            cellData = "E" + (num2);
-                            if (num2 != 0) {
-                                //td.Attributes.Add("enemy", cellData);
-                            }
+                            cellData = "箱";
                         }
-                        if ((cellDataInt == 0) || (num2 == 0)) {
-                            cellData = "";
-                        }
-                        if (i == Y && j == X) {
-                            cellData = "★";
-                        }
-
-                        mapCell.CellData = cellData;
-                        mapCell.x = i;
-                        mapCell.y = j;
-                        mapRow.Cells.Add(mapCell);
                     }
-                    this.Rows.Add(mapRow);
+                    else {
+                        //this.EnemyUnitID = num2;
+                        //this.TreasureID = 0;
+                        cellData = "E" + (num2);
+                        if (num2 != 0) {
+                            //td.Attributes.Add("enemy", cellData);
+                        }
+                    }
+                    if ((cellDataInt == 0) || (num2 == 0)) {
+                        cellData = "";
+                    }
+                    if (i == Y && j == X) {
+                        cellData = "★";
+                    }
+
+                    mapCell.CellData = cellData;
+                    mapCell.x = i;
+                    mapCell.y = j;
+                    mapRow.Cells.Add(mapCell);
                 }
+                this.Rows.Add(mapRow);
             }
 
             //添加底部标记

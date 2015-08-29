@@ -26,7 +26,9 @@ namespace RTDDE.Executer.Func
         {
             InitializeComponent();
         }
-        public void Load(string levelID = "-1", int repeat = 1)
+        private int Offset { get; set; }
+        private MapTable CurrentMapTable { get; set; }
+        public void Load(string levelId = "-1")
         {
             Unload();
             //add loading text
@@ -36,10 +38,10 @@ namespace RTDDE.Executer.Func
                 FontWeight = FontWeights.Bold,
                 Padding = new Thickness(24)
             });
-            if (string.IsNullOrEmpty(levelID)) {
-                levelID = "-1";
+            if (string.IsNullOrEmpty(levelId)) {
+                levelId = "-1";
             }
-            Task<DataTable> initMonsterTask = new Task<DataTable>(GetMonsterData, levelID);
+            Task<DataTable> initMonsterTask = new Task<DataTable>(GetMonsterData, levelId);
             initMonsterTask.ContinueWith(t =>
             {
                 if (t.Exception != null) {
@@ -49,26 +51,23 @@ namespace RTDDE.Executer.Func
                 MapMonsterGrid.ItemsSource = t.Result.DefaultView;
             }, MainWindow.UiTaskScheduler);
 
-            Task<MapTable> task = new Task<MapTable>(() =>
+            var task = Task.Run(() =>
             {
-                DataTable dt = DAL.GetDataTable("SELECT a.*,b.distance FROM level_data_master a left join quest_master b on a.level_data_id=b.id WHERE a.level_data_id=" + levelID);
+                DataTable dt = DAL.GetDataTable("SELECT a.*,b.distance FROM level_data_master a left join quest_master b on a.level_data_id=b.id WHERE a.level_data_id=" + levelId);
                 if (dt.Rows.Count == 0) {
                     //throw new Exception("NO MAP DATA.");
-                    return null;
+                    return;
                 }
                 DataRow levelData = dt.Rows[0];
-                MapTable mapTable = new MapTable(levelData["map_data"].ToString(),
+                CurrentMapTable = new MapTable(levelData["map_data"].ToString(),
                 Convert.ToInt32(levelData["width"]),
                 Convert.ToInt32(levelData["height"]),
                 Convert.ToInt32(levelData["start_x"]),
                 Convert.ToInt32(levelData["start_y"]));
-                //add repeat code here
-                mapTable.InitMap();
-                mapTable.BindMonsterData(initMonsterTask.Result);
+                CurrentMapTable.BindMonsterData(initMonsterTask.Result);
                 if(Settings.Config.Map.IsShowDropInfo) {
-                    mapTable.BindDropData(MapData.GetEnemyInfo(levelID));
+                    CurrentMapTable.BindDropData(MapData.GetEnemyInfo(levelId));
                 }
-                return mapTable;
             });
             task.ContinueWith(t =>
             {
@@ -77,19 +76,8 @@ namespace RTDDE.Executer.Func
                     Utility.ShowException(t.Exception.InnerException.Message);
                     return;
                 }
-                else if (t.Result == null) {
-                    MapGrid.Children.Add(new TextBlock()
-                    {
-                        Text = "No map data, import GAME first.",
-                        FontWeight = FontWeights.Bold,
-                        Padding = new Thickness(24)
-                    });
-                }
-                else {
-                    DrawMap(t.Result);
-                }
+                DrawMap();
             }, MainWindow.UiTaskScheduler);
-            task.Start();
             initMonsterTask.Start();
         }
 
@@ -97,6 +85,8 @@ namespace RTDDE.Executer.Func
         {
             MapMonsterGrid.ItemsSource = null;
             ClearMap();
+            Offset = 0;
+            CurrentMapTable = null;
         }
 
         private void ClearMap()
@@ -109,47 +99,47 @@ namespace RTDDE.Executer.Func
             MapMarkGrid.RowDefinitions.Clear();
         }
 
-        private void DrawMap(MapTable map)
-        {
-            bool isFirstColDef = false;
-            int row = 0;
-            foreach (MapRow r in map.Rows) {
-                int col = 0;
-                MapGrid.RowDefinitions.Add(new RowDefinition()
+        private void DrawMap() {
+            if (CurrentMapTable == null) {
+                MapGrid.Children.Add(new TextBlock()
                 {
+                    Text = "No map data, import GAME first.",
+                    FontWeight = FontWeights.Bold,
+                    Padding = new Thickness(24)
+                });
+                return;
+            }
+            for (int row = 0; row < CurrentMapTable.Rows.Count; row++) {
+                MapRow r = CurrentMapTable[row];
+                MapGrid.RowDefinitions.Add(new RowDefinition() {
                     Height = new GridLength(25)
                 });
-                foreach (MapCell c in r.Cells) {
-                    if (!isFirstColDef) {
-                        MapGrid.ColumnDefinitions.Add(new ColumnDefinition()
-                        {
+                for (int col = 0; col < r.Cells.Count; col++) {
+                    MapCell c = r[col];
+                    if (row == 0) {
+                        MapGrid.ColumnDefinitions.Add(new ColumnDefinition() {
                             Width = new GridLength(25)
                         });
                     }
-                    TextBlock tb = new TextBlock()
-                    {
+                    TextBlock tb = new TextBlock() {
                         Text = c.CellData,
                         Foreground = c.Foreground,
                         FontWeight = c.fontWeight
                     };
-                    System.Windows.Shapes.Rectangle rec = new System.Windows.Shapes.Rectangle()
-                    {
-                        Fill = new LinearGradientBrush()
-                        {
+                    System.Windows.Shapes.Rectangle rec = new System.Windows.Shapes.Rectangle() {
+                        Fill = new LinearGradientBrush() {
                             StartPoint = new Point(0, 1),
                             EndPoint = new Point(1, 0),
                             MappingMode = BrushMappingMode.RelativeToBoundingBox,
-                            GradientStops = new GradientStopCollection()
-                            {
-                                new GradientStop(c.YorishiroColor,1d/4d),
-                                new GradientStop(Colors.Transparent,1d/4d),
-                                new GradientStop(Colors.Transparent,3d/4d),
-                                new GradientStop(c.AttributeColor,3d/4d)
+                            GradientStops = new GradientStopCollection() {
+                                new GradientStop(c.YorishiroColor, 1d/4d),
+                                new GradientStop(Colors.Transparent, 1d/4d),
+                                new GradientStop(Colors.Transparent, 3d/4d),
+                                new GradientStop(c.AttributeColor, 3d/4d)
                             }
                         }
                     };
-                    Border b = new Border()
-                    {
+                    Border b = new Border() {
                         Background = c.Background,
                         Child = tb
                     };
@@ -178,26 +168,21 @@ namespace RTDDE.Executer.Func
                     if (string.IsNullOrWhiteSpace(sb.ToString().Trim()) == false) {
                         rec.ToolTip = new Run(sb.ToString().Trim());
                     }
-                    col++;
                 }
-                isFirstColDef = true;
-                row++;
             }
             //绘制冻结行标记
             MapMarkGrid.ColumnDefinitions.Add(new ColumnDefinition()
             {
                 Width = new GridLength(25)
             });
-            for (int i = 0; i < row - 1; i++) {
+            for (int i = 0; i < CurrentMapTable.Rows.Count - 1; i++) {
                 MapMarkGrid.RowDefinitions.Add(new RowDefinition() {
                     Height = new GridLength(25)
                 });
                 TextBlock tb = new TextBlock() {
-                    //Text = (i == (row - 1)) ? string.Empty : ((map.Y - i) % map.H).ToString()
-                    Text = ((map.Y - i)%map.H).ToString()
+                    Text = ((CurrentMapTable.Y - i)%CurrentMapTable.H).ToString()
                 };
-                Border b = new Border();
-                b.Child = tb;
+                Border b = new Border {Child = tb};
                 MapMarkGrid.Children.Add(b);
 
                 b.SetValue(Grid.RowProperty, i);
@@ -232,7 +217,7 @@ namespace RTDDE.Executer.Func
                 if (setId != 0) {
                     monsterData.Rows.Add(
                         new object[] {
-                            "E" + enemyTableData.Rows[0]["enemy"+i+"_id"],
+                            "E" + enemyTableData.Rows[0]["enemy" + i + "_id"],
                             setId,
                             enemyTableData.Rows[0]["enemy" + i + "_lv_min"],
                             enemyTableData.Rows[0]["enemy" + i + "_lv_max"],
@@ -259,8 +244,8 @@ namespace RTDDE.Executer.Func
                     enemyTableData.Rows[0]["death_rate"],
                     enemyTableData.Rows[0]["death_drop_id"]
                 });
-            int boss01SetId = Convert.ToInt32(enemyTableData.Rows[0]["boss01_set_id"]);
-            if (boss01SetId != 0) {
+            object boss01SetId = enemyTableData.Rows[0]["boss01_set_id"];
+            if (boss01SetId != DBNull.Value && Convert.ToInt32(boss01SetId) != 0) {
                 monsterData.Rows.Add(
                     new object[] {
                         "BOSS01",
@@ -272,12 +257,12 @@ namespace RTDDE.Executer.Func
                         enemyTableData.Rows[0]["boss01_bgm_id"]
                     });
             }
-            int boss02SetId = Convert.ToInt32(enemyTableData.Rows[0]["boss02_set_id"]);
-            if (boss02SetId != 0) {
+            object boss02SetId = enemyTableData.Rows[0]["boss02_set_id"];
+            if (boss02SetId != DBNull.Value && Convert.ToInt32(boss02SetId) != 0) {
                 monsterData.Rows.Add(
                     new object[] {
                         "BOSS02",
-                        enemyTableData.Rows[0]["boss02_set_id"],
+                        boss02SetId,
                         enemyTableData.Rows[0]["boss02_lv_min"],
                         enemyTableData.Rows[0]["boss02_lv_max"],
                         enemyTableData.Rows[0]["boss02_rate"],
