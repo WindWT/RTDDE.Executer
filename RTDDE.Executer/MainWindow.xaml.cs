@@ -25,6 +25,7 @@ using System.ComponentModel;
 using System.Windows.Markup;
 using System.Windows.Shell;
 using RTDDE.Executer.Func;
+using RTDDE.Executer.Util;
 
 namespace RTDDE.Executer
 {
@@ -36,22 +37,24 @@ namespace RTDDE.Executer
         public MainWindow()
         {
             Settings.Init();    //init settings here
-            InitLanguageDictionary();
             InitializeComponent();
+            InitLanguageDictionary();
             ChangeTabByName("Quest");
         }
 
         private void InitLanguageDictionary()
         {
-            //ResourceDictionary dict = new ResourceDictionary();
+            //load external language file
+            if (Settings.Config.General.IsForceEnglish) {
+                return;
+            }
             string filepath = $"Lang\\{Thread.CurrentThread.CurrentCulture.ToString()}.xaml";
             if (File.Exists(filepath) == false) {
                 return;
             }
             using (var fs = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read)) {
                 var dic = (ResourceDictionary)XamlReader.Load(fs);
-                Resources.MergedDictionaries.Clear();
-                Resources.MergedDictionaries.Add(dic);
+                Application.Current.Resources.MergedDictionaries.Add(dic);
             }
         }
         [Obsolete("use async and await instead")]

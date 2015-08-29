@@ -13,12 +13,16 @@ namespace RTDDE.Executer.Util.Map
     public class MapTable
     {
         public List<MapRow> Rows { get; private set; }
+        public MapRow this[int i] {
+            get { return Rows[i]; }
+            set { Rows[i] = value; }
+        }
         public int X { get; private set; }
         public int Y { get; private set; }
         public int H { get; private set; }
         public int W { get; private set; }
         public string MapData { get; private set; }
-        public int Repeat { get; private set; }
+        public int ZeroMarkPlace { get; private set; }
 
         #region brush
         private static readonly Brush FireTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.9f, 0.4f, 0.3f));
@@ -31,7 +35,7 @@ namespace RTDDE.Executer.Util.Map
         private static readonly Color DarkColor = Colors.Purple;
         #endregion
 
-        public MapTable(string mapData, int w, int h, int x, int y, int repeat = 1)
+        public MapTable(string mapData, int w, int h, int x, int y)
         {
             Rows = new List<MapRow>();
             MapData = mapData;
@@ -39,113 +43,109 @@ namespace RTDDE.Executer.Util.Map
             H = h;
             X = x;
             Y = y;
-            Repeat = repeat;
             //freeze all brush
             FireTransBrush.Freeze();
             WaterTransBrush.Freeze();
             LightTransBrush.Freeze();
             DarkTransBrush.Freeze();
-        }
-        public void InitMap()
-        {
-            int zeroMarkPlace = -1;
-            for (int r = 0; r < Repeat; r++) {
-                for (int i = 0; i < W; i++) {
-                    var mapRow = new MapRow();
-                    for (int j = 0; j < H; j++) {
-                        var mapCell = new MapCell();
-
-                        string cellData = MapData.Substring((j * W + i) * 2, 2);
-                        int cellDataInt = int.Parse(cellData, System.Globalization.NumberStyles.HexNumber);
-                        mapCell.RawCellData = cellDataInt;
-                        int num = 7 & cellDataInt >> 5;
-                        if (num > 0) {
-                            switch (1 << (num - 1)) {
-                                //AttributeTypeLight,
-                                case 1: {
-                                        mapCell.Background = LightTransBrush;
-                                        break;
-                                    }
-                                //AttributeTypeDark,
-                                case 2: {
-                                        mapCell.Background = DarkTransBrush;
-                                        break;
-                                    }
-                                //AttributeTypeFire = 4,
-                                case 4: {
-                                        mapCell.Background = FireTransBrush;
-                                        break;
-                                    }
-                                //AttributeTypeWater = 8,
-                                case 8: {
-                                        mapCell.Background = WaterTransBrush;
-                                        break;
-                                    }
-                                //AttributeTypeBossStart = 16,
-                                case 16: {
-                                        if (zeroMarkPlace == -1) {
-                                            zeroMarkPlace = j;
-                                        }
-                                        mapCell.Background = Brushes.Silver;
-                                        break;
-                                    }
-                                //AttributeTypeBoss = 32,
-                                case 32: {
-                                        mapCell.Background = Brushes.Black;
-                                        break;
-                                    }
+            for (int i = 0; i < W; i++) {
+                var mapRow = new MapRow();
+                for (int j = 0; j < H; j++) {
+                    var mapCell = new MapCell();
+                    string cellData = MapData.Substring((j*W + i)*2, 2);
+                    int cellDataInt = int.Parse(cellData, System.Globalization.NumberStyles.HexNumber);
+                    mapCell.RawCellData = cellDataInt;
+                    int num = 7 & cellDataInt >> 5;
+                    if (num > 0) {
+                        switch (1 << (num - 1)) {
+                            //AttributeTypeLight,
+                            case 1: {
+                                mapCell.Background = LightTransBrush;
+                                break;
+                            }
+                            //AttributeTypeDark,
+                            case 2: {
+                                mapCell.Background = DarkTransBrush;
+                                break;
+                            }
+                            //AttributeTypeFire = 4,
+                            case 4: {
+                                mapCell.Background = FireTransBrush;
+                                break;
+                            }
+                            //AttributeTypeWater = 8,
+                            case 8: {
+                                mapCell.Background = WaterTransBrush;
+                                break;
+                            }
+                            //AttributeTypeBossStart = 16,
+                            case 16: {
+                                ZeroMarkPlace = j;
+                                mapCell.Background = Brushes.Silver;
+                                break;
+                            }
+                            //AttributeTypeBoss = 32,
+                            case 32: {
+                                mapCell.Background = Brushes.Black;
+                                break;
                             }
                         }
+                    }
 
-                        var num2 = 31 & cellDataInt;
-                        if (num2 >= 24) {
-                            if (Settings.Config.Map.IsShowBoxInfo) {
-                                switch (num2 - 23) {
-                                    case 1: cellData = "?"; break;
-                                    case 2: cellData = "?$"; break;
-                                    case 3: cellData = "♥"; break;
-                                    case 4: cellData = "魂"; break;
-                                    case 5: cellData = "+1"; break;
-                                    case 6: cellData = "$"; break;
-                                    default: cellData = "箱" + (num2 - 23).ToString(); break;
-                                }
-                                mapCell.fontWeight = FontWeights.Bold;
+                    var num2 = 31 & cellDataInt;
+                    if (num2 >= 24) {
+                        if (Settings.Config.Map.IsShowBoxInfo) {
+                            switch (num2 - 23) {
+                                case 1:
+                                    cellData = "?";
+                                    break;
+                                case 2:
+                                    cellData = "?$";
+                                    break;
+                                case 3:
+                                    cellData = "♥";
+                                    break;
+                                case 4:
+                                    cellData = "魂";
+                                    break;
+                                case 5:
+                                    cellData = "+1";
+                                    break;
+                                case 6:
+                                    cellData = "$";
+                                    break;
+                                default:
+                                    cellData = "箱" + (num2 - 23).ToString();
+                                    break;
                             }
-                            else {
-                                cellData = "箱";
-                            }
+                            mapCell.fontWeight = FontWeights.Bold;
                         }
                         else {
-                            //this.EnemyUnitID = num2;
-                            //this.TreasureID = 0;
-                            cellData = "E" + (num2);
-                            if (num2 != 0) {
-                                //td.Attributes.Add("enemy", cellData);
-                            }
+                            cellData = "箱";
                         }
-                        if ((cellDataInt == 0) || (num2 == 0)) {
-                            cellData = "";
-                        }
-                        if (i == Y && j == X) {
-                            cellData = "★";
-                        }
-
-                        mapCell.CellData = cellData;
-                        mapCell.x = i;
-                        mapCell.y = j;
-                        mapRow.Cells.Add(mapCell);
                     }
-                    this.Rows.Add(mapRow);
-                }
-            }
+                    else {
+                        //this.EnemyUnitID = num2;
+                        //this.TreasureID = 0;
+                        cellData = "E" + (num2);
+                        if (num2 != 0) {
+                            //td.Attributes.Add("enemy", cellData);
+                        }
+                    }
+                    if ((cellDataInt == 0) || (num2 == 0)) {
+                        cellData = "";
+                    }
+                    if (i == Y && j == X) {
+                        cellData = "★";
+                    }
 
-            //添加底部标记
-            var mapMarkRow = new MapRow();
-            for (int j = 0; j < H; j++) {
-                var mapCellMark = new MapCell((zeroMarkPlace - j).ToString());  //Now use BossStart as zero mark, farewell 3
-                mapMarkRow.Cells.Add(mapCellMark);
+                    mapCell.CellData = cellData;
+                    mapCell.x = i;
+                    mapCell.y = j;
+                    mapRow.Cells.Add(mapCell);
+                }
+                this.Rows.Add(mapRow);
             }
-            this.Rows.Add(mapMarkRow);
         }
         public void BindMonsterData(DataTable monsterTable)
         {
@@ -262,6 +262,12 @@ namespace RTDDE.Executer.Util.Map
                                 c.Background = Brushes.Black;
                                 break;
                             }
+                        case ENEMY_TYPE.EVENT_EXP_N:
+                        case ENEMY_TYPE.EVENT_EXP_SP:
+                            {
+                                c.Foreground = Brushes.Gold;
+                                break;
+                            }
                         default:
                             break;
                     }
@@ -274,24 +280,62 @@ namespace RTDDE.Executer.Util.Map
                 return;
             }
             EnemyInfo bossInfo = dropData.Find(o => o.enemy_id == 0);
+            EnemyInfo boss01Info = dropData.Find(o => o.enemy_id == 100);
+            EnemyInfo boss02Info = dropData.Find(o => o.enemy_id == 101);
             EnemyInfo deathInfo = dropData.Find(o => o.enemy_id == 99);
             foreach (MapRow r in this.Rows) {
                 foreach (MapCell c in r.Cells) {
                     EnemyInfo ei = dropData.Find(o => o.x == c.x && o.y == c.y && !(o.x == 0 && o.y == 0));
                     if (c.RawCellData == 192) {
-                        c.drop_unit = DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + bossInfo.drop_unit_id.ToString());
-                        c.add_attribute_exp = bossInfo.add_attribute_exp;
-                        c.unit_exp = bossInfo.unit_exp;
-                        c.HasDropInfo = true;
+                        switch (c.x) {
+                            case 0: {
+                                c.drop_unit =
+                                    DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" +
+                                                             bossInfo.drop_unit_id.ToString());
+                                c.add_attribute_exp = bossInfo.add_attribute_exp;
+                                c.unit_exp = bossInfo.unit_exp;
+                                c.HasDropInfo = true;
+                                break;
+                            }
+                            case 1: {
+                                if (boss01Info == null) {
+                                    continue;
+                                }
+                                c.drop_unit =
+                                    DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" +
+                                                             boss01Info.drop_unit_id.ToString());
+                                c.add_attribute_exp = boss01Info.add_attribute_exp;
+                                c.unit_exp = boss01Info.unit_exp;
+                                c.HasDropInfo = true;
+                                break;
+                            }
+                            case 2: {
+                                if (boss02Info == null) {
+                                    continue;
+                                }
+                                c.drop_unit =
+                                    DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" +
+                                                             boss02Info.drop_unit_id.ToString());
+                                c.add_attribute_exp = boss02Info.add_attribute_exp;
+                                c.unit_exp = boss02Info.unit_exp;
+                                c.HasDropInfo = true;
+                                break;
+                            }
+                            default:
+                                break;
+                        }
                     }
                     else if (c.RawCellData == 160) {
-                        c.drop_unit = DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + deathInfo.drop_unit_id.ToString());
+                        c.drop_unit =
+                            DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" +
+                                                     deathInfo.drop_unit_id.ToString());
                         c.add_attribute_exp = deathInfo.add_attribute_exp;
                         c.unit_exp = deathInfo.unit_exp;
                         c.HasDropInfo = true;
                     }
                     else if (ei != null && ei.flag) {
-                        c.drop_unit = DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + ei.drop_unit_id.ToString());
+                        c.drop_unit =
+                            DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + ei.drop_unit_id.ToString());
                         c.add_attribute_exp = ei.add_attribute_exp;
                         c.unit_exp = ei.unit_exp;
                         c.HasDropInfo = true;

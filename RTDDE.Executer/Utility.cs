@@ -1,15 +1,8 @@
-﻿using RTDDE.Provider;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
-using System.Dynamic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using RTDDE.Executer.Func;
 using RTDDE.Executer.Util;
+using RTDDE.Provider;
 
 namespace RTDDE.Executer
 {
@@ -59,11 +53,22 @@ namespace RTDDE.Executer
             flowDoc.Blocks.Add(pr);
             return flowDoc;
         }
+        public static readonly Regex CheckOnlyNumberRegex = new Regex("[^0-9]+", RegexOptions.Compiled); //regex that matches disallowed text
+
+        public static bool IsOnlyNumber(string text) {
+            return (CheckOnlyNumberRegex.IsMatch(text) == false);
+        }
+
         public static void ShowException(string message)
         {
             var w = (MainWindow)Application.Current.MainWindow;
             w.StatusBarExceptionMessage.Text = message;
         }
+
+        public static string GetUiText(string key) {
+            return Application.Current.Resources[key].ToString();
+        }
+
         public static void ChangeTab<T>() where T : UserControl
         {
             var w = (MainWindow)Application.Current.MainWindow;

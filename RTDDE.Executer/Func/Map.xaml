@@ -33,12 +33,74 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0" Name="MapMarkGrid"></Grid>
-                <ScrollViewer Grid.Column="1" Style="{StaticResource HorizontalScrollViewer}" DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="25"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Grid.Column="0" Grid.Row="0" Name="MapMarkGrid"></Grid>
+                <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HorizontalScrollViewer}" DockPanel.Dock="Top">
                     <Grid Name="MapGrid"></Grid>
                 </ScrollViewer>
+                <ToggleButton Grid.Column="0" Grid.Row="1">
+                    <ToggleButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="MapOperateGrid" 
+                                    Storyboard.TargetProperty="Width"
+                                    To="360" Duration="0:0:0.360">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="MapOperateGrid" 
+                                    Storyboard.TargetProperty="Width"
+                                    To="0" Duration="0:0:0.360">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ToggleButton.Triggers>
+                    <Path HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="Black" Data="M 0,0 H 15 M 0,6 H 15 M 0,12 H 15"></Path>
+                </ToggleButton>
+                <Grid Name="MapOperateGrid" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Width="360">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <UniformGrid Grid.Column="0" Columns="2">
+                        <UniformGrid.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                <Setter Property="Padding" Value="0"></Setter>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                            </Style>
+                        </UniformGrid.Resources>
+                        <Button Name="MapOffsetUpButton" Click="MapOffsetUpButton_OnClick">
+                            <Path HorizontalAlignment="Center" Stroke="Black" Fill="Black"
+                              Data="M 0,6 H 12 L 6,0 Z"/>
+                        </Button>
+                        <Button Name="MapOffsetDownButton" Click="MapOffsetDownButton_OnClick">
+                            <Path HorizontalAlignment="Center" Stroke="Black" Fill="Black"
+                              Data="M 0,0 H 12 L 6,6 Z"/>
+                        </Button>
+                    </UniformGrid>
+                    <DockPanel Grid.Column="1" LastChildFill="True">
+                        <Button Name="ImportLdbsButton" Click="ImportLdbsButton_Click" Content="{DynamicResource Config_ImportLDBS}"/>
+                        <Button Name="MapLoadSimilarButton" Click="MapLoadSimilarButton_OnClick">Load Similar Map</Button>
+                        <ToggleButton Name="MapShowDropToggleButton" Click="MapShowDropToggleButton_OnClick">Drop</ToggleButton>
+                    </DockPanel>
+                </Grid>
             </Grid>
-            <Grid  DockPanel.Dock="Top">
+            <Grid DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="300"/>
@@ -82,6 +144,8 @@
                             <TextBox Name="MapEnemyInfo_gold_pt" Width="50"></TextBox>
                             <TextBlock Text="turn" Width="50"/>
                             <TextBox Name="MapEnemyInfo_turn" Width="50"></TextBox>
+                            <TextBlock Text="BGM" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_bgm" Width="250"></TextBox>
                             <Separator Width="300"/>
                             <TextBlock Text="lv" Width="50"/>
                             <TextBox Name="MapEnemyInfo_lv" Width="50" IsReadOnly="False" TextChanged="MapEnemyInfo_lv_TextChanged"></TextBox>

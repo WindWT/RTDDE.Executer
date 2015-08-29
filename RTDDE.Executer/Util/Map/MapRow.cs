@@ -9,5 +9,10 @@ namespace RTDDE.Executer.Util.Map
         {
             Cells = new List<MapCell>();
         }
+
+        public MapCell this[int i] {
+            get { return Cells[i]; }
+            set { Cells[i] = value; }
+        }
     }
 }

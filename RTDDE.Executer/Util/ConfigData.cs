@@ -8,7 +8,7 @@ using RTDDE.Provider;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace RTDDE.Executer
+namespace RTDDE.Executer.Util
 {
     public class ConfigData : INotifyPropertyChanged
     {
@@ -18,6 +18,11 @@ namespace RTDDE.Executer
 
         public class GeneralClass : INotifyPropertyChanged
         {
+            private bool _isEnableLevelLimiter;
+            private bool _isDefaultLvMax;
+            private bool _isUseLocalTime;
+            private bool _isForceEnglish;
+
             public bool IsEnableLevelLimiter
             {
                 get { return _isEnableLevelLimiter; }
@@ -51,9 +56,14 @@ namespace RTDDE.Executer
                     OnPropertyChanged("IsUseLocalTime");
                 }
             }
-            private bool _isEnableLevelLimiter;
-            private bool _isDefaultLvMax;
-            private bool _isUseLocalTime = false;
+
+            public bool IsForceEnglish {
+                get { return _isForceEnglish; }
+                set {
+                    _isForceEnglish = value;
+                    OnPropertyChanged("IsForceEnglish");
+                }
+            }
 
             public event PropertyChangedEventHandler PropertyChanged;
             protected void OnPropertyChanged(string propertyName)
@@ -313,7 +323,8 @@ namespace RTDDE.Executer
             {
                 IsDefaultLvMax = true,
                 IsEnableLevelLimiter = true,
-                IsUseLocalTime = false
+                IsUseLocalTime = false,
+                IsForceEnglish = false
             };
             Map = new MapClass()
             {

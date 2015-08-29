@@ -81,6 +81,7 @@ namespace RTDDE.Executer.Func
                     questDiff += "☆";
                 }
             }
+            this.DataContext = quest;
             QuestInfo_quest_difficulty.Text = questDiff;
             QuestInfo_name.Text = quest.name;
             QuestInfo_name_sub.Text = quest.name_sub;
@@ -242,20 +243,6 @@ namespace RTDDE.Executer.Func
             QuestInfo_present_param_name.Text = quest.present_param_name;
             QuestInfo_present_param.Text = quest.present_param.ToString();
             QuestInfo_present_param_1.Text = quest.present_param_1.ToString();
-
-            //advanced
-            UnitInfo_event_cutin_id.Text = quest.event_cutin_id.ToString();
-            UnitInfo_enemy_table_id.Text = quest.enemy_table_id.ToString();
-            UnitInfo_banner.Text = quest.banner;
-            UnitInfo_tflg_cmd_0.Text = quest.tflg_cmd_0.ToString();
-            UnitInfo_tflg_idx_0.Text = quest.tflg_idx_0.ToString();
-            UnitInfo_tflg_cmd_1.Text = quest.tflg_cmd_1.ToString();
-            UnitInfo_tflg_idx_1.Text = quest.tflg_idx_1.ToString();
-            UnitInfo_text.Text = quest.text;
-            UnitInfo_map.Text = quest.map.ToString();
-            UnitInfo_division.Text = quest.division.ToString();
-            UnitInfo_kpi_class.Text = quest.kpi_class.ToString();
-            UnitInfo_flag_no.Text = quest.flag_no.ToString();
         }
         async private Task<QuestChallengeMaster> ChallengeTask(int id)
         {
@@ -480,8 +467,8 @@ FROM QUEST_MASTER WHERE ";
             QuestTypeSwitch(QuestType.Event);
         }
 
-        private void SB_ShowMap_Completed(object sender, EventArgs e)
-        {
+        private void SB_ShowMap_Completed(object sender, EventArgs e) {
+            MapGrid.Width = UnitGrid.ActualWidth;
             Map.Load(QuestInfo_id.Text);
         }
 
@@ -535,6 +522,12 @@ FROM QUEST_MASTER WHERE ";
                 return;
             }
             Utility.GoToItemById<Event>(id);
+        }
+
+        private void UnitGrid_OnSizeChanged(object sender, SizeChangedEventArgs e) {
+            if (MapGrid.Width > 0) {
+                MapGrid.Width = UnitGrid.ActualWidth;
+            }
         }
     }
 }

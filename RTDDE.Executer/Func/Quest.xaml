@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:RTDDE="clr-namespace:RTDDE.Executer.Func"
              mc:Ignorable="d">
-    <Grid Name="UnitGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid Name="UnitGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SizeChanged="UnitGrid_OnSizeChanged">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="360"/>
@@ -61,6 +61,7 @@
                                     <DoubleAnimation
                                     Storyboard.TargetName="MapGrid" 
                                     Storyboard.TargetProperty="Width"
+                                    FillBehavior="Stop"
                                     To="{Binding ElementName=UnitGrid, Path=ActualWidth}" Duration="0:0:0.360">
                                         <DoubleAnimation.EasingFunction>
                                             <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
@@ -233,7 +234,7 @@
                 <Path Grid.Column="5" Style="{StaticResource PanelHeartPathStyle}" Data="M 8,1 A 3,3,180,1,0,8,7 A 3,3,180,1,0,8,1
                        M 8,0 A 5,7,180,1,0,8,14 A 5,7,180,1,0,8,0"></Path>
                 <TextBox Grid.Column="6" Name="QuestInfo_panel_sp"/>
-                <Path Grid.Column="6" Style="{StaticResource PanelSpPathStyle}" Data="M 2,2 H 15 V 15 H 2 V 2 M 4,4 H 13 V 13 H 4 V 4"></Path>
+                <Path Grid.Column="6" Style="{StaticResource PanelSpPathStyle}" Data="M 2,1 H 15 V 14 H 2 Z M 4,3 H 13 V 12 H 4 Z"></Path>
             </Grid>
             <Grid Name="QuestHelperGrid" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
@@ -415,48 +416,68 @@
                     </StackPanel>
                 </Expander>
                 <Expander Header="Advanced" Name="QuestAdvancedExpander" IsExpanded="False">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="50"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="event_cutin_id"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" Name="UnitInfo_event_cutin_id"></TextBox>
-                        <TextBlock Grid.Row="0" Grid.Column="2" Text="enemy_table_id"/>
-                        <TextBox Grid.Row="0" Grid.Column="3" Name="UnitInfo_enemy_table_id"></TextBox>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="banner"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="UnitInfo_banner"></TextBox>
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="tflg_cmd_0"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" Name="UnitInfo_tflg_cmd_0"></TextBox>
-                        <TextBlock Grid.Row="2" Grid.Column="2" Text="tflg_idx_0"/>
-                        <TextBox Grid.Row="2" Grid.Column="3" Name="UnitInfo_tflg_idx_0"></TextBox>
-                        <TextBlock Grid.Row="3" Grid.Column="0" Text="tflg_cmd_1"/>
-                        <TextBox Grid.Row="3" Grid.Column="1" Name="UnitInfo_tflg_cmd_1"></TextBox>
-                        <TextBlock Grid.Row="3" Grid.Column="2" Text="tflg_idx_1"/>
-                        <TextBox Grid.Row="3" Grid.Column="3" Name="UnitInfo_tflg_idx_1"></TextBox>
-                        <TextBlock Grid.Row="4" Grid.Column="0" Text="text"/>
-                        <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Name="UnitInfo_text"></TextBox>
-                        <TextBlock Grid.Row="5" Grid.Column="0" Text="map"/>
-                        <TextBox Grid.Row="5" Grid.Column="1" Name="UnitInfo_map"></TextBox>
-                        <TextBlock Grid.Row="5" Grid.Column="2" Text="division"/>
-                        <TextBox Grid.Row="5" Grid.Column="3" Name="UnitInfo_division"></TextBox>
-                        <TextBlock Grid.Row="6" Grid.Column="0" Text="kpi_class"/>
-                        <TextBox Grid.Row="6" Grid.Column="1" Name="UnitInfo_kpi_class"></TextBox>
-                        <TextBlock Grid.Row="6" Grid.Column="2" Text="flag_no"/>
-                        <TextBox Grid.Row="6" Grid.Column="3" Name="UnitInfo_flag_no"></TextBox>
-                    </Grid>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="event_cutin_id"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=event_cutin_id,Mode=OneWay}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="enemy_table_id"/>
+                            <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Path=enemy_table_id,Mode=OneWay}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="banner"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding Path=banner,Mode=OneWay}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="tflg_cmd_0"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=tflg_cmd_0,Mode=OneWay}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="tflg_idx_0"/>
+                            <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Path=tflg_idx_0,Mode=OneWay}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="tflg_cmd_1"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=tflg_cmd_1,Mode=OneWay}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="2" Text="tflg_idx_1"/>
+                            <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Path=tflg_idx_1,Mode=OneWay}"/>
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="text"/>
+                            <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding Path=text,Mode=OneWay}"/>
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="map"/>
+                            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=map,Mode=OneWay}"/>
+                            <TextBlock Grid.Row="5" Grid.Column="2" Text="division"/>
+                            <TextBox Grid.Row="5" Grid.Column="3" Text="{Binding Path=division,Mode=OneWay}"/>
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="kpi_class"/>
+                            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Path=kpi_class,Mode=OneWay}"/>
+                            <TextBlock Grid.Row="6" Grid.Column="2" Text="flag_no"/>
+                            <TextBox Grid.Row="6" Grid.Column="3" Text="{Binding Path=flag_no,Mode=OneWay}"/>
+                        </Grid>
+                        <UniformGrid Rows="4" Columns="4">
+                            <TextBlock>trigger_dis</TextBlock>
+                            <TextBlock>effect_id</TextBlock>
+                            <TextBlock>logic_id</TextBlock>
+                            <TextBlock>damage</TextBlock>
+                            <TextBox Text="{Binding Path=gim_distance_0,Mode=OneWay}"></TextBox>
+                            <TextBox Text="{Binding Path=gim_effect_0,Mode=OneWay}"></TextBox>
+                            <TextBox Text="{Binding Path=gim_logig_0,Mode=OneWay}"></TextBox>
+                            <TextBox Text="{Binding Path=gim_damage_0,Mode=OneWay}"></TextBox>
+                            <TextBox Text="{Binding Path=gim_distance_1,Mode=OneWay}"></TextBox>
+                            <TextBox Text="{Binding Path=gim_effect_1,Mode=OneWay}"></TextBox>
+                            <TextBox Text="{Binding Path=gim_logig_1,Mode=OneWay}"></TextBox>
+                            <TextBox Text="{Binding Path=gim_damage_1,Mode=OneWay}"></TextBox>
+                            <TextBox Text="{Binding Path=gim_distance_2,Mode=OneWay}"></TextBox>
+                            <TextBox Text="{Binding Path=gim_effect_2,Mode=OneWay}"></TextBox>
+                            <TextBox Text="{Binding Path=gim_logig_2,Mode=OneWay}"></TextBox>
+                            <TextBox Text="{Binding Path=gim_damage_2,Mode=OneWay}"></TextBox>
+                        </UniformGrid>
+                    </StackPanel>
                 </Expander>
             </StackPanel>
         </ScrollViewer>

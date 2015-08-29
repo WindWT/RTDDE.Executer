@@ -4,12 +4,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Xml;
+using RTDDE.Executer.Util;
 using RTDDE.Provider;
 using RTDDE.Provider.Enums;
 
@@ -24,65 +26,30 @@ namespace RTDDE.Executer.Func
         {
             this.DataContext = Settings.Config;
             InitializeComponent();
+            CurrentSystemLanguage.Text = string.Format(Utility.GetUiText("Config_CurrentSystemLanguage"),
+                Thread.CurrentThread.CurrentCulture.ToString());
         }
         private void ConfigTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ImportMsgPackButton.Content = new Run("Import MDBS MsgPack");
-            ImportLdbsButton.Content = new Run("Import MAP");
-            SaveSettingsButton.Content = new Run("Save Settings");
+            ImportMsgPackButton.SetResourceReference(Button.ContentProperty, "Config_ImportMDBS");
+            ImportLdbsButton.SetResourceReference(Button.ContentProperty, "Config_ImportLDBS");
+            SaveSettingsButton.SetResourceReference(Button.ContentProperty, "Config_SaveSettings");
         }
-        private void ImportLdbsButton_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            ofd.Filter = "LDBS File|LDBS*_Msg.bytes";
-            if (ofd.ShowDialog() == true) {
-                ImportLdbsButton.Content = new Run("Importing MAP Data...");
-                string filename = ofd.FileName;
-                Task task = new Task(() =>
-                {
-                    using (StreamReader sr = new StreamReader(filename)) {
-                        var game = new MapData(sr.BaseStream);
-                        DAL.FromSingle(game.LDM);
-                        DAL.FromSingle(game.LDM.enemy_table_master);
-                        DAL.FromSingle(game.LDM.unit_talk_master);
-                        //foreach (var ecm in game.LDM.event_cutin_master)
-                        //{
-                        //    DAL.FromSingle(ecm);
-                        //}
-                    }
 
-                });
-                task.ContinueWith(t =>
-                {
-                    if (t.Exception != null) {
-                        Utility.ShowException(t.Exception.InnerException.Message);
-                        ImportLdbsButton.Content = new Run("MAP Data Import Failed.");
-                    }
-                    else {
-                        ImportLdbsButton.Content = new Run("MAP Data Successfully Imported.");
-                        Utility.RefreshTabs();
-                    }
-                }, MainWindow.UiTaskScheduler);
-                task.Start();
-            }
-        }
-        private void ImportMsgPackButton_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog
-            {
+        private void ImportMsgPackButton_Click(object sender, RoutedEventArgs e) {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog {
                 CheckFileExists = false,
                 ValidateNames = false,
-                FileName = "Ignore me",
-                Title = "Browse Folder Then Press Open"
+                FileName = Utility.GetUiText("Config_ImportSelectFolder"),
+                Title = Utility.GetUiText("Config_ImportSelectFolder")
             };
             if (ofd.ShowDialog() == true) {
-                ImportMsgPackButton.Content = new Run("Importing MDBS MsgPack...");
-                string path = System.IO.Path.GetDirectoryName(ofd.FileName);
+                ImportMsgPackButton.SetResourceReference(Button.ContentProperty, "Config_ImportingMDBS");
+                string path = Path.GetDirectoryName(ofd.FileName);
                 var stopwatch = new Stopwatch();
                 long importTime = 0, backupTime = 0;
                 stopwatch.Start();
-                Task taskBackup = new Task(() =>
-                {
+                Task taskBackup = Task.Run(() => {
                     if (Settings.Config.Database.AutoBackup == false) {
                         return;
                     }
@@ -95,17 +62,18 @@ namespace RTDDE.Executer.Func
                         backupFolderInfo = new DirectoryInfo("backup");
                     }
                     if (File.Exists("RTD.db")) {
-                        File.Copy("RTD.db", backupFolderInfo.Name + "\\RTD_backup_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + ".db");
+                        File.Copy("RTD.db",
+                            backupFolderInfo.Name + "\\RTD_backup_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") +
+                            ".db");
                     }
                     stopwatch.Stop();
                     backupTime = stopwatch.ElapsedMilliseconds;
                 });
-                Task taskImport = new Task(() =>
-                {
+                Task taskImport = Task.Run(() => {
                     taskBackup.Wait();
                     stopwatch.Restart();
-                    foreach (string filepath in System.IO.Directory.GetFiles(path)) {
-                        string filename = System.IO.Path.GetFileName(filepath);
+                    foreach (string filepath in Directory.GetFiles(path)) {
+                        string filename = Path.GetFileName(filepath);
                         if (filename != null && filename.EndsWith("_Msg.bytes") == false) {
                             continue;
                         }
@@ -123,32 +91,63 @@ namespace RTDDE.Executer.Func
                                 typeof(MsgBytes).GetMethod("ToList").MakeGenericMethod(currentType);
                             MethodInfo methodToDB = typeof(DAL).GetMethod("FromList").MakeGenericMethod(currentType);
                             //Invoke
-                            var list = methodToList.Invoke(null, new object[] { sr.BaseStream });
+                            var list = methodToList.Invoke(null, new object[] {sr.BaseStream});
                             //Drop table, 
                             DAL.DropTable(enumName);
-                            methodToDB.Invoke(null, new object[] { list });
+                            methodToDB.Invoke(null, new object[] {list});
                         }
                     }
                     stopwatch.Stop();
                     importTime = stopwatch.ElapsedMilliseconds;
                 });
-                taskImport.ContinueWith(t =>
-                {
+                taskImport.ContinueWith(t => {
                     if (t.Exception != null) {
                         Utility.ShowException(t.Exception.InnerException.Message);
-                        ImportMsgPackButton.Content = new Run("MDBS MsgPack Import Failed.");
+                        ImportMsgPackButton.SetResourceReference(Button.ContentProperty, "Config_ImportMDBSFail");
                         return;
                     }
                     if (Settings.Config.Database.AutoBackup == false) {
-                        ImportMsgPackButton.Content = new Run(string.Format("MDBS MsgPack Successfully Imported. ({0}ms)", importTime));
+                        ImportMsgPackButton.Content =
+                            new Run(string.Format(Utility.GetUiText("Config_ImportMDBSSuccess"), importTime));
                     }
                     else {
-                        ImportMsgPackButton.Content = new Run(string.Format("MDBS MsgPack Successfully Backuped & Imported . (B:{1}ms I:{0}ms)", importTime, backupTime));
+                        ImportMsgPackButton.Content =
+                            new Run(string.Format(Utility.GetUiText("Config_ImportMDBSSuccessWithBackup"), importTime,
+                                backupTime));
                     }
                     Utility.RefreshTabs();
                 }, MainWindow.UiTaskScheduler);
-                taskBackup.Start();
-                taskImport.Start();
+            }
+        }
+
+        private void ImportLdbsButton_Click(object sender, RoutedEventArgs e) {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.Filter = Utility.GetUiText("Config_LDBSFilter") + "|LDBS*_Msg.bytes";
+            if (ofd.ShowDialog() == true) {
+                ImportLdbsButton.SetResourceReference(Button.ContentProperty, "Config_ImportingLDBS");
+                string filename = ofd.FileName;
+                Task task = Task.Run(() => {
+                    using (StreamReader sr = new StreamReader(filename)) {
+                        var game = new MapData(sr.BaseStream);
+                        DAL.FromSingle(game.LDM);
+                        DAL.FromSingle(game.LDM.enemy_table_master);
+                        DAL.FromSingle(game.LDM.unit_talk_master);
+                        //foreach (var ecm in game.LDM.event_cutin_master)
+                        //{
+                        //    DAL.FromSingle(ecm);
+                        //}
+                    }
+                });
+                task.ContinueWith(t => {
+                    if (t.Exception != null) {
+                        Utility.ShowException(t.Exception.InnerException.Message);
+                        ImportLdbsButton.SetResourceReference(Button.ContentProperty, "Config_ImportLDBSFail");
+                    }
+                    else {
+                        ImportLdbsButton.SetResourceReference(Button.ContentProperty, "Config_ImportLDBSSuccess");
+                        Utility.RefreshTabs();
+                    }
+                }, MainWindow.UiTaskScheduler);
             }
         }
 
@@ -156,36 +155,30 @@ namespace RTDDE.Executer.Func
         {
             try {
                 Settings.Save();
-                SaveSettingsButton.Content = new Run("SAVED");
+                SaveSettingsButton.SetResourceReference(Button.ContentProperty, "Config_SaveSettingsSuccess");
                 Task task = Task.Run(() =>
                 {
                     System.Threading.Thread.Sleep(3000);
                 });
                 await task;
-                SaveSettingsButton.Content = new Run("Save Settings");
+                SaveSettingsButton.SetResourceReference(Button.ContentProperty, "Config_SaveSettings");
             }
             catch (Exception ex) {
                 Utility.ShowException(ex.Message);
-                SaveSettingsButton.Content = new Run("FAILED, click to retry.");
+                SaveSettingsButton.SetResourceReference(Button.ContentProperty, "Config_SaveSettingsFail");
             }
-        }
-
-        private static readonly Regex CheckOnlyNumberRegex = new Regex("[^0-9]+", RegexOptions.Compiled); //regex that matches disallowed text
-        private bool IsTextAllowed(string text)
-        {
-            return (CheckOnlyNumberRegex.IsMatch(text) == false);
         }
         private void ExpValueTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = IsTextAllowed(e.Text) == false;
+            e.Handled = Utility.IsOnlyNumber(e.Text) == false;
         }
         private void PtValueTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = IsTextAllowed(e.Text) == false;
+            e.Handled = Utility.IsOnlyNumber(e.Text) == false;
         }
         private void SaleValueTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = IsTextAllowed(e.Text) == false;
+            e.Handled = Utility.IsOnlyNumber(e.Text) == false;
         }
 
         private void ResetDropSettingButton_OnClick(object sender, RoutedEventArgs e)
@@ -196,17 +189,17 @@ namespace RTDDE.Executer.Func
         async private void ValidateCustomDropSettingButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (Settings.Config.Map.CustomDropColors == null) {
-                ValidateCustomDropSettingButton.Content = new Run("ERROR");
+                ValidateCustomDropSettingButton.SetResourceReference(Button.ContentProperty, "Config_ValidateFail");
             }
             else {
-                ValidateCustomDropSettingButton.Content = new Run("Success");
+                ValidateCustomDropSettingButton.SetResourceReference(Button.ContentProperty, "Config_ValidateSuccess");
             }
             Task task = Task.Run(() =>
             {
                 System.Threading.Thread.Sleep(1000);
             });
             await task;
-            ValidateCustomDropSettingButton.Content = new Run("Validate Custom");
+            ValidateCustomDropSettingButton.SetResourceReference(Button.ContentProperty, "Config_Validate");
         }
     }
 }

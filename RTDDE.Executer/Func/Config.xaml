@@ -10,24 +10,26 @@
     </UserControl.Resources>
     <Grid Name="ConfigTab" IsVisibleChanged="ConfigTab_IsVisibleChanged">
         <DockPanel Background="{StaticResource HighlightBrush}">
-            <GroupBox DockPanel.Dock="Top" Header="Import">
+            <GroupBox DockPanel.Dock="Top" Header="{DynamicResource Config_Import}">
                 <StackPanel>
                     <Button Name="ImportMsgPackButton" Click="ImportMsgPackButton_Click">MsgPack</Button>
                     <Button Name="ImportLdbsButton" Click="ImportLdbsButton_Click">LDBS</Button>
                 </StackPanel>
             </GroupBox>
-            <GroupBox DockPanel.Dock="Top" Header="Settings">
+            <GroupBox DockPanel.Dock="Top" Header="{DynamicResource Config_Settings}">
                 <StackPanel>
-                    <GroupBox Header="General">
+                    <GroupBox Header="{DynamicResource Config_SettingsGeneral}">
                         <StackPanel>
-                            <CheckBox Name="IsEnableLevelLimiterCheckBox" IsChecked="{Binding Path=General.IsEnableLevelLimiter,Mode=TwoWay}">Enable level limiter</CheckBox>
-                            <CheckBox Name="IsDefaultLvMaxCheckBox" IsChecked="{Binding Path=General.IsDefaultLvMax,Mode=TwoWay}">Set LV to max by default</CheckBox>
-                            <CheckBox Name="IsUseLocalTimeCheckBox" IsChecked="{Binding Path=General.IsUseLocalTime,Mode=TwoWay}">Show local time instead of GMT+9</CheckBox>
+                            <CheckBox Name="IsEnableLevelLimiterCheckBox" IsChecked="{Binding Path=General.IsEnableLevelLimiter,Mode=TwoWay}" Content="{DynamicResource Config_IsEnableLevelLimiter}" />
+                            <CheckBox Name="IsDefaultLvMaxCheckBox" IsChecked="{Binding Path=General.IsDefaultLvMax,Mode=TwoWay}" Content="{DynamicResource Config_IsDefaultLvMax}" />
+                            <CheckBox Name="IsUseLocalTimeCheckBox" IsChecked="{Binding Path=General.IsUseLocalTime,Mode=TwoWay}" Content="{DynamicResource Config_IsUseLocalTime}" />
+                            <CheckBox Name="IsForceEnglish" IsChecked="{Binding Path=General.IsForceEnglish,Mode=TwoWay}" Content="{DynamicResource Config_IsForceEnglish}" />
+                            <TextBlock Name="CurrentSystemLanguage"/>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Map">
+                    <GroupBox Header="{DynamicResource Config_SettingsMap}">
                         <StackPanel>
-                            <CheckBox Name="IsShowDropInfoCheckBox" IsChecked="{Binding Path=Map.IsShowDropInfo,Mode=TwoWay}">Show drop &amp; exp info(not recommend for iOS user)</CheckBox>
+                            <CheckBox Name="IsShowDropInfoCheckBox" IsChecked="{Binding Path=Map.IsShowDropInfo,Mode=TwoWay}" Content="{DynamicResource Config_IsShowDropInfo}" />
                             <GroupBox>
                                 <GroupBox.Header>
                                     <Button Width="125" Style="{StaticResource InlineButton}" Name="ResetDropSettingButton" Click="ResetDropSettingButton_OnClick">Reset Drop</Button>
@@ -74,21 +76,21 @@
                                         <TextBox Grid.Row="0" Grid.Column="12" Name="SaleColorValueTextBox" Text="{Binding Path=Map.SaleColorValue,Mode=TwoWay}"></TextBox>
                                         <TextBlock Grid.Row="1" Grid.Column="0" Name="CustomDropTextBlock">Custom Drop</TextBlock>
                                         <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="12" Text="{Binding Path=Map.CustomDrop,Mode=TwoWay}"></TextBox>
-                                        <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource InlineButton}" Name="ValidateCustomDropSettingButton" Click="ValidateCustomDropSettingButton_OnClick">Validate Custom</Button>
+                                        <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource InlineButton}" Name="ValidateCustomDropSettingButton" Click="ValidateCustomDropSettingButton_OnClick" Content="{DynamicResource Config_Validate}"></Button>
                                         <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="12">[Custom Drop Format]id,id,id:color;id:#hexcolor [Example]15022:Black,16027:#000</TextBlock>
                                     </Grid>
                                 </StackPanel>
                             </GroupBox>
-                            <CheckBox Name="IsShowBoxInfoCheckBox" IsChecked="{Binding Path=Map.IsShowBoxInfo,Mode=TwoWay}">Show box info</CheckBox>
-                            <CheckBox Name="IsShowEnemyAttributeCheckBox" IsChecked="{Binding Path=Map.IsShowEnemyAttribute,Mode=TwoWay}">Show enemy attribute on topright</CheckBox>
+                            <CheckBox Name="IsShowBoxInfoCheckBox" IsChecked="{Binding Path=Map.IsShowBoxInfo,Mode=TwoWay}" Content="{DynamicResource Config_IsShowBoxInfo}"/>
+                            <CheckBox Name="IsShowEnemyAttributeCheckBox" IsChecked="{Binding Path=Map.IsShowEnemyAttribute,Mode=TwoWay}" Content="{DynamicResource Config_IsShowEnemyAttribute}"/>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="DataBase">
+                    <GroupBox Header="{DynamicResource Config_SettingsDatabase}">
                         <StackPanel>
-                            <CheckBox Name="AutoBackupCheckBox" IsChecked="{Binding Path=Database.AutoBackup,Mode=TwoWay}">Auto backup when import MDBS</CheckBox>
+                            <CheckBox Name="AutoBackupCheckBox" IsChecked="{Binding Path=Database.AutoBackup,Mode=TwoWay}" Content="{DynamicResource Config_AutoBackup}"/>
                         </StackPanel>
                     </GroupBox>
-                    <Button Name="SaveSettingsButton" Click="SaveSettingsButton_Click">Save Settings</Button>
+                    <Button Name="SaveSettingsButton" Click="SaveSettingsButton_Click" Content="{DynamicResource Config_SaveSettings}"/>
                 </StackPanel>
             </GroupBox>
         </DockPanel>

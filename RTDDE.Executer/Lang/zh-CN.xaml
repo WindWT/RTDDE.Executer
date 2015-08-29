@@ -3,4 +3,38 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="General_Search">搜索</system:String>
     <system:String x:Key="Quest_stamina">体力</system:String>
+    <!--Config-->
+    <system:String x:Key="Config_Import">导入</system:String>
+    <system:String x:Key="Config_ImportSelectFolder">选择目录</system:String>
+    <system:String x:Key="Config_ImportMDBS">导入MDBS MsgPack</system:String>
+    <system:String x:Key="Config_ImportingMDBS">导入MDBS MsgPack中...</system:String>
+    <system:String x:Key="Config_ImportMDBSFail">导入MDBS MsgPack失败.</system:String>
+    <system:String x:Key="Config_ImportMDBSSuccess">导入MDBS MsgPack成功. ({0}ms)</system:String>
+    <system:String x:Key="Config_ImportMDBSSuccessWithBackup">备份并导入MDBS MsgPack成功. (备份:{1}ms 导入:{0}ms)</system:String>
+    <system:String x:Key="Config_ImportLDBS">导入地图</system:String>
+    <system:String x:Key="Config_ImportingLDBS">导入地图中...</system:String>
+    <system:String x:Key="Config_ImportLDBSFail">导入地图失败.</system:String>
+    <system:String x:Key="Config_ImportLDBSSuccess">导入地图成功.</system:String>
+    <system:String x:Key="Config_LDBSFilter">地图文件</system:String>
+    <system:String x:Key="Config_Settings">设置</system:String>
+    <system:String x:Key="Config_SettingsGeneral">通用</system:String>
+    <system:String x:Key="Config_IsEnableLevelLimiter">限制角色等级不可超过最大等级</system:String>
+    <system:String x:Key="Config_IsDefaultLvMax">查看角色时自动设置为最大等级</system:String>
+    <system:String x:Key="Config_IsUseLocalTime">使用本地时区（假定源数据均为GMT+9时区）</system:String>
+    <system:String x:Key="Config_IsForceEnglish">强制界面使用英语(需要重启RTDDE)</system:String>
+    <system:String x:Key="Config_CurrentSystemLanguage">当前系统语言:{0}</system:String>
+    <system:String x:Key="Config_SettingsMap">地图</system:String>
+    <system:String x:Key="Config_IsShowDropInfo">默认显示掉落及经验信息（不推荐iOS用户开启）</system:String>
+    <system:String x:Key="Config_IsShowBoxInfo">显示箱子信息</system:String>
+    <system:String x:Key="Config_IsShowEnemyAttribute">在右上角显示敌人属性</system:String>
+
+    <system:String x:Key="Config_SettingsDatabase">数据库</system:String>
+    <system:String x:Key="Config_AutoBackup">导入MDBS前自动备份</system:String>
+
+    <system:String x:Key="Config_SaveSettings">保存设置</system:String>
+    <system:String x:Key="Config_SaveSettingsSuccess">保存成功</system:String>
+    <system:String x:Key="Config_SaveSettingsFail">保存失败，点击重试</system:String>
+    <system:String x:Key="Config_Validate">校验自定义掉落设置</system:String>
+    <system:String x:Key="Config_ValidateSuccess">校验通过</system:String>
+    <system:String x:Key="Config_ValidateFail">校验失败</system:String>
 </ResourceDictionary>
