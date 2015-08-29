@@ -234,7 +234,7 @@
                 <Path Grid.Column="5" Style="{StaticResource PanelHeartPathStyle}" Data="M 8,1 A 3,3,180,1,0,8,7 A 3,3,180,1,0,8,1
                        M 8,0 A 5,7,180,1,0,8,14 A 5,7,180,1,0,8,0"></Path>
                 <TextBox Grid.Column="6" Name="QuestInfo_panel_sp"/>
-                <Path Grid.Column="6" Style="{StaticResource PanelSpPathStyle}" Data="M 2,2 H 15 V 15 H 2 V 2 M 4,4 H 13 V 13 H 4 V 4"></Path>
+                <Path Grid.Column="6" Style="{StaticResource PanelSpPathStyle}" Data="M 2,1 H 15 V 14 H 2 Z M 4,3 H 13 V 12 H 4 Z"></Path>
             </Grid>
             <Grid Name="QuestHelperGrid" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
