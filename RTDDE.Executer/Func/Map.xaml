@@ -41,7 +41,7 @@
                 <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HorizontalScrollViewer}" DockPanel.Dock="Top">
                     <Grid Name="MapGrid"></Grid>
                 </ScrollViewer>
-                <ToggleButton Grid.Column="0" Grid.Row="1">
+                <ToggleButton Grid.Column="0" Grid.Row="1" IsChecked="True">
                     <ToggleButton.Triggers>
                         <EventTrigger RoutedEvent="ToggleButton.Checked">
                             <BeginStoryboard>
