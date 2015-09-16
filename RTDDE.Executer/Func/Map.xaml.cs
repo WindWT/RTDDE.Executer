@@ -445,7 +445,7 @@ namespace RTDDE.Executer.Func
                     }
                     else {
                         ImportLdbsButton.SetResourceReference(Button.ContentProperty, "Config_ImportLDBSSuccess");
-                        Utility.RefreshTabs();
+                        Load(CurrentQuestId);
                     }
                 }, MainWindow.UiTaskScheduler);
             }
