@@ -145,7 +145,8 @@ SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
                         foreach (DataRow dr in oldDiffTable.Rows) {
                             string id = dr[pkName].ToString();
                             DataRow[] newDiffHasRow = newDiffTable.Select(pkName + "=" + id);
-                            if (newDiffHasRow.Any() == false) {    //old table only row, add empty row to new table
+                            if (newDiffHasRow.Any() == false) {
+                                //old table only row, add empty row to new table
                                 DataRow newDr = newDiffTable.NewRow();
                                 newDr[pkName] = id;
                                 newDiffTable.Rows.Add(newDr);
@@ -153,8 +154,9 @@ SELECT name FROM old.sqlite_master WHERE type='table' AND name='{0}'
                         }
                         foreach (DataRow dr in newDiffTable.Rows) {
                             string id = dr[pkName].ToString();
-                            DataRow[] oldDiffHasRow = oldDiffTable.Select("id=" + id);
-                            if (oldDiffHasRow.Any() == false) {     //new table only row, add empty row to old table
+                            DataRow[] oldDiffHasRow = oldDiffTable.Select(pkName + "=" + id);
+                            if (oldDiffHasRow.Any() == false) {
+                                //new table only row, add empty row to old table
                                 DataRow oldDr = oldDiffTable.NewRow();
                                 oldDr[pkName] = id;
                                 oldDiffTable.Rows.Add(oldDr);
