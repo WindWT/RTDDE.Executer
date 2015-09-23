@@ -137,7 +137,7 @@ namespace RTDDE.Executer.Func
                         });
                     }
                     TextBlock tb = new TextBlock() {
-                        Text = c.CellData,
+                        Text = c.Text,
                         Foreground = c.Foreground,
                         FontWeight = c.fontWeight
                     };
@@ -168,7 +168,11 @@ namespace RTDDE.Executer.Func
                     b.SetValue(Grid.RowProperty, row);
                     b.SetValue(Grid.ColumnProperty, col);
 
+                    //绘制tooltip
                     StringBuilder sb = new StringBuilder();
+                    if (c.EnemyNo > 0) {
+                        sb.AppendLine("#:" + c.EnemyNo);
+                    }
                     if (c.HasDropInfo) {
                         sb.AppendLine("evo_pt:" + c.add_attribute_exp);
                         sb.AppendLine("exp:" + c.unit_exp);
@@ -248,7 +252,7 @@ namespace RTDDE.Executer.Func
                 if (setId != 0) {
                     monsterData.Rows.Add(
                         new object[] {
-                            "E" + enemyTableData.Rows[0]["enemy" + i + "_id"],
+                            enemyTableData.Rows[0]["enemy" + i + "_id"],
                             setId,
                             enemyTableData.Rows[0]["enemy" + i + "_lv_min"],
                             enemyTableData.Rows[0]["enemy" + i + "_lv_max"],

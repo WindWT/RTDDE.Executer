@@ -128,6 +128,7 @@ namespace RTDDE.Executer.Util.Map
                         //this.EnemyUnitID = num2;
                         //this.TreasureID = 0;
                         cellData = "E" + (num2);
+                        mapCell.EnemyNo = num2;
                         if (num2 != 0) {
                             //td.Attributes.Add("enemy", cellData);
                         }
@@ -139,7 +140,7 @@ namespace RTDDE.Executer.Util.Map
                         cellData = "★";
                     }
 
-                    mapCell.CellData = cellData;
+                    mapCell.Text = cellData;
                     mapCell.x = i;
                     mapCell.y = j;
                     mapRow.Cells.Add(mapCell);
@@ -151,8 +152,7 @@ namespace RTDDE.Executer.Util.Map
         {
             foreach (MapRow r in this.Rows) {
                 foreach (MapCell c in r.Cells) {
-                    string enemyNo = c.CellData;
-                    DataRow[] foundRow = monsterTable.Select("[#] = '" + enemyNo + "'");
+                    DataRow[] foundRow = monsterTable.Select("[#] = '" + c.EnemyNo + "'");
                     if (foundRow.Length < 1) {
                         continue;
                     }
@@ -189,7 +189,7 @@ namespace RTDDE.Executer.Util.Map
                                             int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
                                             //td.Text = "↗" + enemyDropId.ToString();
                                             //tb.Text = "<a href='Map.aspx?id=" + enemyDropId + "'>↗</a>";
-                                            c.CellData = "↗";
+                                            c.Text = "↗";
                                             break;
                                         }
                                     case 65001: //下り階段
@@ -197,7 +197,7 @@ namespace RTDDE.Executer.Util.Map
                                     int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
                                     //td.Text = "↘" + enemyDropId.ToString();
                                     //tb.Text = "<a href='Map.aspx?id=" + enemyDropId + "'>↘</a>";
-                                    c.CellData = "↘";
+                                    c.Text = "↘";
                                     break;
                                 }
                                 }
@@ -209,56 +209,56 @@ namespace RTDDE.Executer.Util.Map
                                 {
                                             int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
                                             enemyDropId -= 99;
-                                            c.CellData = enemyDropId.ToString() + "↑";
+                                            c.Text = enemyDropId.ToString() + "↑";
                                             break;
                                         }
                                     case 65003: //移動床_直進
                                 {
                                     int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
                                     enemyDropId -= 299;
-                                    c.CellData = enemyDropId.ToString() + "→";
+                                    c.Text = enemyDropId.ToString() + "→";
                                     break;
                                 }
                                     case 65004: //移動床_下
                                 {
                                     int enemyDropId = Convert.ToInt32(foundRow[0]["drop_id"]);
                                     enemyDropId -= 199;
-                                    c.CellData = enemyDropId.ToString() + "↓";
+                                    c.Text = enemyDropId.ToString() + "↓";
                                     break;
                                 }
                                 }
                                 break;
                             }
                         case ENEMY_TYPE.TREASURE: {
-                                c.CellData = "箱";
+                                c.Text = "箱";
                                 c.Foreground = Brushes.Red;
                                 c.fontWeight = FontWeights.Bold;
                                 break;
                             }
                         case ENEMY_TYPE.SILVER_SLIME: {
-                                c.CellData = c.CellData.Replace("E", "S");
-                                c.Foreground = Brushes.Silver;
-                                c.fontWeight = FontWeights.Bold;
-                                break;
-                            }
+                            c.Text = "S" + c.EnemyNo;
+                            c.Foreground = Brushes.Silver;
+                            c.fontWeight = FontWeights.Bold;
+                            break;
+                        }
                         case ENEMY_TYPE.GOLD_SLIME: {
-                                c.CellData = c.CellData.Replace("E", "G");
-                                c.Foreground = Brushes.Gold;
-                                c.fontWeight = FontWeights.Bold;
-                                break;
-                            }
+                            c.Text = "G" + c.EnemyNo;
+                            c.Foreground = Brushes.Gold;
+                            c.fontWeight = FontWeights.Bold;
+                            break;
+                        }
                         case ENEMY_TYPE.MINE: {
-                                c.CellData = "✹";
+                                c.Text = "✹";
                                 c.Foreground = Brushes.Gray;
                                 break;
                             }
                         case ENEMY_TYPE.GOLD: {
-                                c.CellData = "$";
+                                c.Text = "$";
                                 c.Foreground = Brushes.Gray;
                                 break;
                             }
                         case ENEMY_TYPE.NOTHING: {
-                                c.CellData = string.Empty;
+                                c.Text = string.Empty;
                                 c.Background = Brushes.Black;
                                 break;
                             }
@@ -340,7 +340,7 @@ namespace RTDDE.Executer.Util.Map
                         c.unit_exp = ei.unit_exp;
                         c.HasDropInfo = true;
                     }
-                    else if (string.IsNullOrEmpty(c.CellData) == false && c.CellData.StartsWith("E")) {
+                    else if (string.IsNullOrEmpty(c.Text) == false && c.Text.StartsWith("E")) {
                         c.Foreground = Brushes.LightGray;
                     }
                     //set drop mark
