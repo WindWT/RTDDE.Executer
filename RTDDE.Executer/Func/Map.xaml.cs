@@ -322,16 +322,11 @@ namespace RTDDE.Executer.Func
             MapEnemyInfo_lv_max.Text = mmInfoRow["lv_max"].ToString();
             MapEnemyInfo_drop_id.Text = mmInfoRow["drop_id"].ToString();
             string bgmId = mmInfoRow["bgm_id"].ToString();
-            if (string.IsNullOrEmpty(bgmId) == false) {
-                MapEnemyInfo_bgm.Text = Utility.ParseBgmName(Convert.ToInt32(bgmId));
-            }
+            MapEnemyInfo_bgm.Text = string.IsNullOrEmpty(bgmId)
+                ? string.Empty
+                : Utility.ParseBgmName(Convert.ToInt32(bgmId));
 
-            if (Settings.Config.General.IsDefaultLvMax) {
-                MapEnemyInfo_lv.Text = "99";
-            }
-            else {
-                MapEnemyInfo_lv.Text = "1";
-            }
+            MapEnemyInfo_lv.Text = Settings.Config.General.IsDefaultLvMax ? "99" : "1";
             MapEnemyInfo_DataBind();
         }
 
