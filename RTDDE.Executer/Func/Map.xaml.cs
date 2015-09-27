@@ -152,7 +152,10 @@ namespace RTDDE.Executer.Func
                                 new GradientStop(Colors.Transparent, 3d/4d),
                                 new GradientStop(c.AttributeColor, 3d/4d)
                             }
-                        }
+                        },
+                        StrokeThickness = 2,
+                        StrokeDashArray = new DoubleCollection() {2, 1},
+                        Stroke = c.EnemyRate > 0 && c.EnemyRate < 100 ? Brushes.DarkGray : Brushes.Transparent
                     };
                     Border b = new Border() {
                         Background = c.Background,

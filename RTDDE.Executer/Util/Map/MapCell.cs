@@ -9,6 +9,7 @@ namespace RTDDE.Executer.Util.Map
         public int RawCellData { get; set; }
         public string Text { get; set; }
         public int EnemyNo { get; set; }
+        public int EnemyRate { get; set; }
         public Brush Foreground { get; set; }
         public Brush Background { get; set; }
         public Color YorishiroColor { get; set; }

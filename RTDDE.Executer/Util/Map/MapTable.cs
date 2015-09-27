@@ -157,6 +157,7 @@ namespace RTDDE.Executer.Util.Map
                         continue;
                     }
                     c.drop_id = Convert.ToInt32(foundRow[0]["drop_id"]);
+                    c.EnemyRate = Convert.ToInt32(foundRow[0]["rate"]);
                     string enemyId = foundRow[0]["id"].ToString();
                     EnemyUnitMaster eum =
                         DAL.ToSingle<EnemyUnitMaster>("SELECT * FROM ENEMY_UNIT_MASTER WHERE id=" + enemyId);
