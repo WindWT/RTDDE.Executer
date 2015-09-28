@@ -136,15 +136,17 @@ namespace RTDDE.Executer
             }
             return child;
         }
-        public static void RefreshTabs()
-        {
+        public static void RefreshTabs() {
             var w = (MainWindow)Application.Current.MainWindow;
-            foreach (UserControl child in w.MainGrid.Children) {
+            for (int i = 0; i < w.MainGrid.Children.Count; i++) {
+                var child = w.MainGrid.Children[i];
                 if ((child is Config) == false) {
                     w.MainGrid.Children.Remove(child);
+                    i--;
                 }
             }
         }
+
         public static void RefreshTabs<T>() where T : UserControl
         {
             var w = (MainWindow)Application.Current.MainWindow;
