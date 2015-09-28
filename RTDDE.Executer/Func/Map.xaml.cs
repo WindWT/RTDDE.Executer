@@ -137,7 +137,7 @@ namespace RTDDE.Executer.Func
                         });
                     }
                     TextBlock tb = new TextBlock() {
-                        Text = c.CellData,
+                        Text = c.Text,
                         Foreground = c.Foreground,
                         FontWeight = c.fontWeight
                     };
@@ -152,7 +152,10 @@ namespace RTDDE.Executer.Func
                                 new GradientStop(Colors.Transparent, 3d/4d),
                                 new GradientStop(c.AttributeColor, 3d/4d)
                             }
-                        }
+                        },
+                        StrokeThickness = 2,
+                        StrokeDashArray = new DoubleCollection() {2, 1},
+                        Stroke = c.EnemyRate > 0 && c.EnemyRate < 100 ? Brushes.DarkGray : Brushes.Transparent
                     };
                     Border b = new Border() {
                         Background = c.Background,
@@ -168,7 +171,11 @@ namespace RTDDE.Executer.Func
                     b.SetValue(Grid.RowProperty, row);
                     b.SetValue(Grid.ColumnProperty, col);
 
+                    //绘制tooltip
                     StringBuilder sb = new StringBuilder();
+                    if (c.EnemyNo > 0) {
+                        sb.AppendLine("#:" + c.EnemyNo);
+                    }
                     if (c.HasDropInfo) {
                         sb.AppendLine("evo_pt:" + c.add_attribute_exp);
                         sb.AppendLine("exp:" + c.unit_exp);
@@ -248,7 +255,7 @@ namespace RTDDE.Executer.Func
                 if (setId != 0) {
                     monsterData.Rows.Add(
                         new object[] {
-                            "E" + enemyTableData.Rows[0]["enemy" + i + "_id"],
+                            enemyTableData.Rows[0]["enemy" + i + "_id"],
                             setId,
                             enemyTableData.Rows[0]["enemy" + i + "_lv_min"],
                             enemyTableData.Rows[0]["enemy" + i + "_lv_max"],
@@ -318,16 +325,11 @@ namespace RTDDE.Executer.Func
             MapEnemyInfo_lv_max.Text = mmInfoRow["lv_max"].ToString();
             MapEnemyInfo_drop_id.Text = mmInfoRow["drop_id"].ToString();
             string bgmId = mmInfoRow["bgm_id"].ToString();
-            if (string.IsNullOrEmpty(bgmId) == false) {
-                MapEnemyInfo_bgm.Text = Utility.ParseBgmName(Convert.ToInt32(bgmId));
-            }
+            MapEnemyInfo_bgm.Text = string.IsNullOrEmpty(bgmId)
+                ? string.Empty
+                : Utility.ParseBgmName(Convert.ToInt32(bgmId));
 
-            if (Settings.Config.General.IsDefaultLvMax) {
-                MapEnemyInfo_lv.Text = "99";
-            }
-            else {
-                MapEnemyInfo_lv.Text = "1";
-            }
+            MapEnemyInfo_lv.Text = Settings.Config.General.IsDefaultLvMax ? "99" : "1";
             MapEnemyInfo_DataBind();
         }
 
@@ -445,7 +447,7 @@ namespace RTDDE.Executer.Func
                     }
                     else {
                         ImportLdbsButton.SetResourceReference(Button.ContentProperty, "Config_ImportLDBSSuccess");
-                        Utility.RefreshTabs();
+                        Load(CurrentQuestId);
                     }
                 }, MainWindow.UiTaskScheduler);
             }

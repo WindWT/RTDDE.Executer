@@ -158,6 +158,7 @@ namespace RTDDE.Executer.Func
                 EnemyInfo_shadow.Text = eum.shadow.ToString();
                 EnemyInfo_up.Text = eum.up.ToString();
                 EnemyInfo_atk_ef_id.Text = eum.atk_ef_id.ToString();
+                EnemyInfo_logic_group_id.Text = eum.logic_group_id.ToString();
             }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
         }

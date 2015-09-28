@@ -7,7 +7,9 @@ namespace RTDDE.Executer.Util.Map
     public class MapCell
     {
         public int RawCellData { get; set; }
-        public string CellData { get; set; }
+        public string Text { get; set; }
+        public int EnemyNo { get; set; }
+        public int EnemyRate { get; set; }
         public Brush Foreground { get; set; }
         public Brush Background { get; set; }
         public Color YorishiroColor { get; set; }
@@ -26,17 +28,17 @@ namespace RTDDE.Executer.Util.Map
             : this(string.Empty)
         {
         }
-        public MapCell(string cellData)
-            : this(cellData, Brushes.Black, Brushes.White, FontWeights.Normal)
+        public MapCell(string text)
+            : this(text, Brushes.Black, Brushes.White, FontWeights.Normal)
         {
         }
-        public MapCell(string cellData, Brush foreground, Brush background, FontWeight bold)
-            : this(cellData, foreground, background, bold, Colors.Transparent)
+        public MapCell(string text, Brush foreground, Brush background, FontWeight bold)
+            : this(text, foreground, background, bold, Colors.Transparent)
         {
         }
-        public MapCell(string cellData, Brush foreground, Brush background, FontWeight bold, Color yorishiroColor)
+        public MapCell(string text, Brush foreground, Brush background, FontWeight bold, Color yorishiroColor)
         {
-            this.CellData = cellData;
+            this.Text = text;
             this.Foreground = foreground;
             this.Background = background;
             this.fontWeight = bold;
@@ -45,7 +47,7 @@ namespace RTDDE.Executer.Util.Map
         }
         public override string ToString()
         {
-            return CellData;
+            return Text;
         }
     }
 }

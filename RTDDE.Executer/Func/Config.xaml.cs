@@ -136,6 +136,9 @@ namespace RTDDE.Executer.Func
                         //{
                         //    DAL.FromSingle(ecm);
                         //}
+                        foreach (var lgd in game.LDM.logic_group_data) {
+                            DAL.FromSingle(lgd);
+                        }
                     }
                 });
                 task.ContinueWith(t => {
