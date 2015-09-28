@@ -438,6 +438,11 @@ namespace RTDDE.Executer.Func
                         //{
                         //    DAL.FromSingle(ecm);
                         //}
+                        if (game.LDM.logic_group_data != null) {
+                            foreach (var lgd in game.LDM.logic_group_data) {
+                                DAL.FromSingle(lgd);
+                            }
+                        }
                     }
                 });
                 task.ContinueWith(t => {
