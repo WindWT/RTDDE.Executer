@@ -217,6 +217,7 @@
                             <RowDefinition Height="*"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="model"/>
                         <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="EnemyInfo_model"></TextBox>
@@ -230,6 +231,8 @@
                         <TextBox Grid.Row="3" Grid.Column="1" Name="EnemyInfo_up"></TextBox>
                         <TextBlock Grid.Row="3" Grid.Column="2" Text="atk_ef_id"/>
                         <TextBox Grid.Row="3" Grid.Column="3" Name="EnemyInfo_atk_ef_id"></TextBox>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="logic_group_id"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Name="EnemyInfo_logic_group_id"></TextBox>
                     </Grid>
                 </Expander>
             </StackPanel>

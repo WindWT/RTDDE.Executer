@@ -433,6 +433,7 @@
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="event_cutin_id"/>
                             <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=event_cutin_id,Mode=OneWay}"/>
@@ -458,6 +459,8 @@
                             <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Path=kpi_class,Mode=OneWay}"/>
                             <TextBlock Grid.Row="6" Grid.Column="2" Text="flag_no"/>
                             <TextBox Grid.Row="6" Grid.Column="3" Text="{Binding Path=flag_no,Mode=OneWay}"/>
+                            <TextBlock Grid.Row="7" Grid.Column="0" Text="field_crash_id"/>
+                            <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Path=field_crash_id,Mode=OneWay}"/>
                         </Grid>
                         <UniformGrid Rows="4" Columns="4">
                             <TextBlock>trigger_dis</TextBlock>
