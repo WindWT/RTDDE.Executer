@@ -106,75 +106,72 @@
                     <ColumnDefinition Width="300"/>
                 </Grid.ColumnDefinitions>
                 <DataGrid Grid.Column="0" Name="MapMonsterGrid" AutoGenerateColumns="True" FrozenColumnCount="1" SelectionChanged="MapMonsterGrid_SelectionChanged"></DataGrid>
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <WrapPanel Grid.Row="0">
+                <StackPanel Grid.Column="1">
+                    <WrapPanel>
                         <TextBlock Text="#" Width="25"/>
                         <TextBox Name="MapEnemyInfo_Mark" Width="50"></TextBox>
                         <TextBlock Text="name" Width="50"/>
                         <TextBox Name="MapEnemyInfo_name" Width="175"></TextBox>
-                        <Separator Width="300"/>
                     </WrapPanel>
-                    <ScrollViewer Grid.Row="1" Style="{StaticResource VerticalScrollViewer}">
-                        <WrapPanel>
-                            <TextBlock Text="id" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_id" Width="50"></TextBox>
-                            <TextBlock Text="model" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_model" Width="150"></TextBox>
-                            <TextBlock Text="rate" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_rate" Width="50"></TextBox>
-                            <TextBlock Text="texture" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_texture" Width="150"></TextBox>
-                            <TextBlock Text="drop_id" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_drop_id" Width="50"></TextBox>
-                            <TextBlock Text="type" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_type" Width="150"></TextBox>
-                            <TextBlock Text="Dragon" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_isDragon" Width="50"></TextBox>
-                            <TextBlock Text="Unit" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_isUnitEnemy" Width="50"></TextBox>
-                            <TextBlock Text="attribute" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_attribute" Width="50"></TextBox>
-                            <TextBlock Text="soul_pt" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_soul_pt" Width="50"></TextBox>
-                            <TextBlock Text="gold_pt" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_gold_pt" Width="50"></TextBox>
-                            <TextBlock Text="turn" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_turn" Width="50"></TextBox>
-                            <TextBlock Text="BGM" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_bgm" Width="250"></TextBox>
-                            <Separator Width="300"/>
-                            <TextBlock Text="lv" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_lv" Width="50" IsReadOnly="False" TextChanged="MapEnemyInfo_lv_TextChanged"></TextBox>
-                            <TextBlock Text="lv_min" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_lv_min" Width="50"></TextBox>
-                            <TextBlock Text="lv_max" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_lv_max" Width="50"></TextBox>
-                            <TextBlock Text="life" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_life" Width="100"></TextBox>
-                            <TextBlock Text="atk" Width="25"/>
-                            <TextBox Name="MapEnemyInfo_atk" Width="50"></TextBox>
-                            <TextBlock Text="def" Width="25"/>
-                            <TextBox Name="MapEnemyInfo_def" Width="50"></TextBox>
-                            <TextBlock Text="pattern" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_pat" Width="250"></TextBox>
-                            <TextBlock Text="p0" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_p0" Width="100"></TextBox>
-                            <TextBlock Text="p1" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_p1" Width="100"></TextBox>
-                            <TextBlock Text="pattern2" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_pat_01" Width="250"></TextBox>
-                            <TextBlock Text="p2_0" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_p0_01" Width="100"></TextBox>
-                            <TextBlock Text="p2_1" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_p1_01" Width="100"></TextBox>
-                            <Separator Width="300"/>
-                        </WrapPanel>
+                    <Separator Width="300"/>
+                    <ScrollViewer Style="{StaticResource VerticalScrollViewer}">
+                        <StackPanel>
+                            <WrapPanel>
+                                <TextBlock Text="id" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_id" Width="50"></TextBox>
+                                <TextBlock Text="model" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_model" Width="150"></TextBox>
+                                <TextBlock Text="rate" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_rate" Width="50"></TextBox>
+                                <TextBlock Text="texture" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_texture" Width="150"></TextBox>
+                                <TextBlock Text="drop_id" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_drop_id" Width="50"></TextBox>
+                                <TextBlock Text="type" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_type" Width="150"></TextBox>
+                                <TextBlock Text="Dragon" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_isDragon" Width="50"></TextBox>
+                                <TextBlock Text="Unit" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_isUnitEnemy" Width="50"></TextBox>
+                                <TextBlock Text="attribute" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_attribute" Width="50"></TextBox>
+                                <TextBlock Text="soul_pt" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_soul_pt" Width="50"></TextBox>
+                                <TextBlock Text="gold_pt" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_gold_pt" Width="50"></TextBox>
+                                <TextBlock Text="turn" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_turn" Width="50"></TextBox>
+                                <TextBlock Text="BGM" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_bgm" Width="250"></TextBox>
+                                <Separator Width="300"/>
+                                <TextBlock Text="lv" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_lv" Width="50" IsReadOnly="False" TextChanged="MapEnemyInfo_lv_TextChanged"></TextBox>
+                                <TextBlock Text="lv_min" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_lv_min" Width="50"></TextBox>
+                                <TextBlock Text="lv_max" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_lv_max" Width="50"></TextBox>
+                                <TextBlock Text="life" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_life" Width="100"></TextBox>
+                                <TextBlock Text="atk" Width="25"/>
+                                <TextBox Name="MapEnemyInfo_atk" Width="50"></TextBox>
+                                <TextBlock Text="def" Width="25"/>
+                                <TextBox Name="MapEnemyInfo_def" Width="50"></TextBox>
+                                <TextBlock Text="pattern" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_pat" Width="150"></TextBox>
+                                <TextBox Name="MapEnemyInfo_p0" Width="50"></TextBox>
+                                <TextBox Name="MapEnemyInfo_p1" Width="50"></TextBox>
+                                <TextBlock Text="pattern2" Width="50"/>
+                                <TextBox Name="MapEnemyInfo_pat_01" Width="150"></TextBox>
+                                <TextBox Name="MapEnemyInfo_p0_01" Width="50"></TextBox>
+                                <TextBox Name="MapEnemyInfo_p1_01" Width="50"></TextBox>
+                                <Separator Width="300"/>
+                            </WrapPanel>
+                            <Expander Header="Logic" Name="MapEnemyLogicExpander" IsExpanded="False">
+                                <StackPanel Name="MapEnemyLogicStackPanel"/>
+                            </Expander>
+                        </StackPanel>
                     </ScrollViewer>
-                </Grid>
+                </StackPanel>
             </Grid>
         </DockPanel>
     </Grid>

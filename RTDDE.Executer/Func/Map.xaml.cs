@@ -355,60 +355,116 @@ namespace RTDDE.Executer.Func
             }
         }
 
-        private void MapEnemyInfo_DataBind()
-        {
+        private async void MapEnemyInfo_DataBind() {
             if (string.IsNullOrWhiteSpace(MapEnemyInfo_id.Text)) {
                 return;
             }
             string enemyId = MapEnemyInfo_id.Text;
-            Task<EnemyUnitMaster> task = new Task<EnemyUnitMaster>(() =>
-            {
+            Task<EnemyUnitMaster> task = Task.Run(() => {
                 string sql = "SELECT * FROM enemy_unit_master WHERE id={0}";
                 return DAL.ToSingle<EnemyUnitMaster>(String.Format(sql, enemyId));
             });
-            task.ContinueWith(t =>
-            {
-                if (t.Exception != null) {
-                    Utility.ShowException(t.Exception.InnerException.Message);
-                    return;
+            EnemyUnitMaster eum = await task;
+
+            Task<LogicGroupData> taskLogic = Task.Run(() => {
+                string sql = @"Select * from LOGIC_GROUP_DATA WHERE logic_group_id={0}";
+                try {
+                    return DAL.ToSingle<LogicGroupData>(String.Format(sql, eum.logic_group_id));
                 }
-                if (t.Result == null) {
-                    return;
+                catch (Exception) {
+                    return null;
                 }
-                EnemyUnitMaster eum = t.Result;
+            });
 
-                MapEnemyInfo_name.Text = eum.name;
-                MapEnemyInfo_model.Text = eum.model;
-                MapEnemyInfo_texture.Text = eum.texture;
-                MapEnemyInfo_type.Text = Utility.ParseEnemyType(eum.type);
-                MapEnemyInfo_isDragon.Text = Convert.ToBoolean(eum.flag).ToString();
-                MapEnemyInfo_isUnitEnemy.Text = Utility.IsUnitEnemy(eum.type).ToString();
-                MapEnemyInfo_attribute.Text = Utility.ParseAttributetype(eum.attribute);
-                MapEnemyInfo_soul_pt.Text = eum.soul_pt.ToString();
-                MapEnemyInfo_gold_pt.Text = eum.gold_pt.ToString();
-                MapEnemyInfo_turn.Text = eum.turn.ToString();
+            MapEnemyInfo_name.Text = eum.name;
+            MapEnemyInfo_model.Text = eum.model;
+            MapEnemyInfo_texture.Text = eum.texture;
+            MapEnemyInfo_type.Text = Utility.ParseEnemyType(eum.type);
+            MapEnemyInfo_isDragon.Text = Convert.ToBoolean(eum.flag).ToString();
+            MapEnemyInfo_isUnitEnemy.Text = Utility.IsUnitEnemy(eum.type).ToString();
+            MapEnemyInfo_attribute.Text = Utility.ParseAttributetype(eum.attribute);
+            MapEnemyInfo_soul_pt.Text = eum.soul_pt.ToString();
+            MapEnemyInfo_gold_pt.Text = eum.gold_pt.ToString();
+            MapEnemyInfo_turn.Text = eum.turn.ToString();
 
-                int lv = Convert.ToInt32(MapEnemyInfo_lv.Text);
-                int lv_max = Convert.ToInt32(MapEnemyInfo_lv_max.Text);
-                if (Settings.Config.General.IsEnableLevelLimiter && (lv > lv_max)) {
-                    lv = lv_max;
-                    MapEnemyInfo_lv.Text = lv.ToString("0");
+            int lv = Convert.ToInt32(MapEnemyInfo_lv.Text);
+            int lv_max = Convert.ToInt32(MapEnemyInfo_lv_max.Text);
+            if (Settings.Config.General.IsEnableLevelLimiter && (lv > lv_max)) {
+                lv = lv_max;
+                MapEnemyInfo_lv.Text = lv.ToString("0");
+            }
+            MapEnemyInfo_life.Text = Utility.RealCalc(eum.life, eum.up_life, lv).ToString();
+            int atk = Utility.RealCalc(eum.attack, eum.up_attack, lv);
+            MapEnemyInfo_atk.Text = atk.ToString();
+            MapEnemyInfo_atk.ToolTip = $"{(int) (atk*0.85)}~{(int) (atk*1.1)}";
+            MapEnemyInfo_def.Text = Utility.RealCalc(eum.defense, eum.up_defense, lv).ToString();
+            //skill
+            MapEnemyInfo_pat.Text = Utility.ParseAttackPattern(eum.pat);
+            MapEnemyInfo_p0.Text = eum.p0.ToString();
+            MapEnemyInfo_p1.Text = eum.p1.ToString();
+            MapEnemyInfo_pat_01.Text = Utility.ParseAttackPattern(eum.pat_01);
+            MapEnemyInfo_p0_01.Text = eum.p0_01.ToString();
+            MapEnemyInfo_p1_01.Text = eum.p1_01.ToString();
+            //Logic
+            MapEnemyLogicStackPanel.Children.Clear();
+            if (eum.logic_group_id == 0) {
+                MapEnemyLogicExpander.Visibility = Visibility.Collapsed;
+                MapEnemyLogicExpander.Header = "Logic";
+            }
+            else {
+                MapEnemyLogicExpander.Visibility = Visibility.Visible;
+                MapEnemyLogicExpander.Header = $"Logic#{eum.logic_group_id}";
+                LogicGroupData lgd = await taskLogic;
+                if (lgd != null) {
+                    foreach (LogicData logicData in lgd.logic_data) {
+                        Grid logicGrid = new Grid();
+                        logicGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                        logicGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                        logicGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                        logicGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                        logicGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+
+                        var idTextbox = new TextBox() { Text = logicData.logic_id.ToString() };
+                        idTextbox.SetValue(Grid.ColumnProperty, 0);
+                        idTextbox.SetValue(Grid.RowProperty, 0);
+                        logicGrid.Children.Add(idTextbox);
+
+                        var typeTextbox = new TextBox() { Text = Utility.ParseTriggerType(logicData.trigger_type) };
+                        typeTextbox.SetValue(Grid.ColumnProperty, 1);
+                        typeTextbox.SetValue(Grid.ColumnSpanProperty, 2);
+                        typeTextbox.SetValue(Grid.RowProperty, 0);
+                        logicGrid.Children.Add(typeTextbox);
+
+                        var paramTextbox = new TextBox() { Text = logicData.trigger_param.ToString() };
+                        paramTextbox.SetValue(Grid.ColumnProperty, 3);
+                        paramTextbox.SetValue(Grid.RowProperty, 0);
+                        logicGrid.Children.Add(paramTextbox);
+
+                        int actionCount = 1; //use for rowProperty
+                        foreach (ActionData actionData in logicData.action_data) {
+                            logicGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+
+                            var actionTypeTextbox = new TextBox() { Text = Utility.ParseAttackPattern(actionData.action_type) };
+                            actionTypeTextbox.SetValue(Grid.ColumnProperty, 1);
+                            actionTypeTextbox.SetValue(Grid.RowProperty, actionCount);
+                            logicGrid.Children.Add(actionTypeTextbox);
+
+                            var param0Textbox = new TextBox() { Text = actionData.action_param_0.ToString() };
+                            param0Textbox.SetValue(Grid.ColumnProperty, 2);
+                            param0Textbox.SetValue(Grid.RowProperty, actionCount);
+                            logicGrid.Children.Add(param0Textbox);
+
+                            var param1Textbox = new TextBox() { Text = actionData.action_param_1.ToString() };
+                            param1Textbox.SetValue(Grid.ColumnProperty, 3);
+                            param1Textbox.SetValue(Grid.RowProperty, actionCount);
+                            logicGrid.Children.Add(param1Textbox);
+
+                            actionCount++;
+                        }
+                        MapEnemyLogicStackPanel.Children.Add(logicGrid);
+                    }
                 }
-                MapEnemyInfo_life.Text = Utility.RealCalc(eum.life, eum.up_life, lv).ToString();
-                int atk = Utility.RealCalc(eum.attack, eum.up_attack, lv);
-                MapEnemyInfo_atk.Text = atk.ToString();
-                MapEnemyInfo_atk.ToolTip = $"{(int) (atk*0.85)}~{(int) (atk*1.1)}";
-                MapEnemyInfo_def.Text = Utility.RealCalc(eum.defense, eum.up_defense, lv).ToString();
-
-                MapEnemyInfo_pat.Text = Utility.ParseAttackPattern(eum.pat);
-                MapEnemyInfo_p0.Text = eum.p0.ToString();
-                MapEnemyInfo_p1.Text = eum.p1.ToString();
-                MapEnemyInfo_pat_01.Text = Utility.ParseAttackPattern(eum.pat_01);
-                MapEnemyInfo_p0_01.Text = eum.p0_01.ToString();
-                MapEnemyInfo_p1_01.Text = eum.p1_01.ToString();
-
-            }, MainWindow.UiTaskScheduler);
-            task.Start();
+            }
         }
 
         private void MapOffsetUpButton_OnClick(object sender, RoutedEventArgs e) {
