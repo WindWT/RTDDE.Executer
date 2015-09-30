@@ -204,6 +204,9 @@
                     <TextBox Grid.Row="1" Grid.Column="2" Name="EnemyInfo_p0_01"></TextBox>
                     <TextBox Grid.Row="1" Grid.Column="3" Name="EnemyInfo_p1_01"></TextBox>
                 </Grid>
+                <Expander Header="Logic" Name="EnemyLogicExpander" IsExpanded="False">
+                    <StackPanel Name="EnemyLogicStackPanel"/>
+                </Expander>
                 <Expander Header="Advanced" Name="EnemyAdvancedExpander" IsExpanded="False">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -213,7 +216,6 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
@@ -231,8 +233,6 @@
                         <TextBox Grid.Row="3" Grid.Column="1" Name="EnemyInfo_up"></TextBox>
                         <TextBlock Grid.Row="3" Grid.Column="2" Text="atk_ef_id"/>
                         <TextBox Grid.Row="3" Grid.Column="3" Name="EnemyInfo_atk_ef_id"></TextBox>
-                        <TextBlock Grid.Row="4" Grid.Column="0" Text="logic_group_id"/>
-                        <TextBox Grid.Row="4" Grid.Column="1" Name="EnemyInfo_logic_group_id"></TextBox>
                     </Grid>
                 </Expander>
             </StackPanel>
