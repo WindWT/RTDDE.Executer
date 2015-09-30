@@ -99,6 +99,7 @@ namespace RTDDE.Executer.Func
             ClearMap();
             Offset = 0;
             CurrentMapTable = null;
+            ImportLdbsButton.SetResourceReference(Button.ContentProperty, "Config_ImportLDBS");
         }
 
         private void ClearMap()
