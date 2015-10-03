@@ -5,174 +5,185 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d">
     <Grid>
-        <DockPanel LastChildFill="True">
-            <Grid DockPanel.Dock="Top">
-                <Grid.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="SnapsToDevicePixels" Value="True"></Setter>
-                        <Setter Property="Height" Value="25"/>
-                        <Setter Property="Width" Value="25"/>
-                        <Setter Property="BorderThickness" Value="0.5"/>
-                        <Setter Property="BorderBrush" Value="{StaticResource PressedBrush}"/>
-                        <Setter Property="Background" Value="White"/>
-                        <Setter Property="Padding" Value="0"/>
-                        <Setter Property="Margin" Value="0"/>
-                    </Style>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="SnapsToDevicePixels" Value="True"></Setter>
-                        <Setter Property="Padding" Value="0"/>
-                        <Setter Property="Margin" Value="0"/>
-                        <Setter Property="TextAlignment" Value="Center"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="Foreground" Value="Black"/>
-                        <Setter Property="FontSize" Value="12"/>
-                    </Style>
-                </Grid.Resources>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="25"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid Grid.Column="0" Grid.Row="0" Name="MapMarkGrid"></Grid>
-                <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HorizontalScrollViewer}" DockPanel.Dock="Top">
-                    <Grid Name="MapGrid"></Grid>
-                </ScrollViewer>
-                <ToggleButton Grid.Column="0" Grid.Row="1" IsChecked="True">
-                    <ToggleButton.Triggers>
-                        <EventTrigger RoutedEvent="ToggleButton.Checked">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation Storyboard.TargetName="MapOperateGrid" 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="SnapsToDevicePixels" Value="True"></Setter>
+                    <Setter Property="Height" Value="25"/>
+                    <Setter Property="Width" Value="25"/>
+                    <Setter Property="BorderThickness" Value="0.5"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource PressedBrush}"/>
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="SnapsToDevicePixels" Value="True"></Setter>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="TextAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="FontSize" Value="12"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Column="0" Grid.Row="0" Name="MapMarkGrid"></Grid>
+            <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HorizontalScrollViewer}" DockPanel.Dock="Top">
+                <Grid Name="MapGrid"></Grid>
+            </ScrollViewer>
+            <ToggleButton Grid.Column="0" Grid.Row="1" IsChecked="True">
+                <ToggleButton.Triggers>
+                    <EventTrigger RoutedEvent="ToggleButton.Checked">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="MapOperateGrid" 
                                     Storyboard.TargetProperty="Width"
                                     To="360" Duration="0:0:0.360">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation Storyboard.TargetName="MapOperateGrid" 
+                                    <DoubleAnimation.EasingFunction>
+                                        <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="MapOperateGrid" 
                                     Storyboard.TargetProperty="Width"
                                     To="0" Duration="0:0:0.360">
-                                        <DoubleAnimation.EasingFunction>
-                                            <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </ToggleButton.Triggers>
-                    <Path HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="Black" Data="M 0,0 H 15 M 0,6 H 15 M 0,12 H 15"></Path>
-                </ToggleButton>
-                <Grid Name="MapOperateGrid" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Width="360">
+                                    <DoubleAnimation.EasingFunction>
+                                        <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </ToggleButton.Triggers>
+                <Path HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="Black" Data="M 0,0 H 15 M 0,6 H 15 M 0,12 H 15"></Path>
+            </ToggleButton>
+            <Grid Name="MapOperateGrid" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Width="360">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <UniformGrid Grid.Column="0" Columns="2">
+                    <UniformGrid.Resources>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                            <Setter Property="Padding" Value="0"></Setter>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                        </Style>
+                    </UniformGrid.Resources>
+                    <Button Name="MapOffsetUpButton" Click="MapOffsetUpButton_OnClick">
+                        <Path HorizontalAlignment="Center" Stroke="Black" Fill="Black"
+                              Data="M 0,6 H 12 L 6,0 Z"/>
+                    </Button>
+                    <Button Name="MapOffsetDownButton" Click="MapOffsetDownButton_OnClick">
+                        <Path HorizontalAlignment="Center" Stroke="Black" Fill="Black"
+                              Data="M 0,0 H 12 L 6,6 Z"/>
+                    </Button>
+                </UniformGrid>
+                <DockPanel Grid.Column="1" LastChildFill="True">
+                    <Button Name="ImportLdbsButton" Click="ImportLdbsButton_Click" Content="{DynamicResource Config_ImportLDBS}"/>
+                    <Button Name="MapLoadSimilarButton" Click="MapLoadSimilarButton_OnClick">Load Similar Map</Button>
+                    <ToggleButton Name="MapShowDropToggleButton" Click="MapShowDropToggleButton_OnClick">Drop</ToggleButton>
+                </DockPanel>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="300"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Column="0" Name="MapMonsterGrid" AutoGenerateColumns="True" FrozenColumnCount="1" SelectionChanged="MapMonsterGrid_SelectionChanged"></DataGrid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
                         <ColumnDefinition Width="50"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <UniformGrid Grid.Column="0" Columns="2">
-                        <UniformGrid.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                                <Setter Property="Padding" Value="0"></Setter>
-                                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
-                            </Style>
-                        </UniformGrid.Resources>
-                        <Button Name="MapOffsetUpButton" Click="MapOffsetUpButton_OnClick">
-                            <Path HorizontalAlignment="Center" Stroke="Black" Fill="Black"
-                              Data="M 0,6 H 12 L 6,0 Z"/>
-                        </Button>
-                        <Button Name="MapOffsetDownButton" Click="MapOffsetDownButton_OnClick">
-                            <Path HorizontalAlignment="Center" Stroke="Black" Fill="Black"
-                              Data="M 0,0 H 12 L 6,6 Z"/>
-                        </Button>
-                    </UniformGrid>
-                    <DockPanel Grid.Column="1" LastChildFill="True">
-                        <Button Name="ImportLdbsButton" Click="ImportLdbsButton_Click" Content="{DynamicResource Config_ImportLDBS}"/>
-                        <Button Name="MapLoadSimilarButton" Click="MapLoadSimilarButton_OnClick">Load Similar Map</Button>
-                        <ToggleButton Name="MapShowDropToggleButton" Click="MapShowDropToggleButton_OnClick">Drop</ToggleButton>
+                    <DockPanel Grid.Column="0" LastChildFill="True">
+                        <TextBlock Text="#"/>
+                        <TextBox Name="MapEnemyInfo_Mark"></TextBox>
                     </DockPanel>
+                    <TextBlock Grid.Column="1" Text="name"/>
+                    <TextBox Grid.Column="2" Name="MapEnemyInfo_name"></TextBox>
                 </Grid>
+                <ScrollViewer Grid.Row="1" Style="{StaticResource VerticalScrollViewer}">
+                    <StackPanel>
+                        <WrapPanel>
+                            <TextBlock Text="id" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_id" Width="50"></TextBox>
+                            <TextBlock Text="model" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_model" Width="150"></TextBox>
+                            <TextBlock Text="rate" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_rate" Width="50"></TextBox>
+                            <TextBlock Text="texture" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_texture" Width="150"></TextBox>
+                            <TextBlock Text="drop_id" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_drop_id" Width="50"></TextBox>
+                            <TextBlock Text="type" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_type" Width="150"></TextBox>
+                            <TextBlock Text="Dragon" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_isDragon" Width="50"></TextBox>
+                            <TextBlock Text="Unit" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_isUnitEnemy" Width="50"></TextBox>
+                            <TextBlock Text="attribute" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_attribute" Width="50"></TextBox>
+                            <TextBlock Text="soul_pt" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_soul_pt" Width="50"></TextBox>
+                            <TextBlock Text="gold_pt" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_gold_pt" Width="50"></TextBox>
+                            <TextBlock Text="turn" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_turn" Width="50"></TextBox>
+                            <TextBlock Text="BGM" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_bgm" Width="250"></TextBox>
+                            <Separator Width="300"/>
+                            <TextBlock Text="lv" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_lv" Width="50" IsReadOnly="False" TextChanged="MapEnemyInfo_lv_TextChanged"></TextBox>
+                            <TextBlock Text="lv_min" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_lv_min" Width="50"></TextBox>
+                            <TextBlock Text="lv_max" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_lv_max" Width="50"></TextBox>
+                            <TextBlock Text="life" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_life" Width="100"></TextBox>
+                            <TextBlock Text="atk" Width="25"/>
+                            <TextBox Name="MapEnemyInfo_atk" Width="50"></TextBox>
+                            <TextBlock Text="def" Width="25"/>
+                            <TextBox Name="MapEnemyInfo_def" Width="50"></TextBox>
+                            <TextBlock Text="pattern" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_pat" Width="150"></TextBox>
+                            <TextBox Name="MapEnemyInfo_p0" Width="50"></TextBox>
+                            <TextBox Name="MapEnemyInfo_p1" Width="50"></TextBox>
+                            <TextBlock Text="pattern2" Width="50"/>
+                            <TextBox Name="MapEnemyInfo_pat_01" Width="150"></TextBox>
+                            <TextBox Name="MapEnemyInfo_p0_01" Width="50"></TextBox>
+                            <TextBox Name="MapEnemyInfo_p1_01" Width="50"></TextBox>
+                        </WrapPanel>
+                        <Expander Header="Logic" Name="MapEnemyLogicExpander" IsExpanded="False">
+                            <StackPanel Name="MapEnemyLogicStackPanel"/>
+                        </Expander>
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
-            <Grid DockPanel.Dock="Top">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="300"/>
-                </Grid.ColumnDefinitions>
-                <DataGrid Grid.Column="0" Name="MapMonsterGrid" AutoGenerateColumns="True" FrozenColumnCount="1" SelectionChanged="MapMonsterGrid_SelectionChanged"></DataGrid>
-                <StackPanel Grid.Column="1">
-                    <WrapPanel>
-                        <TextBlock Text="#" Width="25"/>
-                        <TextBox Name="MapEnemyInfo_Mark" Width="50"></TextBox>
-                        <TextBlock Text="name" Width="50"/>
-                        <TextBox Name="MapEnemyInfo_name" Width="175"></TextBox>
-                    </WrapPanel>
-                    <Separator Width="300"/>
-                    <ScrollViewer Style="{StaticResource VerticalScrollViewer}">
-                        <StackPanel>
-                            <WrapPanel>
-                                <TextBlock Text="id" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_id" Width="50"></TextBox>
-                                <TextBlock Text="model" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_model" Width="150"></TextBox>
-                                <TextBlock Text="rate" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_rate" Width="50"></TextBox>
-                                <TextBlock Text="texture" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_texture" Width="150"></TextBox>
-                                <TextBlock Text="drop_id" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_drop_id" Width="50"></TextBox>
-                                <TextBlock Text="type" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_type" Width="150"></TextBox>
-                                <TextBlock Text="Dragon" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_isDragon" Width="50"></TextBox>
-                                <TextBlock Text="Unit" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_isUnitEnemy" Width="50"></TextBox>
-                                <TextBlock Text="attribute" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_attribute" Width="50"></TextBox>
-                                <TextBlock Text="soul_pt" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_soul_pt" Width="50"></TextBox>
-                                <TextBlock Text="gold_pt" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_gold_pt" Width="50"></TextBox>
-                                <TextBlock Text="turn" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_turn" Width="50"></TextBox>
-                                <TextBlock Text="BGM" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_bgm" Width="250"></TextBox>
-                                <Separator Width="300"/>
-                                <TextBlock Text="lv" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_lv" Width="50" IsReadOnly="False" TextChanged="MapEnemyInfo_lv_TextChanged"></TextBox>
-                                <TextBlock Text="lv_min" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_lv_min" Width="50"></TextBox>
-                                <TextBlock Text="lv_max" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_lv_max" Width="50"></TextBox>
-                                <TextBlock Text="life" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_life" Width="100"></TextBox>
-                                <TextBlock Text="atk" Width="25"/>
-                                <TextBox Name="MapEnemyInfo_atk" Width="50"></TextBox>
-                                <TextBlock Text="def" Width="25"/>
-                                <TextBox Name="MapEnemyInfo_def" Width="50"></TextBox>
-                                <TextBlock Text="pattern" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_pat" Width="150"></TextBox>
-                                <TextBox Name="MapEnemyInfo_p0" Width="50"></TextBox>
-                                <TextBox Name="MapEnemyInfo_p1" Width="50"></TextBox>
-                                <TextBlock Text="pattern2" Width="50"/>
-                                <TextBox Name="MapEnemyInfo_pat_01" Width="150"></TextBox>
-                                <TextBox Name="MapEnemyInfo_p0_01" Width="50"></TextBox>
-                                <TextBox Name="MapEnemyInfo_p1_01" Width="50"></TextBox>
-                                <Separator Width="300"/>
-                            </WrapPanel>
-                            <Expander Header="Logic" Name="MapEnemyLogicExpander" IsExpanded="False">
-                                <StackPanel Name="MapEnemyLogicStackPanel"/>
-                            </Expander>
-                        </StackPanel>
-                    </ScrollViewer>
-                </StackPanel>
-            </Grid>
-        </DockPanel>
+        </Grid>
     </Grid>
 </UserControl>
