@@ -19,7 +19,7 @@ namespace RTDDE.Executer.Func
         public Skill()
         {
             InitializeComponent();
-            SkillTypeRadio_Party.IsChecked = true;  //set it here instead of xaml
+            Utility.DisableBindData = true;
             var attrDict = new Dictionary<string, string>()
             {
                 {"------",""},
@@ -31,6 +31,8 @@ namespace RTDDE.Executer.Func
             };
             SkillSearch_attribute.ItemsSource = attrDict;
             //SkillSearch_sub_attr.ItemsSource = attrDict;
+            Utility.DisableBindData = false;
+            SkillTypeRadio_Party.IsChecked = true;  //set it here instead of xaml
         }
         [DAL(UseProperty = true)]
         private class SkillUnitRank

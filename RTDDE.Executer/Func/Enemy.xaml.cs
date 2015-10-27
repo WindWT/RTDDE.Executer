@@ -22,7 +22,7 @@ namespace RTDDE.Executer.Func
         }
         private void EnemyTab_Initialized(object sender, EventArgs e)
         {
-            Utility.BindData(EnemyDataGrid, "SELECT id,name FROM Enemy_Unit_MASTER order by id");
+            Utility.DisableBindData = true;
             EnemySearch_chara_symbol.ItemsSource = new Dictionary<string, string>()
             {
                 {"------",""},
@@ -71,6 +71,8 @@ namespace RTDDE.Executer.Func
                 patternDict.Add(pattern.ToString(), id);
             }
             EnemySearch_pattern.ItemsSource = patternDict;
+            Utility.DisableBindData = false;
+            Utility.BindData(EnemyDataGrid, "SELECT id,name FROM Enemy_Unit_MASTER order by id");
         }
 
         private void EnemyDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) {

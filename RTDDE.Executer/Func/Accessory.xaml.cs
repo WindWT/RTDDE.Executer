@@ -17,6 +17,7 @@ namespace RTDDE.Executer.Func
         public Accessory()
         {
             InitializeComponent();
+            Utility.DisableBindData = true;
             var attrDict = new Dictionary<string, string>()
             {
                 {"------",""},
@@ -37,6 +38,7 @@ namespace RTDDE.Executer.Func
                 typeDict.Add(string.Format("{0}_{1}", id, type.ToString()), id);
             }
             AccessorySearch_type.ItemsSource = typeDict;
+            Utility.DisableBindData = false;
             //AccessorySearch_sub_attr.ItemsSource = attrDict;
         }
         private void AccessoryTab_Initialized(object sender, EventArgs e)
