@@ -105,6 +105,7 @@ namespace RTDDE.Executer
                 UserControl tab = (UserControl)Activator.CreateInstance(tabType,
                     tabType.GetConstructor(new Type[] { typeof(bool) }) == null ? null : new object[] { disableAutoLoad });
                 if (tab != null) {
+                    System.Diagnostics.Trace.WriteLine($"{tab.GetType().Name} Tab has created.");
                     MainGrid.Children.Add(tab);
                     return tab;
                 }

@@ -246,7 +246,7 @@ namespace RTDDE.Executer.Func
         }
         async private Task<QuestChallengeMaster> ChallengeTask(int id)
         {
-            return DAL.ToSingle<QuestChallengeMaster>("SELECT * FROM QUEST_CHALLENGE_MASTER WHERE id=" + id);
+           return DAL.ToSingle<QuestChallengeMaster>("SELECT * FROM QUEST_CHALLENGE_MASTER WHERE id=" + id);
         }
 
         private enum QuestType

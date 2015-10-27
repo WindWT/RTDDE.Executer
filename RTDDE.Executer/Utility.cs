@@ -97,11 +97,8 @@ namespace RTDDE.Executer
                 return;
             }
             ScrollViewer scrollViewer = GetVisualChild<ScrollViewer>(dg);
-            if (scrollViewer != null) {
-                scrollViewer.ScrollToTop();
-            }
-            //todo remove this line
-            System.Diagnostics.Trace.WriteLine("bind");
+            scrollViewer?.ScrollToTop();
+            System.Diagnostics.Trace.WriteLine("Data binded");
             AfterBindDataEvent();
         }
         public delegate void AfterBindDataEventHandler();
@@ -141,6 +138,7 @@ namespace RTDDE.Executer
             for (int i = 0; i < w.MainGrid.Children.Count; i++) {
                 var child = w.MainGrid.Children[i];
                 if ((child is Config) == false) {
+                    System.Diagnostics.Trace.WriteLine($"{child.GetType().Name} Tab has removed.");
                     w.MainGrid.Children.Remove(child);
                     i--;
                 }
@@ -152,6 +150,7 @@ namespace RTDDE.Executer
             var w = (MainWindow)Application.Current.MainWindow;
             foreach (UserControl child in w.MainGrid.Children) {
                 if (child is T) {
+                    System.Diagnostics.Trace.WriteLine($"{child.GetType().Name} Tab has removed.");
                     w.MainGrid.Children.Remove(child);
                     break;
                 }
