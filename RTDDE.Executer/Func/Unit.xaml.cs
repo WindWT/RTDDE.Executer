@@ -174,11 +174,16 @@ WHERE uo.id={0}";
 
                 //Rev
                 UnitRevStackPanel.Children.Clear();
-                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.need_pt, ui.rev_unit_id, ui.rev_unit_g_id, ui.rev_unit_name, "Rev"));
-                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_fire, ui.ultimate_rev_unit_g_id_fire, ui.ultimate_rev_unit_name_fire, "UltFire"));
-                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_water, ui.ultimate_rev_unit_g_id_water, ui.ultimate_rev_unit_name_water, "UltWater"));
-                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_shine, ui.ultimate_rev_unit_g_id_shine, ui.ultimate_rev_unit_name_shine, "UltShine"));
-                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.max_attribute_exp, ui.ultimate_rev_unit_id_dark, ui.ultimate_rev_unit_g_id_dark, ui.ultimate_rev_unit_name_dark, "UltDark"));
+                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.rev_unit_id, ui.need_pt, ui.max_attribute_exp,
+                    ui.rev_unit_name, "Rev"));
+                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.ultimate_rev_unit_id_fire, ui.need_pt,
+                    ui.max_attribute_exp, ui.ultimate_rev_unit_name_fire, "U.Fire"));
+                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.ultimate_rev_unit_id_water, ui.need_pt,
+                    ui.max_attribute_exp, ui.ultimate_rev_unit_name_water, "U.Water"));
+                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.ultimate_rev_unit_id_shine, ui.need_pt,
+                    ui.max_attribute_exp, ui.ultimate_rev_unit_name_shine, "U.Shine"));
+                UnitRevStackPanel.Children.Add(CreateRevGrid(ui.ultimate_rev_unit_id_dark, ui.need_pt,
+                    ui.max_attribute_exp, ui.ultimate_rev_unit_name_dark, "U.Dark"));
 
                 double maxlevel = ui.lv_max;
                 UnitInfo_lv_max.Text = maxlevel.ToString("0");
@@ -272,8 +277,7 @@ WHERE uo.id={0}";
             taskAccessory.Start();
         }
 
-        private Grid CreateRevGrid(int pt, int id, int g_id, string name, string type)
-        {
+        private Grid CreateRevGrid(int id, int pt, int revExp, string name, string type) {
             Grid grid = new Grid();
             if (id == 0) {
                 return grid;
@@ -284,28 +288,26 @@ WHERE uo.id={0}";
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
-            TextBox tbPt = new TextBox() { Text = pt.ToString() };
-            tbPt.SetValue(Grid.ColumnProperty, 0);
-            grid.Children.Add(tbPt);
             TextBlock tbRev = new TextBlock() { Text = type };
-            tbRev.SetValue(Grid.ColumnProperty, 1);
+            tbRev.SetValue(Grid.ColumnProperty, 0);
             grid.Children.Add(tbRev);
-            TextBox tbId = new TextBox() { Text = id.ToString() };
-            tbId.SetValue(Grid.ColumnProperty, 2);
-            grid.Children.Add(tbId);
-            TextBox tbgId = new TextBox() { Text = g_id.ToString() };
-            tbgId.SetValue(Grid.ColumnProperty, 3);
+            TextBox tbPt = new TextBox() { Text = pt.ToString() };
+            tbPt.SetValue(Grid.ColumnProperty, 1);
+            grid.Children.Add(tbPt);
+            TextBox tbgId = new TextBox() { Text = revExp.ToString() };
+            tbgId.SetValue(Grid.ColumnProperty, 2);
             grid.Children.Add(tbgId);
+            TextBox tbId = new TextBox() { Text = id.ToString() };
+            tbId.SetValue(Grid.ColumnProperty, 3);
+            grid.Children.Add(tbId);
             TextBox tbName = new TextBox() { Text = name };
             tbName.SetValue(Grid.ColumnProperty, 4);
             grid.Children.Add(tbName);
-            Button button = new Button()
-            {
+            Button button = new Button() {
                 Content = "→",
                 Style = FindResource("InlineButton") as Style
             };
-            button.Click += (s, arg) =>
-            {
+            button.Click += (s, arg) => {
                 Utility.GoToItemById<Unit>(id);
             };
             button.SetValue(Grid.ColumnProperty, 5);
