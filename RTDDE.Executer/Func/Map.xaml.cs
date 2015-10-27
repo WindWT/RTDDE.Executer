@@ -415,7 +415,10 @@ namespace RTDDE.Executer.Func
                 MapEnemyLogicExpander.Visibility = Visibility.Visible;
                 MapEnemyLogicExpander.Header = $"Logic#{eum.logic_group_id}";
                 LogicGroupData lgd = await taskLogic;
-                if (lgd != null) {
+                if (lgd == null) {
+                    MapEnemyLogicExpander.Header = $"Logic#{eum.logic_group_id}(UNKNOWN)";
+                }
+                else {
                     foreach (LogicData logicData in lgd.logic_data) {
                         Grid logicGrid = new Grid();
                         logicGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
