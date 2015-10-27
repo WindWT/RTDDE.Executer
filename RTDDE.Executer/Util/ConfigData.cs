@@ -22,6 +22,7 @@ namespace RTDDE.Executer.Util
             private bool _isDefaultLvMax;
             private bool _isUseLocalTime;
             private bool _isForceEnglish;
+            private bool _isShowColorTextAsBold;
 
             public bool IsEnableLevelLimiter
             {
@@ -54,6 +55,13 @@ namespace RTDDE.Executer.Util
                     _isUseLocalTime = value;
                     Utility.UseLocalTime = _isUseLocalTime;
                     OnPropertyChanged("IsUseLocalTime");
+                }
+            }
+            public bool IsShowColorTextAsBold {
+                get { return _isShowColorTextAsBold; }
+                set {
+                    _isShowColorTextAsBold = value;
+                    OnPropertyChanged("IsShowColorTextAsBold");
                 }
             }
 
@@ -324,6 +332,7 @@ namespace RTDDE.Executer.Util
                 IsDefaultLvMax = true,
                 IsEnableLevelLimiter = true,
                 IsUseLocalTime = false,
+                IsShowColorTextAsBold = true,
                 IsForceEnglish = false
             };
             Map = new MapClass()

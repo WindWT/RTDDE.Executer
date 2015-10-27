@@ -42,7 +42,7 @@ namespace RTDDE.Executer
                         SolidColorBrush foreground = brushStack.Peek();
                         FontWeight fontWeight = foreground.Color == Brushes.Black.Color
                             ? FontWeights.Normal
-                            : FontWeights.Bold;
+                            : Settings.Config.General.IsShowColorTextAsBold ? FontWeights.Bold : FontWeights.Normal;
                         Span span = new Span {Foreground = foreground, FontWeight = fontWeight };
                         span.Inlines.Add(new Run(part.Replace(@"\n", "\n")));
                         pr.Inlines.Add(span);

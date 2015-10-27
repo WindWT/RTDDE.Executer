@@ -21,6 +21,7 @@
     <system:String x:Key="Config_IsEnableLevelLimiter">Enable level limiter</system:String>
     <system:String x:Key="Config_IsDefaultLvMax">Set LV to max by default</system:String>
     <system:String x:Key="Config_IsUseLocalTime">Show local time instead of GMT+9</system:String>
+    <system:String x:Key="Config_IsShowColorTextAsBold">Show color text as bold text</system:String>
     <system:String x:Key="Config_IsForceEnglish">Change UI Language to English(REQUIRE RESTART RTDDE)</system:String>
     <system:String x:Key="Config_CurrentSystemLanguage">Current System Language:{0}</system:String>
     <system:String x:Key="Config_SettingsMap">Map</system:String>
