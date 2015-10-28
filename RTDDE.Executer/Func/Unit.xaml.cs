@@ -19,7 +19,7 @@ namespace RTDDE.Executer.Func
         {
             InitializeComponent();
         }
-        private const string UnitSql = "SELECT id,g_id,name FROM UNIT_MASTER order by g_id";
+        private const string UnitSql = "SELECT id,g_id,name,attribute,sub_a1 FROM UNIT_MASTER order by g_id";
         private void UnitTab_Initialized(object sender, EventArgs e)
         {
             Utility.DisableBindData = true;
@@ -547,7 +547,7 @@ WHERE uo.id={0}";
         }
         private string UnitSearch_BuildSQL()
         {
-            string sql = @"SELECT id,g_id,name FROM UNIT_MASTER WHERE ";
+            string sql = @"SELECT id,g_id,name,attribute,sub_a1 FROM UNIT_MASTER WHERE ";
             if (String.IsNullOrWhiteSpace(UnitSearch_id.Text) == false) {
                 sql += "id=" + UnitSearch_id.Text + " AND ";
             }

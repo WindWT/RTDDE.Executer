@@ -13,7 +13,55 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="UnitDataGrid" AutoGenerateColumns="True" SelectionChanged="UnitDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
+        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="UnitDataGrid" AutoGenerateColumns="False" SelectionChanged="UnitDataGrid_SelectionChanged" FrozenColumnCount="2" >
+            <DataGrid.Resources>
+                <Style x:Key="UnitAttributeStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding attribute}" Value="1">
+                            <Setter Property="Background" Value="Silver"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding attribute}" Value="2">
+                            <Setter Property="Background" Value="sc# 0.9, 0.4, 0.3"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding attribute}" Value="3">
+                            <Setter Property="Background" Value="sc# 0.4, 0.89, 0.9"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding attribute}" Value="4">
+                            <Setter Property="Background" Value="sc# 0.9, 0.9, 0.3"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding attribute}" Value="5">
+                            <Setter Property="Background" Value="sc# 0.76, 0.58, 0.9"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+                <Style x:Key="UnitSubAttributeStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding sub_a1}" Value="1">
+                            <Setter Property="Background" Value="Silver"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding sub_a1}" Value="2">
+                            <Setter Property="Background" Value="sc# 0.9, 0.4, 0.3"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding sub_a1}" Value="3">
+                            <Setter Property="Background" Value="sc# 0.4, 0.89, 0.9"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding sub_a1}" Value="4">
+                            <Setter Property="Background" Value="sc# 0.9, 0.9, 0.3"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding sub_a1}" Value="5">
+                            <Setter Property="Background" Value="sc# 0.76, 0.58, 0.9"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="id" Binding="{Binding id}" />
+                <DataGridTextColumn Header="g__id" Binding="{Binding g_id}" />
+                <DataGridTextColumn CellStyle="{StaticResource UnitAttributeStyle}"/>
+                <DataGridTextColumn CellStyle="{StaticResource UnitSubAttributeStyle}"/>
+                <DataGridTextColumn Header="name" Binding="{Binding name}" />
+            </DataGrid.Columns>
+        </DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="0">
             <Expander Header="Search" Name="UnitSearchExpander" IsExpanded="False">
                 <StackPanel>
