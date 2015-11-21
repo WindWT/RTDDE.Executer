@@ -44,13 +44,14 @@ namespace RTDDE.Executer.Func
                         Height = qfm.icon_col_h * SCALE_PARAMETER,
                         Content = new TextBlock()
                         {
-                            Text = qfm.name,
+                            Text = qfm.name_short,
                             TextWrapping = TextWrapping.Wrap
                         },
                     };
                     btn.Click += (sender, e) =>
                     {
                         Area.LoadArea((int)qfm.id);
+                        LoadFieldInfo(qfm);
                     };
                     btn.SetValue(Canvas.LeftProperty, (double)qfm.icon_pos_x * SCALE_PARAMETER + LEFT_OFFSET);
                     btn.SetValue(Canvas.TopProperty, (double)qfm.icon_pos_y * SCALE_PARAMETER + TOP_OFFSET);
@@ -67,6 +68,12 @@ namespace RTDDE.Executer.Func
                 }
             }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
+        }
+
+        private void LoadFieldInfo(QuestFieldMaster qfm) {
+            FieldInfo_id.Text = qfm.id.ToString();
+            FieldInfo_name.Text = qfm.name;
+            FieldInfo_name_short.Text = qfm.name_short;
         }
         private Canvas GetArrowCanvas(int type = 1, int rotation = 0, byte reverse = 0)
         {

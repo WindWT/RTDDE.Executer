@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -56,7 +57,7 @@ namespace RTDDE.Executer.Func
                         {
                             LoadArea((int)qam.move_field_id);
                         }
-                        AreaInfo_Name.Text = qam.name;
+                        LoadAreaInfo(qam);
                     };
                     AreaCanvas.Children.Add(btn);
                     QuestAreaMaster nextQam = t.Result.Find(o => o.id == qam.connect_area_id);
@@ -68,6 +69,17 @@ namespace RTDDE.Executer.Func
                 }
             }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
             task.Start();
+        }
+
+        private void LoadAreaInfo(QuestAreaMaster qam) {
+            AreaInfo_id.Text = qam.id.ToString();
+            AreaInfo_name.Text = qam.name;
+            AreaInfo_text.Document = Utility.ParseTextToDocument(qam.text);
+        }
+        private void AreaInfoToQuestAreaButton_OnClick(object sender, RoutedEventArgs e) {
+            if (string.IsNullOrEmpty(AreaInfo_id.Text) == false) {
+                Utility.GoToItemById<QuestArea>(Convert.ToInt32(AreaInfo_id.Text));
+            }
         }
         private Line GetAreaLine(QuestAreaMaster thisArea, QuestAreaMaster nextArea)
         {

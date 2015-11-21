@@ -12,10 +12,22 @@
         <Canvas Grid.Row="0" Name="AreaCanvas">
 
         </Canvas>
-        <Expander Header="AreaInfo" Grid.Row="1" Background="White" ExpandDirection="Up" IsExpanded="False">
+        <StackPanel Grid.Row="1">
             <Grid>
-                <TextBox Name="AreaInfo_Name"></TextBox>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" Grid.Column="0" Name="AreaInfo_id"></TextBox>
+                <TextBox Grid.Row="0" Grid.Column="1" Name="AreaInfo_name"></TextBox>
+                <Button Grid.Row="0" Grid.Column="2" Name="AreaInfoToQuestAreaButton" Style="{StaticResource InlineButton}" Click="AreaInfoToQuestAreaButton_OnClick">→</Button>
+                <RichTextBox Name="AreaInfo_text" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"/>
             </Grid>
-        </Expander>
+        </StackPanel>
     </Grid>
 </UserControl>
