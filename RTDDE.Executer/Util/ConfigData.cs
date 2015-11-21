@@ -298,12 +298,12 @@ namespace RTDDE.Executer.Util
                 IsShowBoxInfo = true,
                 IsShowEnemyAttribute = true,
                 ExpValue = 30000,
-                ExpColorValue = "#FF9800",
+                ExpColorValue = "#FF9898",
                 PtValue = 250,
                 PtColorValue = "#9898FF",
                 SaleValue = 20000,
                 SaleColorValue = "#989898",
-                CustomDrop = "15022,16027:#222222;15026:#FF9898"
+                CustomDrop = "15022,16027:#222222;15026:#009800"
             };
             Database = new DatabaseClass() {
                 AutoBackup = false
