@@ -120,6 +120,7 @@ namespace RTDDE.Executer.Func
                     FontWeight = FontWeights.Bold,
                     HorizontalAlignment = HorizontalAlignment.Right
                 });
+                MapToolbarToggleButton.IsChecked = true;
                 return;
             }
             //make offset to 0~CurrentMapTable.W, always positive
@@ -230,6 +231,8 @@ namespace RTDDE.Executer.Func
                 b.SetValue(Grid.RowProperty, i);
                 b.SetValue(Grid.ColumnProperty, 0);
             }
+            //收起地图工具栏
+            MapToolbarToggleButton.IsChecked = false;
         }
 
         private DataTable GetMonsterData(object param) {
