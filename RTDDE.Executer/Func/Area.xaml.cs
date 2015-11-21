@@ -88,8 +88,9 @@ namespace RTDDE.Executer.Func
             line.Y1 = (thisArea.icon_pos_y + thisArea.icon_col_h / 2) * SCALE_PARAMETER + TOP_OFFSET;
             line.X2 = (nextArea.icon_pos_x + nextArea.icon_col_w / 2) * SCALE_PARAMETER + LEFT_OFFSET;
             line.Y2 = (nextArea.icon_pos_y + nextArea.icon_col_h / 2) * SCALE_PARAMETER + TOP_OFFSET;
-            line.Stroke = new SolidColorBrush(Colors.Red);
-            line.StrokeThickness = 3;
+            line.Stroke = new SolidColorBrush(Color.FromRgb(153, 255, 119));
+            line.StrokeThickness = 4;
+            line.StrokeDashArray = new DoubleCollection() { 0.75, 0.75 };
             return line;
         }
     }

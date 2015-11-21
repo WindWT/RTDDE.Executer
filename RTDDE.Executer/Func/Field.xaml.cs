@@ -78,6 +78,8 @@ namespace RTDDE.Executer.Func
         private Canvas GetArrowCanvas(int type = 1, int rotation = 0, byte reverse = 0)
         {
             var canvas = new Canvas();
+            Brush strokeBrush = new SolidColorBrush(Color.FromRgb(104, 245, 215));
+            strokeBrush.Freeze();
             switch (type)
             {
                 case 1:
@@ -88,7 +90,7 @@ namespace RTDDE.Executer.Func
                             Y1 = 5 * SCALE_PARAMETER,
                             X2 = 5 * SCALE_PARAMETER,
                             Y2 = 75 * SCALE_PARAMETER,
-                            Stroke = new SolidColorBrush(Colors.Red),
+                            Stroke = strokeBrush,
                             StrokeThickness = 5
                         };
                         var line2 = new Line()
@@ -97,7 +99,7 @@ namespace RTDDE.Executer.Func
                             Y1 = 105 * SCALE_PARAMETER,
                             X2 = 5 * SCALE_PARAMETER,
                             Y2 = 75 * SCALE_PARAMETER,
-                            Stroke = new SolidColorBrush(Colors.Red),
+                            Stroke = strokeBrush,
                             StrokeThickness = 5
                         };
                         canvas.Children.Add(line1);
@@ -119,7 +121,7 @@ namespace RTDDE.Executer.Func
                             Y1 = 70 * SCALE_PARAMETER,
                             X2 = 45 * SCALE_PARAMETER,
                             Y2 = 57 * SCALE_PARAMETER,
-                            Stroke = new SolidColorBrush(Colors.Red),
+                            Stroke = strokeBrush,
                             StrokeThickness = 5
                         };
                         var line2 = new Line()
@@ -128,7 +130,7 @@ namespace RTDDE.Executer.Func
                             Y1 = 57 * SCALE_PARAMETER,
                             X2 = 5 * SCALE_PARAMETER,
                             Y2 = 68 * SCALE_PARAMETER,
-                            Stroke = new SolidColorBrush(Colors.Red),
+                            Stroke = strokeBrush,
                             StrokeThickness = 5
                         };
                         canvas.Children.Add(line1);
