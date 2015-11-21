@@ -22,46 +22,31 @@ namespace RTDDE.Executer.Util
             private bool _isDefaultLvMax;
             private bool _isUseLocalTime;
             private bool _isForceEnglish;
+            private bool _isForceWrapInStory;
             private bool _isShowColorTextAsBold;
 
-            public bool IsEnableLevelLimiter
-            {
+            public bool IsEnableLevelLimiter {
                 get { return _isEnableLevelLimiter; }
-                set
-                {
+                set {
                     _isEnableLevelLimiter = value;
                     OnPropertyChanged("IsEnableLevelLimiter");
                 }
             }
 
-            public bool IsDefaultLvMax
-            {
+            public bool IsDefaultLvMax {
                 get { return _isDefaultLvMax; }
-                set
-                {
+                set {
                     _isDefaultLvMax = value;
                     OnPropertyChanged("IsDefaultLvMax");
                 }
             }
 
-            public bool IsUseLocalTime
-            {
-                get
-                {
-                    return _isUseLocalTime;
-                }
-                set
-                {
+            public bool IsUseLocalTime {
+                get { return _isUseLocalTime; }
+                set {
                     _isUseLocalTime = value;
                     Utility.UseLocalTime = _isUseLocalTime;
                     OnPropertyChanged("IsUseLocalTime");
-                }
-            }
-            public bool IsShowColorTextAsBold {
-                get { return _isShowColorTextAsBold; }
-                set {
-                    _isShowColorTextAsBold = value;
-                    OnPropertyChanged("IsShowColorTextAsBold");
                 }
             }
 
@@ -73,14 +58,29 @@ namespace RTDDE.Executer.Util
                 }
             }
 
-            public event PropertyChangedEventHandler PropertyChanged;
-            protected void OnPropertyChanged(string propertyName)
-            {
-                if (PropertyChanged != null) {
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            public bool IsForceWrapInStory {
+                get { return _isForceWrapInStory; }
+                set {
+                    _isForceWrapInStory = value;
+                    OnPropertyChanged("IsForceWrapInStory");
                 }
             }
+
+            public bool IsShowColorTextAsBold {
+                get { return _isShowColorTextAsBold; }
+                set {
+                    _isShowColorTextAsBold = value;
+                    OnPropertyChanged("IsShowColorTextAsBold");
+                }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            protected void OnPropertyChanged(string propertyName) {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
+
         public class MapClass : INotifyPropertyChanged
         {
             private bool _isShowDropInfo;
@@ -94,135 +94,101 @@ namespace RTDDE.Executer.Util
             private string _saleColorValue;
             private string _customDrop;
 
-            public bool IsShowDropInfo
-            {
+            public bool IsShowDropInfo {
                 get { return _isShowDropInfo; }
-                set
-                {
+                set {
                     _isShowDropInfo = value;
                     OnPropertyChanged("IsShowDropInfo");
                 }
             }
 
-            public bool IsShowBoxInfo
-            {
+            public bool IsShowBoxInfo {
                 get { return _isShowBoxInfo; }
-                set
-                {
+                set {
                     _isShowBoxInfo = value;
                     OnPropertyChanged("IsShowBoxInfo");
                 }
             }
 
-            public bool IsShowEnemyAttribute
-            {
+            public bool IsShowEnemyAttribute {
                 get { return _isShowEnemyAttribute; }
-                set
-                {
+                set {
                     _isShowEnemyAttribute = value;
                     OnPropertyChanged("IsShowEnemyAttribute");
                 }
             }
 
-            public int ExpValue
-            {
+            public int ExpValue {
                 get { return _expValue; }
-                set
-                {
+                set {
                     _expValue = value;
                     OnPropertyChanged("ExpValue");
                 }
             }
 
-            public string ExpColorValue
-            {
+            public string ExpColorValue {
                 get { return _expColorValue; }
-                set
-                {
+                set {
                     _expColorValue = value;
                     OnPropertyChanged("ExpColorValue");
                 }
             }
 
-            public Color ExpColor
-            {
-                get
-                {
-                    return (Color)(ColorConverter.ConvertFromString(ExpColorValue) ?? Colors.Transparent);
-                }
+            public Color ExpColor {
+                get { return (Color) (ColorConverter.ConvertFromString(ExpColorValue) ?? Colors.Transparent); }
             }
 
-            public int PtValue
-            {
+            public int PtValue {
                 get { return _ptValue; }
-                set
-                {
+                set {
                     _ptValue = value;
                     OnPropertyChanged("PtValue");
                 }
             }
 
-            public string PtColorValue
-            {
+            public string PtColorValue {
                 get { return _ptColorValue; }
-                set
-                {
+                set {
                     _ptColorValue = value;
                     OnPropertyChanged("PtColorValue");
                 }
             }
 
-            public Color PtColor
-            {
-                get
-                {
-                    return (Color)(ColorConverter.ConvertFromString(PtColorValue) ?? Colors.Transparent);
-                }
+            public Color PtColor {
+                get { return (Color) (ColorConverter.ConvertFromString(PtColorValue) ?? Colors.Transparent); }
             }
 
-            public int SaleValue
-            {
+            public int SaleValue {
                 get { return _saleValue; }
-                set
-                {
+                set {
                     _saleValue = value;
                     OnPropertyChanged("SaleValue");
                 }
             }
 
-            public string SaleColorValue
-            {
+            public string SaleColorValue {
                 get { return _saleColorValue; }
-                set
-                {
+                set {
                     _saleColorValue = value;
                     OnPropertyChanged("SaleColorValue");
                 }
             }
 
-            public Color SaleColor
-            {
-                get
-                {
-                    return (Color)(ColorConverter.ConvertFromString(SaleColorValue) ?? Colors.Transparent);
-                }
+            public Color SaleColor {
+                get { return (Color) (ColorConverter.ConvertFromString(SaleColorValue) ?? Colors.Transparent); }
             }
 
-            public string CustomDrop
-            {
+            public string CustomDrop {
                 get { return _customDrop; }
-                set
-                {
+                set {
                     _customDrop = value;
                     OnPropertyChanged("CustomDrop");
                 }
             }
 
             [XmlIgnore]
-            public Dictionary<int, Color> CustomDropColors
-            {
-                get
-                {
+            public Dictionary<int, Color> CustomDropColors {
+                get {
                     Dictionary<int, Color> customDropColors = new Dictionary<int, Color>();
                     string[] customs = CustomDrop.Split(';');
                     foreach (var custom in customs) {
@@ -236,11 +202,10 @@ namespace RTDDE.Executer.Util
                         try {
                             colorObj = ColorConverter.ConvertFromString(colorString);
                         }
-                        catch (Exception)
-                        {
+                        catch (Exception) {
                             return null;
                         }
-                        Color color = (Color)colorObj;
+                        Color color = (Color) colorObj;
                         foreach (string idString in split[0].Split(',')) {
                             int id;
                             if (int.TryParse(idString, out id) == false) {
@@ -253,8 +218,7 @@ namespace RTDDE.Executer.Util
                 }
             }
 
-            public void Reset()
-            {
+            public void Reset() {
                 ExpValue = 30000;
                 ExpColorValue = "#FF9898";
                 PtValue = 250;
@@ -265,33 +229,28 @@ namespace RTDDE.Executer.Util
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
-            protected void OnPropertyChanged(string propertyName)
-            {
-                if (PropertyChanged != null) {
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-                }
+
+            protected void OnPropertyChanged(string propertyName) {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
         public class DatabaseClass : INotifyPropertyChanged
         {
             private bool _autoBackup;
 
-            public bool AutoBackup
-            {
+            public bool AutoBackup {
                 get { return _autoBackup; }
-                set
-                {
+                set {
                     _autoBackup = value;
                     OnPropertyChanged("AutoBackup");
                 }
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
-            protected void OnPropertyChanged(string propertyName)
-            {
-                if (PropertyChanged != null) {
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-                }
+
+            protected void OnPropertyChanged(string propertyName) {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
@@ -325,41 +284,35 @@ namespace RTDDE.Executer.Util
             }
         }
 
-        public ConfigData()
-        {
-            General = new GeneralClass()
-            {
+        public ConfigData() {
+            General = new GeneralClass() {
                 IsDefaultLvMax = true,
                 IsEnableLevelLimiter = true,
                 IsUseLocalTime = false,
+                IsForceWrapInStory = true,
                 IsShowColorTextAsBold = true,
                 IsForceEnglish = false
             };
-            Map = new MapClass()
-            {
+            Map = new MapClass() {
                 IsShowDropInfo = false,
                 IsShowBoxInfo = true,
                 IsShowEnemyAttribute = true,
                 ExpValue = 30000,
-                ExpColorValue = "#FF9898",
+                ExpColorValue = "#FF9800",
                 PtValue = 250,
                 PtColorValue = "#9898FF",
                 SaleValue = 20000,
                 SaleColorValue = "Silver",
-                CustomDrop = "15022,16027:Black"
+                CustomDrop = "15022,16027:Black;15026:#FF9898"
             };
-            Database = new DatabaseClass()
-            {
+            Database = new DatabaseClass() {
                 AutoBackup = false
             };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null) {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+        protected void OnPropertyChanged(string propertyName) {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

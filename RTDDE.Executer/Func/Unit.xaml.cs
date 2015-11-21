@@ -216,9 +216,9 @@ WHERE uo.id={0}";
                 int set_pt = ui.set_pt;
                 UnitInfo_pt.Text = ((int)((float)(thislevel - 1) * Math.Pow((float)ui.set_pt, 0.5f) + (float)set_pt)).ToString("0");
                 //story
-                var storyDoc = Utility.ParseTextToDocument(ui.story, 44);
+                var storyDoc = Utility.ParseTextToDocument(ui.story, Settings.Config.General.IsForceWrapInStory ? 43 : 0);
                 storyDoc.TextAlignment = TextAlignment.Center;
-                //UnitInfo_story.Padding = new Thickness(37, 0, 37, 0);
+                UnitInfo_story.Padding = new Thickness(37, 0, 37, 0);
                 UnitInfo_story.Document = storyDoc;
                 //cutin
                 UnitInfo_ct_text.Text = ui.ct_text;
