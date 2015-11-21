@@ -109,28 +109,28 @@ namespace RTDDE.Executer.Func
                         var line1 = new Line()
                         {
                             X1 = 120 * SCALE_PARAMETER,
-                            Y1 = 20 * SCALE_PARAMETER,
+                            Y1 = 70 * SCALE_PARAMETER,
                             X2 = 45 * SCALE_PARAMETER,
-                            Y2 = 7 * SCALE_PARAMETER,
+                            Y2 = 57 * SCALE_PARAMETER,
                             Stroke = new SolidColorBrush(Colors.Red),
                             StrokeThickness = 5
                         };
                         var line2 = new Line()
                         {
                             X1 = 45 * SCALE_PARAMETER,
-                            Y1 = 7 * SCALE_PARAMETER,
+                            Y1 = 57 * SCALE_PARAMETER,
                             X2 = 5 * SCALE_PARAMETER,
-                            Y2 = 18 * SCALE_PARAMETER,
+                            Y2 = 68 * SCALE_PARAMETER,
                             Stroke = new SolidColorBrush(Colors.Red),
                             StrokeThickness = 5
                         };
                         canvas.Children.Add(line1);
                         canvas.Children.Add(line2);
                         var transform = new TransformGroup();
-                        transform.Children.Add(new RotateTransform(-rotation, 65 * SCALE_PARAMETER, 15 * SCALE_PARAMETER));
+                        transform.Children.Add(new RotateTransform(-rotation, 55 * SCALE_PARAMETER, 40 * SCALE_PARAMETER));
                         if (reverse == 1)
                         {
-                            transform.Children.Add(new ScaleTransform(-1, 1, 65 * SCALE_PARAMETER, 15 * SCALE_PARAMETER));
+                            transform.Children.Add(new ScaleTransform(-1, 1, 55 * SCALE_PARAMETER, 40 * SCALE_PARAMETER));
                         }
                         canvas.RenderTransform = transform;
                         break;
