@@ -302,8 +302,8 @@ namespace RTDDE.Executer.Util
                 PtValue = 250,
                 PtColorValue = "#9898FF",
                 SaleValue = 20000,
-                SaleColorValue = "Silver",
-                CustomDrop = "15022,16027:Black;15026:#FF9898"
+                SaleColorValue = "#989898",
+                CustomDrop = "15022,16027:#222222;15026:#FF9898"
             };
             Database = new DatabaseClass() {
                 AutoBackup = false
