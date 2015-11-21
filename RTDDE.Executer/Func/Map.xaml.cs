@@ -158,19 +158,6 @@ namespace RTDDE.Executer.Func
                         StrokeDashArray = new DoubleCollection() {2, 1},
                         Stroke = c.EnemyRate > 0 && c.EnemyRate < 100 ? Brushes.DarkGray : Brushes.Transparent
                     };
-                    Border b = new Border() {
-                        Background = c.Background,
-                        Child = tb
-                    };
-
-                    MapGrid.Children.Add(rec);
-                    rec.SetValue(Grid.RowProperty, row);
-                    rec.SetValue(Grid.ColumnProperty, col);
-                    rec.SetValue(Grid.ZIndexProperty, 2);
-
-                    MapGrid.Children.Add(b);
-                    b.SetValue(Grid.RowProperty, row);
-                    b.SetValue(Grid.ColumnProperty, col);
 
                     //绘制tooltip
                     StringBuilder sb = new StringBuilder();
@@ -190,6 +177,22 @@ namespace RTDDE.Executer.Func
                     }
                     if (string.IsNullOrWhiteSpace(sb.ToString().Trim()) == false) {
                         rec.ToolTip = new Run(sb.ToString().Trim());
+                    }
+
+                    Border b = new Border() {
+                        Background = c.Background,
+                        Child = tb
+                    };
+
+                    MapGrid.Children.Add(b);
+                    b.SetValue(Grid.RowProperty, row);
+                    b.SetValue(Grid.ColumnProperty, col);
+
+                    if (c.RawCellData != 0) {   //no rectangle overlay when this cell contains nothing
+                        MapGrid.Children.Add(rec);
+                        rec.SetValue(Grid.RowProperty, row);
+                        rec.SetValue(Grid.ColumnProperty, col);
+                        rec.SetValue(Grid.ZIndexProperty, 2);
                     }
                 }
             }

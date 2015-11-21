@@ -287,7 +287,7 @@ namespace RTDDE.Executer.Util.Map
             foreach (MapRow r in this.Rows) {
                 foreach (MapCell c in r.Cells) {
                     EnemyInfo ei = dropData.Find(o => o.x == c.x && o.y == c.y && !(o.x == 0 && o.y == 0));
-                    if (c.RawCellData == 192) {
+                    if (c.RawCellData == 192) { //Boss line
                         switch (c.x) {
                             case 0: {
                                 c.drop_unit =
@@ -326,7 +326,7 @@ namespace RTDDE.Executer.Util.Map
                                 break;
                         }
                     }
-                    else if (c.RawCellData == 160) {
+                    else if (c.RawCellData == 160) {    //BossStart line
                         c.drop_unit =
                             DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" +
                                                      deathInfo.drop_unit_id.ToString());
