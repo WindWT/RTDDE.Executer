@@ -51,24 +51,10 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <TextBox Grid.Row="0" Grid.Column="0" Name="EventInfo_id"></TextBox>
                 <TextBox Grid.Row="0" Grid.Column="1" Name="EventInfo_name"></TextBox>
                 <TextBox Grid.Row="1" Grid.ColumnSpan="2" Name="EventInfo_text"></TextBox>
-                <TextBox Grid.Row="2" Grid.ColumnSpan="2" Name="EventInfo_dialog_text"></TextBox>
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="type"></TextBlock>
-                <TextBox Grid.Column="1" Name="EventInfo_event_type"></TextBox>
-                <TextBlock Grid.Column="2" Text="count"></TextBlock>
-                <TextBox Grid.Column="3" Name="EventInfo_max_count"></TextBox>
             </Grid>
             <Grid Name="EventInfo_parent">
                 <Grid.ColumnDefinitions>
@@ -80,7 +66,6 @@
                 <TextBox Name="EventInfo_parent_field_id" Grid.Column="1"></TextBox>
                 <TextBox Name="EventInfo_parent_field_name" Grid.Column="2"></TextBox>
             </Grid>
-            <StackPanel Name="EventInfo_quests"/>
         </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" Style="{StaticResource VerticalScrollViewer}">
             <StackPanel>
@@ -99,12 +84,30 @@
                     <TextBlock Grid.Row="0" Grid.Column="2" Text="group"/>
                     <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Name="EventInfo_opentype_content"/>
                 </Grid>
-                <UniformGrid Columns="4" Rows="1">
-                    <TextBlock Name="EventInfo_post_type"></TextBlock>
-                    <TextBlock Name="EventInfo_post_message_id"></TextBlock>
-                    <TextBlock Name="EventInfo_post_param_01"></TextBlock>
-                    <TextBlock Name="EventInfo_post_param_02"></TextBlock>
-                </UniformGrid>
+                <Expander Header="Detail" IsExpanded="False">
+                    <StackPanel>
+                        <TextBox Grid.Row="2" Grid.ColumnSpan="2" Name="EventInfo_dialog_text"></TextBox>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="type"></TextBlock>
+                            <TextBox Grid.Column="1" Name="EventInfo_event_type"></TextBox>
+                            <TextBlock Grid.Column="2" Text="count"></TextBlock>
+                            <TextBox Grid.Column="3" Name="EventInfo_max_count"></TextBox>
+                        </Grid>
+                        <UniformGrid Columns="4" Rows="1">
+                            <TextBox Name="EventInfo_post_type"></TextBox>
+                            <TextBox Name="EventInfo_post_message_id"></TextBox>
+                            <TextBox Name="EventInfo_post_param_01"></TextBox>
+                            <TextBox Name="EventInfo_post_param_02"></TextBox>
+                        </UniformGrid>
+                        <StackPanel Name="EventInfo_quests"/>
+                    </StackPanel>
+                </Expander>
                 <Expander Header="AreaMap" Name="EventAreaMapExpander" IsExpanded="False">
                     <RTDDE:Area x:Name="AreaMap" Height="350"/>
                 </Expander>
