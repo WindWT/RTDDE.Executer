@@ -12,7 +12,7 @@
         <Canvas Grid.Row="0" Name="AreaCanvas">
 
         </Canvas>
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1" Name="AreaInfoStackPanel" Visibility="Collapsed">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50"></ColumnDefinition>

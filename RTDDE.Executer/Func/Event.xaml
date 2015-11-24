@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:RTDDE="clr-namespace:RTDDE.Executer"
+             xmlns:RTDDE="clr-namespace:RTDDE.Executer.Func"
              mc:Ignorable="d" >
     <Grid Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
@@ -99,12 +99,15 @@
                     <TextBlock Grid.Row="0" Grid.Column="2" Text="group"/>
                     <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Name="EventInfo_opentype_content"/>
                 </Grid>
-                <UniformGrid Columns="2" Rows="2">
+                <UniformGrid Columns="4" Rows="1">
                     <TextBlock Name="EventInfo_post_type"></TextBlock>
                     <TextBlock Name="EventInfo_post_message_id"></TextBlock>
                     <TextBlock Name="EventInfo_post_param_01"></TextBlock>
                     <TextBlock Name="EventInfo_post_param_02"></TextBlock>
                 </UniformGrid>
+                <Expander Header="AreaMap" Name="EventAreaMapExpander" IsExpanded="False">
+                    <RTDDE:Area x:Name="AreaMap" Height="350"/>
+                </Expander>
                 <Expander Header="Advanced" Name="EventAdvancedExpander" IsExpanded="False">
                     <Grid>
                         <Grid.ColumnDefinitions>

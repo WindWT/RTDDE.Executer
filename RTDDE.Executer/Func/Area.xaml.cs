@@ -36,6 +36,7 @@ namespace RTDDE.Executer.Func
                     return;
                 }
                 AreaCanvas.Children.Clear();
+                AreaInfoStackPanel.Visibility = Visibility.Collapsed;
                 foreach (var qam in t.Result)
                 {
                     var btn = new Button()
@@ -72,6 +73,7 @@ namespace RTDDE.Executer.Func
         }
 
         private void LoadAreaInfo(QuestAreaMaster qam) {
+            AreaInfoStackPanel.Visibility = Visibility.Visible;
             AreaInfo_id.Text = qam.id.ToString();
             AreaInfo_name.Text = qam.name;
             AreaInfo_text.Document = Utility.ParseTextToDocument(qam.text);

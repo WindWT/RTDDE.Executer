@@ -81,6 +81,7 @@ namespace RTDDE.Executer.Func
                 EventInfo_parent_field_id.Text = qfmParent.id.ToString();
                 EventInfo_parent_field_name.Text = qfmParent.name;
             }
+            AreaMap.LoadArea((int)qfmParent.id);
             //quests
             Task<List<QuestMaster>> mapEventQuestTask = Task.Run(() =>
             {
