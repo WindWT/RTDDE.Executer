@@ -44,14 +44,14 @@
             <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HorizontalScrollViewer}" DockPanel.Dock="Top">
                 <Grid Name="MapGrid"></Grid>
             </ScrollViewer>
-            <ToggleButton Grid.Column="0" Grid.Row="1" IsChecked="True">
+            <ToggleButton Name="MapToolbarToggleButton" Grid.Column="0" Grid.Row="1" IsChecked="True">
                 <ToggleButton.Triggers>
                     <EventTrigger RoutedEvent="ToggleButton.Checked">
                         <BeginStoryboard>
                             <Storyboard>
                                 <DoubleAnimation Storyboard.TargetName="MapOperateGrid" 
                                     Storyboard.TargetProperty="Width"
-                                    To="360" Duration="0:0:0.360">
+                                    To="300" Duration="0:0:0.300">
                                     <DoubleAnimation.EasingFunction>
                                         <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
                                     </DoubleAnimation.EasingFunction>
@@ -64,7 +64,7 @@
                             <Storyboard>
                                 <DoubleAnimation Storyboard.TargetName="MapOperateGrid" 
                                     Storyboard.TargetProperty="Width"
-                                    To="0" Duration="0:0:0.360">
+                                    To="0" Duration="0:0:0.300">
                                     <DoubleAnimation.EasingFunction>
                                         <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
                                     </DoubleAnimation.EasingFunction>
@@ -75,7 +75,7 @@
                 </ToggleButton.Triggers>
                 <Path HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="Black" Data="M 0,0 H 15 M 0,6 H 15 M 0,12 H 15"></Path>
             </ToggleButton>
-            <Grid Name="MapOperateGrid" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Width="360">
+            <Grid Name="MapOperateGrid" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Width="300">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>

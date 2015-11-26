@@ -17,25 +17,47 @@ namespace RTDDE.Executer
     public sealed class Utility : RTDDE.Provider.Utility
     {
         private static readonly Regex RegColor = new Regex(@"(\[[a-zA-Z0-9]{6}\])", RegexOptions.Compiled);
-        public static FlowDocument ParseTextToDocument(string text)
-        {
+
+        public static FlowDocument ParseTextToDocument(string text, int forceWrapCharCount = 0) {
             var flowDoc = new FlowDocument();
-            text = text.Replace("\n", @"\n");   //fix split issue
+            text = text.Replace(@"\n", "\n");
             Paragraph pr = new Paragraph { Margin = new Thickness(0) }; //prprpr
             var textParts = RegColor.Split(text);
-            Stack<SolidColorBrush> brushStack=new Stack<SolidColorBrush>();
+            Stack<SolidColorBrush> brushStack = new Stack<SolidColorBrush>();
             brushStack.Push(Brushes.Black);
+            int charsInLine = 0;
             foreach (string textPart in textParts) {
                 if (RegColor.Match(textPart).Success) {
+                    //color part, ex:[FFFFFF]
                     string color = textPart.Trim(new char[] { '[', ']' });
                     var convertFromString = ColorConverter.ConvertFromString("#" + color);
                     if (convertFromString != null) {
-                        brushStack.Push(new SolidColorBrush((Color)convertFromString));
+                        brushStack.Push(new SolidColorBrush((Color) convertFromString));
                     }
                 }
                 else {
+                    //text part, may with color end part [-]
                     bool colorEnd = false;
                     foreach (string part in textPart.Split(new[] { @"[-]" }, StringSplitOptions.None)) {
+                        string splitedPart = part;
+                        if (forceWrapCharCount > 0) {
+                            //force wrap by given length
+                            for (int i = 0; i < splitedPart.Length; i++) {
+                                if (charsInLine >= forceWrapCharCount && splitedPart[i] != '\n') {
+                                    splitedPart = splitedPart.Insert(i, "\n");
+                                    charsInLine = 0;
+                                }
+                                else if (splitedPart[i] == '\n') {
+                                    charsInLine = 0;
+                                }
+                                else if((int)splitedPart[i]<128) {
+                                    charsInLine++;   //deal with alphabet
+                                }
+                                else {
+                                    charsInLine += 2;
+                                }
+                            }
+                        }
                         if (colorEnd && brushStack.Count > 1) {
                             brushStack.Pop();
                         }
@@ -43,8 +65,8 @@ namespace RTDDE.Executer
                         FontWeight fontWeight = foreground.Color == Brushes.Black.Color
                             ? FontWeights.Normal
                             : Settings.Config.General.IsShowColorTextAsBold ? FontWeights.Bold : FontWeights.Normal;
-                        Span span = new Span {Foreground = foreground, FontWeight = fontWeight };
-                        span.Inlines.Add(new Run(part.Replace(@"\n", "\n")));
+                        Span span = new Span { Foreground = foreground, FontWeight = fontWeight };
+                        span.Inlines.Add(new Run(splitedPart));
                         pr.Inlines.Add(span);
                         colorEnd = true;
                     }
@@ -53,6 +75,7 @@ namespace RTDDE.Executer
             flowDoc.Blocks.Add(pr);
             return flowDoc;
         }
+
         public static readonly Regex CheckOnlyNumberRegex = new Regex("[^0-9]+", RegexOptions.Compiled); //regex that matches disallowed text
 
         public static bool IsOnlyNumber(string text) {

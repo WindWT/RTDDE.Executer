@@ -288,6 +288,7 @@ namespace RTDDE.Executer.Util.Map
                 foreach (MapCell c in r.Cells) {
                     EnemyInfo ei = dropData.Find(o => o.x == c.x && o.y == c.y && !(o.x == 0 && o.y == 0));
                     if (c.RawCellData == 192) {
+                        //Boss line
                         switch (c.x) {
                             case 0: {
                                 c.drop_unit =
@@ -295,6 +296,8 @@ namespace RTDDE.Executer.Util.Map
                                                              bossInfo.drop_unit_id.ToString());
                                 c.add_attribute_exp = bossInfo.add_attribute_exp;
                                 c.unit_exp = bossInfo.unit_exp;
+                                c.unit_attack = bossInfo.unit_attack;
+                                c.unit_life = bossInfo.unit_life;
                                 c.HasDropInfo = true;
                                 break;
                             }
@@ -307,6 +310,8 @@ namespace RTDDE.Executer.Util.Map
                                                              boss01Info.drop_unit_id.ToString());
                                 c.add_attribute_exp = boss01Info.add_attribute_exp;
                                 c.unit_exp = boss01Info.unit_exp;
+                                c.unit_attack = boss01Info.unit_attack;
+                                c.unit_life = boss01Info.unit_life;
                                 c.HasDropInfo = true;
                                 break;
                             }
@@ -319,6 +324,8 @@ namespace RTDDE.Executer.Util.Map
                                                              boss02Info.drop_unit_id.ToString());
                                 c.add_attribute_exp = boss02Info.add_attribute_exp;
                                 c.unit_exp = boss02Info.unit_exp;
+                                c.unit_attack = boss02Info.unit_attack;
+                                c.unit_life = boss02Info.unit_life;
                                 c.HasDropInfo = true;
                                 break;
                             }
@@ -327,11 +334,14 @@ namespace RTDDE.Executer.Util.Map
                         }
                     }
                     else if (c.RawCellData == 160) {
+                        //BossStart line
                         c.drop_unit =
                             DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" +
                                                      deathInfo.drop_unit_id.ToString());
                         c.add_attribute_exp = deathInfo.add_attribute_exp;
                         c.unit_exp = deathInfo.unit_exp;
+                        c.unit_attack = deathInfo.unit_attack;
+                        c.unit_life = deathInfo.unit_life;
                         c.HasDropInfo = true;
                     }
                     else if (ei != null && ei.flag) {
@@ -339,6 +349,8 @@ namespace RTDDE.Executer.Util.Map
                             DAL.ToSingle<UnitMaster>("SELECT * FROM UNIT_MASTER WHERE id=" + ei.drop_unit_id.ToString());
                         c.add_attribute_exp = ei.add_attribute_exp;
                         c.unit_exp = ei.unit_exp;
+                        c.unit_attack = ei.unit_attack;
+                        c.unit_life = ei.unit_life;
                         c.HasDropInfo = true;
                     }
                     else if (string.IsNullOrEmpty(c.Text) == false && c.Text.StartsWith("E")) {
@@ -346,7 +358,7 @@ namespace RTDDE.Executer.Util.Map
                     }
                     //set drop mark
                     if (c.drop_unit == null) {
-                        continue;   //no enemy, no need to set drop mark
+                        continue; //no enemy, no need to set drop mark
                     }
                     if (c.drop_unit.mix >= Settings.Config.Map.ExpValue) {
                         //exp

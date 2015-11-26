@@ -120,6 +120,7 @@ namespace RTDDE.Executer.Func
                     FontWeight = FontWeights.Bold,
                     HorizontalAlignment = HorizontalAlignment.Right
                 });
+                MapToolbarToggleButton.IsChecked = true;
                 return;
             }
             //make offset to 0~CurrentMapTable.W, always positive
@@ -158,19 +159,6 @@ namespace RTDDE.Executer.Func
                         StrokeDashArray = new DoubleCollection() {2, 1},
                         Stroke = c.EnemyRate > 0 && c.EnemyRate < 100 ? Brushes.DarkGray : Brushes.Transparent
                     };
-                    Border b = new Border() {
-                        Background = c.Background,
-                        Child = tb
-                    };
-
-                    MapGrid.Children.Add(rec);
-                    rec.SetValue(Grid.RowProperty, row);
-                    rec.SetValue(Grid.ColumnProperty, col);
-                    rec.SetValue(Grid.ZIndexProperty, 2);
-
-                    MapGrid.Children.Add(b);
-                    b.SetValue(Grid.RowProperty, row);
-                    b.SetValue(Grid.ColumnProperty, col);
 
                     //绘制tooltip
                     StringBuilder sb = new StringBuilder();
@@ -178,8 +166,8 @@ namespace RTDDE.Executer.Func
                         sb.AppendLine("#:" + c.EnemyNo);
                     }
                     if (c.HasDropInfo) {
-                        sb.AppendLine("evo_pt:" + c.add_attribute_exp);
-                        sb.AppendLine("exp:" + c.unit_exp);
+                        sb.AppendLine($"evo_pt:{c.add_attribute_exp}|exp:{c.unit_exp}");
+                        sb.AppendLine($"atk+{c.unit_attack}|hp+{c.unit_life}");
                         if (c.drop_unit != null) {
                             sb.AppendLine(string.Format("drop:[{0}]{1}", c.drop_unit.g_id, c.drop_unit.name));
                         }
@@ -190,6 +178,22 @@ namespace RTDDE.Executer.Func
                     }
                     if (string.IsNullOrWhiteSpace(sb.ToString().Trim()) == false) {
                         rec.ToolTip = new Run(sb.ToString().Trim());
+                    }
+
+                    Border b = new Border() {
+                        Background = c.Background,
+                        Child = tb
+                    };
+
+                    MapGrid.Children.Add(b);
+                    b.SetValue(Grid.RowProperty, row);
+                    b.SetValue(Grid.ColumnProperty, col);
+
+                    if (c.RawCellData != 0) {   //no rectangle overlay when this cell contains nothing
+                        MapGrid.Children.Add(rec);
+                        rec.SetValue(Grid.RowProperty, row);
+                        rec.SetValue(Grid.ColumnProperty, col);
+                        rec.SetValue(Grid.ZIndexProperty, 2);
                     }
                 }
             }
@@ -227,6 +231,8 @@ namespace RTDDE.Executer.Func
                 b.SetValue(Grid.RowProperty, i);
                 b.SetValue(Grid.ColumnProperty, 0);
             }
+            //收起地图工具栏
+            MapToolbarToggleButton.IsChecked = false;
         }
 
         private DataTable GetMonsterData(object param) {

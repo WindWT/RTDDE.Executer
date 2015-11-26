@@ -7,7 +7,7 @@
     <Grid Name="AccessoryTab" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Initialized="AccessoryTab_Initialized">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="360"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -15,9 +15,9 @@
         </Grid.RowDefinitions>
         <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="AccessoryDataGrid" AutoGenerateColumns="True" SelectionChanged="AccessoryDataGrid_SelectionChanged"  FrozenColumnCount="1" ></DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="0">
-            <Expander Header="Search"  Width="300" Name="AccessorySearchExpander" IsExpanded="False">
-                <WrapPanel>
-                    <WrapPanel.Resources>
+            <Expander Header="Search" Name="AccessorySearchExpander" IsExpanded="False">
+                <Grid>
+                    <Grid.Resources>
                         <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
                             <EventSetter Event="SelectionChanged" Handler="AccessorySearch_SelectionChanged"/>
                         </Style>
@@ -25,43 +25,75 @@
                             <Setter Property="IsReadOnly" Value="False"></Setter>
                             <EventSetter Event="TextChanged" Handler="AccessorySearch_TextChanged"/>
                         </Style>
-                    </WrapPanel.Resources>
-                    <TextBlock Text="name" Width="50"/>
-                    <TextBox Name="AccessorySearch_name" Width="250"></TextBox>
-                    <TextBlock Text="type" Width="50"/>
-                    <ComboBox Name="AccessorySearch_type" Width="100"></ComboBox>
-                    <TextBlock Text="attribute" Width="50"/>
-                    <ComboBox Name="AccessorySearch_attribute" Width="100"></ComboBox>
-                    <!--<ComboBox Name="AccessorySearch_sub_attr" Width="75"></ComboBox>-->
-                    <Button Name="AccessorySearchClear" Width="300" Click="AccessorySearchClear_Click">Clear</Button>
-                </WrapPanel>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="name"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="AccessorySearch_name"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="type"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Name="AccessorySearch_type" />
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="attribute"/>
+                    <ComboBox Grid.Row="1" Grid.Column="3" Name="AccessorySearch_attribute" />
+                    <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Name="AccessorySearchClear" Click="AccessorySearchClear_Click">Clear</Button>
+                </Grid>
             </Expander>
-            <WrapPanel Name="AccessoryInfo">
-                <TextBlock Text="id" Width="50"/>
-                <TextBox Name="Accessory_id" Width="50" IsReadOnly="True"></TextBox>
-                <TextBlock Text="name" Width="50"/>
-                <TextBox Name="Accessory_name" Width="150" IsReadOnly="True"></TextBox>
-                <TextBlock Text="unit" Width="50"/>
-                <TextBox Name="Accessory_unit_g_id" Width="50" IsReadOnly="True"></TextBox>
-                <TextBox Name="Accessory_unit_name" Width="200" IsReadOnly="True"></TextBox>
-                <RichTextBox Name="Accessory_detail" Width="300" IsReadOnly="True"></RichTextBox>
-                <TextBlock Text="type" Width="50"/>
-                <TextBox Name="Accessory_type" Width="250" IsReadOnly="True"></TextBox>
-                <TextBlock Text="conv_money" Width="50"/>
-                <TextBox Name="Accessory_conv_money" Width="250" IsReadOnly="True"></TextBox>
-                <TextBlock Text="icon" Width="50"/>
-                <TextBox Name="Accessory_icon" Width="100" IsReadOnly="True"></TextBox>
-                <TextBlock Text="style" Width="50"/>
-                <TextBox Name="Accessory_style" Width="100" IsReadOnly="True"></TextBox>
-                <TextBlock Text="attribute" Width="50"/>
-                <TextBox Name="Accessory_attribute" Width="100" IsReadOnly="True"></TextBox>
-                <TextBlock Text="sub_attr" Width="50"/>
-                <TextBox Name="Accessory_su_a1" Width="100" IsReadOnly="True"></TextBox>                
-                <TextBox Name="Accessory_num_01" Width="75" IsReadOnly="True"></TextBox>
-                <TextBox Name="Accessory_num_02" Width="75" IsReadOnly="True"></TextBox>
-                <TextBox Name="Accessory_num_03" Width="75" IsReadOnly="True"></TextBox>
-                <TextBox Name="Accessory_num_04" Width="75" IsReadOnly="True"></TextBox>
-            </WrapPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Row="0" Grid.Column="0" Name="Accessory_id" />
+                <TextBox Grid.Row="0" Grid.Column="1" Name="Accessory_name"/>
+                <TextBox Grid.Row="0" Grid.Column="2" Name="Accessory_attribute" />
+                <TextBox Grid.Row="0" Grid.Column="3" Name="Accessory_su_a1" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Row="0" Grid.Column="0" Name="Accessory_unit_id"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Name="Accessory_unit_g_id"/>
+                <TextBox Grid.Row="0" Grid.Column="2" Name="Accessory_unit_name"/>
+                <Button Grid.Row="0" Grid.Column="3" Name="AccessoryInfoToUnitButton" Style="{StaticResource InlineButton}" Click="AccessoryInfoToUnitButton_OnClick">→</Button>
+            </Grid>
+            <TextBox Name="Accessory_type"/>
+            <RichTextBox Name="Accessory_detail"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="conv_money"/>
+                <TextBox Grid.Column="1" Name="Accessory_conv_money"/>
+                <TextBlock Grid.Column="2" Text="icon" />
+                <TextBox Grid.Column="3" Name="Accessory_icon" />
+                <TextBlock Grid.Column="4" Text="style" />
+                <TextBox Grid.Column="5" Name="Accessory_style" />
+            </Grid>
+            <UniformGrid Rows="1" Columns="4">
+                <TextBox Name="Accessory_num_01"/>
+                <TextBox Name="Accessory_num_02"/>
+                <TextBox Name="Accessory_num_03"/>
+                <TextBox Name="Accessory_num_04"/>
+            </UniformGrid>
         </StackPanel>
     </Grid>
 </UserControl>

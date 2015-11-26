@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using RTDDE.Provider;
 using RTDDE.Provider.Enums;
+using RTDDE.Provider.MasterData;
 
 namespace RTDDE.Executer.Func
 {
@@ -45,48 +46,49 @@ namespace RTDDE.Executer.Func
         {
             Utility.BindData(AccessoryDataGrid, "SELECT id,type,name FROM Accessory_MASTER order by type,id");
         }
-        private void AccessoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (AccessoryDataGrid.SelectedItem == null)
-            {
+
+        private async void AccessoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (AccessoryDataGrid.SelectedItem == null) {
                 //avoid Exception
                 return;
             }
-            string id = ((DataRowView)AccessoryDataGrid.SelectedItem).Row["id"].ToString();
+            string id = ((DataRowView) AccessoryDataGrid.SelectedItem).Row["id"].ToString();
 
-            Task<DataTable> task = new Task<DataTable>(() =>
-                {
-                    return DAL.GetDataTable(string.Format("select Accessory_master.*,unit_master.g_id,unit_master.name AS unitname from Accessory_master LEFT JOIN unit_master ON Accessory_master.id=unit_master.id where Accessory_master.id={0}", id));
-                });
-            task.ContinueWith(t =>
-            {
-                if (t.Exception != null)
-                {
-                    Utility.ShowException(t.Exception.InnerException.Message);
-                    return;
-                }
-                if (t.Result == null || t.Result.Rows.Count == 0)
-                {
-                    return;
-                }
-                DataRow dr = t.Result.Rows[0];
-                Accessory_id.Text = dr["id"].ToString();
-                Accessory_name.Text = dr["name"].ToString();
-                Accessory_unit_g_id.Text = dr["g_id"].ToString();
-                Accessory_unit_name.Text = dr["unitname"].ToString();
-                Accessory_detail.Document = Utility.ParseTextToDocument(dr["detail"].ToString());
-                Accessory_type.Text = Utility.ParseAccessoryType(Convert.ToInt32(dr["type"]));
-                Accessory_attribute.Text = Utility.ParseAttributetype(Convert.ToInt32(dr["attribute"]));
-                Accessory_su_a1.Text = dr["su_a1"].ToString();  //not sub attribute
-                Accessory_style.Text = Utility.ParseStyletype(Convert.ToInt32(dr["style"]));
-                Accessory_num_01.Text = dr["num_01"].ToString();
-                Accessory_num_02.Text = dr["num_02"].ToString();
-                Accessory_num_03.Text = dr["num_03"].ToString();
-                Accessory_num_04.Text = dr["num_04"].ToString();
-                Accessory_conv_money.Text = dr["conv_money"].ToString();
-                Accessory_icon.Text = dr["icon"].ToString();
-            }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
-            task.Start();
+            Task<AccessoryMaster> taskAccessory = Task.Run(() => DAL.ToSingle<AccessoryMaster>($"SELECT * FROM ACCESSORY_MASTER WHERE id={id}"));
+            Task<UnitMaster> taskAccessoryUnit = Task.Run(() => DAL.ToSingle<UnitMaster>($"SELECT * FROM UNIT_MASTER WHERE id={id}"));
+
+            AccessoryMaster am;
+            UnitMaster um;
+            try {
+                am = await taskAccessory;
+                um = await taskAccessoryUnit;
+            }
+            catch (Exception ex) {
+                Utility.ShowException(ex.Message);
+                return;
+            }
+
+            if (am == null) {
+                return;
+            }
+            Accessory_id.Text = id;
+            Accessory_name.Text = am.name;
+            if (um != null) {
+                Accessory_unit_id.Text = um.id.ToString();
+                Accessory_unit_g_id.Text = um.g_id.ToString();
+                Accessory_unit_name.Text = um.name;
+            }
+            Accessory_detail.Document = Utility.ParseTextToDocument(am.detail);
+            Accessory_type.Text = Utility.ParseAccessoryType(am.type);
+            Accessory_attribute.Text = Utility.ParseAttributetype(am.attribute);
+            Accessory_su_a1.Text = am.su_a1.ToString(); //not sub attribute
+            Accessory_style.Text = Utility.ParseStyletype(am.style);
+            Accessory_num_01.Text = am.num_01.ToString();
+            Accessory_num_02.Text = am.num_02.ToString();
+            Accessory_num_03.Text = am.num_03.ToString();
+            Accessory_num_04.Text = am.num_04.ToString();
+            Accessory_conv_money.Text = am.conv_money.ToString();
+            Accessory_icon.Text = am.icon;
         }
 
         private void AccessorySearchClear_Click(object sender, RoutedEventArgs e)
@@ -121,12 +123,14 @@ namespace RTDDE.Executer.Func
             {
                 sql += "attribute=" + AccessorySearch_attribute.SelectedValue.ToString() + " AND ";
             }
-            //if (String.IsNullOrWhiteSpace((string)AccessorySearch_sub_attr.SelectedValue) == false)
-            //{
-            //    sql += "sub_attr=" + AccessorySearch_sub_attr.SelectedValue.ToString() + " AND ";
-            //}
             sql += " 1=1 order by type,id";
             return sql;
+        }
+
+        private void AccessoryInfoToUnitButton_OnClick(object sender, RoutedEventArgs e) {
+            if (string.IsNullOrEmpty(Accessory_unit_id.Text) == false) {
+                Utility.GoToItemById<Unit>(Convert.ToInt32(Accessory_unit_id.Text));
+            }
         }
     }
 }

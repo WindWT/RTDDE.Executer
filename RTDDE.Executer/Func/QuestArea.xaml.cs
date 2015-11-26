@@ -222,7 +222,15 @@ order by point";
             QuestAreaInfo_banner_bg_texture.Text = qam.banner_bg_texture;
             QuestAreaInfo_banner_texture.Text = qam.banner_texture;
             QuestAreaInfo_icon_texture.Text = qam.icon_texture;
-            QuestAreaInfo_banner_texture_url.Text = "http://www.acquirespdl.jp/RTD/DLC/BANNER/" + qam.banner_texture;
+            QuestAreaInfo_banner_texture_url.Text = string.IsNullOrEmpty(qam.banner_texture)
+                ? string.Empty
+                : "http://www.acquirespdl.jp/RTD/DLC/BANNER/" + qam.banner_texture;
+            QuestAreaInfo_icon_pos_x.Text = qam.icon_pos_x.ToString();
+            QuestAreaInfo_icon_pos_y.Text = qam.icon_pos_y.ToString();
+            QuestAreaInfo_icon_col_ofs_x.Text = qam.icon_col_ofs_x.ToString();
+            QuestAreaInfo_icon_col_ofs_y.Text = qam.icon_col_ofs_y.ToString();
+            QuestAreaInfo_icon_col_w.Text = qam.icon_col_w.ToString();
+            QuestAreaInfo_icon_col_h.Text = qam.icon_col_h.ToString();
 
             ////banner image
             //if (string.IsNullOrEmpty(qam.banner_texture) == false) {

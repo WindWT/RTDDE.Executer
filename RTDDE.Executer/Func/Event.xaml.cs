@@ -25,7 +25,7 @@ namespace RTDDE.Executer.Func
         {
             InitializeComponent();
             if (disableAutoLoad == false) {
-                Utility.BindData(EventDataGrid, "SELECT id,name FROM MAP_EVENT_Master order by id");
+                Utility.BindData(EventDataGrid, "SELECT id,name FROM MAP_EVENT_Master order by id DESC");
             }
         }
 
@@ -81,6 +81,8 @@ namespace RTDDE.Executer.Func
                 EventInfo_parent_field_id.Text = qfmParent.id.ToString();
                 EventInfo_parent_field_name.Text = qfmParent.name;
             }
+            AreaMap.LoadArea((int)qfmParent.id);
+            AreaMap.LoadEventMark(mapEvent);
             //quests
             Task<List<QuestMaster>> mapEventQuestTask = Task.Run(() =>
             {
@@ -156,8 +158,26 @@ namespace RTDDE.Executer.Func
 
         public DataGrid GetTargetDataGrid(int firstId, int lastId = -1, string type = null)
         {
-            Utility.BindData(EventDataGrid, "SELECT id,name FROM MAP_EVENT_Master order by id");
+            Utility.BindData(EventDataGrid, "SELECT id,name FROM MAP_EVENT_Master order by id DESC");
             return EventDataGrid;
+        }
+
+        private void EventSearchClear_OnClick(object sender, RoutedEventArgs e) {
+            EventSearch_id.Text = String.Empty;
+            EventSearch_name.Text = String.Empty;
+            Utility.BindData(EventDataGrid, "SELECT id,name FROM MAP_EVENT_Master order by id DESC");
+        }
+
+        private void EventSearch_TextChanged(object sender, TextChangedEventArgs e) {
+            string sql = @"SELECT id,name FROM MAP_EVENT_Master WHERE ";
+            if (String.IsNullOrWhiteSpace(EventSearch_id.Text) == false) {
+                sql += "id=" + EventSearch_id.Text + " AND ";
+            }
+            if (String.IsNullOrWhiteSpace(EventSearch_name.Text) == false) {
+                sql += "name LIKE '%" + EventSearch_name.Text.Trim() + "%' AND ";
+            }
+            sql += " 1=1 ORDER BY id DESC";
+            Utility.BindData(EventDataGrid, sql);
         }
     }
 }

@@ -5,13 +5,9 @@ Road to Dragons(AKA RoDora or RTD) Data Explorer
 
 Requires .NET 4.5
 
-ToDo
+Todo
 ===============
-
-Auto-Update
 
 L10N support
 
 Export Map to image
-
-5.0 World System support

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:RTDDE="clr-namespace:RTDDE.Executer"
+             xmlns:RTDDE="clr-namespace:RTDDE.Executer.Func"
              mc:Ignorable="d" >
     <Grid Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
@@ -16,64 +16,33 @@
         </Grid.RowDefinitions>
         <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="EventDataGrid" AutoGenerateColumns="True" SelectionChanged="EventDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="0">
-            <!--<Expander BorderThickness="0" Name="EventSearchExpander" IsExpanded="False">
-                <Expander.Header>
-                    <Label Content="Search"></Label>
-                
-                
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid.Resources>
-                                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                                    <Setter Property="IsReadOnly" Value="False"></Setter>
-                                    <EventSetter Event="TextChanged" Handler="EventSearch_TextChanged"/>
-                                </Style>
-                            </Grid.Resources>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="id" />
-                            <TextBox Grid.Row="0" Grid.Column="1" Name="EventSearch_id"></TextBox>
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="name"/>
-                            <TextBox Grid.Row="0" Grid.Column="3" Name="EventSearch_name"></TextBox>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid.Resources>
-                                <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
-                                    <EventSetter Event="SelectionChanged" Handler="EventSearch_SelectionChanged"/>
-                                </Style>
-                            </Grid.Resources>
-                            <ComboBox Grid.Row="0" Grid.Column="0" Name="EventSearch_chara_symbol"></ComboBox>
-                            <ComboBox Grid.Row="0" Grid.Column="1" Name="EventSearch_chara_kind"></ComboBox>
-                            <ComboBox Grid.Row="0" Grid.Column="2" Name="EventSearch_type"></ComboBox>
-                            <ComboBox Grid.Row="0" Grid.Column="3" Name="EventSearch_attribute"></ComboBox>
-                            <ComboBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Name="EventSearch_pattern"></ComboBox>
-                            -->
-            <!--<ComboBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Name="EventSearch_pattern2"></ComboBox>-->
-            <!--
-                            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Name="EventSearchClear" Click="EventSearchClear_Click">Clear</Button>
-                        </Grid>
-                    </StackPanel>
-                
-            </Expander>-->
+            <Expander BorderThickness="0" Name="EventSearchExpander" IsExpanded="False" Header="Search">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Setter Property="IsReadOnly" Value="False"></Setter>
+                                <EventSetter Event="TextChanged" Handler="EventSearch_TextChanged"/>
+                            </Style>
+                        </Grid.Resources>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="id" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Name="EventSearch_id"></TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="name"/>
+                        <TextBox Grid.Row="0" Grid.Column="3" Name="EventSearch_name"></TextBox>
+                        <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Name="EventSearchClear" Click="EventSearchClear_OnClick">Clear</Button>
+                    </Grid>
+                </StackPanel>
+            </Expander>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50"></ColumnDefinition>
@@ -82,24 +51,10 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <TextBox Grid.Row="0" Grid.Column="0" Name="EventInfo_id"></TextBox>
                 <TextBox Grid.Row="0" Grid.Column="1" Name="EventInfo_name"></TextBox>
                 <TextBox Grid.Row="1" Grid.ColumnSpan="2" Name="EventInfo_text"></TextBox>
-                <TextBox Grid.Row="2" Grid.ColumnSpan="2" Name="EventInfo_dialog_text"></TextBox>
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="type"></TextBlock>
-                <TextBox Grid.Column="1" Name="EventInfo_event_type"></TextBox>
-                <TextBlock Grid.Column="2" Text="count"></TextBlock>
-                <TextBox Grid.Column="3" Name="EventInfo_max_count"></TextBox>
             </Grid>
             <Grid Name="EventInfo_parent">
                 <Grid.ColumnDefinitions>
@@ -111,7 +66,6 @@
                 <TextBox Name="EventInfo_parent_field_id" Grid.Column="1"></TextBox>
                 <TextBox Name="EventInfo_parent_field_name" Grid.Column="2"></TextBox>
             </Grid>
-            <StackPanel Name="EventInfo_quests"/>
         </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" Style="{StaticResource VerticalScrollViewer}">
             <StackPanel>
@@ -130,12 +84,33 @@
                     <TextBlock Grid.Row="0" Grid.Column="2" Text="group"/>
                     <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Name="EventInfo_opentype_content"/>
                 </Grid>
-                <UniformGrid Columns="2" Rows="2">
-                    <TextBlock Name="EventInfo_post_type"></TextBlock>
-                    <TextBlock Name="EventInfo_post_message_id"></TextBlock>
-                    <TextBlock Name="EventInfo_post_param_01"></TextBlock>
-                    <TextBlock Name="EventInfo_post_param_02"></TextBlock>
-                </UniformGrid>
+                <Expander Header="Detail" IsExpanded="False">
+                    <StackPanel>
+                        <TextBox Grid.Row="2" Grid.ColumnSpan="2" Name="EventInfo_dialog_text"></TextBox>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="type"></TextBlock>
+                            <TextBox Grid.Column="1" Name="EventInfo_event_type"></TextBox>
+                            <TextBlock Grid.Column="2" Text="count"></TextBlock>
+                            <TextBox Grid.Column="3" Name="EventInfo_max_count"></TextBox>
+                        </Grid>
+                        <UniformGrid Columns="4" Rows="1">
+                            <TextBox Name="EventInfo_post_type"></TextBox>
+                            <TextBox Name="EventInfo_post_message_id"></TextBox>
+                            <TextBox Name="EventInfo_post_param_01"></TextBox>
+                            <TextBox Name="EventInfo_post_param_02"></TextBox>
+                        </UniformGrid>
+                        <StackPanel Name="EventInfo_quests"/>
+                    </StackPanel>
+                </Expander>
+                <Expander Header="AreaMap" Name="EventAreaMapExpander" IsExpanded="False">
+                    <RTDDE:Area x:Name="AreaMap" Height="350"/>
+                </Expander>
                 <Expander Header="Advanced" Name="EventAdvancedExpander" IsExpanded="False">
                     <Grid>
                         <Grid.ColumnDefinitions>
