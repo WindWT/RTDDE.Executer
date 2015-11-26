@@ -166,8 +166,8 @@ namespace RTDDE.Executer.Func
                         sb.AppendLine("#:" + c.EnemyNo);
                     }
                     if (c.HasDropInfo) {
-                        sb.AppendLine("evo_pt:" + c.add_attribute_exp);
-                        sb.AppendLine("exp:" + c.unit_exp);
+                        sb.AppendLine($"evo_pt:{c.add_attribute_exp}|exp:{c.unit_exp}");
+                        sb.AppendLine($"atk+{c.unit_attack}|hp+{c.unit_life}");
                         if (c.drop_unit != null) {
                             sb.AppendLine(string.Format("drop:[{0}]{1}", c.drop_unit.g_id, c.drop_unit.name));
                         }

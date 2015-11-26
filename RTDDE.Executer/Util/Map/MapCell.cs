@@ -18,6 +18,8 @@ namespace RTDDE.Executer.Util.Map
         public UnitMaster drop_unit { get; set; }
         public int add_attribute_exp { get; set; }
         public int unit_exp { get; set; }
+        public int unit_attack { get; set; }
+        public int unit_life { get; set; }
         public int gold_pt { get; set; }
         public int drop_id { get; set; }
         public int x { get; set; }
