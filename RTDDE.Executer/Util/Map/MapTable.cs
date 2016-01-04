@@ -23,18 +23,7 @@ namespace RTDDE.Executer.Util.Map
         public int W { get; private set; }
         public string MapData { get; private set; }
         public int ZeroMarkPlace { get; private set; }
-
-        #region brush
-        private static readonly Brush FireTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.9f, 0.4f, 0.3f));
-        private static readonly Brush WaterTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.4f, 0.89f, 0.9f));
-        private static readonly Brush LightTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.9f, 0.9f, 0.3f));
-        private static readonly Brush DarkTransBrush = new SolidColorBrush(Color.FromScRgb(0.5f, 0.76f, 0.58f, 0.9f));
-        private static readonly Color FireColor = Colors.Tomato;
-        private static readonly Color WaterColor = Colors.DodgerBlue;
-        private static readonly Color LightColor = Colors.Orange;
-        private static readonly Color DarkColor = Colors.Purple;
-        #endregion
-
+        
         public MapTable(string mapData, int w, int h, int x, int y)
         {
             Rows = new List<MapRow>();
@@ -43,11 +32,6 @@ namespace RTDDE.Executer.Util.Map
             H = h;
             X = x;
             Y = y;
-            //freeze all brush
-            FireTransBrush.Freeze();
-            WaterTransBrush.Freeze();
-            LightTransBrush.Freeze();
-            DarkTransBrush.Freeze();
             for (int i = 0; i < W; i++) {
                 var mapRow = new MapRow();
                 for (int j = 0; j < H; j++) {
@@ -60,22 +44,22 @@ namespace RTDDE.Executer.Util.Map
                         switch (1 << (num - 1)) {
                             //AttributeTypeLight,
                             case 1: {
-                                mapCell.Background = LightTransBrush;
+                                mapCell.Background = Utility.ParseAttributeToBrush(UnitAttribute.LIGHT, true);
                                 break;
                             }
                             //AttributeTypeDark,
                             case 2: {
-                                mapCell.Background = DarkTransBrush;
+                                mapCell.Background = Utility.ParseAttributeToBrush(UnitAttribute.DARK, true);
                                 break;
                             }
                             //AttributeTypeFire = 4,
                             case 4: {
-                                mapCell.Background = FireTransBrush;
+                                mapCell.Background = Utility.ParseAttributeToBrush(UnitAttribute.FIRE, true);
                                 break;
                             }
                             //AttributeTypeWater = 8,
                             case 8: {
-                                mapCell.Background = WaterTransBrush;
+                                mapCell.Background = Utility.ParseAttributeToBrush(UnitAttribute.WATER, true);
                                 break;
                             }
                             //AttributeTypeBossStart = 16,
@@ -86,7 +70,7 @@ namespace RTDDE.Executer.Util.Map
                             }
                             //AttributeTypeBoss = 32,
                             case 32: {
-                                mapCell.Background = Brushes.Black;
+                                mapCell.Background = Brushes.DarkGray;
                                 break;
                             }
                         }
@@ -163,24 +147,7 @@ namespace RTDDE.Executer.Util.Map
                         DAL.ToSingle<EnemyUnitMaster>("SELECT * FROM ENEMY_UNIT_MASTER WHERE id=" + enemyId);
                     c.gold_pt = eum.gold_pt;
                     if (Settings.Config.Map.IsShowEnemyAttribute) {
-                        switch (Utility.ParseAttributetype(eum.attribute)) {
-                            case "FIRE": {
-                                    c.AttributeColor = FireColor;
-                                    break;
-                                }
-                            case "WATER": {
-                                    c.AttributeColor = WaterColor;
-                                    break;
-                                }
-                            case "LIGHT": {
-                                    c.AttributeColor = LightColor;
-                                    break;
-                                }
-                            case "DARK": {
-                                    c.AttributeColor = DarkColor;
-                                    break;
-                                }
-                        }
+                        c.AttributeColor = Utility.ParseAttributeToColor(Utility.ParseAttribute(eum.attribute));
                     }
                     switch ((ENEMY_TYPE)eum.type) {
                         case ENEMY_TYPE.STAIRS: {
