@@ -21,16 +21,16 @@
                             <Setter Property="Background" Value="Silver"></Setter>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding attribute}" Value="2">
-                            <Setter Property="Background" Value="sc# 0.9, 0.4, 0.3"></Setter>
+                            <Setter Property="Background" Value="{StaticResource FireBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding attribute}" Value="3">
-                            <Setter Property="Background" Value="sc# 0.4, 0.89, 0.9"></Setter>
+                            <Setter Property="Background" Value="{StaticResource WaterBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding attribute}" Value="4">
-                            <Setter Property="Background" Value="sc# 0.9, 0.9, 0.3"></Setter>
+                            <Setter Property="Background" Value="{StaticResource LightBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding attribute}" Value="5">
-                            <Setter Property="Background" Value="sc# 0.76, 0.58, 0.9"></Setter>
+                            <Setter Property="Background" Value="{StaticResource DarkBrush}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -40,16 +40,16 @@
                             <Setter Property="Background" Value="Silver"></Setter>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding sub_a1}" Value="2">
-                            <Setter Property="Background" Value="sc# 0.9, 0.4, 0.3"></Setter>
+                            <Setter Property="Background" Value="{StaticResource FireBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding sub_a1}" Value="3">
-                            <Setter Property="Background" Value="sc# 0.4, 0.89, 0.9"></Setter>
+                            <Setter Property="Background" Value="{StaticResource WaterBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding sub_a1}" Value="4">
-                            <Setter Property="Background" Value="sc# 0.9, 0.9, 0.3"></Setter>
+                            <Setter Property="Background" Value="{StaticResource LightBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding sub_a1}" Value="5">
-                            <Setter Property="Background" Value="sc# 0.76, 0.58, 0.9"></Setter>
+                            <Setter Property="Background" Value="{StaticResource DarkBrush}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
