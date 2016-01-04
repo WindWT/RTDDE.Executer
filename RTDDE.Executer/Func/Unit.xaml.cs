@@ -101,6 +101,9 @@ namespace RTDDE.Executer.Func
                     return;
                 }
             }
+            if (string.IsNullOrWhiteSpace(UnitInfo_id.Text)) {
+                return;
+            }
             UnitInfo_BindData(UnitInfo_id.Text);
         }
 
@@ -152,7 +155,11 @@ WHERE uo.id={0}";
             taskSkills.ContinueWith(t =>
             {
                 if (t.Exception != null) {
-                    Utility.ShowException(t.Exception.InnerException.Message);
+                    Exception ex = t.Exception;
+                    while (ex.InnerException != null) {
+                        ex = ex.InnerException;
+                    }
+                    Utility.ShowException(ex.Message);
                     return;
                 }
                 if (task.Result == null) {
