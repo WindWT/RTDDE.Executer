@@ -81,17 +81,20 @@ namespace RTDDE.Executer
         public static Color ParseAttributeToColor(UnitAttribute attribute) {
             switch (attribute) {
                 case UnitAttribute.FIRE:
-                    return (Color)(application.TryFindResource("FireColor"));
+                    return (Color) (application.TryFindResource("FireColor"));
                 case UnitAttribute.WATER:
-                    return (Color)(application.TryFindResource("WaterColor"));
+                    return (Color) (application.TryFindResource("WaterColor"));
                 case UnitAttribute.LIGHT:
-                    return (Color)(application.TryFindResource("LightColor"));
+                    return (Color) (application.TryFindResource("LightColor"));
                 case UnitAttribute.DARK:
-                    return (Color)(application.TryFindResource("DarkColor"));
+                    return (Color) (application.TryFindResource("DarkColor"));
+                case UnitAttribute.NONE:
+                    return (Color) (application.TryFindResource("NoneColor"));
                 default:
                     return Colors.Transparent;
             }
         }
+
         public static Brush ParseAttributeToBrush(UnitAttribute attribute, bool isTransparent = false) {
             switch (attribute) {
                 case UnitAttribute.FIRE:
@@ -99,17 +102,21 @@ namespace RTDDE.Executer
                         ? application.TryFindResource("FireTransBrush")
                         : application.TryFindResource("FireBrush"));
                 case UnitAttribute.WATER:
-                    return (Brush)(isTransparent
+                    return (Brush) (isTransparent
                         ? application.TryFindResource("WaterTransBrush")
                         : application.TryFindResource("WaterBrush"));
                 case UnitAttribute.LIGHT:
-                    return (Brush)(isTransparent
+                    return (Brush) (isTransparent
                         ? application.TryFindResource("LightTransBrush")
                         : application.TryFindResource("LightBrush"));
                 case UnitAttribute.DARK:
-                    return (Brush)(isTransparent
+                    return (Brush) (isTransparent
                         ? application.TryFindResource("DarkTransBrush")
                         : application.TryFindResource("DarkBrush"));
+                case UnitAttribute.NONE:
+                    return (Brush) (isTransparent
+                        ? application.TryFindResource("NoneTransBrush")
+                        : application.TryFindResource("NoneBrush"));
                 default:
                     return Brushes.Transparent;
             }

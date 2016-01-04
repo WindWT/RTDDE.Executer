@@ -24,15 +24,18 @@
             <Color x:Key="WaterColor" ScA="1" ScR="0.4" ScG="0.89" ScB="0.9"/>
             <Color x:Key="LightColor" ScA="1" ScR="0.9" ScG="0.9" ScB="0.3"/>
             <Color x:Key="DarkColor" ScA="1" ScR="0.76" ScG="0.58" ScB="0.9"/>
+            <Color x:Key="NoneColor" ScA="1" ScR="0.75" ScG="0.75" ScB="0.75"/>
 
             <SolidColorBrush x:Key="FireBrush" Color="{StaticResource FireColor}" PresentationOptions:Freeze="true"/>
             <SolidColorBrush x:Key="WaterBrush" Color="{StaticResource WaterColor}" PresentationOptions:Freeze="true"/>
             <SolidColorBrush x:Key="LightBrush" Color="{StaticResource LightColor}" PresentationOptions:Freeze="true"/>
             <SolidColorBrush x:Key="DarkBrush" Color="{StaticResource DarkColor}" PresentationOptions:Freeze="true"/>
+            <SolidColorBrush x:Key="NoneBrush" Color="{StaticResource NoneColor}" PresentationOptions:Freeze="true"/>
             <SolidColorBrush x:Key="FireTransBrush" Color="{StaticResource FireColor}" Opacity="0.5" PresentationOptions:Freeze="true"/>
             <SolidColorBrush x:Key="WaterTransBrush" Color="{StaticResource WaterColor}" Opacity="0.5" PresentationOptions:Freeze="true"/>
             <SolidColorBrush x:Key="LightTransBrush" Color="{StaticResource LightColor}" Opacity="0.5" PresentationOptions:Freeze="true"/>
             <SolidColorBrush x:Key="DarkTransBrush" Color="{StaticResource DarkColor}" Opacity="0.5" PresentationOptions:Freeze="true"/>
+            <SolidColorBrush x:Key="NoneTransBrush" Color="{StaticResource NoneColor}" Opacity="0.5" PresentationOptions:Freeze="true"/>
 
             <LinearGradientBrush x:Key="SeparatorBrush" MappingMode="Absolute" PresentationOptions:Freeze="true"
                              SpreadMethod="Repeat"

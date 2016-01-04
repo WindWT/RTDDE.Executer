@@ -18,7 +18,7 @@
                 <Style x:Key="UnitAttributeStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding attribute}" Value="1">
-                            <Setter Property="Background" Value="Silver"></Setter>
+                            <Setter Property="Background" Value="{StaticResource NoneBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding attribute}" Value="2">
                             <Setter Property="Background" Value="{StaticResource FireBrush}"/>
@@ -37,7 +37,7 @@
                 <Style x:Key="UnitSubAttributeStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding sub_a1}" Value="1">
-                            <Setter Property="Background" Value="Silver"></Setter>
+                            <Setter Property="Background" Value="{StaticResource NoneBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding sub_a1}" Value="2">
                             <Setter Property="Background" Value="{StaticResource FireBrush}"/>
