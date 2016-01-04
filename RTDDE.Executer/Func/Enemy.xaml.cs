@@ -73,7 +73,7 @@ namespace RTDDE.Executer.Func
             }
             EnemySearch_pattern.ItemsSource = patternDict;
             Utility.DisableBindData = false;
-            Utility.BindData(EnemyDataGrid, "SELECT id,name FROM Enemy_Unit_MASTER order by id");
+            Utility.BindData(EnemyDataGrid, "SELECT id,attribute,name FROM Enemy_Unit_MASTER order by id");
         }
 
         private void EnemyDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -135,7 +135,7 @@ namespace RTDDE.Executer.Func
             }
             EnemyInfo_chara_symbol.Text = rareText;
             EnemyInfo_name.Text = eum.name;
-            EnemyInfo_attribute.Text = Utility.ParseAttributeToString(eum.attribute);
+            EnemyInfo_attribute.Fill = Utility.ParseAttributeToBrush(Utility.ParseAttribute(eum.attribute));
             EnemyInfo_type.Text = Utility.ParseEnemyType(eum.type);
             EnemyInfo_chara_kind.Text = eum.chara_flag_no == 0
                 ? string.Empty
@@ -243,7 +243,7 @@ namespace RTDDE.Executer.Func
             EnemySearch_type.SelectedIndex = 0;
             EnemySearch_attribute.SelectedIndex = 0;
             EnemySearch_pattern.SelectedIndex = 0;
-            Utility.BindData(EnemyDataGrid, "SELECT id,name FROM Enemy_Unit_MASTER order by id");
+            Utility.BindData(EnemyDataGrid, "SELECT id,attribute,name FROM Enemy_Unit_MASTER order by id");
         }
         private void EnemySearch_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -255,7 +255,7 @@ namespace RTDDE.Executer.Func
         }
         private string EnemySearch_BuildSQL()
         {
-            string sql = @"SELECT id,name FROM Enemy_unit_MASTER WHERE ";
+            string sql = @"SELECT id,attribute,name FROM Enemy_unit_MASTER WHERE ";
             if (String.IsNullOrWhiteSpace(EnemySearch_id.Text) == false) {
                 sql += "id=" + EnemySearch_id.Text + " AND ";
             }

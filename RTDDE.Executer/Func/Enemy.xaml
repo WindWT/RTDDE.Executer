@@ -14,7 +14,34 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="EnemyDataGrid" AutoGenerateColumns="True" SelectionChanged="EnemyDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
+        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="EnemyDataGrid" AutoGenerateColumns="False" SelectionChanged="EnemyDataGrid_SelectionChanged" FrozenColumnCount="3" >
+            <DataGrid.Resources>
+                <Style x:Key="EnemyAttributeStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding attribute}" Value="1">
+                            <Setter Property="Background" Value="{StaticResource NoneBrush}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding attribute}" Value="2">
+                            <Setter Property="Background" Value="{StaticResource FireBrush}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding attribute}" Value="3">
+                            <Setter Property="Background" Value="{StaticResource WaterBrush}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding attribute}" Value="4">
+                            <Setter Property="Background" Value="{StaticResource LightBrush}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding attribute}" Value="5">
+                            <Setter Property="Background" Value="{StaticResource DarkBrush}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="id" Binding="{Binding id}" />
+                <DataGridTextColumn CellStyle="{StaticResource EnemyAttributeStyle}"/>
+                <DataGridTextColumn Header="name" Binding="{Binding name}" />
+            </DataGrid.Columns>
+        </DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="0">
             <Expander Header="Search" Name="EnemySearchExpander" IsExpanded="False">
                 <StackPanel>
@@ -76,7 +103,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" Name="EnemyInfo_id"></TextBox>
                 <TextBox Grid.Column="1" Name="EnemyInfo_name"></TextBox>
-                <TextBox Grid.Column="2" Name="EnemyInfo_attribute"></TextBox>
+                <Rectangle Grid.Column="2" Name="EnemyInfo_attribute" Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}"/>
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
