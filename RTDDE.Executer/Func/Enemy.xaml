@@ -220,11 +220,11 @@
                     <TextBlock Grid.Row="2" Grid.Column="4" Text="gold"/>
                     <TextBox Grid.Row="2" Grid.Column="5" Name="EnemyInfo_gold_pt"></TextBox>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="HP"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" Name="EnemyInfo_HP" Width="250"></TextBox>
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="EnemyInfo_HP"/>
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="ATK"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Name="EnemyInfo_ATK" Width="250"></TextBox>
+                    <TextBox Grid.Row="1" Grid.Column="1" Name="EnemyInfo_ATK"/>
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="DEF"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Name="EnemyInfo_DEF" Width="250"></TextBox>
+                    <TextBox Grid.Row="2" Grid.Column="1" Name="EnemyInfo_DEF"/>
                     <!--<TextBlock Grid.Row="1" Grid.Column="2" Text="Dragon"/>
                     <TextBox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" Name="EnemyInfo_flag"></TextBox>
                     <TextBlock Grid.Row="2" Grid.Column="2" Text="Unit"/>
