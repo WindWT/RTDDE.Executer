@@ -96,20 +96,20 @@ namespace RTDDE.Executer
             switch (attribute) {
                 case UnitAttribute.FIRE:
                     return (Brush) (isTransparent
-                        ? application.TryFindResource("FireBrush")
-                        : application.TryFindResource("FireTransBrush"));
+                        ? application.TryFindResource("FireTransBrush")
+                        : application.TryFindResource("FireBrush"));
                 case UnitAttribute.WATER:
                     return (Brush)(isTransparent
-                        ? application.TryFindResource("WaterBrush")
-                        : application.TryFindResource("WaterTransBrush"));
+                        ? application.TryFindResource("WaterTransBrush")
+                        : application.TryFindResource("WaterBrush"));
                 case UnitAttribute.LIGHT:
                     return (Brush)(isTransparent
-                        ? application.TryFindResource("LightBrush")
-                        : application.TryFindResource("LightTransBrush"));
+                        ? application.TryFindResource("LightTransBrush")
+                        : application.TryFindResource("LightBrush"));
                 case UnitAttribute.DARK:
                     return (Brush)(isTransparent
-                        ? application.TryFindResource("DarkBrush")
-                        : application.TryFindResource("DarkTransBrush"));
+                        ? application.TryFindResource("DarkTransBrush")
+                        : application.TryFindResource("DarkBrush"));
                 default:
                     return Brushes.Transparent;
             }
