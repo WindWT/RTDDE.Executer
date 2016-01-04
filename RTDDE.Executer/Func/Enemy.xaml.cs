@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using RTDDE.Provider;
 using RTDDE.Provider.Enums;
 using RTDDE.Provider.MasterData;
@@ -95,10 +96,13 @@ namespace RTDDE.Executer.Func
                 EnemyInfo_lv.Text = "1";
                 return;
             }
+            if (string.IsNullOrWhiteSpace(EnemyInfo_id.Text)) {
+                return;
+            }
             EnemyInfo_BindData(EnemyInfo_id.Text);
         }
 
-        public async void EnemyInfo_BindData(string Enemyid) {
+        private async void EnemyInfo_BindData(string Enemyid) {
             if (string.IsNullOrWhiteSpace(EnemyInfo_lv.Text)) {
                 return;
             }
@@ -143,8 +147,12 @@ namespace RTDDE.Executer.Func
             EnemyInfo_DEF.Text = Utility.RealCalc(eum.defense, eum.up_defense, thislevel).ToString();
             EnemyInfo_soul_pt.Text = eum.soul_pt.ToString();
             EnemyInfo_gold_pt.Text = eum.gold_pt.ToString();
-            EnemyInfo_flag.Text = Convert.ToBoolean(eum.flag).ToString();
-            EnemyInfo_isUnit.Text = Utility.IsUnitEnemy(eum.type).ToString();
+            EnemyInfo_flag.Foreground = Convert.ToBoolean(eum.flag)
+                ? Brushes.Black
+                : (Brush) this.FindResource("HighlightBrush");
+            EnemyInfo_isUnit.Foreground = Utility.IsUnitEnemy(eum.type)
+                ? Brushes.Black
+                : (Brush) this.FindResource("HighlightBrush");
             EnemyInfo_turn.Text = eum.turn.ToString();
             EnemyInfo_ui.Text = eum.ui.ToString();
             //skill
@@ -283,6 +291,11 @@ namespace RTDDE.Executer.Func
                     break;
                 }
             }
+        }
+
+        private void EnemyLvButton_OnClick(object sender, RoutedEventArgs e) {
+            EnemyInfo_lv.Text = ((Button) sender).Content.ToString();
+            EnemyInfo_lv_LostFocus(null, null);
         }
     }
 }
