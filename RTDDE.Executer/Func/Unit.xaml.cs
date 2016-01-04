@@ -170,8 +170,8 @@ WHERE uo.id={0}";
                 }
                 UnitInfo_category.Text = rare;
                 UnitInfo_style.Text = Utility.ParseStyletype(ui.style);
-                UnitInfo_attribute.Text = Utility.ParseAttributeToString(ui.attribute);
-                UnitInfo_sub_a1.Text = Utility.ParseAttributeToString(ui.sub_a1);
+                UnitInfo_attribute.Fill = Utility.ParseAttributeToBrush(Utility.ParseAttribute(ui.attribute));
+                UnitInfo_sub_a1.Fill = Utility.ParseAttributeToBrush(Utility.ParseAttribute(ui.sub_a1));
                 UnitInfo_kind.Text = Utility.ParseUnitKind(ui.kind).ToString();
                 UnitInfo_bonus_limit_base.Text = ui.bonus_limit_base.ToString();
 
