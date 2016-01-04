@@ -70,7 +70,7 @@ namespace RTDDE.Executer.Util.Map
                             }
                             //AttributeTypeBoss = 32,
                             case 32: {
-                                mapCell.Background = Brushes.DarkGray;
+                                mapCell.Background = Brushes.DimGray;
                                 break;
                             }
                         }
