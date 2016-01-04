@@ -20,10 +20,10 @@
             <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource HighlightColor}" PresentationOptions:Freeze="true"/>
             <SolidColorBrush x:Key="PressedBrush" Color="{StaticResource PressedColor}" PresentationOptions:Freeze="true"/>
 
-            <Color x:Key="FireColor" ScR="0.9" ScG="0.4" ScA="0.3"/>
-            <Color x:Key="WaterColor" ScR="0.4" ScG="0.89" ScA="0.9"/>
-            <Color x:Key="LightColor" ScR="0.9" ScG="0.9" ScA="0.3"/>
-            <Color x:Key="DarkColor" ScR="0.76" ScG="0.58" ScA="0.9"/>
+            <Color x:Key="FireColor" ScA="1" ScR="0.9" ScG="0.4" ScB="0.3"/>
+            <Color x:Key="WaterColor" ScA="1" ScR="0.4" ScG="0.89" ScB="0.9"/>
+            <Color x:Key="LightColor" ScA="1" ScR="0.9" ScG="0.9" ScB="0.3"/>
+            <Color x:Key="DarkColor" ScA="1" ScR="0.76" ScG="0.58" ScB="0.9"/>
 
             <SolidColorBrush x:Key="FireBrush" Color="{StaticResource FireColor}" PresentationOptions:Freeze="true"/>
             <SolidColorBrush x:Key="WaterBrush" Color="{StaticResource WaterColor}" PresentationOptions:Freeze="true"/>
