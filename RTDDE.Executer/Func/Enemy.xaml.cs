@@ -135,7 +135,7 @@ namespace RTDDE.Executer.Func
             }
             EnemyInfo_chara_symbol.Text = rareText;
             EnemyInfo_name.Text = eum.name;
-            EnemyInfo_attribute.Text = Utility.ParseAttributetype(eum.attribute);
+            EnemyInfo_attribute.Text = Utility.ParseAttributeToString(eum.attribute);
             EnemyInfo_type.Text = Utility.ParseEnemyType(eum.type);
             EnemyInfo_chara_kind.Text = eum.chara_flag_no == 0
                 ? string.Empty

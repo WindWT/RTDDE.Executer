@@ -388,7 +388,7 @@ namespace RTDDE.Executer.Func
             MapEnemyInfo_type.Text = Utility.ParseEnemyType(eum.type);
             MapEnemyInfo_isDragon.Text = Convert.ToBoolean(eum.flag).ToString();
             MapEnemyInfo_isUnitEnemy.Text = Utility.IsUnitEnemy(eum.type).ToString();
-            MapEnemyInfo_attribute.Text = Utility.ParseAttributetype(eum.attribute);
+            MapEnemyInfo_attribute.Text = Utility.ParseAttributeToString(eum.attribute);
             MapEnemyInfo_soul_pt.Text = eum.soul_pt.ToString();
             MapEnemyInfo_gold_pt.Text = eum.gold_pt.ToString();
             MapEnemyInfo_turn.Text = eum.turn.ToString();
