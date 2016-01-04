@@ -56,7 +56,7 @@ ALTER TABLE ENEMY_TABLE_MASTER ADD COLUMN boss02_bgm_id;" }
         {
             string sql = CommonSQLTextBox.Text;
             Utility.BindData(CommonDataGrid, sql);
-            Utility.ShowException("SQL Executed.");
+            Utility.ShowMessage("SQL Executed.");
         }
     }
 }

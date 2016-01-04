@@ -57,7 +57,7 @@ namespace RTDDE.Executer.Func
             initMonsterTask.ContinueWith(t =>
             {
                 if (t.Exception != null) {
-                    Utility.ShowException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception);
                     return;
                 }
                 MapMonsterGrid.ItemsSource = t.Result.DefaultView;
@@ -85,7 +85,7 @@ namespace RTDDE.Executer.Func
             {
                 MapGrid.Children.Clear();
                 if (t.Exception != null) {
-                    Utility.ShowException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception);
                     return;
                 }
                 DrawMap();
@@ -513,7 +513,7 @@ namespace RTDDE.Executer.Func
                 });
                 task.ContinueWith(t => {
                     if (t.Exception != null) {
-                        Utility.ShowException(t.Exception.InnerException.Message);
+                        Utility.ShowException(t.Exception);
                         ImportLdbsButton.SetResourceReference(Button.ContentProperty, "Config_ImportLDBSFail");
                     }
                     else {

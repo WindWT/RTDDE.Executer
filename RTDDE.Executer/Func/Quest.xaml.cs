@@ -102,7 +102,7 @@ namespace RTDDE.Executer.Func
                 }
             }
             catch (Exception ex) {
-                Utility.ShowException(ex.Message);
+                Utility.ShowException(ex);
             }
             QuestInfo_display_order.Text = quest.display_order.ToString();
             QuestInfo_sp_guide_id.Text = quest.sp_guide_id.ToString();

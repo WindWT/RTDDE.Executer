@@ -82,9 +82,16 @@ namespace RTDDE.Executer
             return (CheckOnlyNumberRegex.IsMatch(text) == false);
         }
 
-        public static void ShowException(string message)
-        {
+        public static void ShowException(Exception ex) {
+            while (ex.InnerException != null) {
+                ex = ex.InnerException;
+            }
             var w = (MainWindow)Application.Current.MainWindow;
+            w.StatusBarExceptionMessage.Text = ex.Message;
+        }
+
+        public static void ShowMessage(string message) {
+            var w = (MainWindow) Application.Current.MainWindow;
             w.StatusBarExceptionMessage.Text = message;
         }
 
@@ -116,7 +123,7 @@ namespace RTDDE.Executer
                 dg.ItemsSource = (await task).DefaultView;
             }
             catch (Exception ex) {
-                Utility.ShowException(ex.Message);
+                Utility.ShowException(ex);
                 return;
             }
             ScrollViewer scrollViewer = GetVisualChild<ScrollViewer>(dg);

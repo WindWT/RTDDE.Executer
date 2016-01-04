@@ -306,7 +306,7 @@ order by point";
                 Utility.GoToItemById<Quest>(firstQuestMaster.id, lastQuestMaster.id);
             }
             else {
-                Utility.ShowException("NO QUEST IN AREA");
+                Utility.ShowMessage("NO QUEST IN AREA");
             }
         }
 

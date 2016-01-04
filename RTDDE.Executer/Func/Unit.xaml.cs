@@ -155,11 +155,7 @@ WHERE uo.id={0}";
             taskSkills.ContinueWith(t =>
             {
                 if (t.Exception != null) {
-                    Exception ex = t.Exception;
-                    while (ex.InnerException != null) {
-                        ex = ex.InnerException;
-                    }
-                    Utility.ShowException(ex.Message);
+                    Utility.ShowException(t.Exception);
                     return;
                 }
                 if (task.Result == null) {

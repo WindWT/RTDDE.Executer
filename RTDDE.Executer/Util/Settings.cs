@@ -31,7 +31,7 @@ namespace RTDDE.Executer.Util
                 //config file read error
                 Config = new ConfigData();
                 Settings.Save();
-                Utility.ShowException("Config ERROR, use default config.");
+                Utility.ShowMessage("Config ERROR, use default config.");
             }
         }
         public static void Save()

@@ -64,7 +64,7 @@ namespace RTDDE.Executer.Func
                 um = await taskAccessoryUnit;
             }
             catch (Exception ex) {
-                Utility.ShowException(ex.Message);
+                Utility.ShowException(ex);
                 return;
             }
 

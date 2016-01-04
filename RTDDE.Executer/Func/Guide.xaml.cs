@@ -38,7 +38,7 @@ namespace RTDDE.Executer.Func
             {
                 if (t.Exception != null)
                 {
-                    Utility.ShowException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception);
                     return;
                 }
                 if (t.Result == null || t.Result.Rows.Count == 0)

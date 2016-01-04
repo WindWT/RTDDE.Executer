@@ -135,12 +135,12 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                 Task.WaitAll(task);
                 if (tUSR.Exception != null)
                 {
-                    Utility.ShowException(tUSR.Exception.InnerException.Message);
+                    Utility.ShowException(tUSR.Exception);
                     return;
                 }
                 if (task.Exception != null)
                 {
-                    Utility.ShowException(task.Exception.InnerException.Message);
+                    Utility.ShowException(task.Exception);
                     return;
                 }
                 if (tUSR.Result == null || tUSR.Result.Count == 0)
@@ -192,15 +192,15 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
             taskSkillUnitRank.ContinueWith(tSur => {
                 Task.WaitAll(task, taskAsLimit);
                 if (tSur.Exception != null) {
-                    Utility.ShowException(tSur.Exception.InnerException.Message);
+                    Utility.ShowException(tSur.Exception);
                     return;
                 }
                 if (task.Exception != null) {
-                    Utility.ShowException(task.Exception.InnerException.Message);
+                    Utility.ShowException(task.Exception);
                     return;
                 }
                 if (taskAsLimit.Exception != null) {
-                    Utility.ShowException(taskAsLimit.Exception.InnerException.Message);
+                    Utility.ShowException(taskAsLimit.Exception);
                     return;
                 }
                 if (tSur.Result == null || tSur.Result.Count == 0) {
@@ -271,12 +271,12 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                 Task.WaitAll(task);
                 if (tUSR.Exception != null)
                 {
-                    Utility.ShowException(tUSR.Exception.InnerException.Message);
+                    Utility.ShowException(tUSR.Exception);
                     return;
                 }
                 if (task.Exception != null)
                 {
-                    Utility.ShowException(task.Exception.InnerException.Message);
+                    Utility.ShowException(task.Exception);
                     return;
                 }
                 if (tUSR.Result == null || tUSR.Result.Count == 0)
@@ -327,12 +327,12 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                 Task.WaitAll(task);
                 if (tUSR.Exception != null)
                 {
-                    Utility.ShowException(tUSR.Exception.InnerException.Message);
+                    Utility.ShowException(tUSR.Exception);
                     return;
                 }
                 if (task.Exception != null)
                 {
-                    Utility.ShowException(task.Exception.InnerException.Message);
+                    Utility.ShowException(task.Exception);
                     return;
                 }
                 if (tUSR.Result == null || tUSR.Result.Count == 0)

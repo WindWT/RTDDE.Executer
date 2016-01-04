@@ -34,7 +34,7 @@ namespace RTDDE.Executer.Func
             {
                 if (t.Exception != null)
                 {
-                    Utility.ShowException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception);
                     return;
                 }
                 foreach (var qam in t.Result)
