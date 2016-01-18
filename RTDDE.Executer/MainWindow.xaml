@@ -124,10 +124,9 @@
             <!-- MenuItem -->
             <Button Name="MenuItem_World" Click="MenuItem_Checked">World</Button>
             <Button Name="MenuItem_QuestArea" Click="MenuItem_Checked">Area</Button>
-            <Button Name="MenuItem_Quest" Click="MenuItem_Checked">Quest</Button>
             <UniformGrid DockPanel.Dock="Top" Rows="3" Columns="2">
+                <Button Name="MenuItem_Quest" Click="MenuItem_Checked">Quest</Button>
                 <Button Name="MenuItem_Event" Click="MenuItem_Checked">Event</Button>
-                <Button Name="MenuItem_Multi" Click="MenuItem_Checked">Multi</Button>
                 <Button Name="MenuItem_Unit" Click="MenuItem_Checked">Unit</Button>
                 <Button Name="MenuItem_Enemy" Click="MenuItem_Checked">Enemy</Button>
                 <Button Name="MenuItem_Skill" Click="MenuItem_Checked">Skill</Button>
