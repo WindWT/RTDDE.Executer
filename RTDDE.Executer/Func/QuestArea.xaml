@@ -15,14 +15,11 @@
         </Grid.RowDefinitions>
         <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="QuestAreaDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestAreaDataGrid_SelectionChanged" FrozenColumnCount="2" />
         <StackPanel Grid.Column="1" Grid.Row="0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <RadioButton Grid.Column="0" GroupName="QuestAreaType" Content="Main" Name="QuestAreaTypeRadio_Main" Click="QuestAreaTypeRadio_Main_OnClick"></RadioButton>
-                <RadioButton Grid.Column="1" GroupName="QuestAreaType" Content="Event" Name="QuestAreaTypeRadio_Event" Click="QuestAreaTypeRadio_Event_OnClick"></RadioButton>
-            </Grid>
+            <UniformGrid Rows="1" Columns="3">
+                <RadioButton GroupName="QuestAreaType" Content="Main" Name="QuestAreaTypeRadio_Main" Click="QuestAreaTypeRadio_Main_OnClick"></RadioButton>
+                <RadioButton GroupName="QuestAreaType" Content="Event" Name="QuestAreaTypeRadio_Event" Click="QuestAreaTypeRadio_Event_OnClick"></RadioButton>
+                <RadioButton GroupName="QuestAreaType" Content="Multi" Name="QuestAreaTypeRadio_Multi" Click="QuestAreaTypeRadio_Multi_OnClick"></RadioButton>
+            </UniformGrid>
             <Expander Header="Search" Name="QuestAreaSearchExpander" IsExpanded="False">
                 <Grid>
                     <Grid.Resources>
@@ -69,11 +66,15 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="50"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="order"/>
-                <TextBox Name="QuestAreaInfo_display_order" Grid.Column="1"  ></TextBox>
-                <TextBlock Text="lock" Grid.Column="2" />
-                <TextBox Name="QuestAreaInfo_lock_type" Grid.Column="3" ></TextBox>
+                <TextBlock Grid.Column="0" Text="order"/>
+                <TextBox Grid.Column="1" Name="QuestAreaInfo_display_order"/>
+                <TextBlock Grid.Column="2" Text="lock"/>
+                <TextBox Grid.Column="3" Name="QuestAreaInfo_lock_type"/>
+                <TextBlock Grid.Column="4" Text="difficulty"/>
+                <TextBox Grid.Column="5" Name="QuestAreaInfo_difficulty"/>
                 <!--<Image Name="QuestAreaInfo_banner_texture_image" Grid.ColumnSpan="4" Grid.Row="1"></Image>-->
             </Grid>
         </StackPanel>

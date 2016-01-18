@@ -72,6 +72,7 @@ order by point";
             QuestAreaInfo_name.Text = qam.name;
             QuestAreaInfo_display_order.Text = qam.display_order.ToString();
             QuestAreaInfo_lock_type.Text = qam.lock_type.ToString();
+            QuestAreaInfo_difficulty.Text = qam.difficulty.ToString();
             QuestAreaInfo_text.Document = Utility.ParseTextToDocument(qam.text);
 
             //parent field
@@ -247,9 +248,10 @@ order by point";
         }
 
         #region DataGridSql
-        private const string MainSql = "SELECT id,name,text FROM quest_area_master WHERE parent_field_id>0 order by id DESC";
+        private const string MainSql = "SELECT id,name,text FROM quest_area_master WHERE parent_field_id>0 AND parent_field_id<>100 order by id DESC";
         private const string EventSql = "SELECT id,name,text FROM quest_area_master WHERE parent_field_id=0 order by id DESC";
-        private const string GetTypeSql = "SELECT parent_field_id>0 from quest_area_master WHERE id={0}";
+        private const string MultiSql = "SELECT id,name,text FROM quest_area_master WHERE parent_field_id=100 order by id DESC";
+        private const string GetTypeSql = "SELECT (CASE parent_field_id WHEN 100 THEN 2 WHEN 0 THEN 0 ELSE 1 END) AS type from quest_area_master WHERE id={0}";
         #endregion
         private void QuestAreaTypeRadio_Main_OnClick(object sender, RoutedEventArgs e)
         {
@@ -259,6 +261,11 @@ order by point";
         {
             Utility.BindData(QuestAreaDataGrid, EventSql);
         }
+
+        private void QuestAreaTypeRadio_Multi_OnClick(object sender, RoutedEventArgs e) {
+            Utility.BindData(QuestAreaDataGrid, MultiSql);
+        }
+
         private void QuestAreaSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             Utility.BindData(QuestAreaDataGrid, QuestAreaSearch_BuildSQL());
@@ -327,6 +334,11 @@ order by point";
                 case 1: {
                         QuestAreaTypeRadio_Main.IsChecked = true;
                         Utility.BindData(QuestAreaDataGrid, MainSql);
+                        break;
+                    }
+                case 2: {
+                        QuestAreaTypeRadio_Multi.IsChecked = true;
+                        Utility.BindData(QuestAreaDataGrid, MultiSql);
                         break;
                     }
                 default: break;
