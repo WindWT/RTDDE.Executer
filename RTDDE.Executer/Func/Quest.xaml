@@ -353,6 +353,21 @@
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="close" />
                             <TextBox Grid.Row="1" Grid.Column="1" Name="QuestInfo_close_date" />
                         </Grid>
+                        <Grid Name="QuestInfo_opentype">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="opentype"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="param"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="group"/>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Name="QuestInfo_opentype_content"/>
+                        </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
@@ -384,21 +399,6 @@
                             <Button Grid.Column="3" Name="QuestInfoPresentToUnitButton" Style="{StaticResource InlineButton}" Click="QuestInfoPresentToUnitButton_OnClick">→</Button>
                             <TextBox Grid.Column="4" Name="QuestInfo_present_param_1" />
                         </Grid>
-                        <Grid Name="QuestInfo_opentype">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="opentype"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1" Text="param"/>
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="group"/>
-                            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Name="QuestInfo_opentype_content"/>
-                        </Grid>
                         <Grid Name="QuestInfo_sp_event">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
@@ -413,6 +413,22 @@
                             <TextBox Grid.Row="0" Grid.Column="2" Name="QuestInfo_sp_event_name"/>
                         </Grid>
                         <StackPanel Name="QuestInfo_challenge"></StackPanel>
+                    </StackPanel>
+                </Expander>
+                <Expander Header="Multi" Name="QuestMultiExpander" IsExpanded="False">
+                    <StackPanel>
+                        <UniformGrid Rows="2" Columns="4">
+                            <TextBlock Text="multi_quest_id"/>
+                            <TextBox Text="{Binding Path=multi_quest_id,Mode=OneWay}"/>
+                            <TextBlock Text="footprint_exp"/>
+                            <TextBox Name="QuestInfo_multi_footprint_exp"/>
+                            <TextBlock Text="host_ticket"/>
+                            <TextBox Name="QuestInfo_multi_host_ticket"/>
+                            <TextBlock Text="guest_ticket"/>
+                            <TextBox Name="QuestInfo_multi_guest_ticket"/>
+                        </UniformGrid>
+                        <StackPanel Name="QuestMultiConditionStackPanel"/>
+                        <StackPanel Name="QuestMultiRewardStackPanel"/>
                     </StackPanel>
                 </Expander>
                 <Expander Header="Advanced" Name="QuestAdvancedExpander" IsExpanded="False">
