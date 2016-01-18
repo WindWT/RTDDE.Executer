@@ -228,6 +228,7 @@ WHERE uo.id={0}";
                 UnitInfo_sct_text.Text = ui.sct_text;
                 UnitInfo_sct6_text.Text = ui.sct6_text;
                 UnitInfo_a_skill_text.Text = ui.a_skill_text;
+                UnitInfo_multi_b_text.Text = ui.multi_b_text;
                 //skill
                 if (ui.p_skill_id == 0 && ui.a_skill_id == 0 && ui.panel_skill_id == 0 && ui.limit_skill_id == 0) {
                     UnitSkillExpander.Visibility = Visibility.Collapsed;
@@ -270,6 +271,7 @@ WHERE uo.id={0}";
                 UnitInfo_sub_c4.Text = ui.sub_c4.ToString();
                 UnitInfo_shadow.Text = ui.shadow.ToString();
                 UnitInfo_ap_rec_val.Text = ui.ap_rec_val.ToString();
+                UnitInfo_ticket_rec_val.Text = ui.ticket_rec_val.ToString();
                 UnitInfo_yorisiro.Text = ui.yorisiro.ToString();
                 UnitInfo_present.Text = ui.present.ToString();
                 UnitInfo_material_type.Text = ui.material_type.ToString();
