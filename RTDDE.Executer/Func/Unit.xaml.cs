@@ -101,6 +101,9 @@ namespace RTDDE.Executer.Func
                     return;
                 }
             }
+            if (string.IsNullOrWhiteSpace(UnitInfo_id.Text)) {
+                return;
+            }
             UnitInfo_BindData(UnitInfo_id.Text);
         }
 
@@ -152,7 +155,7 @@ WHERE uo.id={0}";
             taskSkills.ContinueWith(t =>
             {
                 if (t.Exception != null) {
-                    Utility.ShowException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception);
                     return;
                 }
                 if (task.Result == null) {
@@ -167,8 +170,8 @@ WHERE uo.id={0}";
                 }
                 UnitInfo_category.Text = rare;
                 UnitInfo_style.Text = Utility.ParseStyletype(ui.style);
-                UnitInfo_attribute.Text = Utility.ParseAttributetype(ui.attribute);
-                UnitInfo_sub_a1.Text = Utility.ParseAttributetype(ui.sub_a1);
+                UnitInfo_attribute.Fill = Utility.ParseAttributeToBrush(Utility.ParseAttribute(ui.attribute));
+                UnitInfo_sub_a1.Fill = Utility.ParseAttributeToBrush(Utility.ParseAttribute(ui.sub_a1));
                 UnitInfo_kind.Text = Utility.ParseUnitKind(ui.kind).ToString();
                 UnitInfo_bonus_limit_base.Text = ui.bonus_limit_base.ToString();
 
@@ -225,6 +228,7 @@ WHERE uo.id={0}";
                 UnitInfo_sct_text.Text = ui.sct_text;
                 UnitInfo_sct6_text.Text = ui.sct6_text;
                 UnitInfo_a_skill_text.Text = ui.a_skill_text;
+                UnitInfo_multi_b_text.Text = ui.multi_b_text;
                 //skill
                 if (ui.p_skill_id == 0 && ui.a_skill_id == 0 && ui.panel_skill_id == 0 && ui.limit_skill_id == 0) {
                     UnitSkillExpander.Visibility = Visibility.Collapsed;
@@ -254,7 +258,7 @@ WHERE uo.id={0}";
                     accessory_num_04.Text = acce.num_04.ToString();
                     accessory_conv_money.Text = acce.conv_money.ToString();
                     accessory_style.Text = Utility.ParseStyletype(acce.style);
-                    accessory_attribute.Text = Utility.ParseAttributetype(acce.attribute);
+                    accessory_attribute.Text = Utility.ParseAttributeToString(acce.attribute);
                     accessory_su_a1.Text = acce.su_a1.ToString();  //not sub attribute
                 }
                 //Advanced
@@ -267,6 +271,7 @@ WHERE uo.id={0}";
                 UnitInfo_sub_c4.Text = ui.sub_c4.ToString();
                 UnitInfo_shadow.Text = ui.shadow.ToString();
                 UnitInfo_ap_rec_val.Text = ui.ap_rec_val.ToString();
+                UnitInfo_ticket_rec_val.Text = ui.ticket_rec_val.ToString();
                 UnitInfo_yorisiro.Text = ui.yorisiro.ToString();
                 UnitInfo_present.Text = ui.present.ToString();
                 UnitInfo_material_type.Text = ui.material_type.ToString();
@@ -326,8 +331,8 @@ WHERE uo.id={0}";
             partySkill_id.Text = skill.id.ToString();
             partySkill_name.Text = skill.name;
             partySkill_text.Document = Utility.ParseTextToDocument(skill.text);
-            partySkill_attribute.Text = Utility.ParseAttributetype(skill.attribute);
-            partySkill_sub_attr.Text = Utility.ParseAttributetype(skill.sub_attr);
+            partySkill_attribute.Text = Utility.ParseAttributeToString(skill.attribute);
+            partySkill_sub_attr.Text = Utility.ParseAttributeToString(skill.sub_attr);
             partySkill_style.Text = Utility.ParseStyletype(skill.style);
             partySkill_type_id.Text = skill.type.ToString();
             partySkill_type.Text = Utility.ParseSkillType((PassiveSkillType)skill.type);
@@ -349,8 +354,8 @@ WHERE uo.id={0}";
             activeSkill_id.Text = skill.id.ToString();
             activeSkill_name.Text = skill.name;
             activeSkill_text.Document = Utility.ParseTextToDocument(skill.text);
-            activeSkill_attribute.Text = Utility.ParseAttributetype(skill.attribute);
-            activeSkill_sub_attr.Text = Utility.ParseAttributetype(skill.sub_attr);
+            activeSkill_attribute.Text = Utility.ParseAttributeToString(skill.attribute);
+            activeSkill_sub_attr.Text = Utility.ParseAttributeToString(skill.sub_attr);
             activeSkill_style.Text = Utility.ParseStyletype(skill.style);
             activeSkill_type.Text = Utility.ParseSkillType((ActiveSkillType)skill.type);
             activeSkill_type_id.Text = skill.type.ToString();
@@ -373,7 +378,7 @@ WHERE uo.id={0}";
             panelSkill_id.Text = skill.id.ToString();
             panelSkill_name.Text = skill.name;
             panelSkill_text.Document = Utility.ParseTextToDocument(skill.text);
-            panelSkill_attribute.Text = Utility.ParseAttributetype(skill.attribute);
+            panelSkill_attribute.Text = Utility.ParseAttributeToString(skill.attribute);
             panelSkill_style.Text = Utility.ParseStyletype(skill.style);
             panelSkill_type.Text = Utility.ParseSkillType((PanelSkillType)skill.type);
             panelSkill_type_id.Text = skill.type.ToString();
@@ -449,11 +454,11 @@ WHERE uo.id={0}";
                 tblAttr.SetValue(Grid.ColumnProperty, 0);
                 tblAttr.SetValue(Grid.RowProperty, 3);
                 grid.Children.Add(tblAttr);
-                TextBox tbAttr = new TextBox() { Text = Utility.ParseAttributetype(askill.attribute) };
+                TextBox tbAttr = new TextBox() { Text = Utility.ParseAttributeToString(askill.attribute) };
                 tbAttr.SetValue(Grid.ColumnProperty, 1);
                 tbAttr.SetValue(Grid.RowProperty, 3);
                 grid.Children.Add(tbAttr);
-                TextBox tbSubAttr = new TextBox() { Text = Utility.ParseAttributetype(askill.sub_attr) };
+                TextBox tbSubAttr = new TextBox() { Text = Utility.ParseAttributeToString(askill.sub_attr) };
                 tbSubAttr.SetValue(Grid.ColumnProperty, 2);
                 tbSubAttr.SetValue(Grid.RowProperty, 3);
                 grid.Children.Add(tbSubAttr);

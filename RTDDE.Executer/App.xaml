@@ -11,6 +11,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Lang/en-US.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
             <Color x:Key="DefaultColor" A="255" R="240" G ="240" B="240"/>
             <Color x:Key="HighlightColor" A="255" R="229" G ="229" B="229"/>
             <Color x:Key="PressedColor" A="255" R="215" G ="215" B="215"/>
@@ -18,6 +19,23 @@
             <SolidColorBrush x:Key="DefaultBrush" Color="{StaticResource DefaultColor}" PresentationOptions:Freeze="true"/>
             <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource HighlightColor}" PresentationOptions:Freeze="true"/>
             <SolidColorBrush x:Key="PressedBrush" Color="{StaticResource PressedColor}" PresentationOptions:Freeze="true"/>
+
+            <Color x:Key="FireColor" ScA="1" ScR="0.9" ScG="0.4" ScB="0.3"/>
+            <Color x:Key="WaterColor" ScA="1" ScR="0.4" ScG="0.89" ScB="0.9"/>
+            <Color x:Key="LightColor" ScA="1" ScR="0.9" ScG="0.9" ScB="0.3"/>
+            <Color x:Key="DarkColor" ScA="1" ScR="0.76" ScG="0.58" ScB="0.9"/>
+            <Color x:Key="NoneColor" ScA="1" ScR="0.75" ScG="0.75" ScB="0.75"/>
+
+            <SolidColorBrush x:Key="FireBrush" Color="{StaticResource FireColor}" PresentationOptions:Freeze="true"/>
+            <SolidColorBrush x:Key="WaterBrush" Color="{StaticResource WaterColor}" PresentationOptions:Freeze="true"/>
+            <SolidColorBrush x:Key="LightBrush" Color="{StaticResource LightColor}" PresentationOptions:Freeze="true"/>
+            <SolidColorBrush x:Key="DarkBrush" Color="{StaticResource DarkColor}" PresentationOptions:Freeze="true"/>
+            <SolidColorBrush x:Key="NoneBrush" Color="{StaticResource NoneColor}" PresentationOptions:Freeze="true"/>
+            <SolidColorBrush x:Key="FireTransBrush" Color="{StaticResource FireColor}" Opacity="0.5" PresentationOptions:Freeze="true"/>
+            <SolidColorBrush x:Key="WaterTransBrush" Color="{StaticResource WaterColor}" Opacity="0.5" PresentationOptions:Freeze="true"/>
+            <SolidColorBrush x:Key="LightTransBrush" Color="{StaticResource LightColor}" Opacity="0.5" PresentationOptions:Freeze="true"/>
+            <SolidColorBrush x:Key="DarkTransBrush" Color="{StaticResource DarkColor}" Opacity="0.5" PresentationOptions:Freeze="true"/>
+            <SolidColorBrush x:Key="NoneTransBrush" Color="{StaticResource NoneColor}" Opacity="0.5" PresentationOptions:Freeze="true"/>
 
             <LinearGradientBrush x:Key="SeparatorBrush" MappingMode="Absolute" PresentationOptions:Freeze="true"
                              SpreadMethod="Repeat"

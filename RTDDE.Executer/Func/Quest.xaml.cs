@@ -102,7 +102,7 @@ namespace RTDDE.Executer.Func
                 }
             }
             catch (Exception ex) {
-                Utility.ShowException(ex.Message);
+                Utility.ShowException(ex);
             }
             QuestInfo_display_order.Text = quest.display_order.ToString();
             QuestInfo_sp_guide_id.Text = quest.sp_guide_id.ToString();
@@ -126,18 +126,7 @@ namespace RTDDE.Executer.Func
                 QuestInfo_h_name.Text = Utility.ParseUnitName(quest.h_id);
                 QuestInfo_h_lv.Text = quest.h_lv.ToString();
             }
-
-            //if (quest.challenge_id_0==0
-            //    && string.IsNullOrWhiteSpace(quest.challenge1)
-            //    && string.IsNullOrWhiteSpace(quest.challenge2)) {
-            //    QuestInfo_challenge.Visibility = Visibility.Collapsed;
-            //}
-            //else {
-            //    QuestInfo_challenge.Visibility = Visibility.Visible;
-            //    QuestInfo_challenge_gold.Document = Utility.ParseTextToDocument(quest.challenge2);
-            //    QuestInfo_challenge_silver.Document = Utility.ParseTextToDocument(quest.challenge1);
-            //    QuestInfo_challenge_bronze.Document = Utility.ParseTextToDocument(quest.challenge0);
-            //}
+            //Challenge
             QuestInfo_challenge.Children.Clear();
             int[] challengeIds = new[] { quest.challenge_id_2, quest.challenge_id_1, quest.challenge_id_0 };
             foreach (var challengeId in challengeIds) {
@@ -171,7 +160,133 @@ namespace RTDDE.Executer.Func
                 uniformGrid.Children.Add(new TextBox() { Text = challenge.param_3.ToString(), BorderBrush = gradeBrush });
                 QuestInfo_challenge.Children.Add(uniformGrid);
             }
+            //Multi
+            QuestMultiConditionStackPanel.Children.Clear();
+            QuestMultiRewardStackPanel.Children.Clear();
+            if (quest.multi_quest_id != 0) {
+                MultiQuestMaster mqm = await MultiQuestTask((int) quest.multi_quest_id);
+                QuestInfo_multi_footprint_exp.Text = mqm.footprint_exp.ToString();
+                QuestInfo_multi_host_ticket.Text = mqm.host_ticket.ToString();
+                QuestInfo_multi_guest_ticket.Text = mqm.guest_ticket.ToString();
+                //Multi Contribution
+                foreach (uint contributionId in mqm.GetMedals()) {
+                    if (contributionId == 0) {
+                        continue;
+                    }
+                    MultiContributionMaster mcm = await MultiContributionTask((int) contributionId);
+                    if (mcm == null) {
+                        continue;
+                    }
+                    Grid grid = new Grid();
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                    grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                    grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                    grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
 
+                    TextBox textBoxId = new TextBox() { Text = mcm.id.ToString() };
+                    textBoxId.SetValue(Grid.ColumnProperty, 0);
+                    grid.Children.Add(textBoxId);
+
+                    TextBox textBoxType = new TextBox() { Text = Utility.ParseMultiConditionType(mcm.type) };
+                    textBoxType.SetValue(Grid.ColumnProperty, 1);
+                    grid.Children.Add(textBoxType);
+
+                    string pointText = string.Empty;
+                    for (int i = 0; i < mcm.point; i++) {
+                        pointText += "●";
+                    }
+                    TextBox textBoxPoint = new TextBox() { Text = pointText };
+                    textBoxPoint.SetValue(Grid.ColumnProperty, 0);
+                    textBoxPoint.SetValue(Grid.RowProperty, 1);
+                    grid.Children.Add(textBoxPoint);
+
+                    TextBox textBoxText = new TextBox() { Text = mcm.text };
+                    textBoxText.SetValue(Grid.ColumnProperty, 1);
+                    textBoxText.SetValue(Grid.RowProperty, 1);
+                    grid.Children.Add(textBoxText);
+
+                    TextBox textBoxCutin = new TextBox() { Text = mcm.cutin_text };
+                    textBoxCutin.SetValue(Grid.ColumnProperty, 1);
+                    textBoxCutin.SetValue(Grid.RowProperty, 2);
+                    grid.Children.Add(textBoxCutin);
+
+                    TextBox textBoxParam0 = new TextBox() { Text = mcm.param_0.ToString() };
+                    textBoxParam0.SetValue(Grid.ColumnProperty, 2);
+                    textBoxParam0.SetValue(Grid.RowProperty, 0);
+                    grid.Children.Add(textBoxParam0);
+
+                    TextBox textBoxParam1 = new TextBox() { Text = mcm.param_1.ToString() };
+                    textBoxParam1.SetValue(Grid.ColumnProperty, 2);
+                    textBoxParam1.SetValue(Grid.RowProperty, 1);
+                    grid.Children.Add(textBoxParam1);
+
+                    TextBox textBoxParam2 = new TextBox() { Text = mcm.param_2.ToString() };
+                    textBoxParam2.SetValue(Grid.ColumnProperty, 2);
+                    textBoxParam2.SetValue(Grid.RowProperty, 2);
+                    grid.Children.Add(textBoxParam2);
+
+                    QuestMultiConditionStackPanel.Children.Add(grid);
+                }
+                //Multi Reward
+                MultiRewardMaster mrm = await MultiRewardTask((int)mqm.reward_id);
+                for (int i = 0; i < 11; i++) {
+                    if (mrm.GetUnitID(i) == 0) {
+                        continue;
+                    }
+                    Grid grid = new Grid();
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1,GridUnitType.Auto) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(25) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(25) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+
+                    TextBlock textBlockIndex = new TextBlock() { Text = i == 10 ? "R" : i.ToString() };
+                    textBlockIndex.SetValue(Grid.ColumnProperty, 0);
+                    grid.Children.Add(textBlockIndex);
+
+                    TextBox textBoxId = new TextBox() { Text = mrm.GetUnitID(i).ToString() };
+                    textBoxId.SetValue(Grid.ColumnProperty, 1);
+                    grid.Children.Add(textBoxId);
+
+                    TextBlock textBlockLv = new TextBlock() { Text = "lv" };
+                    textBlockLv.SetValue(Grid.ColumnProperty, 2);
+                    grid.Children.Add(textBlockLv);
+
+                    TextBox textBoxLv = new TextBox() { Text =mrm.GetUnitLv(i).ToString() };
+                    textBoxLv.SetValue(Grid.ColumnProperty, 3);
+                    grid.Children.Add(textBoxLv);
+
+                    int rarity = mrm.GetUnitRarity(i);
+                    TextBox textBoxRarity = new TextBox() {
+                        Text = rarity == 2 ? "SR" : rarity == 1 ? "R" : rarity == 0 ? "N" : "?"
+                    };
+                    textBoxRarity.SetValue(Grid.ColumnProperty, 4);
+                    grid.Children.Add(textBoxRarity);
+
+                    TextBox textBoxName = new TextBox() { Text = Utility.ParseUnitName((int) mrm.GetUnitID(i)) };
+                    textBoxName.SetValue(Grid.ColumnProperty, 5);
+                    grid.Children.Add(textBoxName);
+
+                    Button button = new Button()
+                    {
+                        Content = "→",
+                        Style = FindResource("InlineButton") as Style
+                    };
+                    var index = i;
+                    button.Click += (s, arg) => {
+                        Utility.GoToItemById<Unit>((int)mrm.GetUnitID(index));
+                    };
+                    button.SetValue(Grid.ColumnProperty, 6);
+                    grid.Children.Add(button);
+
+                    QuestMultiRewardStackPanel.Children.Add(grid);
+                }
+            }
+            //Open&Close
             var openDate = Utility.ParseRTDDate(quest.open_date, true);
             QuestInfo_open_date.Text = openDate == DateTime.MinValue
                 ? string.Empty
@@ -205,7 +320,7 @@ namespace RTDDE.Executer.Func
                     QuestInfo_opentype_content.Children.Add(grid);
                 }
             }
-
+            //Sp event
             if (quest.sp_event_id == 0) {
                 QuestInfo_sp_event.Visibility = Visibility.Collapsed;
             }
@@ -214,7 +329,7 @@ namespace RTDDE.Executer.Func
                 QuestInfo_sp_event_id.Text = quest.sp_event_id.ToString();
                 QuestInfo_sp_event_name.Text = quest.sp_event_name;
             }
-
+            //bonus
             QuestInfo_bonus.Text = Utility.ParseBonusType(quest.bonus_type);
             var bonusStart = Utility.ParseRTDDate((int)quest.bonus_start);
             QuestInfo_bonus_start.Text = bonusStart == DateTime.MinValue
@@ -224,14 +339,14 @@ namespace RTDDE.Executer.Func
             QuestInfo_bonus_end.Text = bonusEnd == DateTime.MinValue
                 ? string.Empty
                 : bonusEnd.ToString("yyyy-MM-dd HH:mm");
-
+            //panel rate
             QuestInfo_panel_sword.Text = quest.panel_sword.ToString();
             QuestInfo_panel_lance.Text = quest.panel_lance.ToString();
             QuestInfo_panel_archer.Text = quest.panel_archer.ToString();
             QuestInfo_panel_cane.Text = quest.panel_cane.ToString();
             QuestInfo_panel_heart.Text = quest.panel_heart.ToString();
             QuestInfo_panel_sp.Text = quest.panel_sp.ToString();
-
+            //present
             string presentType = Utility.ParsePresentType(quest.present_type);
             if (string.Compare(presentType, "UNIT", StringComparison.OrdinalIgnoreCase) == 0) {
                 QuestInfoPresentToUnitButton.Visibility = Visibility.Visible;
@@ -247,6 +362,15 @@ namespace RTDDE.Executer.Func
         async private Task<QuestChallengeMaster> ChallengeTask(int id)
         {
            return DAL.ToSingle<QuestChallengeMaster>("SELECT * FROM QUEST_CHALLENGE_MASTER WHERE id=" + id);
+        }
+        async private Task<MultiQuestMaster> MultiQuestTask(int id) {
+            return DAL.ToSingle<MultiQuestMaster>("SELECT * FROM MULTI_QUEST_MASTER WHERE id=" + id);
+        }
+        async private Task<MultiContributionMaster> MultiContributionTask(int id) {
+            return DAL.ToSingle<MultiContributionMaster>("SELECT * FROM MULTI_CONTRIBUTION_MASTER WHERE id=" + id);
+        }
+        async private Task<MultiRewardMaster> MultiRewardTask(int id) {
+            return DAL.ToSingle<MultiRewardMaster>("SELECT * FROM MULTI_REWARD_MASTER WHERE id=" + id);
         }
 
         private enum QuestType

@@ -57,7 +57,7 @@ namespace RTDDE.Executer.Func
             initMonsterTask.ContinueWith(t =>
             {
                 if (t.Exception != null) {
-                    Utility.ShowException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception);
                     return;
                 }
                 MapMonsterGrid.ItemsSource = t.Result.DefaultView;
@@ -85,7 +85,7 @@ namespace RTDDE.Executer.Func
             {
                 MapGrid.Children.Clear();
                 if (t.Exception != null) {
-                    Utility.ShowException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception);
                     return;
                 }
                 DrawMap();
@@ -383,15 +383,31 @@ namespace RTDDE.Executer.Func
             });
 
             MapEnemyInfo_name.Text = eum.name;
-            MapEnemyInfo_model.Text = eum.model;
-            MapEnemyInfo_texture.Text = eum.texture;
             MapEnemyInfo_type.Text = Utility.ParseEnemyType(eum.type);
-            MapEnemyInfo_isDragon.Text = Convert.ToBoolean(eum.flag).ToString();
-            MapEnemyInfo_isUnitEnemy.Text = Utility.IsUnitEnemy(eum.type).ToString();
-            MapEnemyInfo_attribute.Text = Utility.ParseAttributetype(eum.attribute);
+            MapEnemyInfo_isDragon.Foreground = Convert.ToBoolean(eum.flag)
+                ? Brushes.Black
+                : (Brush)this.FindResource("HighlightBrush");
+            MapEnemyInfo_isUnitEnemy.Foreground = Utility.IsUnitEnemy(eum.type)
+                ? Brushes.Black
+                : (Brush)this.FindResource("HighlightBrush");
+            MapEnemyInfo_attribute.Fill = Utility.ParseAttributeToBrush(Utility.ParseAttribute(eum.attribute));
             MapEnemyInfo_soul_pt.Text = eum.soul_pt.ToString();
             MapEnemyInfo_gold_pt.Text = eum.gold_pt.ToString();
             MapEnemyInfo_turn.Text = eum.turn.ToString();
+            MapEnemyInfo_ui.Text = eum.ui.ToString();
+
+            MapEnemyInfo_chara_flag_no.Text = eum.chara_flag_no == 0 ? string.Empty : eum.chara_flag_no.ToString();
+            int rare = eum.chara_symbol - 9; //chara_symbol start from 10, equal to rare 1
+            string rareText = string.Empty;
+            if (rare >= 1 && rare <= 6) {
+                for (int i = 0; i < rare; i++) {
+                    rareText += "★";
+                }
+            }
+            MapEnemyInfo_chara_symbol.Text = rareText;
+            MapEnemyInfo_chara_kind.Text = eum.chara_flag_no == 0
+                ? string.Empty
+                : Utility.ParseUnitKind(eum.chara_kind).ToString();
 
             int lv = Convert.ToInt32(MapEnemyInfo_lv.Text);
             int lv_max = Convert.ToInt32(MapEnemyInfo_lv_max.Text);
@@ -513,7 +529,7 @@ namespace RTDDE.Executer.Func
                 });
                 task.ContinueWith(t => {
                     if (t.Exception != null) {
-                        Utility.ShowException(t.Exception.InnerException.Message);
+                        Utility.ShowException(t.Exception);
                         ImportLdbsButton.SetResourceReference(Button.ContentProperty, "Config_ImportLDBSFail");
                     }
                     else {

@@ -18,38 +18,38 @@
                 <Style x:Key="UnitAttributeStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding attribute}" Value="1">
-                            <Setter Property="Background" Value="Silver"></Setter>
+                            <Setter Property="Background" Value="{StaticResource NoneBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding attribute}" Value="2">
-                            <Setter Property="Background" Value="sc# 0.9, 0.4, 0.3"></Setter>
+                            <Setter Property="Background" Value="{StaticResource FireBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding attribute}" Value="3">
-                            <Setter Property="Background" Value="sc# 0.4, 0.89, 0.9"></Setter>
+                            <Setter Property="Background" Value="{StaticResource WaterBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding attribute}" Value="4">
-                            <Setter Property="Background" Value="sc# 0.9, 0.9, 0.3"></Setter>
+                            <Setter Property="Background" Value="{StaticResource LightBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding attribute}" Value="5">
-                            <Setter Property="Background" Value="sc# 0.76, 0.58, 0.9"></Setter>
+                            <Setter Property="Background" Value="{StaticResource DarkBrush}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
                 <Style x:Key="UnitSubAttributeStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding sub_a1}" Value="1">
-                            <Setter Property="Background" Value="Silver"></Setter>
+                            <Setter Property="Background" Value="{StaticResource NoneBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding sub_a1}" Value="2">
-                            <Setter Property="Background" Value="sc# 0.9, 0.4, 0.3"></Setter>
+                            <Setter Property="Background" Value="{StaticResource FireBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding sub_a1}" Value="3">
-                            <Setter Property="Background" Value="sc# 0.4, 0.89, 0.9"></Setter>
+                            <Setter Property="Background" Value="{StaticResource WaterBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding sub_a1}" Value="4">
-                            <Setter Property="Background" Value="sc# 0.9, 0.9, 0.3"></Setter>
+                            <Setter Property="Background" Value="{StaticResource LightBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding sub_a1}" Value="5">
-                            <Setter Property="Background" Value="sc# 0.76, 0.58, 0.9"></Setter>
+                            <Setter Property="Background" Value="{StaticResource DarkBrush}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -135,17 +135,13 @@
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="kind"/>
-                <TextBox Grid.Column="1" Name="UnitInfo_kind"></TextBox>
-                <TextBlock Grid.Column="2" Text="attribute"/>
-                <TextBox Grid.Column="3" Name="UnitInfo_attribute"></TextBox>
-                <TextBox Grid.Column="4" Name="UnitInfo_sub_a1"></TextBox>
+                <TextBox Grid.Column="0" Name="UnitInfo_kind"></TextBox>
+                <Rectangle Grid.Column="1" Name="UnitInfo_attribute" Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}"/>
+                <Rectangle Grid.Column="2" Name="UnitInfo_sub_a1" Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}"/>
             </Grid>
         </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="1" Style="{StaticResource VerticalScrollViewer}">
@@ -219,6 +215,7 @@
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <RichTextBox Grid.Row="0" Grid.ColumnSpan="2" Name="UnitInfo_story"></RichTextBox>
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="ct_text"/>
@@ -229,6 +226,8 @@
                             <TextBox Grid.Row="3" Grid.Column="1" Name="UnitInfo_sct6_text"></TextBox>
                             <TextBlock Grid.Row="4" Grid.Column="0" Text="a_skill_text"/>
                             <TextBox Grid.Row="4" Grid.Column="1" Name="UnitInfo_a_skill_text"></TextBox>
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="multi_b_text"/>
+                            <TextBox Grid.Row="5" Grid.Column="1" Name="UnitInfo_multi_b_text"></TextBox>
                         </Grid>
                     </StackPanel>
                 </Expander>
@@ -503,14 +502,16 @@
                         <TextBox Grid.Row="3" Grid.Column="3" Name="UnitInfo_sub_c4"></TextBox>
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="shadow"/>
                         <TextBox Grid.Row="4" Grid.Column="1" Name="UnitInfo_shadow"></TextBox>
-                        <TextBlock Grid.Row="4" Grid.Column="2" Text="ap_rec_val"/>
-                        <TextBox Grid.Row="4" Grid.Column="3" Name="UnitInfo_ap_rec_val"></TextBox>
-                        <TextBlock Grid.Row="5" Grid.Column="0" Text="yorisiro"/>
-                        <TextBox Grid.Row="5" Grid.Column="1" Name="UnitInfo_yorisiro"></TextBox>
-                        <TextBlock Grid.Row="5" Grid.Column="2" Text="present"/>
-                        <TextBox Grid.Row="5" Grid.Column="3" Name="UnitInfo_present"></TextBox>
-                        <TextBlock Grid.Row="6" Grid.Column="0" Text="material_type"/>
-                        <TextBox Grid.Row="6" Grid.Column="1" Name="UnitInfo_material_type"></TextBox>
+                        <TextBlock Grid.Row="4" Grid.Column="2" Text="yorisiro"/>
+                        <TextBox Grid.Row="4" Grid.Column="3" Name="UnitInfo_yorisiro"></TextBox>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="ap_rec_val"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Name="UnitInfo_ap_rec_val"></TextBox>
+                        <TextBlock Grid.Row="5" Grid.Column="2" Text="ticket_rec_val"/>
+                        <TextBox Grid.Row="5" Grid.Column="3" Name="UnitInfo_ticket_rec_val"></TextBox>
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="present"/>
+                        <TextBox Grid.Row="6" Grid.Column="1" Name="UnitInfo_present"></TextBox>
+                        <TextBlock Grid.Row="6" Grid.Column="2" Text="material_type"/>
+                        <TextBox Grid.Row="6" Grid.Column="3" Name="UnitInfo_material_type"></TextBox>
                     </Grid>
                 </Expander>
             </StackPanel>

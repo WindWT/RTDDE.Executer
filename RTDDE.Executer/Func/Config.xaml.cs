@@ -102,7 +102,7 @@ namespace RTDDE.Executer.Func
                 });
                 taskImport.ContinueWith(t => {
                     if (t.Exception != null) {
-                        Utility.ShowException(t.Exception.InnerException.Message);
+                        Utility.ShowException(t.Exception);
                         ImportMsgPackButton.SetResourceReference(Button.ContentProperty, "Config_ImportMDBSFail");
                         return;
                     }
@@ -145,7 +145,7 @@ namespace RTDDE.Executer.Func
                 });
                 task.ContinueWith(t => {
                     if (t.Exception != null) {
-                        Utility.ShowException(t.Exception.InnerException.Message);
+                        Utility.ShowException(t.Exception);
                         ImportLdbsButton.SetResourceReference(Button.ContentProperty, "Config_ImportLDBSFail");
                     }
                     else {
@@ -169,7 +169,7 @@ namespace RTDDE.Executer.Func
                 SaveSettingsButton.SetResourceReference(Button.ContentProperty, "Config_SaveSettings");
             }
             catch (Exception ex) {
-                Utility.ShowException(ex.Message);
+                Utility.ShowException(ex);
                 SaveSettingsButton.SetResourceReference(Button.ContentProperty, "Config_SaveSettingsFail");
             }
         }

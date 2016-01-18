@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d">
-    <Grid>
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -106,7 +106,7 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="360"/>
             </Grid.ColumnDefinitions>
             <DataGrid Grid.Column="0" Name="MapMonsterGrid" AutoGenerateColumns="True" FrozenColumnCount="1" SelectionChanged="MapMonsterGrid_SelectionChanged"></DataGrid>
             <Grid Grid.Column="1">
@@ -119,65 +119,108 @@
                         <ColumnDefinition Width="50"></ColumnDefinition>
                         <ColumnDefinition Width="50"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <DockPanel Grid.Column="0" LastChildFill="True">
                         <TextBlock Text="#"/>
                         <TextBox Name="MapEnemyInfo_Mark"></TextBox>
                     </DockPanel>
-                    <TextBlock Grid.Column="1" Text="name"/>
-                    <TextBox Grid.Column="2" Name="MapEnemyInfo_name"></TextBox>
+                    <TextBox Grid.Column="1" Name="MapEnemyInfo_id"/>
+                    <TextBox Grid.Column="2" Name="MapEnemyInfo_name"/>
+                    <Rectangle Grid.Column="3" Name="MapEnemyInfo_attribute" Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}"/>
                 </Grid>
                 <ScrollViewer Grid.Row="1" Style="{StaticResource VerticalScrollViewer}">
                     <StackPanel>
-                        <WrapPanel>
-                            <TextBlock Text="id" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_id" Width="50"></TextBox>
-                            <TextBlock Text="model" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_model" Width="150"></TextBox>
-                            <TextBlock Text="rate" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_rate" Width="50"></TextBox>
-                            <TextBlock Text="texture" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_texture" Width="150"></TextBox>
-                            <TextBlock Text="drop_id" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_drop_id" Width="50"></TextBox>
-                            <TextBlock Text="type" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_type" Width="150"></TextBox>
-                            <TextBlock Text="Dragon" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_isDragon" Width="50"></TextBox>
-                            <TextBlock Text="Unit" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_isUnitEnemy" Width="50"></TextBox>
-                            <TextBlock Text="attribute" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_attribute" Width="50"></TextBox>
-                            <TextBlock Text="soul_pt" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_soul_pt" Width="50"></TextBox>
-                            <TextBlock Text="gold_pt" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_gold_pt" Width="50"></TextBox>
-                            <TextBlock Text="turn" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_turn" Width="50"></TextBox>
-                            <TextBlock Text="BGM" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_bgm" Width="250"></TextBox>
-                            <Separator Width="300"/>
-                            <TextBlock Text="lv" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_lv" Width="50" IsReadOnly="False" TextChanged="MapEnemyInfo_lv_TextChanged"></TextBox>
-                            <TextBlock Text="lv_min" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_lv_min" Width="50"></TextBox>
-                            <TextBlock Text="lv_max" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_lv_max" Width="50"></TextBox>
-                            <TextBlock Text="life" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_life" Width="100"></TextBox>
-                            <TextBlock Text="atk" Width="25"/>
-                            <TextBox Name="MapEnemyInfo_atk" Width="50"></TextBox>
-                            <TextBlock Text="def" Width="25"/>
-                            <TextBox Name="MapEnemyInfo_def" Width="50"></TextBox>
-                            <TextBlock Text="pattern" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_pat" Width="150"></TextBox>
-                            <TextBox Name="MapEnemyInfo_p0" Width="50"></TextBox>
-                            <TextBox Name="MapEnemyInfo_p1" Width="50"></TextBox>
-                            <TextBlock Text="pattern2" Width="50"/>
-                            <TextBox Name="MapEnemyInfo_pat_01" Width="150"></TextBox>
-                            <TextBox Name="MapEnemyInfo_p0_01" Width="50"></TextBox>
-                            <TextBox Name="MapEnemyInfo_p1_01" Width="50"></TextBox>
-                        </WrapPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Name="MapEnemyInfo_isDragon" Text="Dragon" Foreground="{StaticResource HighlightBrush}"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Name="MapEnemyInfo_type"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Name="MapEnemyInfo_isUnitEnemy" Text="Unit" Foreground="{StaticResource HighlightBrush}"/>
+                            <TextBox Grid.Column="1" Name="MapEnemyInfo_chara_flag_no"/>
+                            <TextBox Grid.Column="2" Name="MapEnemyInfo_chara_symbol"></TextBox>
+                            <TextBox Grid.Column="3" Grid.ColumnSpan="3" Name="MapEnemyInfo_chara_kind"></TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="lv"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Name="MapEnemyInfo_lv" IsReadOnly="False" TextChanged="MapEnemyInfo_lv_TextChanged"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="lv_min"/>
+                            <TextBox Grid.Row="0" Grid.Column="3" Name="MapEnemyInfo_lv_min" />
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="lv_max"/>
+                            <TextBox Grid.Row="0" Grid.Column="5" Name="MapEnemyInfo_lv_max" />
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="turn"/>
+                            <TextBox Grid.Row="1" Grid.Column="3" Name="MapEnemyInfo_turn"></TextBox>
+                            <TextBlock Grid.Row="1" Grid.Column="4" Text="soul"/>
+                            <TextBox Grid.Row="1" Grid.Column="5" Name="MapEnemyInfo_soul_pt"></TextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="ui"/>
+                            <TextBox Grid.Row="2" Grid.Column="3" Name="MapEnemyInfo_ui"></TextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="4" Text="gold"/>
+                            <TextBox Grid.Row="2" Grid.Column="5" Name="MapEnemyInfo_gold_pt"></TextBox>
+                            <TextBlock Grid.Row="3" Grid.Column="2" Text="rate"/>
+                            <TextBox Grid.Row="3" Grid.Column="3" Name="MapEnemyInfo_rate"></TextBox>
+                            <TextBlock Grid.Row="3" Grid.Column="4" Text="drop_id"/>
+                            <TextBox Grid.Row="3" Grid.Column="5" Name="MapEnemyInfo_drop_id"></TextBox>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="HP"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Name="MapEnemyInfo_life"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="ATK"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Name="MapEnemyInfo_atk"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="DEF"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Name="MapEnemyInfo_def"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="BGM"/>
+                            <TextBox Grid.Column="1" Name="MapEnemyInfo_bgm" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="pattern"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Name="MapEnemyInfo_pat"></TextBox>
+                            <TextBox Grid.Row="0" Grid.Column="2" Name="MapEnemyInfo_p0"></TextBox>
+                            <TextBox Grid.Row="0" Grid.Column="3" Name="MapEnemyInfo_p1"></TextBox>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="pattern2"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Name="MapEnemyInfo_pat_01"></TextBox>
+                            <TextBox Grid.Row="1" Grid.Column="2" Name="MapEnemyInfo_p0_01"></TextBox>
+                            <TextBox Grid.Row="1" Grid.Column="3" Name="MapEnemyInfo_p1_01"></TextBox>
+                        </Grid>
                         <Expander Header="Logic" Name="MapEnemyLogicExpander" IsExpanded="False">
                             <StackPanel Name="MapEnemyLogicStackPanel"/>
                         </Expander>

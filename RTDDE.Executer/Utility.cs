@@ -11,11 +11,13 @@ using System.Windows.Media;
 using RTDDE.Executer.Func;
 using RTDDE.Executer.Util;
 using RTDDE.Provider;
+using RTDDE.Provider.Enums;
 
 namespace RTDDE.Executer
 {
     public sealed class Utility : RTDDE.Provider.Utility
     {
+        private static readonly Application application = Application.Current;
         private static readonly Regex RegColor = new Regex(@"(\[[a-zA-Z0-9]{6}\])", RegexOptions.Compiled);
 
         public static FlowDocument ParseTextToDocument(string text, int forceWrapCharCount = 0) {
@@ -76,15 +78,66 @@ namespace RTDDE.Executer
             return flowDoc;
         }
 
-        public static readonly Regex CheckOnlyNumberRegex = new Regex("[^0-9]+", RegexOptions.Compiled); //regex that matches disallowed text
+        public static Color ParseAttributeToColor(UnitAttribute attribute) {
+            switch (attribute) {
+                case UnitAttribute.FIRE:
+                    return (Color) (application.TryFindResource("FireColor"));
+                case UnitAttribute.WATER:
+                    return (Color) (application.TryFindResource("WaterColor"));
+                case UnitAttribute.LIGHT:
+                    return (Color) (application.TryFindResource("LightColor"));
+                case UnitAttribute.DARK:
+                    return (Color) (application.TryFindResource("DarkColor"));
+                case UnitAttribute.NONE:
+                    return (Color) (application.TryFindResource("NoneColor"));
+                default:
+                    return Colors.Transparent;
+            }
+        }
+
+        public static Brush ParseAttributeToBrush(UnitAttribute attribute, bool isTransparent = false) {
+            switch (attribute) {
+                case UnitAttribute.FIRE:
+                    return (Brush) (isTransparent
+                        ? application.TryFindResource("FireTransBrush")
+                        : application.TryFindResource("FireBrush"));
+                case UnitAttribute.WATER:
+                    return (Brush) (isTransparent
+                        ? application.TryFindResource("WaterTransBrush")
+                        : application.TryFindResource("WaterBrush"));
+                case UnitAttribute.LIGHT:
+                    return (Brush) (isTransparent
+                        ? application.TryFindResource("LightTransBrush")
+                        : application.TryFindResource("LightBrush"));
+                case UnitAttribute.DARK:
+                    return (Brush) (isTransparent
+                        ? application.TryFindResource("DarkTransBrush")
+                        : application.TryFindResource("DarkBrush"));
+                case UnitAttribute.NONE:
+                    return (Brush) (isTransparent
+                        ? application.TryFindResource("NoneTransBrush")
+                        : application.TryFindResource("NoneBrush"));
+                default:
+                    return Brushes.Transparent;
+            }
+        }
+
+        private static readonly Regex CheckOnlyNumberRegex = new Regex("[^0-9]+", RegexOptions.Compiled); //regex that matches disallowed text
 
         public static bool IsOnlyNumber(string text) {
             return (CheckOnlyNumberRegex.IsMatch(text) == false);
         }
 
-        public static void ShowException(string message)
-        {
+        public static void ShowException(Exception ex) {
+            while (ex.InnerException != null) {
+                ex = ex.InnerException;
+            }
             var w = (MainWindow)Application.Current.MainWindow;
+            w.StatusBarExceptionMessage.Text = ex.Message;
+        }
+
+        public static void ShowMessage(string message) {
+            var w = (MainWindow) Application.Current.MainWindow;
             w.StatusBarExceptionMessage.Text = message;
         }
 
@@ -116,7 +169,7 @@ namespace RTDDE.Executer
                 dg.ItemsSource = (await task).DefaultView;
             }
             catch (Exception ex) {
-                Utility.ShowException(ex.Message);
+                Utility.ShowException(ex);
                 return;
             }
             ScrollViewer scrollViewer = GetVisualChild<ScrollViewer>(dg);

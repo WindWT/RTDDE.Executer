@@ -20,7 +20,7 @@ namespace RTDDE.Executer.Func
             task.ContinueWith(t =>
             {
                 if (t.Exception != null) {
-                    Utility.ShowException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception);
                     return;
                 }
                 WorldButtonStackPanel.Children.Clear();

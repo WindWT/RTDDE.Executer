@@ -64,7 +64,7 @@ namespace RTDDE.Executer.Func
                 um = await taskAccessoryUnit;
             }
             catch (Exception ex) {
-                Utility.ShowException(ex.Message);
+                Utility.ShowException(ex);
                 return;
             }
 
@@ -80,7 +80,7 @@ namespace RTDDE.Executer.Func
             }
             Accessory_detail.Document = Utility.ParseTextToDocument(am.detail);
             Accessory_type.Text = Utility.ParseAccessoryType(am.type);
-            Accessory_attribute.Text = Utility.ParseAttributetype(am.attribute);
+            Accessory_attribute.Text = Utility.ParseAttributeToString(am.attribute);
             Accessory_su_a1.Text = am.su_a1.ToString(); //not sub attribute
             Accessory_style.Text = Utility.ParseStyletype(am.style);
             Accessory_num_01.Text = am.num_01.ToString();

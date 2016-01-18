@@ -135,12 +135,12 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                 Task.WaitAll(task);
                 if (tUSR.Exception != null)
                 {
-                    Utility.ShowException(tUSR.Exception.InnerException.Message);
+                    Utility.ShowException(tUSR.Exception);
                     return;
                 }
                 if (task.Exception != null)
                 {
-                    Utility.ShowException(task.Exception.InnerException.Message);
+                    Utility.ShowException(task.Exception);
                     return;
                 }
                 if (tUSR.Result == null || tUSR.Result.Count == 0)
@@ -152,8 +152,8 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                 partySkill_id.Text = skill.id.ToString();
                 partySkill_name.Text = skill.name;
                 partySkill_text.Document = Utility.ParseTextToDocument(skill.text);
-                partySkill_attribute.Text = Utility.ParseAttributetype(skill.attribute);
-                partySkill_sub_attr.Text = Utility.ParseAttributetype(skill.sub_attr);
+                partySkill_attribute.Text = Utility.ParseAttributeToString(skill.attribute);
+                partySkill_sub_attr.Text = Utility.ParseAttributeToString(skill.sub_attr);
                 partySkill_style.Text = Utility.ParseStyletype(skill.style);
                 partySkill_type_id.Text = skill.type.ToString();
                 partySkill_type.Text = Utility.ParseSkillType((PassiveSkillType)skill.type);
@@ -192,15 +192,15 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
             taskSkillUnitRank.ContinueWith(tSur => {
                 Task.WaitAll(task, taskAsLimit);
                 if (tSur.Exception != null) {
-                    Utility.ShowException(tSur.Exception.InnerException.Message);
+                    Utility.ShowException(tSur.Exception);
                     return;
                 }
                 if (task.Exception != null) {
-                    Utility.ShowException(task.Exception.InnerException.Message);
+                    Utility.ShowException(task.Exception);
                     return;
                 }
                 if (taskAsLimit.Exception != null) {
-                    Utility.ShowException(taskAsLimit.Exception.InnerException.Message);
+                    Utility.ShowException(taskAsLimit.Exception);
                     return;
                 }
                 if (tSur.Result == null || tSur.Result.Count == 0) {
@@ -211,8 +211,8 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                 activeSkill_id.Text = skill.id.ToString();
                 activeSkill_name.Text = skill.name;
                 activeSkill_text.Document = Utility.ParseTextToDocument(skill.text);
-                activeSkill_attribute.Text = Utility.ParseAttributetype(skill.attribute);
-                activeSkill_sub_attr.Text = Utility.ParseAttributetype(skill.sub_attr);
+                activeSkill_attribute.Text = Utility.ParseAttributeToString(skill.attribute);
+                activeSkill_sub_attr.Text = Utility.ParseAttributeToString(skill.sub_attr);
                 activeSkill_style.Text = Utility.ParseStyletype(skill.style);
                 activeSkill_type.Text = Utility.ParseSkillType((ActiveSkillType) skill.type);
                 activeSkill_type_id.Text = skill.type.ToString();
@@ -271,12 +271,12 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                 Task.WaitAll(task);
                 if (tUSR.Exception != null)
                 {
-                    Utility.ShowException(tUSR.Exception.InnerException.Message);
+                    Utility.ShowException(tUSR.Exception);
                     return;
                 }
                 if (task.Exception != null)
                 {
-                    Utility.ShowException(task.Exception.InnerException.Message);
+                    Utility.ShowException(task.Exception);
                     return;
                 }
                 if (tUSR.Result == null || tUSR.Result.Count == 0)
@@ -288,7 +288,7 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                 panelSkill_id.Text = skill.id.ToString();
                 panelSkill_name.Text = skill.name;
                 panelSkill_text.Document = Utility.ParseTextToDocument(skill.text);
-                panelSkill_attribute.Text = Utility.ParseAttributetype(skill.attribute);
+                panelSkill_attribute.Text = Utility.ParseAttributeToString(skill.attribute);
                 panelSkill_style.Text = Utility.ParseStyletype(skill.style);
                 panelSkill_type.Text = Utility.ParseSkillType((PanelSkillType)skill.type);
                 panelSkill_type_id.Text = skill.type.ToString();
@@ -327,12 +327,12 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                 Task.WaitAll(task);
                 if (tUSR.Exception != null)
                 {
-                    Utility.ShowException(tUSR.Exception.InnerException.Message);
+                    Utility.ShowException(tUSR.Exception);
                     return;
                 }
                 if (task.Exception != null)
                 {
-                    Utility.ShowException(task.Exception.InnerException.Message);
+                    Utility.ShowException(task.Exception);
                     return;
                 }
                 if (tUSR.Result == null || tUSR.Result.Count == 0)
@@ -400,11 +400,11 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                     tblAttr.SetValue(Grid.ColumnProperty, 0);
                     tblAttr.SetValue(Grid.RowProperty, 3);
                     grid.Children.Add(tblAttr);
-                    TextBox tbAttr = new TextBox() { Text = Utility.ParseAttributetype(askill.attribute) };
+                    TextBox tbAttr = new TextBox() { Text = Utility.ParseAttributeToString(askill.attribute) };
                     tbAttr.SetValue(Grid.ColumnProperty, 1);
                     tbAttr.SetValue(Grid.RowProperty, 3);
                     grid.Children.Add(tbAttr);
-                    TextBox tbSubAttr = new TextBox() { Text = Utility.ParseAttributetype(askill.sub_attr) };
+                    TextBox tbSubAttr = new TextBox() { Text = Utility.ParseAttributeToString(askill.sub_attr) };
                     tbSubAttr.SetValue(Grid.ColumnProperty, 2);
                     tbSubAttr.SetValue(Grid.RowProperty, 3);
                     grid.Children.Add(tbSubAttr);

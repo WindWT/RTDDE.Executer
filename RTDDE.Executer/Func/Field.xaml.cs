@@ -31,7 +31,7 @@ namespace RTDDE.Executer.Func
             {
                 if (t.Exception != null)
                 {
-                    Utility.ShowException(t.Exception.InnerException.Message);
+                    Utility.ShowException(t.Exception);
                     return;
                 }
                 FieldCanvas.Children.Clear();

@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using RTDDE.Provider;
 using RTDDE.Provider.Enums;
 using RTDDE.Provider.MasterData;
@@ -72,7 +73,7 @@ namespace RTDDE.Executer.Func
             }
             EnemySearch_pattern.ItemsSource = patternDict;
             Utility.DisableBindData = false;
-            Utility.BindData(EnemyDataGrid, "SELECT id,name FROM Enemy_Unit_MASTER order by id");
+            Utility.BindData(EnemyDataGrid, "SELECT id,attribute,name FROM Enemy_Unit_MASTER order by id");
         }
 
         private void EnemyDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -95,10 +96,13 @@ namespace RTDDE.Executer.Func
                 EnemyInfo_lv.Text = "1";
                 return;
             }
+            if (string.IsNullOrWhiteSpace(EnemyInfo_id.Text)) {
+                return;
+            }
             EnemyInfo_BindData(EnemyInfo_id.Text);
         }
 
-        public async void EnemyInfo_BindData(string Enemyid) {
+        private async void EnemyInfo_BindData(string Enemyid) {
             if (string.IsNullOrWhiteSpace(EnemyInfo_lv.Text)) {
                 return;
             }
@@ -131,7 +135,7 @@ namespace RTDDE.Executer.Func
             }
             EnemyInfo_chara_symbol.Text = rareText;
             EnemyInfo_name.Text = eum.name;
-            EnemyInfo_attribute.Text = Utility.ParseAttributetype(eum.attribute);
+            EnemyInfo_attribute.Fill = Utility.ParseAttributeToBrush(Utility.ParseAttribute(eum.attribute));
             EnemyInfo_type.Text = Utility.ParseEnemyType(eum.type);
             EnemyInfo_chara_kind.Text = eum.chara_flag_no == 0
                 ? string.Empty
@@ -143,8 +147,12 @@ namespace RTDDE.Executer.Func
             EnemyInfo_DEF.Text = Utility.RealCalc(eum.defense, eum.up_defense, thislevel).ToString();
             EnemyInfo_soul_pt.Text = eum.soul_pt.ToString();
             EnemyInfo_gold_pt.Text = eum.gold_pt.ToString();
-            EnemyInfo_flag.Text = Convert.ToBoolean(eum.flag).ToString();
-            EnemyInfo_isUnit.Text = Utility.IsUnitEnemy(eum.type).ToString();
+            EnemyInfo_flag.Foreground = Convert.ToBoolean(eum.flag)
+                ? Brushes.Black
+                : (Brush) this.FindResource("HighlightBrush");
+            EnemyInfo_isUnit.Foreground = Utility.IsUnitEnemy(eum.type)
+                ? Brushes.Black
+                : (Brush) this.FindResource("HighlightBrush");
             EnemyInfo_turn.Text = eum.turn.ToString();
             EnemyInfo_ui.Text = eum.ui.ToString();
             //skill
@@ -235,7 +243,7 @@ namespace RTDDE.Executer.Func
             EnemySearch_type.SelectedIndex = 0;
             EnemySearch_attribute.SelectedIndex = 0;
             EnemySearch_pattern.SelectedIndex = 0;
-            Utility.BindData(EnemyDataGrid, "SELECT id,name FROM Enemy_Unit_MASTER order by id");
+            Utility.BindData(EnemyDataGrid, "SELECT id,attribute,name FROM Enemy_Unit_MASTER order by id");
         }
         private void EnemySearch_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -247,7 +255,7 @@ namespace RTDDE.Executer.Func
         }
         private string EnemySearch_BuildSQL()
         {
-            string sql = @"SELECT id,name FROM Enemy_unit_MASTER WHERE ";
+            string sql = @"SELECT id,attribute,name FROM Enemy_unit_MASTER WHERE ";
             if (String.IsNullOrWhiteSpace(EnemySearch_id.Text) == false) {
                 sql += "id=" + EnemySearch_id.Text + " AND ";
             }
@@ -283,6 +291,11 @@ namespace RTDDE.Executer.Func
                     break;
                 }
             }
+        }
+
+        private void EnemyLvButton_OnClick(object sender, RoutedEventArgs e) {
+            EnemyInfo_lv.Text = ((Button) sender).Content.ToString();
+            EnemyInfo_lv_LostFocus(null, null);
         }
     }
 }

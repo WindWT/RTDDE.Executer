@@ -133,7 +133,8 @@
                 <Button Name="MenuItem_Accessory" Click="MenuItem_Checked">Accessory</Button>
             </UniformGrid>
             <Button Name="MenuItem_Guide" Click="MenuItem_Checked">Guide</Button>
-            <TextBlock></TextBlock>
+            <!-- Placeholder, DO NOT REMOVE -->
+            <TextBlock/>
         </DockPanel>
         <Grid Grid.Row="1" Name="MainGrid">
             <!--<RTDDE:World x:Name="World"/>

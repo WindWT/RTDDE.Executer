@@ -14,7 +14,34 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="EnemyDataGrid" AutoGenerateColumns="True" SelectionChanged="EnemyDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
+        <DataGrid Grid.Column="0" Grid.RowSpan="2" Name="EnemyDataGrid" AutoGenerateColumns="False" SelectionChanged="EnemyDataGrid_SelectionChanged" FrozenColumnCount="3" >
+            <DataGrid.Resources>
+                <Style x:Key="EnemyAttributeStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding attribute}" Value="1">
+                            <Setter Property="Background" Value="{StaticResource NoneBrush}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding attribute}" Value="2">
+                            <Setter Property="Background" Value="{StaticResource FireBrush}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding attribute}" Value="3">
+                            <Setter Property="Background" Value="{StaticResource WaterBrush}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding attribute}" Value="4">
+                            <Setter Property="Background" Value="{StaticResource LightBrush}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding attribute}" Value="5">
+                            <Setter Property="Background" Value="{StaticResource DarkBrush}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="id" Binding="{Binding id}" />
+                <DataGridTextColumn CellStyle="{StaticResource EnemyAttributeStyle}"/>
+                <DataGridTextColumn Header="name" Binding="{Binding name}" />
+            </DataGrid.Columns>
+        </DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="0">
             <Expander Header="Search" Name="EnemySearchExpander" IsExpanded="False">
                 <StackPanel>
@@ -71,24 +98,34 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" Name="EnemyInfo_id"></TextBox>
-                <TextBox Grid.Column="1" Name="EnemyInfo_chara_flag_no"></TextBox>
-                <TextBox Grid.Column="2" Name="EnemyInfo_chara_symbol"></TextBox>
-                <TextBox Grid.Column="3" Name="EnemyInfo_name"></TextBox>
-                <TextBox Grid.Column="4" Name="EnemyInfo_attribute"></TextBox>
+                <TextBox Grid.Column="1" Name="EnemyInfo_name"></TextBox>
+                <Rectangle Grid.Column="2" Name="EnemyInfo_attribute" Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}"/>
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Name="EnemyInfo_type"></TextBox>
-                <TextBox Grid.Column="1" Name="EnemyInfo_chara_kind"></TextBox>
+                <TextBlock Grid.Column="0" Name="EnemyInfo_flag" Text="Dragon" Foreground="{StaticResource HighlightBrush}"/>
+                <TextBox Grid.Column="1" Name="EnemyInfo_type"/>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Name="EnemyInfo_isUnit" Text="Unit" Foreground="{StaticResource HighlightBrush}"/>
+                <TextBox Grid.Column="1" Name="EnemyInfo_chara_flag_no"/>
+                <TextBox Grid.Column="2" Name="EnemyInfo_chara_symbol"></TextBox>
+                <TextBox Grid.Column="3" Grid.ColumnSpan="3" Name="EnemyInfo_chara_kind"></TextBox>
             </Grid>
             <Grid Visibility="Collapsed">
                 <Button Name="Enemy_ShowModelButton" Width="360" HorizontalAlignment="Left" Content="Show Model">
@@ -160,29 +197,38 @@
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="lv"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" Name="EnemyInfo_lv" IsReadOnly="False" LostFocus="EnemyInfo_lv_LostFocus"></TextBox>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="soul"/>
-                    <TextBox Grid.Row="0" Grid.Column="3" Name="EnemyInfo_soul_pt"></TextBox>
-                    <TextBlock Grid.Row="0" Grid.Column="4" Text="gold"/>
-                    <TextBox Grid.Row="0" Grid.Column="5" Name="EnemyInfo_gold_pt"></TextBox>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="HP"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Name="EnemyInfo_HP" Width="250"></TextBox>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="ATK"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Name="EnemyInfo_ATK" Width="250"></TextBox>
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="DEF"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" Name="EnemyInfo_DEF" Width="250"></TextBox>
-                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Dragon"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="lv"/>
+                    <DockPanel Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3">
+                        <DockPanel.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource InlineButton}">
+                                <EventSetter Event="Click" Handler="EnemyLvButton_OnClick"/>
+                            </Style>
+                        </DockPanel.Resources>
+                        <Button Content="99" DockPanel.Dock="Right"/>
+                        <Button Content="25" DockPanel.Dock="Right"/>
+                        <Button Content="10" DockPanel.Dock="Right"/>
+                        <Button Content="1" DockPanel.Dock="Right"/>
+                        <TextBox Name="EnemyInfo_lv" IsReadOnly="False" LostFocus="EnemyInfo_lv_LostFocus"/>
+                    </DockPanel>
+                    <TextBlock Grid.Row="1" Grid.Column="4" Text="soul"/>
+                    <TextBox Grid.Row="1" Grid.Column="5" Name="EnemyInfo_soul_pt"></TextBox>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="turn"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Name="EnemyInfo_turn"></TextBox>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="ui"/>
+                    <TextBox Grid.Row="2" Grid.Column="3" Name="EnemyInfo_ui"></TextBox>
+                    <TextBlock Grid.Row="2" Grid.Column="4" Text="gold"/>
+                    <TextBox Grid.Row="2" Grid.Column="5" Name="EnemyInfo_gold_pt"></TextBox>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="HP"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="EnemyInfo_HP"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="ATK"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Name="EnemyInfo_ATK"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="DEF"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Name="EnemyInfo_DEF"/>
+                    <!--<TextBlock Grid.Row="1" Grid.Column="2" Text="Dragon"/>
                     <TextBox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" Name="EnemyInfo_flag"></TextBox>
                     <TextBlock Grid.Row="2" Grid.Column="2" Text="Unit"/>
-                    <TextBox Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" Name="EnemyInfo_isUnit"></TextBox>
-
-                    <TextBlock Grid.Row="3" Grid.Column="2" Text="turn"/>
-                    <TextBox Grid.Row="3" Grid.Column="3" Name="EnemyInfo_turn"></TextBox>
-                    <TextBlock Grid.Row="3" Grid.Column="4" Text="ui"/>
-                    <TextBox Grid.Row="3" Grid.Column="5" Name="EnemyInfo_ui"></TextBox>
+                    <TextBox Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" Name="EnemyInfo_isUnit"></TextBox>-->
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
