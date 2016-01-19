@@ -27,6 +27,7 @@
     <system:String x:Key="Config_CurrentSystemLanguage">Current System Language:{0}</system:String>
     <system:String x:Key="Config_SettingsMap">Map</system:String>
     <system:String x:Key="Config_IsShowDropInfo">Show drop &amp; exp info by default(not recommend for iOS user)</system:String>
+    <system:String x:Key="Config_IsForceShowDropInfo">Don't check whether drop info is match to current level(Always NO check for iOS user)</system:String>
     <system:String x:Key="Config_IsShowBoxInfo">Show box info</system:String>
     <system:String x:Key="Config_IsShowEnemyAttribute">Show enemy attribute on topright</system:String>
 

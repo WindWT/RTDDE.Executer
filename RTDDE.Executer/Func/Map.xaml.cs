@@ -78,7 +78,9 @@ namespace RTDDE.Executer.Func
                 Convert.ToInt32(levelData["start_y"]));
                 CurrentMapTable.BindMonsterData(initMonsterTask.Result);
                 if(ShowDrop) {
-                    CurrentMapTable.BindDropData(MapData.GetEnemyInfo(dropId));
+                    CurrentMapTable.BindDropData(Settings.Config.Map.IsForceShowDropInfo
+                        ? MapData.GetEnemyInfo()
+                        : MapData.GetEnemyInfo(dropId));
                 }
             });
             task.ContinueWith(t =>

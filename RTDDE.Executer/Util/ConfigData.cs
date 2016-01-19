@@ -84,6 +84,7 @@ namespace RTDDE.Executer.Util
         public class MapClass : INotifyPropertyChanged
         {
             private bool _isShowDropInfo;
+            private bool _isForceShowDropInfo;
             private bool _isShowBoxInfo;
             private bool _isShowEnemyAttribute;
             private int _expValue;
@@ -99,6 +100,16 @@ namespace RTDDE.Executer.Util
                 set {
                     _isShowDropInfo = value;
                     OnPropertyChanged("IsShowDropInfo");
+                }
+            }
+
+            public bool IsForceShowDropInfo
+            {
+                get { return _isForceShowDropInfo; }
+                set
+                {
+                    _isForceShowDropInfo = value;
+                    OnPropertyChanged("IsForceShowDropInfo");
                 }
             }
 
@@ -295,6 +306,7 @@ namespace RTDDE.Executer.Util
             };
             Map = new MapClass() {
                 IsShowDropInfo = false,
+                IsForceShowDropInfo = false,
                 IsShowBoxInfo = true,
                 IsShowEnemyAttribute = true,
                 ExpValue = 30000,
