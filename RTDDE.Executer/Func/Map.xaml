@@ -41,8 +41,14 @@
                 <RowDefinition Height="25"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Grid.Column="0" Grid.Row="0" Name="MapMarkGrid"></Grid>
-            <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HorizontalScrollViewer}" DockPanel.Dock="Top">
+            <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HorizontalScrollViewer}">
                 <Grid Name="MapGrid"></Grid>
+            </ScrollViewer>
+            <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="250" Style="{StaticResource HorizontalScrollViewer}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid>
+                    <StackPanel Name="MapEventCutinMarkStackPanel" Orientation="Horizontal"/>
+                    <StackPanel Name="MapEventCutinContentStackPanel" Orientation="Vertical"/>
+                </Grid>
             </ScrollViewer>
             <ToggleButton Name="MapToolbarToggleButton" Grid.Column="0" Grid.Row="1" IsChecked="True">
                 <ToggleButton.Triggers>

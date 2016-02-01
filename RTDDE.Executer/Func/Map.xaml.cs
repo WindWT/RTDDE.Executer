@@ -65,17 +65,13 @@ namespace RTDDE.Executer.Func
 
             var task = Task.Run(() =>
             {
-                DataTable dt = DAL.GetDataTable("SELECT a.*,b.distance FROM level_data_master a left join quest_master b on a.level_data_id=b.id WHERE a.level_data_id=" + levelId);
-                if (dt.Rows.Count == 0) {
+                LevelDataMaster ldm =
+                    DAL.ToSingle<LevelDataMaster>($"SELECT * FROM LEVEL_DATA_MASTER WHERE level_data_id={levelId}");
+                if (ldm == null) {
                     //throw new Exception("NO MAP DATA.");
                     return;
                 }
-                DataRow levelData = dt.Rows[0];
-                CurrentMapTable = new MapTable(levelData["map_data"].ToString(),
-                Convert.ToInt32(levelData["width"]),
-                Convert.ToInt32(levelData["height"]),
-                Convert.ToInt32(levelData["start_x"]),
-                Convert.ToInt32(levelData["start_y"]));
+                CurrentMapTable = new MapTable(ldm);
                 CurrentMapTable.BindMonsterData(initMonsterTask.Result);
                 if(ShowDrop) {
                     CurrentMapTable.BindDropData(Settings.Config.Map.IsForceShowDropInfo
