@@ -132,10 +132,6 @@ namespace RTDDE.Executer.Func
                         DAL.FromSingle(game.LDM);
                         DAL.FromSingle(game.LDM.enemy_table_master);
                         DAL.FromSingle(game.LDM.unit_talk_master);
-                        //foreach (var ecm in game.LDM.event_cutin_master)
-                        //{
-                        //    DAL.FromSingle(ecm);
-                        //}
                         if (game.LDM.logic_group_data != null) {
                             foreach (var lgd in game.LDM.logic_group_data) {
                                 DAL.FromSingle(lgd);
