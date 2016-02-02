@@ -110,6 +110,7 @@ namespace RTDDE.Executer.Func
             MapMarkGrid.Children.Clear();
             MapMarkGrid.ColumnDefinitions.Clear();
             MapMarkGrid.RowDefinitions.Clear();
+            ((Storyboard)MapEventCutinStackPanel.Resources["HideMapEventCutin"]).Begin();
         }
 
         private void DrawMap() {
@@ -203,7 +204,7 @@ namespace RTDDE.Executer.Func
             });
             for (int j = 0; j < CurrentMapTable.H; j++) {
                 int markValue = CurrentMapTable.ZeroMarkPlace - j;
-                if (CurrentMapTable.EventCutins.Any(cutin => cutin.cutin_w == j)) {
+                if (CurrentMapTable.EventCutins?.Any(cutin => cutin.cutin_w == j) == true) {
                     //走到对应列会触发cutin，把mark换成按钮
                     Button button = new Button() { Content = markValue };
                     int cutinW = j;
@@ -251,11 +252,10 @@ namespace RTDDE.Executer.Func
         }
 
         private void LoadEventCutin(int cutinW) {
-            Storyboard storyBoard = (Storyboard)MapEventCutinStackPanel.Resources["ShowMapEventCutin"];
-            storyBoard.Begin();
             MapEventCutinMarkStackPanel.Children.Clear();
             MapEventCutinContentStackPanel.Children.Clear();
             MapEventCutinScrollViewer.ScrollToLeftEnd();
+            ((Storyboard)MapEventCutinStackPanel.Resources["ShowMapEventCutin"]).Begin();
             EventCutinMaster cutinMaster = CurrentMapTable.EventCutins.FirstOrDefault(o => o.cutin_w == cutinW);
             //draw mark
             int cutinTime = cutinMaster.cutin_master.OrderByDescending(o => o.end_msec).First().end_msec;
