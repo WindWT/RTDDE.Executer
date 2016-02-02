@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using RTDDE.Executer.Util;
 using RTDDE.Executer.Util.Map;
@@ -200,14 +202,29 @@ namespace RTDDE.Executer.Func
                 Height = new GridLength(25)
             });
             for (int j = 0; j < CurrentMapTable.H; j++) {
-                TextBlock tb = new TextBlock() {
-                    Text = (CurrentMapTable.ZeroMarkPlace - j).ToString()   //Now use BossStart as zero mark, farewell 3
-                };
-                Border b = new Border {Child = tb};
-                MapGrid.Children.Add(b);
+                int markValue = CurrentMapTable.ZeroMarkPlace - j;
+                if (CurrentMapTable.EventCutins.Any(cutin => cutin.cutin_w == j)) {
+                    //走到对应列会触发cutin，把mark换成按钮
+                    Button button = new Button() { Content = markValue };
+                    int cutinW = j;
+                    button.Click += (s, arg) => {
+                        LoadEventCutin(cutinW);
+                    };
+                    MapGrid.Children.Add(button);
 
-                b.SetValue(Grid.RowProperty, CurrentMapTable.W);
-                b.SetValue(Grid.ColumnProperty, j);
+                    button.SetValue(Grid.RowProperty, CurrentMapTable.W);
+                    button.SetValue(Grid.ColumnProperty, j);
+                }
+                else {
+                    TextBlock tb = new TextBlock() {
+                        Text = markValue.ToString() //Now use BossStart as zero mark, farewell 3
+                    };
+                    Border b = new Border { Child = tb };
+                    MapGrid.Children.Add(b);
+
+                    b.SetValue(Grid.RowProperty, CurrentMapTable.W);
+                    b.SetValue(Grid.ColumnProperty, j);
+                }
             }
             //绘制左侧冻结行标记
             MapMarkGrid.ColumnDefinitions.Add(new ColumnDefinition()
@@ -231,6 +248,52 @@ namespace RTDDE.Executer.Func
             }
             //收起地图工具栏
             MapToolbarToggleButton.IsChecked = false;
+        }
+
+        private void LoadEventCutin(int cutinW) {
+            Storyboard storyBoard = (Storyboard)MapEventCutinStackPanel.Resources["ShowMapEventCutin"];
+            storyBoard.Begin();
+            MapEventCutinMarkStackPanel.Children.Clear();
+            MapEventCutinContentStackPanel.Children.Clear();
+            MapEventCutinScrollViewer.ScrollToLeftEnd();
+            EventCutinMaster cutinMaster = CurrentMapTable.EventCutins.FirstOrDefault(o => o.cutin_w == cutinW);
+            //draw mark
+            int cutinTime = cutinMaster.cutin_master.OrderByDescending(o => o.end_msec).First().end_msec;
+            for (int i = 0; i < Math.Ceiling(cutinTime / 100.0); i++) {
+                TextBlock tb = new TextBlock() { Text = $"{i + 1}s" };
+                Border b = new Border() { Child = tb };
+                MapEventCutinMarkStackPanel.Children.Add(b);
+            }
+            //draw cutin
+            //random cutin use first position
+            for (int i = 0; i < 7; i++) {
+                int startTime = 0;
+                int cutinCount = 0;
+                int drawPos = i;
+                Grid grid = new Grid();
+                grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(25) });
+                foreach (
+                    var cutin in cutinMaster.cutin_master.Where(o => o.draw_pos == drawPos).OrderBy(o => o.start_msec)) {
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() {
+                        Width = new GridLength((cutin.start_msec - startTime) * 2)
+                    });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() {
+                        Width = new GridLength((cutin.end_msec - cutin.start_msec) * 2)
+                    });
+                    TextBox tb = new TextBox() {
+                        Text = cutin.text,
+                        ToolTip = $@"icon:{cutin.icon}|flag:{cutin.flag}
+time:{cutin.start_msec}~{cutin.end_msec}",
+                        FontWeight = (cutin.flag & 8) != 0 ? FontWeights.Bold : FontWeights.Normal
+                    };
+                    grid.Children.Add(tb);
+                    tb.SetValue(Grid.ColumnProperty, cutinCount * 2 + 1);
+                    //ready for next cutin
+                    startTime = cutin.end_msec;
+                    cutinCount++;
+                }
+                MapEventCutinContentStackPanel.Children.Add(grid);
+            }
         }
 
         private DataTable GetMonsterData(object param) {
