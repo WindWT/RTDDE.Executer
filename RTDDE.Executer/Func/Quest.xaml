@@ -156,10 +156,12 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.Resources>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                        <Setter Property="Padding" Value="15,0,0,0"/>
+                    </Style>
                     <Style TargetType="Path">
-                        <Setter Property="HorizontalAlignment" Value="Right"></Setter>
-                        <Setter Property="Stroke" Value="Red"></Setter>
-                        <Setter Property="Fill" Value="Transparent"></Setter>
+                        <Setter Property="Stroke" Value="Red"/>
+                        <Setter Property="Fill" Value="Transparent"/>
                     </Style>
                     <Style x:Key="PanelSwordPathStyle" TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
                         <Style.Triggers>
