@@ -257,6 +257,13 @@ namespace RTDDE.Executer.Func
             MapEventCutinScrollViewer.ScrollToLeftEnd();
             ((Storyboard)MapEventCutinStackPanel.Resources["ShowMapEventCutin"]).Begin();
             EventCutinMaster cutinMaster = CurrentMapTable.EventCutins.FirstOrDefault(o => o.cutin_w == cutinW);
+
+            MapEventCutinLoopMark.Visibility = (cutinMaster.cutin_flag & 2) != 0
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+            MapEventCutinHideMark.Visibility = (cutinMaster.cutin_flag & 4) != 0
+                ? Visibility.Visible
+                : Visibility.Collapsed;
             //draw mark
             int cutinTime = cutinMaster.cutin_master.OrderByDescending(o => o.end_msec).First().end_msec;
             for (int i = 0; i < Math.Ceiling(cutinTime / 100.0); i++) {

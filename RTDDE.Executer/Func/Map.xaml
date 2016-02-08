@@ -112,6 +112,10 @@
                                 </Style>
                             </StackPanel.Resources>
                         </StackPanel>
+                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Vertical">
+                            <TextBlock Name="MapEventCutinLoopMark" Visibility="Collapsed">LOOP</TextBlock>
+                            <TextBlock Name="MapEventCutinHideMark" Visibility="Collapsed">HIDE</TextBlock>
+                        </StackPanel>
                     </Grid>
                 </ScrollViewer>
                 <Button Name="MapEventCutinCloseButton" Width="25" Height="25" VerticalAlignment="Top">
