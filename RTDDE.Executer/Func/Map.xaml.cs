@@ -206,7 +206,10 @@ namespace RTDDE.Executer.Func
                 int markValue = CurrentMapTable.ZeroMarkPlace - j;
                 if (CurrentMapTable.EventCutins?.Any(cutin => cutin.cutin_w == j) == true) {
                     //走到对应列会触发cutin，把mark换成按钮
-                    Button button = new Button() { Content = markValue };
+                    Button button = new Button() {
+                        Content = markValue,
+                        HorizontalContentAlignment = HorizontalAlignment.Center
+                    };
                     int cutinW = j;
                     button.Click += (s, arg) => {
                         LoadEventCutin(cutinW);
