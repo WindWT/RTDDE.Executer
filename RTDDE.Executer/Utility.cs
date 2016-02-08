@@ -22,59 +22,71 @@ namespace RTDDE.Executer
 
         public static FlowDocument ParseTextToDocument(string text, int forceWrapCharCount = 0) {
             var flowDoc = new FlowDocument();
-            text = text.Replace(@"\n", "\n");
-            Paragraph pr = new Paragraph { Margin = new Thickness(0) }; //prprpr
-            var textParts = RegColor.Split(text);
-            Stack<SolidColorBrush> brushStack = new Stack<SolidColorBrush>();
-            brushStack.Push(Brushes.Black);
-            int charsInLine = 0;
-            foreach (string textPart in textParts) {
-                if (RegColor.Match(textPart).Success) {
-                    //color part, ex:[FFFFFF]
-                    string color = textPart.Trim(new char[] { '[', ']' });
-                    var convertFromString = ColorConverter.ConvertFromString("#" + color);
-                    if (convertFromString != null) {
-                        brushStack.Push(new SolidColorBrush((Color) convertFromString));
+            SolidColorBrush currentColor = Brushes.Black;
+            foreach (string line in text.Split('\n')) {
+                string currentLine = line.Replace(@"\n", "\n");
+                Paragraph pr = new Paragraph { Margin = new Thickness(0) }; //prprpr
+                var textParts = RegColor.Split(currentLine);
+                Stack<SolidColorBrush> brushStack = new Stack<SolidColorBrush>();
+                brushStack.Push(currentColor);
+                double charsInLine = 0;
+                foreach (string textPart in textParts) {
+                    if (RegColor.Match(textPart).Success) {
+                        //color part, ex:[FFFFFF]
+                        string colorText = textPart.Trim(new char[] { '[', ']' });
+                        var convertFromString = ColorConverter.ConvertFromString("#" + colorText);
+                        if (convertFromString != null) {
+                            brushStack.Push(new SolidColorBrush((Color) convertFromString));
+                        }
                     }
-                }
-                else {
-                    //text part, may with color end part [-]
-                    bool colorEnd = false;
-                    foreach (string part in textPart.Split(new[] { @"[-]" }, StringSplitOptions.None)) {
-                        string splitedPart = part;
-                        if (forceWrapCharCount > 0) {
-                            //force wrap by given length
-                            for (int i = 0; i < splitedPart.Length; i++) {
-                                if (charsInLine >= forceWrapCharCount && splitedPart[i] != '\n') {
-                                    splitedPart = splitedPart.Insert(i, "\n");
-                                    charsInLine = 0;
-                                }
-                                else if (splitedPart[i] == '\n') {
-                                    charsInLine = 0;
-                                }
-                                else if((int)splitedPart[i]<128) {
-                                    charsInLine++;   //deal with alphabet
-                                }
-                                else {
-                                    charsInLine += 2;
+                    else {
+                        //text part, may with color end part [-]
+                        bool colorEnd = false;
+                        foreach (string part in textPart.Split(new[] { @"[-]" }, StringSplitOptions.None)) {
+                            string splitedPart = part;
+                            if (forceWrapCharCount > 0) {
+                                //force wrap by given length
+                                for (int i = 0; i < splitedPart.Length; i++) {
+                                    if (charsInLine >= forceWrapCharCount && splitedPart[i] != '\n') {
+                                        splitedPart = splitedPart.Insert(i, "\n");
+                                        charsInLine = 0;
+                                    }
+                                    else if (splitedPart[i] == '\n') {
+                                        charsInLine = 0;
+                                    }
+                                    else if (splitedPart[i] =='['|| splitedPart[i] == ']') {
+                                        charsInLine += 0.9; //deal with alphabet
+                                    }
+                                    else if ((int) splitedPart[i] < 128) {
+                                        charsInLine ++; //deal with alphabet
+                                    }
+                                    else if (splitedPart[i] == '　') {
+                                        charsInLine += 1.9; //special tweak for 1023/1024
+                                    }
+                                    else {
+                                        charsInLine += 2;
+                                    }
                                 }
                             }
+                            if (colorEnd && brushStack.Count > 1) {
+                                brushStack.Pop();
+                            }
+                            if (string.IsNullOrEmpty(splitedPart)) {
+                                continue;
+                            }
+                            currentColor = brushStack.Peek();
+                            FontWeight fontWeight = currentColor.Color == Brushes.Black.Color
+                                ? FontWeights.Normal
+                                : Settings.Config.General.IsShowColorTextAsBold ? FontWeights.Bold : FontWeights.Normal;
+                            Span span = new Span { Foreground = currentColor, FontWeight = fontWeight };
+                            span.Inlines.Add(new Run(splitedPart));
+                            pr.Inlines.Add(span);
+                            colorEnd = true;
                         }
-                        if (colorEnd && brushStack.Count > 1) {
-                            brushStack.Pop();
-                        }
-                        SolidColorBrush foreground = brushStack.Peek();
-                        FontWeight fontWeight = foreground.Color == Brushes.Black.Color
-                            ? FontWeights.Normal
-                            : Settings.Config.General.IsShowColorTextAsBold ? FontWeights.Bold : FontWeights.Normal;
-                        Span span = new Span { Foreground = foreground, FontWeight = fontWeight };
-                        span.Inlines.Add(new Run(splitedPart));
-                        pr.Inlines.Add(span);
-                        colorEnd = true;
                     }
                 }
+                flowDoc.Blocks.Add(pr);
             }
-            flowDoc.Blocks.Add(pr);
             return flowDoc;
         }
 
