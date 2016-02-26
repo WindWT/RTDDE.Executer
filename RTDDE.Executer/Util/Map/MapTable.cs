@@ -22,16 +22,18 @@ namespace RTDDE.Executer.Util.Map
         public int H { get; private set; }
         public int W { get; private set; }
         public string MapData { get; private set; }
+        public EventCutinMaster[] EventCutins { get; private set; }
         public int ZeroMarkPlace { get; private set; }
         
-        public MapTable(string mapData, int w, int h, int x, int y)
+        public MapTable(LevelDataMaster ldm)
         {
             Rows = new List<MapRow>();
-            MapData = mapData;
-            W = w;
-            H = h;
-            X = x;
-            Y = y;
+            MapData = ldm.map_data;
+            W = ldm.width;
+            H = ldm.height;
+            X = ldm.start_x;
+            Y = ldm.start_y;
+            EventCutins = ldm.event_cutin_master;
             for (int i = 0; i < W; i++) {
                 var mapRow = new MapRow();
                 for (int j = 0; j < H; j++) {

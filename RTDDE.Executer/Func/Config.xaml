@@ -32,6 +32,7 @@
                     <GroupBox Header="{DynamicResource Config_SettingsMap}">
                         <StackPanel>
                             <CheckBox Name="IsShowDropInfoCheckBox" IsChecked="{Binding Path=Map.IsShowDropInfo,Mode=TwoWay}" Content="{DynamicResource Config_IsShowDropInfo}" />
+                            <CheckBox Name="IsForceShowDropInfoCheckBox" IsChecked="{Binding Path=Map.IsForceShowDropInfo,Mode=TwoWay}" Content="{DynamicResource Config_IsForceShowDropInfo}" />
                             <GroupBox>
                                 <GroupBox.Header>
                                     <Button Width="125" Style="{StaticResource InlineButton}" Name="ResetDropSettingButton" Click="ResetDropSettingButton_OnClick">Reset Drop</Button>

@@ -194,9 +194,15 @@ namespace RTDDE.Executer.Func
                     grid.Children.Add(textBoxType);
 
                     string pointText = string.Empty;
-                    for (int i = 0; i < mcm.point; i++) {
-                        pointText += "●";
+                    if (mcm.point < 5) {
+                        for (int i = 0; i < mcm.point; i++) {
+                            pointText += "●";
+                        }
                     }
+                    else {
+                        pointText = $"●×{mcm.point}";
+                    }
+
                     TextBox textBoxPoint = new TextBox() { Text = pointText };
                     textBoxPoint.SetValue(Grid.ColumnProperty, 0);
                     textBoxPoint.SetValue(Grid.RowProperty, 1);
@@ -378,7 +384,8 @@ namespace RTDDE.Executer.Func
             Event,
             Main,
             Daily,
-            MapEvent
+            MapEvent,
+            Multi
         }
         #region DataGridSql
         private const string EventSql = @"SELECT id,name,stamina,
@@ -465,14 +472,19 @@ ORDER BY DayOfWeek,id DESC";
         private const string MainSql = @"SELECT id,name,stamina,
 (select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name
 FROM QUEST_MASTER
-WHERE (select parent_field_id from quest_area_master where quest_area_master.id=parent_area_id)>0
+WHERE (select parent_field_id from quest_area_master where quest_area_master.id=parent_area_id)>0 AND multi_quest_id=0
 ORDER BY id DESC";
         private const string MapEventSql = @"SELECT id,name,stamina
 FROM QUEST_MASTER
 WHERE parent_area_id=0
 ORDER BY id DESC";
+        private const string MultiSql = @"SELECT id,name,stamina,
+(select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name
+FROM QUEST_MASTER
+WHERE multi_quest_id<>0
+ORDER BY id DESC";
         private const string GetQuestTypeSql = @"SELECT CASE 
-WHEN {0} IN (SELECT id FROM QUEST_MASTER WHERE (select parent_field_id from quest_area_master where quest_area_master.id=parent_area_id)>0) 
+WHEN {0} IN (SELECT id FROM QUEST_MASTER WHERE (select parent_field_id from quest_area_master where quest_area_master.id=parent_area_id)>0 AND multi_quest_id=0) 
 THEN 1 
 WHEN {0} IN (SELECT ID FROM (SELECT id,name,stamina,
        ( CASE
@@ -525,6 +537,8 @@ FROM QUEST_MASTER WHERE DayOfWeek>=0 AND isDisabled=0 AND ([end]>{1} OR [end]=0)
 THEN 2
 WHEN {0} IN (SELECT id FROM QUEST_MASTER WHERE parent_area_id=0)
 THEN 3
+WHEN {0} IN (SELECT id FROM QUEST_MASTER WHERE multi_quest_id<>0)
+THEN 4
 ELSE 0
 END";
         #endregion
@@ -535,6 +549,7 @@ END";
                 case QuestType.Daily: Utility.BindData(QuestDataGrid, string.Format(DailySql, Utility.ToRTDDate(DateTime.Now, false).ToString())); break;
                 case QuestType.Main: Utility.BindData(QuestDataGrid, MainSql); break;
                 case QuestType.MapEvent: Utility.BindData(QuestDataGrid, MapEventSql); break;
+                case QuestType.Multi: Utility.BindData(QuestDataGrid, MultiSql); break;
                 default: break;
             }
         }
@@ -555,12 +570,17 @@ END";
             QuestTypeSwitch(QuestType.MapEvent);
         }
 
+        private void QuestTypeRadio_Multi_OnClick(object sender, RoutedEventArgs e) {
+            QuestTypeSwitch(QuestType.Multi);
+        }
+
         private void QuestSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             QuestTypeRadio_Event.IsChecked = false;
             QuestTypeRadio_Daily.IsChecked = false;
             QuestTypeRadio_Main.IsChecked = false;
             QuestTypeRadio_MapEvent.IsChecked = false;
+            QuestTypeRadio_Multi.IsChecked = false;
 
             string sql = @"SELECT id,name,stamina,
 (select name from quest_area_master where quest_area_master.id=parent_area_id) as parent_area_name
@@ -630,6 +650,7 @@ FROM QUEST_MASTER WHERE ";
                 case QuestType.Main: QuestTypeRadio_Main.IsChecked = true; break;
                 case QuestType.Daily: QuestTypeRadio_Daily.IsChecked = true; break;
                 case QuestType.MapEvent: QuestTypeRadio_MapEvent.IsChecked = true; break;
+                case QuestType.Multi: QuestTypeRadio_Multi.IsChecked = true; break;
                 default: break;
             }
             QuestTypeSwitch(task.Result);

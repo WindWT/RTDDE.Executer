@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using RTDDE.Executer.Util;
 using RTDDE.Executer.Util.Map;
@@ -65,20 +67,18 @@ namespace RTDDE.Executer.Func
 
             var task = Task.Run(() =>
             {
-                DataTable dt = DAL.GetDataTable("SELECT a.*,b.distance FROM level_data_master a left join quest_master b on a.level_data_id=b.id WHERE a.level_data_id=" + levelId);
-                if (dt.Rows.Count == 0) {
+                LevelDataMaster ldm =
+                    DAL.ToSingle<LevelDataMaster>($"SELECT * FROM LEVEL_DATA_MASTER WHERE level_data_id={levelId}");
+                if (ldm == null) {
                     //throw new Exception("NO MAP DATA.");
                     return;
                 }
-                DataRow levelData = dt.Rows[0];
-                CurrentMapTable = new MapTable(levelData["map_data"].ToString(),
-                Convert.ToInt32(levelData["width"]),
-                Convert.ToInt32(levelData["height"]),
-                Convert.ToInt32(levelData["start_x"]),
-                Convert.ToInt32(levelData["start_y"]));
+                CurrentMapTable = new MapTable(ldm);
                 CurrentMapTable.BindMonsterData(initMonsterTask.Result);
                 if(ShowDrop) {
-                    CurrentMapTable.BindDropData(MapData.GetEnemyInfo(dropId));
+                    CurrentMapTable.BindDropData(Settings.Config.Map.IsForceShowDropInfo
+                        ? MapData.GetEnemyInfo()
+                        : MapData.GetEnemyInfo(dropId));
                 }
             });
             task.ContinueWith(t =>
@@ -110,6 +110,7 @@ namespace RTDDE.Executer.Func
             MapMarkGrid.Children.Clear();
             MapMarkGrid.ColumnDefinitions.Clear();
             MapMarkGrid.RowDefinitions.Clear();
+            ((Storyboard)MapEventCutinStackPanel.Resources["HideMapEventCutin"]).Begin();
         }
 
         private void DrawMap() {
@@ -202,14 +203,32 @@ namespace RTDDE.Executer.Func
                 Height = new GridLength(25)
             });
             for (int j = 0; j < CurrentMapTable.H; j++) {
-                TextBlock tb = new TextBlock() {
-                    Text = (CurrentMapTable.ZeroMarkPlace - j).ToString()   //Now use BossStart as zero mark, farewell 3
-                };
-                Border b = new Border {Child = tb};
-                MapGrid.Children.Add(b);
+                int markValue = CurrentMapTable.ZeroMarkPlace - j;
+                if (CurrentMapTable.EventCutins?.Any(cutin => cutin.cutin_w == j) == true) {
+                    //走到对应列会触发cutin，把mark换成按钮
+                    Button button = new Button() {
+                        Content = markValue,
+                        HorizontalContentAlignment = HorizontalAlignment.Center
+                    };
+                    int cutinW = j;
+                    button.Click += (s, arg) => {
+                        LoadEventCutin(cutinW);
+                    };
+                    MapGrid.Children.Add(button);
 
-                b.SetValue(Grid.RowProperty, CurrentMapTable.W);
-                b.SetValue(Grid.ColumnProperty, j);
+                    button.SetValue(Grid.RowProperty, CurrentMapTable.W);
+                    button.SetValue(Grid.ColumnProperty, j);
+                }
+                else {
+                    TextBlock tb = new TextBlock() {
+                        Text = markValue.ToString() //Now use BossStart as zero mark, farewell 3
+                    };
+                    Border b = new Border { Child = tb };
+                    MapGrid.Children.Add(b);
+
+                    b.SetValue(Grid.RowProperty, CurrentMapTable.W);
+                    b.SetValue(Grid.ColumnProperty, j);
+                }
             }
             //绘制左侧冻结行标记
             MapMarkGrid.ColumnDefinitions.Add(new ColumnDefinition()
@@ -233,6 +252,58 @@ namespace RTDDE.Executer.Func
             }
             //收起地图工具栏
             MapToolbarToggleButton.IsChecked = false;
+        }
+
+        private void LoadEventCutin(int cutinW) {
+            MapEventCutinMarkStackPanel.Children.Clear();
+            MapEventCutinContentStackPanel.Children.Clear();
+            MapEventCutinScrollViewer.ScrollToLeftEnd();
+            ((Storyboard)MapEventCutinStackPanel.Resources["ShowMapEventCutin"]).Begin();
+            EventCutinMaster cutinMaster = CurrentMapTable.EventCutins.FirstOrDefault(o => o.cutin_w == cutinW);
+
+            MapEventCutinLoopMark.Visibility = (cutinMaster.cutin_flag & 2) != 0
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+            MapEventCutinHideMark.Visibility = (cutinMaster.cutin_flag & 4) != 0
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+            //draw mark
+            int cutinTime = cutinMaster.cutin_master.OrderByDescending(o => o.end_msec).First().end_msec;
+            for (int i = 0; i < Math.Ceiling(cutinTime / 100.0); i++) {
+                TextBlock tb = new TextBlock() { Text = $"{i + 1}s" };
+                Border b = new Border() { Child = tb };
+                MapEventCutinMarkStackPanel.Children.Add(b);
+            }
+            //draw cutin
+            //random cutin use first position
+            for (int i = 0; i < 7; i++) {
+                int startTime = 0;
+                int cutinCount = 0;
+                int drawPos = i;
+                Grid grid = new Grid();
+                grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(25) });
+                foreach (
+                    var cutin in cutinMaster.cutin_master.Where(o => o.draw_pos == drawPos).OrderBy(o => o.start_msec)) {
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() {
+                        Width = new GridLength((cutin.start_msec - startTime) * 2)
+                    });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() {
+                        Width = new GridLength((cutin.end_msec - cutin.start_msec) * 2)
+                    });
+                    TextBox tb = new TextBox() {
+                        Text = cutin.text,
+                        ToolTip = $@"icon:{cutin.icon}|flag:{cutin.flag}
+time:{cutin.start_msec}~{cutin.end_msec}",
+                        FontWeight = (cutin.flag & 8) != 0 ? FontWeights.Bold : FontWeights.Normal
+                    };
+                    grid.Children.Add(tb);
+                    tb.SetValue(Grid.ColumnProperty, cutinCount * 2 + 1);
+                    //ready for next cutin
+                    startTime = cutin.end_msec;
+                    cutinCount++;
+                }
+                MapEventCutinContentStackPanel.Children.Add(grid);
+            }
         }
 
         private DataTable GetMonsterData(object param) {
@@ -390,6 +461,10 @@ namespace RTDDE.Executer.Func
             MapEnemyInfo_isUnitEnemy.Foreground = Utility.IsUnitEnemy(eum.type)
                 ? Brushes.Black
                 : (Brush)this.FindResource("HighlightBrush");
+            MapEnemyInfo_turn_wait_sec.Text = eum.turn_wait_sec.ToString();
+            MapEnemyInfoTurnWaitSecPath.Stroke = eum.turn_wait_sec > 0
+                ? Brushes.Black
+                : (Brush)this.FindResource("HighlightBrush");
             MapEnemyInfo_attribute.Fill = Utility.ParseAttributeToBrush(Utility.ParseAttribute(eum.attribute));
             MapEnemyInfo_soul_pt.Text = eum.soul_pt.ToString();
             MapEnemyInfo_gold_pt.Text = eum.gold_pt.ToString();
@@ -516,10 +591,6 @@ namespace RTDDE.Executer.Func
                         DAL.FromSingle(game.LDM);
                         DAL.FromSingle(game.LDM.enemy_table_master);
                         DAL.FromSingle(game.LDM.unit_talk_master);
-                        //foreach (var ecm in game.LDM.event_cutin_master)
-                        //{
-                        //    DAL.FromSingle(ecm);
-                        //}
                         if (game.LDM.logic_group_data != null) {
                             foreach (var lgd in game.LDM.logic_group_data) {
                                 DAL.FromSingle(lgd);

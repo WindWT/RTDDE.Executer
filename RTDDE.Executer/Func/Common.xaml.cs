@@ -41,7 +41,9 @@ ALTER TABLE ENEMY_TABLE_MASTER ADD COLUMN boss02_lv_min;
 ALTER TABLE ENEMY_TABLE_MASTER ADD COLUMN boss02_lv_max;
 ALTER TABLE ENEMY_TABLE_MASTER ADD COLUMN boss02_rate;
 ALTER TABLE ENEMY_TABLE_MASTER ADD COLUMN boss02_drop_id;
-ALTER TABLE ENEMY_TABLE_MASTER ADD COLUMN boss02_bgm_id;" }
+ALTER TABLE ENEMY_TABLE_MASTER ADD COLUMN boss02_bgm_id;" },
+                {"6.3->6.3.1 Update",@"ALTER TABLE LEVEL_DATA_MASTER ADD COLUMN event_cutin_master;
+UPDATE LEVEL_DATA_MASTER SET clear_talk_id=0 WHERE clear_talk_id IS NULL;" }
             };
         }
         private void CommonSQLComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -50,6 +52,7 @@ ALTER TABLE ENEMY_TABLE_MASTER ADD COLUMN boss02_bgm_id;" }
             if (String.IsNullOrWhiteSpace(sql) == false)
             {
                 Utility.BindData(CommonDataGrid, sql);
+                Utility.ShowMessage("SQL Executed.");
             }
         }
         private void CommonRunSQL_Click(object sender, RoutedEventArgs e)

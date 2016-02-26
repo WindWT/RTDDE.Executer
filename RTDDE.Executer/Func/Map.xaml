@@ -41,9 +41,91 @@
                 <RowDefinition Height="25"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Grid.Column="0" Grid.Row="0" Name="MapMarkGrid"></Grid>
-            <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HorizontalScrollViewer}" DockPanel.Dock="Top">
+            <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HorizontalScrollViewer}">
                 <Grid Name="MapGrid"></Grid>
             </ScrollViewer>
+            <StackPanel Name="MapEventCutinStackPanel" Visibility="Collapsed" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Storyboard x:Key="ShowMapEventCutin">
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="MapEventCutinStackPanel"  
+                                                        Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <DoubleAnimation
+                                    Storyboard.TargetName="MapEventCutinScrollViewer" 
+                                    Storyboard.TargetProperty="MaxWidth"
+                                    To="500" Duration="0:0:0.250">
+                            <DoubleAnimation.EasingFunction>
+                                <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                    </Storyboard>
+                    <Storyboard x:Key="HideMapEventCutin">
+                        <DoubleAnimation
+                                    Storyboard.TargetName="MapEventCutinScrollViewer" 
+                                    Storyboard.TargetProperty="MaxWidth"
+                                    To="0" Duration="0:0:0.250">
+                            <DoubleAnimation.EasingFunction>
+                                <QuadraticEase EasingMode="EaseInOut"></QuadraticEase>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="MapEventCutinStackPanel"  
+                                                        Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0:0:0.250" Value="{x:Static Visibility.Collapsed}"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </StackPanel.Resources>
+                <ScrollViewer Name="MapEventCutinScrollViewer" BorderBrush="{StaticResource PressedBrush}" BorderThickness="0.5" MaxWidth="0" Style="{StaticResource HorizontalScrollViewer}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Grid>
+                        <StackPanel Name="MapEventCutinMarkStackPanel" Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="SnapsToDevicePixels" Value="True"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0.5,0"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource PressedBrush}"/>
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="Width" Value="200"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                </Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="SnapsToDevicePixels" Value="True"></Setter>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Bottom"/>
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                    <Setter Property="FontSize" Value="12"/>
+                                </Style>
+                            </StackPanel.Resources>
+                        </StackPanel>
+                        <StackPanel Name="MapEventCutinContentStackPanel" Orientation="Vertical">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                </Style>
+                            </StackPanel.Resources>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Vertical">
+                            <TextBlock Name="MapEventCutinLoopMark" Visibility="Collapsed">LOOP</TextBlock>
+                            <TextBlock Name="MapEventCutinHideMark" Visibility="Collapsed">HIDE</TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+                <Button Name="MapEventCutinCloseButton" Width="25" Height="25" VerticalAlignment="Top">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard Storyboard="{StaticResource HideMapEventCutin}"/>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+            </StackPanel>
             <ToggleButton Name="MapToolbarToggleButton" Grid.Column="0" Grid.Row="1" IsChecked="True">
                 <ToggleButton.Triggers>
                     <EventTrigger RoutedEvent="ToggleButton.Checked">
@@ -135,9 +217,14 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Name="MapEnemyInfo_isDragon" Text="Dragon" Foreground="{StaticResource HighlightBrush}"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Name="MapEnemyInfo_type"/>
+                            <TextBlock Grid.Column="0" Name="MapEnemyInfo_isDragon" Text="Dragon" Foreground="{StaticResource HighlightBrush}"/>
+                            <TextBox Grid.Column="1" Name="MapEnemyInfo_type"/>
+                            <StackPanel Grid.Column="2" Name="MapEnemyInfoTurnWaitSecStackPanel" Orientation="Horizontal">
+                                <Path Name="MapEnemyInfoTurnWaitSecPath" Data="M 6,0 A 6,6 180 1 1 6,12 A 6,6 180 1 1 6,0 V 6,6 L 9,9" Stroke="Black" VerticalAlignment="Center" HorizontalAlignment="Center"></Path>
+                                <TextBox Name="MapEnemyInfo_turn_wait_sec"/>
+                            </StackPanel>
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>

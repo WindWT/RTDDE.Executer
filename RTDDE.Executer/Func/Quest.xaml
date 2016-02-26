@@ -17,9 +17,10 @@
         </Grid.RowDefinitions>
         <DataGrid Grid.Column="0" Grid.RowSpan="3" Name="QuestDataGrid" AutoGenerateColumns="True" SelectionChanged="QuestDataGrid_SelectionChanged" FrozenColumnCount="2" ></DataGrid>
         <StackPanel Grid.Column="1" Grid.Row="0">
-            <UniformGrid Columns="4">
+            <UniformGrid Columns="5">
                 <RadioButton GroupName="QuestType" Content="Event" Name="QuestTypeRadio_Event" Click="QuestTypeRadio_Event_OnClick"></RadioButton>
                 <RadioButton GroupName="QuestType" Content="MapEvent" Name="QuestTypeRadio_MapEvent" Click="QuestTypeRadio_MapEvent_OnClick"></RadioButton>
+                <RadioButton GroupName="QuestType" Content="Multi" Name="QuestTypeRadio_Multi" Click="QuestTypeRadio_Multi_OnClick"></RadioButton>
                 <RadioButton GroupName="QuestType" Content="Daily" Name="QuestTypeRadio_Daily" Click="QuestTypeRadio_Daily_OnClick"></RadioButton>
                 <RadioButton GroupName="QuestType" Content="Main" Name="QuestTypeRadio_Main" Click="QuestTypeRadio_Main_OnClick"></RadioButton>
             </UniformGrid>
@@ -155,10 +156,12 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.Resources>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                        <Setter Property="Padding" Value="15,0,0,0"/>
+                    </Style>
                     <Style TargetType="Path">
-                        <Setter Property="HorizontalAlignment" Value="Right"></Setter>
-                        <Setter Property="Stroke" Value="Red"></Setter>
-                        <Setter Property="Fill" Value="Transparent"></Setter>
+                        <Setter Property="Stroke" Value="Red"/>
+                        <Setter Property="Fill" Value="Transparent"/>
                     </Style>
                     <Style x:Key="PanelSwordPathStyle" TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
                         <Style.Triggers>
