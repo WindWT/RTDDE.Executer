@@ -461,6 +461,10 @@ time:{cutin.start_msec}~{cutin.end_msec}",
             MapEnemyInfo_isUnitEnemy.Foreground = Utility.IsUnitEnemy(eum.type)
                 ? Brushes.Black
                 : (Brush)this.FindResource("HighlightBrush");
+            MapEnemyInfo_turn_wait_sec.Text = eum.turn_wait_sec.ToString();
+            MapEnemyInfoTurnWaitSecPath.Stroke = eum.turn_wait_sec > 0
+                ? Brushes.Black
+                : (Brush)this.FindResource("HighlightBrush");
             MapEnemyInfo_attribute.Fill = Utility.ParseAttributeToBrush(Utility.ParseAttribute(eum.attribute));
             MapEnemyInfo_soul_pt.Text = eum.soul_pt.ToString();
             MapEnemyInfo_gold_pt.Text = eum.gold_pt.ToString();

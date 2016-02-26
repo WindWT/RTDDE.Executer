@@ -137,6 +137,10 @@ namespace RTDDE.Executer.Func
             EnemyInfo_name.Text = eum.name;
             EnemyInfo_attribute.Fill = Utility.ParseAttributeToBrush(Utility.ParseAttribute(eum.attribute));
             EnemyInfo_type.Text = Utility.ParseEnemyType(eum.type);
+            EnemyInfo_turn_wait_sec.Text = eum.turn_wait_sec.ToString();
+            EnemyInfoTurnWaitSecPath.Stroke = eum.turn_wait_sec > 0
+                ? Brushes.Black
+                : (Brush) this.FindResource("HighlightBrush");
             EnemyInfo_chara_kind.Text = eum.chara_flag_no == 0
                 ? string.Empty
                 : Utility.ParseUnitKind(eum.chara_kind).ToString();

@@ -109,9 +109,14 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Name="EnemyInfo_flag" Text="Dragon" Foreground="{StaticResource HighlightBrush}"/>
                 <TextBox Grid.Column="1" Name="EnemyInfo_type"/>
+                <StackPanel Grid.Column="2" Name="EnemyInfoTurnWaitSecStackPanel" Orientation="Horizontal">
+                    <Path Name="EnemyInfoTurnWaitSecPath" Data="M 6,0 A 6,6 180 1 1 6,12 A 6,6 180 1 1 6,0 V 6,6 L 9,9" Stroke="Black" VerticalAlignment="Center" HorizontalAlignment="Center"></Path>
+                    <TextBox Name="EnemyInfo_turn_wait_sec"/>
+                </StackPanel>
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
