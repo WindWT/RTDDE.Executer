@@ -194,9 +194,15 @@ namespace RTDDE.Executer.Func
                     grid.Children.Add(textBoxType);
 
                     string pointText = string.Empty;
-                    for (int i = 0; i < mcm.point; i++) {
-                        pointText += "●";
+                    if (mcm.point < 5) {
+                        for (int i = 0; i < mcm.point; i++) {
+                            pointText += "●";
+                        }
                     }
+                    else {
+                        pointText = $"●×{mcm.point}";
+                    }
+
                     TextBox textBoxPoint = new TextBox() { Text = pointText };
                     textBoxPoint.SetValue(Grid.ColumnProperty, 0);
                     textBoxPoint.SetValue(Grid.RowProperty, 1);
