@@ -492,7 +492,10 @@ WHERE uo.id={0}";
                 TextBlock tblSoul = new TextBlock() { Text = "soul" };
                 tblSoul.SetValue(Grid.ColumnProperty, 2);
                 gridInfo.Children.Add(tblSoul);
-                TextBox tbSoul = new TextBox() { Text = askill.soul.ToString() };
+                TextBox tbSoul = new TextBox() {
+                    Text = askill.soul.ToString(),
+                    Background = askill.soul == 0 ? Brushes.Transparent : Utility.ParseAttributeToBrush(UnitAttribute.FIRE,true)
+                };
                 tbSoul.SetValue(Grid.ColumnProperty, 3);
                 gridInfo.Children.Add(tbSoul);
                 TextBlock tblLimitNum = new TextBlock() { Text = "limit_num" };
