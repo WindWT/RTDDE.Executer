@@ -10,6 +10,7 @@ using System.Windows.Media;
 using RTDDE.Executer.Util;
 using RTDDE.Provider;
 using RTDDE.Provider.MasterData;
+using RTDDE.Provider.Util;
 
 namespace RTDDE.Executer.Func
 {
