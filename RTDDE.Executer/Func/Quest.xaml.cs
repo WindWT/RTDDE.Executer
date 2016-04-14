@@ -143,6 +143,7 @@ namespace RTDDE.Executer.Func
                 Grid grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(200) });
                 TextBlock textBlock = new TextBlock() { Text = challenge.grade == 2 ? "Gold" : (challenge.grade == 1 ? "Silver" : "Brown"), Foreground = gradeBrush };
                 textBlock.SetValue(Grid.ColumnProperty, 0);
                 grid.Children.Add(textBlock);
@@ -159,7 +160,8 @@ namespace RTDDE.Executer.Func
                 uniformGrid.Children.Add(new TextBox() { Text = challenge.param_1.ToString(), BorderBrush = gradeBrush });
                 uniformGrid.Children.Add(new TextBox() { Text = challenge.param_2.ToString(), BorderBrush = gradeBrush });
                 uniformGrid.Children.Add(new TextBox() { Text = challenge.param_3.ToString(), BorderBrush = gradeBrush });
-                QuestInfo_challenge.Children.Add(uniformGrid);
+                uniformGrid.SetValue(Grid.ColumnProperty, 2);
+                grid.Children.Add(uniformGrid);
             }
             //Multi
             QuestMultiConditionStackPanel.Children.Clear();

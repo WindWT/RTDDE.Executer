@@ -145,19 +145,10 @@
             </Grid>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid.Resources>
+            <UniformGrid Rows="1" Columns="6">
+                <UniformGrid.Resources>
                     <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-                        <Setter Property="Padding" Value="15,0,0,0"/>
+                        <Setter Property="Padding" Value="16,0,0,0"/>
                     </Style>
                     <Style TargetType="Path">
                         <Setter Property="Stroke" Value="Red"/>
@@ -223,22 +214,33 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </Grid.Resources>
-                <TextBlock Grid.Column="0" Text="panel" />
-                <TextBox Grid.Column="1" Name="QuestInfo_panel_sword" />
-                <Path Grid.Column="1" Style="{StaticResource PanelSwordPathStyle}" Data="M 15,0 L 0,15 M 1,10 V 6 M 5,14 H 9 M 1,8 L 7,14"></Path>
-                <TextBox Grid.Column="2" Name="QuestInfo_panel_lance" />
-                <Path Grid.Column="2" Style="{StaticResource PanelLancePathStyle}" Data="M 3,0 V 15 M 0,4 H 7 M 11,3 L 7,7 L 11,15 L 15,7 Z"></Path>
-                <TextBox Grid.Column="3" Name="QuestInfo_panel_archer" />
-                <Path Grid.Column="3" Style="{StaticResource PanelArcherPathStyle}" Data="M 5,1 A 5,7,180,1,1,5,15 M 0,8 H 14 L 12,6 M 14,7 L 12,10"></Path>
-                <TextBox Grid.Column="4" Name="QuestInfo_panel_cane"/>
-                <Path Grid.Column="4" Style="{StaticResource PanelCanePathStyle}" Data="M 0,15 L 5,9 L 14,8 L 13,1 L 6,2 L 7,6 L 10,5 "></Path>
-                <TextBox Grid.Column="5" Name="QuestInfo_panel_heart"/>
-                <Path Grid.Column="5" Style="{StaticResource PanelHeartPathStyle}" Data="M 8,1 A 3,3,180,1,0,8,7 A 3,3,180,1,0,8,1
+                </UniformGrid.Resources>
+                <Grid>
+                    <TextBox Name="QuestInfo_panel_sword" />
+                    <Path Style="{StaticResource PanelSwordPathStyle}" Data="M 15,0 L 0,15 M 1,10 V 6 M 5,14 H 9 M 1,8 L 7,14"></Path>
+                </Grid>
+                <Grid>
+                    <TextBox Name="QuestInfo_panel_lance" />
+                    <Path Style="{StaticResource PanelLancePathStyle}" Data="M 3,0 V 15 M 0,4 H 7 M 11,3 L 7,7 L 11,15 L 15,7 Z"></Path>
+                </Grid>
+                <Grid>
+                    <TextBox Name="QuestInfo_panel_archer" />
+                    <Path Style="{StaticResource PanelArcherPathStyle}" Data="M 5,1 A 5,7,180,1,1,5,15 M 0,8 H 14 L 12,6 M 14,7 L 12,10"></Path>
+                </Grid>
+                <Grid>
+                    <TextBox Name="QuestInfo_panel_cane"/>
+                    <Path Style="{StaticResource PanelCanePathStyle}" Data="M 0,15 L 5,9 L 14,8 L 13,1 L 6,2 L 7,6 L 10,5 "></Path>
+                </Grid>
+                <Grid>
+                    <TextBox Name="QuestInfo_panel_heart"/>
+                    <Path Style="{StaticResource PanelHeartPathStyle}" Data="M 8,1 A 3,3,180,1,0,8,7 A 3,3,180,1,0,8,1
                        M 8,0 A 5,7,180,1,0,8,14 A 5,7,180,1,0,8,0"></Path>
-                <TextBox Grid.Column="6" Name="QuestInfo_panel_sp"/>
-                <Path Grid.Column="6" Style="{StaticResource PanelSpPathStyle}" Data="M 2,1 H 15 V 14 H 2 Z M 4,3 H 13 V 12 H 4 Z"></Path>
-            </Grid>
+                </Grid>
+                <Grid>
+                    <TextBox Name="QuestInfo_panel_sp"/>
+                    <Path Style="{StaticResource PanelSpPathStyle}" Data="M 2,1 H 15 V 14 H 2 Z M 4,3 H 13 V 12 H 4 Z"></Path>
+                </Grid>
+            </UniformGrid>
             <Grid Name="QuestHelperGrid" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50"></ColumnDefinition>
