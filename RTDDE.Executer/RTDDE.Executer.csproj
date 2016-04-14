@@ -172,6 +172,7 @@
     <Compile Include="Util\IRedirectable.cs" />
     <Compile Include="Util\Map\MapCell.cs" />
     <Compile Include="Util\Map\MapRow.cs" />
+    <Compile Include="Util\QuestOpenType.cs" />
     <Compile Include="Util\Settings.cs" />
     <Compile Include="Util\Skills.cs" />
     <Compile Include="Util\UnitInfo.cs" />

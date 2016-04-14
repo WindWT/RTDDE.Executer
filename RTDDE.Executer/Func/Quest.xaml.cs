@@ -10,6 +10,7 @@ using System.Windows.Media;
 using RTDDE.Executer.Util;
 using RTDDE.Provider;
 using RTDDE.Provider.MasterData;
+using RTDDE.Provider.Util;
 
 namespace RTDDE.Executer.Func
 {
@@ -57,16 +58,16 @@ namespace RTDDE.Executer.Func
             });
 
             QuestMasterExtend quest = await questTask;
-            Task<List<OpenType>> taskOpenType = Task.Run(() =>
+            Task<List<QuestOpenType>> taskOpenType = Task.Run(() =>
             {
-                List<OpenType> opentypeList = new List<OpenType>();
+                List<QuestOpenType> opentypeList = new List<QuestOpenType>();
                 if (quest == null) {
                     return null;
                 }
                 for (int i = 0; i < 8; i++) {
-                    opentypeList.Add(Utility.ParseOpentype(quest.GetOpenType(i), quest.GetOpenParam(i), quest.GetGroupParam(i)));
+                    opentypeList.Add(Utility.GetQuestOpenType(quest.GetOpenType(i), quest.GetOpenParam(i), quest.GetGroupParam(i)));
                 }
-                opentypeList.Add(new OpenType(quest.open_sp_event_name, quest.open_sp_event_point.ToString(), 0));
+                opentypeList.Add(new QuestOpenType(quest.open_sp_event_name, quest.open_sp_event_point.ToString(), 0));
                 opentypeList.RemoveAll(o => string.IsNullOrEmpty(o.Type));
                 return opentypeList;
             });
@@ -142,6 +143,7 @@ namespace RTDDE.Executer.Func
                 Grid grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(200) });
                 TextBlock textBlock = new TextBlock() { Text = challenge.grade == 2 ? "Gold" : (challenge.grade == 1 ? "Silver" : "Brown"), Foreground = gradeBrush };
                 textBlock.SetValue(Grid.ColumnProperty, 0);
                 grid.Children.Add(textBlock);
@@ -158,7 +160,8 @@ namespace RTDDE.Executer.Func
                 uniformGrid.Children.Add(new TextBox() { Text = challenge.param_1.ToString(), BorderBrush = gradeBrush });
                 uniformGrid.Children.Add(new TextBox() { Text = challenge.param_2.ToString(), BorderBrush = gradeBrush });
                 uniformGrid.Children.Add(new TextBox() { Text = challenge.param_3.ToString(), BorderBrush = gradeBrush });
-                QuestInfo_challenge.Children.Add(uniformGrid);
+                uniformGrid.SetValue(Grid.ColumnProperty, 2);
+                grid.Children.Add(uniformGrid);
             }
             //Multi
             QuestMultiConditionStackPanel.Children.Clear();
@@ -303,13 +306,13 @@ namespace RTDDE.Executer.Func
                 : closeDate.ToString("yyyy-MM-dd HH:mm ddd");
 
             QuestInfo_opentype_content.Children.Clear();
-            List<OpenType> opentypes = await taskOpenType;
+            List<QuestOpenType> opentypes = await taskOpenType;
             if (opentypes.Count == 0) {
                 QuestInfo_opentype.Visibility = Visibility.Collapsed;
             }
             else {
                 QuestInfo_opentype.Visibility = Visibility.Visible;
-                foreach (OpenType type in opentypes) {
+                foreach (QuestOpenType type in opentypes) {
                     var grid = new Grid();
                     grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(60) });
                     grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });

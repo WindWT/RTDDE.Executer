@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using RTDDE.Provider;
 using RTDDE.Provider.Enums;
 using RTDDE.Provider.MasterData;
@@ -219,7 +220,7 @@ WHERE uo.id={0}";
                 int set_pt = ui.set_pt;
                 UnitInfo_pt.Text = ((int)((float)(thislevel - 1) * Math.Pow((float)ui.set_pt, 0.5f) + (float)set_pt)).ToString("0");
                 //story
-                var storyDoc = Utility.ParseTextToDocument(ui.story, Settings.Config.General.IsForceWrapInStory ? 43 : 0);
+                var storyDoc = Utility.ParseTextToDocument(ui.story, Settings.Config.General.IsForceWrapInStory ? 660 : 0);
                 storyDoc.TextAlignment = TextAlignment.Center;
                 UnitInfo_story.Padding = new Thickness(37, 0, 37, 0);
                 UnitInfo_story.Document = storyDoc;
@@ -366,6 +367,9 @@ WHERE uo.id={0}";
             activeSkill_soul.Text = skill.soul.ToString();
             activeSkill_phase.Text = ((SkillPhase)skill.phase).ToString();
             activeSkill_limit_num.Text = skill.limit_num.ToString();
+            activeSkill_limit_num.Background = skill.limit_num == 0
+                ? Brushes.Transparent
+                : Utility.GetWarningBrush();
         }
         private void panelSkill_BindData(PanelSkillMaster skill)
         {
@@ -492,13 +496,22 @@ WHERE uo.id={0}";
                 TextBlock tblSoul = new TextBlock() { Text = "soul" };
                 tblSoul.SetValue(Grid.ColumnProperty, 2);
                 gridInfo.Children.Add(tblSoul);
-                TextBox tbSoul = new TextBox() { Text = askill.soul.ToString() };
+                TextBox tbSoul = new TextBox() {
+                    Text = askill.soul.ToString(),
+                    Background = askill.soul == 0 ? Brushes.Transparent : Utility.GetWarningBrush()
+                };
                 tbSoul.SetValue(Grid.ColumnProperty, 3);
                 gridInfo.Children.Add(tbSoul);
                 TextBlock tblLimitNum = new TextBlock() { Text = "limit_num" };
                 tblLimitNum.SetValue(Grid.ColumnProperty, 4);
                 gridInfo.Children.Add(tblLimitNum);
-                TextBox tbLimitNum = new TextBox() { Text = askill.limit_num.ToString() };
+                TextBox tbLimitNum = new TextBox() {
+                    Text = askill.limit_num.ToString(),
+                    Background =
+                        askill.limit_num == 0
+                            ? Brushes.Transparent
+                            : Utility.GetWarningBrush()
+                };
                 tbLimitNum.SetValue(Grid.ColumnProperty, 5);
                 gridInfo.Children.Add(tbLimitNum);
                 gridInfo.SetValue(Grid.ColumnSpanProperty, 4);
