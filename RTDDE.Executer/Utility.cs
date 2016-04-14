@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -130,6 +132,134 @@ namespace RTDDE.Executer
             }
         }
 
+        public static Brush GetWarningBrush() {
+            return (Brush) application.TryFindResource("FireTransBrush");
+        }
+        public static QuestOpenType GetQuestOpenType(int type, int param, int group) {
+            QuestOpenType result = new QuestOpenType();
+            result.Group = group;
+            switch (type) {
+                case 0: {
+                        result.Type = string.Empty;
+                        result.Param = string.Empty;
+                        break;
+                    }
+                case 1: {
+                        result.Type = "每周";
+                        switch (param) {
+                            case 0: result.Param = "日"; break;
+                            case 1: result.Param = "一"; break;
+                            case 2: result.Param = "二"; break;
+                            case 3: result.Param = "三"; break;
+                            case 4: result.Param = "四"; break;
+                            case 5: result.Param = "五"; break;
+                            case 6: result.Param = "六"; break;
+                            case 7: result.Param = "日一二三四五六"; break;
+                            default: break;
+                        }
+                        break;
+                    }
+                case 2: {
+                        result.Type = "完成关卡";
+                        string sql = @"SELECT name FROM quest_master WHERE id={0}";
+                        result.Param = param + "|" + DAL.Get<string>(String.Format(sql, param));
+                        break;
+                    }
+                case 3:   //not used
+                    {
+                        result.Type += "UserID";
+                        result.Param += param;
+                        break;
+                    }
+                case 4: {
+                        result.Type = "开始日期";
+                        result.Param = ParseRTDDate(param).ToString("yyyy-MM-dd HH:mm ddd");
+                        break;
+                    }
+                case 5: {
+                        result.Type = "结束日期";
+                        result.Param = ParseRTDDate(param).ToString("yyyy-MM-dd HH:mm ddd");
+                        break;
+                    }
+                case 6: {
+                        result.Type = "是否关闭";
+                        result.Param = param.ToString();
+                        break;
+                    }
+                case 7: {
+                        result.Type = "完成关卡";
+                        string sql = @"SELECT name FROM quest_master WHERE id={0}";
+                        result.Param = param + "|" + DAL.Get<string>(String.Format(sql, param));
+                        break;
+                    }
+                case 8: {
+                        result.Type = "支线任务";
+                        result.Param = param.ToString();
+                        break;
+                    }
+                case 9: {
+                        result.Type = "不完成关卡";
+                        string sql = @"SELECT name FROM quest_master WHERE id={0}";
+                        result.Param = param + "|" + DAL.Get<string>(String.Format(sql, param));
+                        break;
+                    }
+                case 10: {
+                        result.Type = "自身等级大于等于";
+                        result.Param = param.ToString();
+                        break;
+                    }
+                case 11: {
+                        result.Type = "自身等级小于等于";
+                        result.Param = param.ToString();
+                        break;
+                    }
+                case 12: {
+                        result.Type = "教程通过";
+                        result.Param = param.ToString();
+                        break;
+                    }
+                case 13: {
+                        result.Type = "教程未通过";
+                        result.Param = param.ToString();
+                        break;
+                    }
+                case 14: {
+                        result.Type = "队长限定";
+                        //result.OpentypeParam = opentypeParam + "|" + ParseUnitName(opentypeParam);
+                        StringBuilder sb = new StringBuilder();
+                        sb.AppendLine("角色组|" + param);
+                        sb.Append(ParseUnitGroupName(param));
+                        result.Param = sb.ToString();
+                        break;
+                    }
+                case 15: {
+                        result.Type = "当日限定";
+                        DateTime day;
+                        if (DateTime.TryParseExact(param.ToString("D8"), "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out day)) {
+                            result.Param = day.ToString("yyyy-MM-dd");
+                        }
+                        break;
+                    }
+                case 16: {
+                        result.Type = "Everyday";
+                        break;
+                    }
+                case 100: {
+                        result.Type = "时间段内";
+                        DateTime open = ParseRTDTime(param, true);
+                        DateTime close = ParseRTDTime(group, true);
+                        result.Param = string.Format("{0}~{1}", open.ToString("HH:mm"), close.ToString("HH:mm"));
+                        result.Group = -1;
+                        break;
+                    }
+                default: {
+                        result.Type += type;
+                        result.Param += param;
+                        break;
+                    }
+            }
+            return result;
+        }
         private static readonly Regex CheckOnlyNumberRegex = new Regex("[^0-9]+", RegexOptions.Compiled); //regex that matches disallowed text
 
         public static bool IsOnlyNumber(string text) {

@@ -45,17 +45,17 @@ namespace RTDDE.Executer.Func
             });
 
             MapEventMaster mapEvent = await task;
-            Task<List<OpenType>> taskOpenType = Task.Run(() =>
+            Task<List<QuestOpenType>> taskOpenType = Task.Run(() =>
             {
-                List<OpenType> opentypeList = new List<OpenType>();
+                List<QuestOpenType> opentypeList = new List<QuestOpenType>();
                 if (mapEvent == null) {
                     return null;
                 }
-                opentypeList.Add(Utility.ParseOpentype(mapEvent.open_type_01, (int)mapEvent.open_param_01, 0));
-                opentypeList.Add(Utility.ParseOpentype(mapEvent.open_type_02, (int)mapEvent.open_param_02, 0));
-                opentypeList.Add(Utility.ParseOpentype(mapEvent.open_type_03, (int)mapEvent.open_param_03, 0));
-                opentypeList.Add(Utility.ParseOpentype(mapEvent.open_type_04, (int)mapEvent.open_param_04, 0));
-                opentypeList.Add(Utility.ParseOpentype(100, (int)mapEvent.open_timezone, (int)mapEvent.close_timezone));
+                opentypeList.Add(Utility.GetQuestOpenType(mapEvent.open_type_01, (int)mapEvent.open_param_01, 0));
+                opentypeList.Add(Utility.GetQuestOpenType(mapEvent.open_type_02, (int)mapEvent.open_param_02, 0));
+                opentypeList.Add(Utility.GetQuestOpenType(mapEvent.open_type_03, (int)mapEvent.open_param_03, 0));
+                opentypeList.Add(Utility.GetQuestOpenType(mapEvent.open_type_04, (int)mapEvent.open_param_04, 0));
+                opentypeList.Add(Utility.GetQuestOpenType(100, (int)mapEvent.open_timezone, (int)mapEvent.close_timezone));
                 opentypeList.RemoveAll(o => string.IsNullOrEmpty(o.Type));
                 return opentypeList;
             });
@@ -118,14 +118,14 @@ namespace RTDDE.Executer.Func
                 EventInfo_quests.Children.Add(grid);
             }
             //opentype
-            List<OpenType> opentypes = await taskOpenType;
+            List<QuestOpenType> opentypes = await taskOpenType;
             EventInfo_opentype_content.Children.Clear();
             if (opentypes.Count == 0) {
                 EventInfo_opentype.Visibility = Visibility.Collapsed;
             }
             else {
                 EventInfo_opentype.Visibility = Visibility.Visible;
-                foreach (OpenType type in opentypes) {
+                foreach (var type in opentypes) {
                     var grid = new Grid();
                     grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(60) });
                     grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });

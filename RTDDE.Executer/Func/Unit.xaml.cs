@@ -369,7 +369,7 @@ WHERE uo.id={0}";
             activeSkill_limit_num.Text = skill.limit_num.ToString();
             activeSkill_limit_num.Background = skill.limit_num == 0
                 ? Brushes.Transparent
-                : Utility.ParseAttributeToBrush(UnitAttribute.FIRE, true);
+                : Utility.GetWarningBrush();
         }
         private void panelSkill_BindData(PanelSkillMaster skill)
         {
@@ -498,7 +498,7 @@ WHERE uo.id={0}";
                 gridInfo.Children.Add(tblSoul);
                 TextBox tbSoul = new TextBox() {
                     Text = askill.soul.ToString(),
-                    Background = askill.soul == 0 ? Brushes.Transparent : Utility.ParseAttributeToBrush(UnitAttribute.FIRE,true)
+                    Background = askill.soul == 0 ? Brushes.Transparent : Utility.GetWarningBrush()
                 };
                 tbSoul.SetValue(Grid.ColumnProperty, 3);
                 gridInfo.Children.Add(tbSoul);
@@ -510,7 +510,7 @@ WHERE uo.id={0}";
                     Background =
                         askill.limit_num == 0
                             ? Brushes.Transparent
-                            : Utility.ParseAttributeToBrush(UnitAttribute.FIRE, true)
+                            : Utility.GetWarningBrush()
                 };
                 tbLimitNum.SetValue(Grid.ColumnProperty, 5);
                 gridInfo.Children.Add(tbLimitNum);

@@ -225,7 +225,7 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                 activeSkill_limit_num.Text = skill.limit_num.ToString();
                 activeSkill_limit_num.Background = skill.limit_num == 0
                     ? Brushes.Transparent
-                    : Utility.ParseAttributeToBrush(UnitAttribute.FIRE, true);
+                    : Utility.GetWarningBrush();
 
                 SkillInfo_ActiveSkill_Limit.Children.Clear();
                 for (int i = 0; i < taskAsLimit.Result.Count; i++) {
@@ -446,7 +446,7 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                         Background =
                             askill.soul == 0
                                 ? Brushes.Transparent
-                                : Utility.ParseAttributeToBrush(UnitAttribute.FIRE, true)
+                                : Utility.GetWarningBrush()
                     };
                     tbSoul.SetValue(Grid.ColumnProperty, 3);
                     gridInfo.Children.Add(tbSoul);
@@ -458,7 +458,7 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                         Background =
                             askill.limit_num == 0
                                 ? Brushes.Transparent
-                                : Utility.ParseAttributeToBrush(UnitAttribute.FIRE, true)
+                                : Utility.GetWarningBrush()
                     };
                     tbLimitNum.SetValue(Grid.ColumnProperty, 5);
                     gridInfo.Children.Add(tbLimitNum);

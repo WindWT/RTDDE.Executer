@@ -480,6 +480,8 @@
                             <TextBox Grid.Row="6" Grid.Column="3" Text="{Binding Path=flag_no,Mode=OneWay}"/>
                             <TextBlock Grid.Row="7" Grid.Column="0" Text="field_crash_id"/>
                             <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Path=field_crash_id,Mode=OneWay}"/>
+                            <TextBlock Grid.Row="7" Grid.Column="2" Text="damage_rate"/>
+                            <TextBox Grid.Row="7" Grid.Column="3" Text="{Binding Path=damage_rate,Mode=OneWay}"/>
                         </Grid>
                         <UniformGrid Rows="4" Columns="4">
                             <TextBlock>trigger_dis</TextBlock>
