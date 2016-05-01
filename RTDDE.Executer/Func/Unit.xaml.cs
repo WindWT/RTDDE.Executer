@@ -209,8 +209,8 @@ WHERE uo.id={0}";
 
                 //calc exp pt
                 int num2 = ui.category - 1;
-                float expThisLevel = (float)(Math.Pow(thislevel - 1, Convert.ToDouble(UnitParam_NextExp_Per[num2])) * (double)(Convert.ToSingle(ui.grow)));
-                float expNextLevel = (float)(Math.Pow(thislevel, Convert.ToDouble(UnitParam_NextExp_Per[num2])) * (double)(Convert.ToSingle(ui.grow)));
+                var expThisLevel = Math.Floor(Math.Pow(thislevel - 1, Convert.ToDouble(UnitParam_NextExp_Per[num2])) * (double)(Convert.ToSingle(ui.grow)));
+                var expNextLevel = Math.Floor(Math.Pow(thislevel, Convert.ToDouble(UnitParam_NextExp_Per[num2])) * (double)(Convert.ToSingle(ui.grow)));
                 UnitInfo_EXP.Text = expThisLevel.ToString("0");
                 UnitInfo_EXP_Next.Text = Math.Abs(thislevel - maxlevel) < 0.1 ? "MAX" : expNextLevel.ToString("0");
                 UnitInfo_cost.Text = (ui.cost * thislevel).ToString("0");
