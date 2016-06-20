@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -108,12 +107,17 @@ namespace RTDDE.Executer.Func
             QuestInfo_display_order.Text = quest.display_order.ToString();
             QuestInfo_sp_guide_id.Text = quest.sp_guide_id.ToString();
             QuestInfo_event_effect_flag.Text = quest.event_effect_flag.ToString();
+            QuestInfo_event_effect_flag.Background = quest.event_effect_flag > 1
+                ? Utility.GetWarningBrush()
+                : Brushes.Transparent;
             QuestInfo_reward_money.Text = quest.reward_money.ToString();
             QuestInfo_reward_exp.Text = quest.reward_exp.ToString();
             QuestInfo_soul.Text = quest.soul.ToString();
             QuestInfo_reward_money_limit.Text = quest.reward_money_limit.ToString();
             QuestInfo_reward_exp_limit.Text = quest.reward_exp_limit.ToString();
-            QuestInfo_reward_soul.Text = quest.reward_soul.ToString();
+            QuestInfo_damage_rate.Background = quest.damage_rate > 1
+                ? Utility.GetWarningBrush()
+                : Brushes.Transparent;
             QuestInfo_kind.Text = Utility.ParseQuestKind(quest.kind);
             QuestInfo_zbtn_kind.Text = Utility.ParseZBTNKind(quest.zbtn_kind);
             QuestInfo_bgm_f.Text = Utility.ParseBgmName(quest.bgm_f);
