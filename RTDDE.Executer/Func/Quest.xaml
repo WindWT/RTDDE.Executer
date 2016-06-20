@@ -290,6 +290,29 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="kind" />
+                            <TextBox Grid.Row="0" Grid.Column="1" Name="QuestInfo_kind" />
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="zbtn_kind" />
+                            <TextBox Grid.Row="0" Grid.Column="3" Name="QuestInfo_zbtn_kind" />
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="bgm_f" />
+                            <TextBox Grid.Row="1" Grid.Column="1" Name="QuestInfo_bgm_f" />
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="bgm_b" />
+                            <TextBox Grid.Row="1" Grid.Column="3" Name="QuestInfo_bgm_b" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
@@ -314,31 +337,8 @@
                             <TextBox Grid.Row="2" Grid.Column="1" Name="QuestInfo_reward_money"/>
                             <TextBlock Grid.Row="2" Grid.Column="2" Text="reward_exp"/>
                             <TextBox Grid.Row="2" Grid.Column="3" Name="QuestInfo_reward_exp"/>
-                            <TextBlock Grid.Row="2" Grid.Column="4" Text="reward_soul"/>
-                            <TextBox Grid.Row="2" Grid.Column="5" Name="QuestInfo_reward_soul"/>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="kind" />
-                            <TextBox Grid.Row="0" Grid.Column="1" Name="QuestInfo_kind" />
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="zbtn_kind" />
-                            <TextBox Grid.Row="0" Grid.Column="3" Name="QuestInfo_zbtn_kind" />
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="bgm_f" />
-                            <TextBox Grid.Row="1" Grid.Column="1" Name="QuestInfo_bgm_f" />
-                            <TextBlock Grid.Row="1" Grid.Column="2" Text="bgm_b" />
-                            <TextBox Grid.Row="1" Grid.Column="3" Name="QuestInfo_bgm_b" />
+                            <TextBlock Grid.Row="2" Grid.Column="4" Text="damage_rate"/>
+                            <TextBox Grid.Row="2" Grid.Column="5" Name="QuestInfo_damage_rate" Text="{Binding Path=damage_rate,Mode=OneWay}"/>
                         </Grid>
                     </StackPanel>
                 </Expander>
@@ -482,8 +482,8 @@
                             <TextBox Grid.Row="6" Grid.Column="3" Text="{Binding Path=flag_no,Mode=OneWay}"/>
                             <TextBlock Grid.Row="7" Grid.Column="0" Text="field_crash_id"/>
                             <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Path=field_crash_id,Mode=OneWay}"/>
-                            <TextBlock Grid.Row="7" Grid.Column="2" Text="damage_rate"/>
-                            <TextBox Grid.Row="7" Grid.Column="3" Text="{Binding Path=damage_rate,Mode=OneWay}"/>
+                            <TextBlock Grid.Row="7" Grid.Column="2" Text="reward_soul"/>
+                            <TextBox Grid.Row="7" Grid.Column="3" Text="{Binding Path=reward_soul,Mode=OneWay}"/>
                         </Grid>
                         <UniformGrid Rows="4" Columns="4">
                             <TextBlock>trigger_dis</TextBlock>
