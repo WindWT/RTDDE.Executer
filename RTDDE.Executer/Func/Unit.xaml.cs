@@ -275,6 +275,7 @@ WHERE uo.id={0}";
                 UnitInfo_ticket_rec_val.Text = ui.ticket_rec_val.ToString();
                 UnitInfo_yorisiro.Text = ui.yorisiro.ToString();
                 UnitInfo_present.Text = ui.present.ToString();
+                UnitInfo_ev_clear_flag.Text = ui.ev_clear_flag.ToString();
                 UnitInfo_material_type.Text = ui.material_type.ToString();
 
             }, MainWindow.UiTaskScheduler);    //this Task work on ui thread
