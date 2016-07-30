@@ -122,15 +122,73 @@ namespace RTDDE.Executer.Func
             QuestInfo_zbtn_kind.Text = Utility.ParseZBTNKind(quest.zbtn_kind);
             QuestInfo_bgm_f.Text = Utility.ParseBgmName(quest.bgm_f);
             QuestInfo_bgm_b.Text = Utility.ParseBgmName(quest.bgm_b);
-            if (quest.h_id == 0) {
-                QuestHelperGrid.Visibility = Visibility.Collapsed;
+            //Helper
+            QuestHelperStackPanel.Children.Clear();
+            if (quest.GetHelperCnt() > 0) {
+                Grid grid = new Grid();
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                TextBlock textBlock = new TextBlock() { Text = "HelperMode" };
+                textBlock.SetValue(Grid.ColumnProperty, 0);
+                grid.Children.Add(textBlock);
+                TextBox textBox = new TextBox() { Text = Utility.ParseHelperType(quest.h_flg) };
+                textBox.SetValue(Grid.ColumnProperty, 1);
+                grid.Children.Add(textBox);
+                QuestHelperStackPanel.Children.Add(grid);
             }
-            else {
-                QuestHelperGrid.Visibility = Visibility.Visible;
-                QuestInfo_h_id.Text = quest.h_id.ToString();
-                QuestInfo_h_name.Text = Utility.ParseUnitName(quest.h_id);
-                QuestInfo_h_lv.Text = quest.h_lv.ToString();
+            int[] helperIds = new[] { quest.h_id, quest.h_id_01, quest.h_id_02, quest.h_id_03 };
+            int[] helperLvs = new[] { quest.h_lv, quest.h_lv_01, quest.h_lv_02, quest.h_lv_03 };
+            int[] helperGuides = new[] { quest.h_sp_guide, quest.h_sp_guide_01, quest.h_sp_guide_02, quest.h_sp_guide_03 };
+            for (int i = 0; i < helperIds.Length; i++) {
+                var helperId = helperIds[i];
+                var helperLv = helperLvs[i];
+                var helperGuide = helperGuides[i];
+                if (helperId == 0) {
+                    continue;
+                }
+                Grid grid = new Grid();
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                TextBox textBox = new TextBox() { Text = helperId.ToString() };
+                textBox.SetValue(Grid.ColumnProperty, 0);
+                grid.Children.Add(textBox);
+                TextBox textBoxName = new TextBox() { Text = Utility.ParseUnitName(helperId) };
+                textBoxName.SetValue(Grid.ColumnProperty, 1);
+                grid.Children.Add(textBoxName);
+                Button button = new Button()
+                {
+                    Content = "→",
+                    Style = FindResource("InlineButton") as Style
+                };
+                button.Click += (s, arg) => {
+                    Utility.GoToItemById<Unit>(helperId);
+                };
+                button.SetValue(Grid.ColumnProperty, 2);
+                grid.Children.Add(button);
+                TextBlock textBlockLv = new TextBlock() { Text = "lv"};
+                textBlockLv.SetValue(Grid.ColumnProperty, 3);
+                grid.Children.Add(textBlockLv);
+                TextBox textBoxLv = new TextBox() { Text = helperLv.ToString() };
+                textBoxLv.SetValue(Grid.ColumnProperty, 4);
+                grid.Children.Add(textBoxLv);
+                TextBox textBoxGuide = new TextBox() { Text = helperGuide.ToString() };
+                textBoxGuide.SetValue(Grid.ColumnProperty, 5);
+                grid.Children.Add(textBoxGuide);
+                QuestHelperStackPanel.Children.Add(grid);
             }
+            //if (quest.h_id == 0) {
+            //    QuestHelperGrid.Visibility = Visibility.Collapsed;
+            //}
+            //else {
+            //    QuestHelperGrid.Visibility = Visibility.Visible;
+            //    QuestInfo_h_id.Text = quest.h_id.ToString();
+            //    QuestInfo_h_name.Text = Utility.ParseUnitName(quest.h_id);
+            //    QuestInfo_h_lv.Text = quest.h_lv.ToString();
+            //}
             //Challenge
             QuestInfo_challenge.Children.Clear();
             int[] challengeIds = new[] { quest.challenge_id_2, quest.challenge_id_1, quest.challenge_id_0 };
@@ -621,11 +679,6 @@ FROM QUEST_MASTER WHERE ";
         private void SB_ShowMap_Completed(object sender, EventArgs e) {
             MapGrid.Width = UnitGrid.ActualWidth;
             Map.Load(QuestInfo_id.Text);
-        }
-
-        private void QuestInfoHelperToUnitButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            Utility.GoToItemById<Unit>(Convert.ToInt32(QuestInfo_h_id.Text));
         }
         private void QuestInfoPresentToUnitButton_OnClick(object sender, RoutedEventArgs e)
         {

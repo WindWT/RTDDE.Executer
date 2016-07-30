@@ -485,6 +485,7 @@
                             <RowDefinition Height="*"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="ui_id"/>
                         <TextBox Grid.Row="0" Grid.Column="1" Name="UnitInfo_ui_id"></TextBox>
@@ -512,6 +513,8 @@
                         <TextBox Grid.Row="6" Grid.Column="1" Name="UnitInfo_present"></TextBox>
                         <TextBlock Grid.Row="6" Grid.Column="2" Text="material_type"/>
                         <TextBox Grid.Row="6" Grid.Column="3" Name="UnitInfo_material_type"></TextBox>
+                        <TextBlock Grid.Row="7" Grid.Column="0" Text="ev_clear_flag"/>
+                        <TextBox Grid.Row="7" Grid.Column="1" Name="UnitInfo_ev_clear_flag"></TextBox>
                     </Grid>
                 </Expander>
             </StackPanel>

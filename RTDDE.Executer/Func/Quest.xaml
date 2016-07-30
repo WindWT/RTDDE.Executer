@@ -241,7 +241,10 @@
                     <Path Style="{StaticResource PanelSpPathStyle}" Data="M 2,1 H 15 V 14 H 2 Z M 4,3 H 13 V 12 H 4 Z"></Path>
                 </Grid>
             </UniformGrid>
-            <Grid Name="QuestHelperGrid" Visibility="Collapsed">
+            <StackPanel Name="QuestHelperStackPanel">
+                
+            </StackPanel>
+            <!--<Grid Name="QuestHelperGrid" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50"></ColumnDefinition>
                     <ColumnDefinition Width="50"></ColumnDefinition>
@@ -256,7 +259,7 @@
                 <Button Grid.Column="3" Name="QuestInfoHelperToUnitButton" Style="{StaticResource InlineButton}" Click="QuestInfoHelperToUnitButton_OnClick">→</Button>
                 <TextBlock Grid.Column="4" Text="lv"/>
                 <TextBox Grid.Column="5" Name="QuestInfo_h_lv"></TextBox>
-            </Grid>
+            </Grid>-->
         </StackPanel>
         <ScrollViewer Grid.Column="1" Grid.Row="2" Style="{StaticResource VerticalScrollViewer}">
             <StackPanel>
