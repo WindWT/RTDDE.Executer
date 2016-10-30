@@ -153,6 +153,7 @@
                     <Style TargetType="Path">
                         <Setter Property="Stroke" Value="Red"/>
                         <Setter Property="Fill" Value="Transparent"/>
+                        <Setter Property="VerticalAlignment" Value="Center"></Setter>
                     </Style>
                     <Style x:Key="PanelSwordPathStyle" TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
                         <Style.Triggers>

@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:RTDDE="clr-namespace:RTDDE.Executer.Func"
         Title="RTDDE.Executer"  MinWidth="640" MinHeight="480" Width="800" Height="600"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="ClearType"
         Icon="Resources/RTDDE.Executer.ico" ResizeMode="CanResizeWithGrip">
     <Window.Resources>
 
