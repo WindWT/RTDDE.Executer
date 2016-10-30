@@ -368,9 +368,6 @@ WHERE uo.id={0}";
             activeSkill_soul.Text = skill.soul.ToString();
             activeSkill_phase.Text = ((SkillPhase)skill.phase).ToString();
             activeSkill_limit_num.Text = skill.limit_num.ToString();
-            activeSkill_limit_num.Background = skill.limit_num == 0
-                ? Brushes.Transparent
-                : Utility.GetWarningBrush();
         }
         private void panelSkill_BindData(PanelSkillMaster skill)
         {
