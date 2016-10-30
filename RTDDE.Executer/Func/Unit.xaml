@@ -457,6 +457,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="conv_money"/>
                             <TextBox Grid.Row="0" Grid.Column="1" Name="accessory_conv_money"></TextBox>
@@ -466,6 +467,10 @@
                             <TextBox Grid.Row="1" Grid.Column="1" Name="accessory_num_02"></TextBox>
                             <TextBox Grid.Row="1" Grid.Column="2" Name="accessory_num_03" ></TextBox>
                             <TextBox Grid.Row="1" Grid.Column="3" Name="accessory_num_04" ></TextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="specified_attr"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Name="accessory_specified_attr"></TextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="specified_style"/>
+                            <TextBox Grid.Row="2" Grid.Column="3" Name="accessory_specified_style"></TextBox>
                         </Grid>
                     </Grid>
                 </Expander>
