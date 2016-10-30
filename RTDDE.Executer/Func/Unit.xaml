@@ -330,7 +330,7 @@
                                 <TextBlock Grid.Column="2" Text="soul"/>
                                 <TextBox Grid.Column="3" Name="activeSkill_soul"></TextBox>
                                 <TextBlock Grid.Column="4" Text="limit_num"/>
-                                <customControl:WarningTextbox Grid.Column="5" x:Name="activeSkill_limit_num" SafeValue="0"></customControl:WarningTextbox>
+                                <customControl:WarningTextBox Grid.Column="5" x:Name="activeSkill_limit_num" SafeValue="0"></customControl:WarningTextBox>
                             </Grid>
                             <Grid Grid.Row="5" Grid.ColumnSpan="4">
                                 <Grid.ColumnDefinitions>

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:customControl="clr-namespace:RTDDE.Executer.CustomControl"
              mc:Ignorable="d">
     <Grid Name="SkillTab" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
@@ -155,7 +156,7 @@
                     <TextBlock Grid.Column="2" Text="soul"/>
                     <TextBox Grid.Column="3" Name="activeSkill_soul"></TextBox>
                     <TextBlock Grid.Column="4" Text="limit_num"/>
-                    <TextBox Grid.Column="5" Name="activeSkill_limit_num"></TextBox>
+                    <customControl:WarningTextBox Grid.Column="5" x:Name="activeSkill_limit_num" SafeValue="0"></customControl:WarningTextBox>
                 </Grid>
                 <Grid Grid.Row="5" Grid.ColumnSpan="4">
                     <Grid.ColumnDefinitions>

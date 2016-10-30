@@ -228,7 +228,7 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <Style TargetType="{x:Type customControl:WarningTextbox}" BasedOn="{StaticResource {x:Type TextBox}}"></Style>
+            <Style TargetType="{x:Type customControl:WarningTextBox}" BasedOn="{StaticResource {x:Type TextBox}}"></Style>
             <Style TargetType="{x:Type RichTextBox}">
                 <Setter Property="IsReadOnly" Value="True"/>
                 <Setter Property="BorderThickness" Value="0,0,0,1"/>

@@ -41,20 +41,20 @@ namespace RTDDE.Executer.CustomControl
     /// 步骤 2)
     /// 继续操作并在 XAML 文件中使用控件。
     ///
-    ///     <MyNamespace:WarningTextbox/>
+    ///     <MyNamespace:WarningTextBox/>
     ///
     /// </summary>
-    public class WarningTextbox : TextBox
+    public class WarningTextBox : TextBox
     {
-        public static readonly DependencyProperty SafeValueDependencyProperty = DependencyProperty.Register("SafeValue", typeof(string), typeof(WarningTextbox));
+        public static readonly DependencyProperty SafeValueDependencyProperty = DependencyProperty.Register("SafeValue", typeof(string), typeof(WarningTextBox));
         public string SafeValue
         {
             get { return base.GetValue(SafeValueDependencyProperty) as string; }
             set { base.SetValue(SafeValueDependencyProperty, value); }
         }
 
-        static WarningTextbox() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(WarningTextbox), new FrameworkPropertyMetadata(typeof(WarningTextbox)));
+        static WarningTextBox() {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(WarningTextBox), new FrameworkPropertyMetadata(typeof(WarningTextBox)));
         }
 
         protected override void OnTextChanged(TextChangedEventArgs e) {
