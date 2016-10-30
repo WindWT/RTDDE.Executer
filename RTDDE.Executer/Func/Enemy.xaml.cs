@@ -193,7 +193,10 @@ namespace RTDDE.Executer.Func
                         idTextbox.SetValue(Grid.RowProperty, 0);
                         logicGrid.Children.Add(idTextbox);
 
-                        var typeTextbox = new TextBox() { Text = Utility.ParseTriggerType(logicData.trigger_type) };
+                        var typeTextbox = new TextBox() {
+                            Text = Utility.ParseTriggerType(logicData.trigger_type),
+                            ToolTip = logicData.cutin_type
+                        };
                         typeTextbox.SetValue(Grid.ColumnProperty, 1);
                         typeTextbox.SetValue(Grid.ColumnSpanProperty, 2);
                         typeTextbox.SetValue(Grid.RowProperty, 0);
@@ -236,6 +239,7 @@ namespace RTDDE.Executer.Func
             EnemyInfo_shadow.Text = eum.shadow.ToString();
             EnemyInfo_up.Text = eum.up.ToString();
             EnemyInfo_atk_ef_id.Text = eum.atk_ef_id.ToString();
+            EnemyInfo_survive.Text = eum.survive.ToString();
         }
 
         private void EnemySearchClear_Click(object sender, RoutedEventArgs e)

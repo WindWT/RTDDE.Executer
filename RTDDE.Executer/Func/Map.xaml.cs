@@ -529,7 +529,10 @@ time:{cutin.start_msec}~{cutin.end_msec}",
                         idTextbox.SetValue(Grid.RowProperty, 0);
                         logicGrid.Children.Add(idTextbox);
 
-                        var typeTextbox = new TextBox() { Text = Utility.ParseTriggerType(logicData.trigger_type) };
+                        var typeTextbox = new TextBox() {
+                            Text = Utility.ParseTriggerType(logicData.trigger_type),
+                            ToolTip = logicData.cutin_type
+                        };
                         typeTextbox.SetValue(Grid.ColumnProperty, 1);
                         typeTextbox.SetValue(Grid.ColumnSpanProperty, 2);
                         typeTextbox.SetValue(Grid.RowProperty, 0);

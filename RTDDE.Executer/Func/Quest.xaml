@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:RTDDE="clr-namespace:RTDDE.Executer.Func"
+             xmlns:customControl="clr-namespace:RTDDE.Executer.CustomControl"
              mc:Ignorable="d">
     <Grid Name="UnitGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SizeChanged="UnitGrid_OnSizeChanged">
         <Grid.ColumnDefinitions>
@@ -153,6 +154,7 @@
                     <Style TargetType="Path">
                         <Setter Property="Stroke" Value="Red"/>
                         <Setter Property="Fill" Value="Transparent"/>
+                        <Setter Property="VerticalAlignment" Value="Center"></Setter>
                     </Style>
                     <Style x:Key="PanelSwordPathStyle" TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
                         <Style.Triggers>
@@ -329,7 +331,7 @@
                             <TextBlock Grid.Row="0" Grid.Column="2" Text="sp_guide_id"/>
                             <TextBox Grid.Row="0" Grid.Column="3" Name="QuestInfo_sp_guide_id"/>
                             <TextBlock Grid.Row="0" Grid.Column="4" Text="event_effect_flag"/>
-                            <TextBox Grid.Row="0" Grid.Column="5" Name="QuestInfo_event_effect_flag"/>
+                            <customControl:WarningTextBox Grid.Row="0" Grid.Column="5" x:Name="QuestInfo_event_effect_flag" SafeValue="1"/>
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="money_limit"/>
                             <TextBox Grid.Row="1" Grid.Column="1" Name="QuestInfo_reward_money_limit"/>
                             <TextBlock Grid.Row="1" Grid.Column="2" Text="exp_limit"/>
@@ -341,7 +343,7 @@
                             <TextBlock Grid.Row="2" Grid.Column="2" Text="reward_exp"/>
                             <TextBox Grid.Row="2" Grid.Column="3" Name="QuestInfo_reward_exp"/>
                             <TextBlock Grid.Row="2" Grid.Column="4" Text="damage_rate"/>
-                            <TextBox Grid.Row="2" Grid.Column="5" Name="QuestInfo_damage_rate" Text="{Binding Path=damage_rate,Mode=OneWay}"/>
+                            <customControl:WarningTextBox Grid.Row="2" Grid.Column="5" x:Name="QuestInfo_damage_rate" Text="{Binding Path=damage_rate,Mode=OneWay}" SafeValue="1"/>
                         </Grid>
                     </StackPanel>
                 </Expander>

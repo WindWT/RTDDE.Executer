@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using RTDDE.Executer.CustomControl;
 using RTDDE.Provider;
 using RTDDE.Provider.Enums;
 using RTDDE.Provider.MasterData;
@@ -223,9 +224,6 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                 activeSkill_soul.Text = skill.soul.ToString();
                 activeSkill_phase.Text = ((SkillPhase) skill.phase).ToString();
                 activeSkill_limit_num.Text = skill.limit_num.ToString();
-                activeSkill_limit_num.Background = skill.limit_num == 0
-                    ? Brushes.Transparent
-                    : Utility.GetWarningBrush();
 
                 SkillInfo_ActiveSkill_Limit.Children.Clear();
                 for (int i = 0; i < taskAsLimit.Result.Count; i++) {
@@ -441,24 +439,18 @@ IFNULL(skill_80_89,0) as skill_80_89,IFNULL(skill_90_99,0) as skill_90_99,IFNULL
                     TextBlock tblSoul = new TextBlock() { Text = "soul" };
                     tblSoul.SetValue(Grid.ColumnProperty, 2);
                     gridInfo.Children.Add(tblSoul);
-                    TextBox tbSoul = new TextBox() {
+                    WarningTextBox tbSoul = new WarningTextBox() {
                         Text = askill.soul.ToString(),
-                        Background =
-                            askill.soul == 0
-                                ? Brushes.Transparent
-                                : Utility.GetWarningBrush()
+                        SafeValue = "0"
                     };
                     tbSoul.SetValue(Grid.ColumnProperty, 3);
                     gridInfo.Children.Add(tbSoul);
                     TextBlock tblLimitNum = new TextBlock() { Text = "limit_num" };
                     tblLimitNum.SetValue(Grid.ColumnProperty, 4);
                     gridInfo.Children.Add(tblLimitNum);
-                    TextBox tbLimitNum = new TextBox() {
+                    WarningTextBox tbLimitNum = new WarningTextBox() {
                         Text = askill.limit_num.ToString(),
-                        Background =
-                            askill.limit_num == 0
-                                ? Brushes.Transparent
-                                : Utility.GetWarningBrush()
+                        SafeValue = "0"
                     };
                     tbLimitNum.SetValue(Grid.ColumnProperty, 5);
                     gridInfo.Children.Add(tbLimitNum);

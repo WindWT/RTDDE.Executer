@@ -89,6 +89,8 @@ namespace RTDDE.Executer.Func
             Accessory_num_04.Text = am.num_04.ToString();
             Accessory_conv_money.Text = am.conv_money.ToString();
             Accessory_icon.Text = am.icon;
+            Accessory_specified_attr.Text = Utility.ParseAttributeToString(am.specified_attr);
+            Accessory_specified_style.Text = Utility.ParseStyletype(am.specified_style);
         }
 
         private void AccessorySearchClear_Click(object sender, RoutedEventArgs e)

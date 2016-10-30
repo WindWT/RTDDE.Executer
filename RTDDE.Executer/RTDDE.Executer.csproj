@@ -116,6 +116,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomControl\WarningTextbox.cs" />
     <Compile Include="Func\Accessory.xaml.cs">
       <DependentUpon>Accessory.xaml</DependentUpon>
     </Compile>
