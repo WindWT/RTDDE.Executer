@@ -360,6 +360,8 @@ namespace RTDDE.Executer.Func
             QuestInfo_close_date.Text = closeDate == DateTime.MinValue
                 ? string.Empty
                 : closeDate.ToString("yyyy-MM-dd HH:mm ddd");
+            QuestInfo_regular_open_day.Text = quest.regular_open_day.ToString();
+            QuestInfo_reqular_open_day_week.Text = quest.reqular_open_day_week.ToString();
 
             QuestInfo_opentype_content.Children.Clear();
             List<QuestOpenType> opentypes = await taskOpenType;
@@ -404,6 +406,7 @@ namespace RTDDE.Executer.Func
             QuestInfo_bonus_end.Text = bonusEnd == DateTime.MinValue
                 ? string.Empty
                 : bonusEnd.ToString("yyyy-MM-dd HH:mm");
+            QuestInfo_bonus_open_day_week.Text = quest.bonus_open_day_week.ToString();
             //panel rate
             QuestInfo_panel_sword.Text = quest.panel_sword.ToString();
             QuestInfo_panel_lance.Text = quest.panel_lance.ToString();

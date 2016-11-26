@@ -363,6 +363,12 @@
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="close" />
                             <TextBox Grid.Row="1" Grid.Column="1" Name="QuestInfo_close_date" />
                         </Grid>
+                        <UniformGrid Columns="2">
+                            <TextBlock Text="regular_open_day" />
+                            <TextBox Name="QuestInfo_regular_open_day" />
+                            <TextBlock Text="reqular_open_day_week" />
+                            <TextBox Name="QuestInfo_reqular_open_day_week" />
+                        </UniformGrid>
                         <Grid Name="QuestInfo_opentype">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="60"></ColumnDefinition>
@@ -388,11 +394,14 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="bonus" />
                             <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="QuestInfo_bonus" />
                             <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name="QuestInfo_bonus_start"/>
                             <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Name="QuestInfo_bonus_end"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="bonus_open_day_week" />
+                            <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Name="QuestInfo_bonus_open_day_week"/>
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>
