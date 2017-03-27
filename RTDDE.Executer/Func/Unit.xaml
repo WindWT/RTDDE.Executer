@@ -217,6 +217,7 @@
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <RichTextBox Grid.Row="0" Grid.ColumnSpan="2" Name="UnitInfo_story"></RichTextBox>
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="ct_text"/>
@@ -229,6 +230,8 @@
                             <TextBox Grid.Row="4" Grid.Column="1" Name="UnitInfo_a_skill_text"></TextBox>
                             <TextBlock Grid.Row="5" Grid.Column="0" Text="multi_b_text"/>
                             <TextBox Grid.Row="5" Grid.Column="1" Name="UnitInfo_multi_b_text"></TextBox>
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="last_text"/>
+                            <TextBox Grid.Row="6" Grid.Column="1" Name="UnitInfo_last_text"></TextBox>
                         </Grid>
                     </StackPanel>
                 </Expander>

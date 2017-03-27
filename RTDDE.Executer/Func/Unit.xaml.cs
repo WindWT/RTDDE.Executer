@@ -231,6 +231,7 @@ WHERE uo.id={0}";
                 UnitInfo_sct6_text.Text = ui.sct6_text;
                 UnitInfo_a_skill_text.Text = ui.a_skill_text;
                 UnitInfo_multi_b_text.Text = ui.multi_b_text;
+                UnitInfo_last_text.Text = ui.last_text;
                 //skill
                 if (ui.p_skill_id == 0 && ui.a_skill_id == 0 && ui.panel_skill_id == 0 && ui.limit_skill_id == 0) {
                     UnitSkillExpander.Visibility = Visibility.Collapsed;
