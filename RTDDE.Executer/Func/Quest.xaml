@@ -331,7 +331,7 @@
                             <TextBlock Grid.Row="0" Grid.Column="2" Text="sp_guide_id"/>
                             <TextBox Grid.Row="0" Grid.Column="3" Name="QuestInfo_sp_guide_id"/>
                             <TextBlock Grid.Row="0" Grid.Column="4" Text="event_effect_flag"/>
-                            <customControl:WarningTextBox Grid.Row="0" Grid.Column="5" x:Name="QuestInfo_event_effect_flag" SafeValue="1"/>
+                            <customControl:WarningTextBox Grid.Row="0" Grid.Column="5" x:Name="QuestInfo_event_effect_flag" SafeValue="0"/>
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="money_limit"/>
                             <TextBox Grid.Row="1" Grid.Column="1" Name="QuestInfo_reward_money_limit"/>
                             <TextBlock Grid.Row="1" Grid.Column="2" Text="exp_limit"/>
